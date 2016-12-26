@@ -12,9 +12,9 @@ strong {
 	margin: 0 auto;
 }
 
-#SearchBox {
+/*#SearchBox {
 	height: 40px;
-}
+}*/
 
 #SuggestionContainer {
 	width: 410px;
@@ -131,7 +131,7 @@ strong {
 #ResultSearchBar {
 	width: 400px;
 	margin-left: 50px;
-	margin-top: 10px;
+	/*margin-top: 10px;*/
 }
 
 #ResultItem {

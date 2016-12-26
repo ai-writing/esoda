@@ -42,17 +42,20 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand esoda-brand" href="#">Esoda</a>
+          <a class="navbar-brand esoda-brand" href="index.html">Esoda</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <div id="ResultSearchBar" class="nav navbar-nav navbar-left input-group">
-            <input id="ResultSearchBox" type="text" class="form-control">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
-            </span>
-          </div><!-- /btn-group -->
+          <form class="navbar-form navbar-left" role="search" action="result.html">
+            <div id="ResultSearchBar" class="input-group">
+              <input type="text" class="form-control">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+              </span>
+            </div>
+          </form>
+          <!-- /btn-group -->
           <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
             <li role="presentation"><a href="#">登陆</a></li>
             <li role="presentation" class="active"><a href="#">注册</a></li>
@@ -102,7 +105,7 @@
                 <div>
                   <div class="result-subtitle">搭配</div>
                   <div id="CollocBtnGrp" class="btn-group">
-                    <button type="button" class="btn btn-result-detail">全部</button>
+                    <button type="button" class="btn btn-result-detail active">全部</button>
                     <button type="button" class="btn btn-result-detail">quality (主谓)*</button>
                     <button type="button" class="btn btn-result-detail">quality (修饰)*</button>
                     <button type="button" class="btn btn-result-detail">quality (介词)*</button>

@@ -42,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand esoda-brand" href="#">Esoda</a>
+          <a class="navbar-brand esoda-brand" href="index.html">Esoda</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
@@ -63,21 +63,25 @@
       <div class="container center-align" style="height:320px">
         <h1 class="esoda-brand">Esoda</h1>
         <p style="color:#888;font-size:14px;margin-bottom:90px">易搜易搭易搜搭</p>
-        <div id="SearchBar" class="input-group">
-          <div class="input-group-btn">
-            <button type="button" class="btn btn-search dropdown-toggle" data-toggle="dropdown">全部<span class="caret"></span></button>
-            <ul class="dropdown-menu menu-search" role="menu">
-              <li><a href="#">搜搭配</a></li>
-              <li class="divider" style="margin: 2px 0"></li>
-              <li><a href="#">搜同义</a></li>
-            </ul>
-          </div><!-- /btn-group -->
-          <!-- The "Search" icon cannot be placed into searchbox-->
-          <!--span class="glyphicon glyphicon-search"></span-->
-          <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？"/>
-          <span class="input-group-btn">
-            <button class="btn btn-info" style="height:40px;width:70px" type="button">搜索</button>
-          </span>
+        <div id="SearchBar" class="row">
+          <form class="form-horizontal" role="search" action="result.html">
+            <div class="input-group input-group-lg">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-search dropdown-toggle" data-toggle="dropdown">全部<span class="caret"></span></button>
+                <ul class="dropdown-menu menu-search" role="menu">
+                  <li><a href="#">搜搭配</a></li>
+                  <li class="divider" style="margin: 2px 0"></li>
+                  <li><a href="#">搜同义</a></li>
+                </ul>
+              </div><!-- /btn-group -->
+              <!-- The "Search" icon cannot be placed into searchbox-->
+              <!--span class="glyphicon glyphicon-search"></span-->
+              <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？"/>
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-info">搜索</button>
+              </span>
+            </div>
+          </form>
         </div><!-- /input-group -->
         <div id="SuggestionContainer" style="display:none">
           <div id="RecentSearchedList">
