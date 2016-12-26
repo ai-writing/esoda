@@ -1,5 +1,248 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
-  padding-bottom: 20px;
+	padding-top: 50px;
+}
+
+strong {
+	color: #5bc0de;
+}
+
+#SearchBar {
+	width: 550px;
+	margin: 0 auto;
+}
+
+#SearchBox {
+	height: 40px;
+}
+
+#SuggestionContainer {
+	width: 410px;
+	margin: 0 auto;
+	background-color: #fff;
+	text-align: left;
+	border: solid 1px #ccc;
+}
+
+#RecentSearchedList {
+	border-bottom: solid 3px #ccc;
+}
+
+#RecentListTitle, #UsageListTitle  {
+	padding: 10px 15px;
+	color: #888;
+}
+
+.center-align {
+	text-align: center;
+	position: relative;
+	margin: 0 auto;
+}
+
+.esoda-brand {
+	font-family: 'Arial-Black', 'Arial Black';
+	font-weight: 900;
+}
+
+.nav-pills-reg {
+	margin-left:10%;
+	margin-top:4px;
+}
+
+.btn-search {
+    color: #888;
+    background-color: #fff;
+    border-color: #ccc;
+    width: 70px;
+    height: 40px;
+}
+
+.menu-search {
+	color: #888;
+	min-width: 70px;
+}
+
+.dropdown-menu > li > a {
+    padding: 3px 11px;
+    color: #888;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+	color: #fff;
+	background-color: #5bc0de;
+}
+
+.nav > li > a {
+	color: #5bc0de;
+}
+
+.container-usage {
+	color: #888;
+	margin-top: 60px;
+}
+
+.container-footer {
+	padding-top: 20px;
+}
+
+.footer {
+	background-color: #333;
+	color: #999;
+}
+
+.caption-usage {
+	margin-top: 10px;
+	color: #888;
+}
+
+.suggest-list-item {
+	padding: 10px 30px;
+	color: #333;
+	border-top: solid 1px #ddd;
+}
+
+.suggest-list-item > a, 
+.suggest-list-item-right-link > a {
+	color: #5bc0de;
+}
+
+.suggest-list-item-right-link {
+	display: inline-block;
+	float: right;
+	padding-right: 10px;
+}
+
+.col-guide {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.thumbnail-guide {
+	border: none;
+}
+
+.col-comments {
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+#ResultSearchBar {
+	width: 400px;
+	margin-left: 50px;
+	margin-top: 10px;
+}
+
+#ResultItem {
+	font-size: 28px;
+	font-weight: 700;
+}
+
+#WordExplanation {
+	padding-left: 30px;
+	padding-top: 10px;
+}
+
+#NumOfRelateUsage {
+	font-weight: 700;
+	color: #666;
+}
+
+#SearchArea {
+	font-weight: 700;
+	color: #666;
+}
+
+#CollocResults {
+	margin: 10px 10px;
+	margin-bottom: 5px;
+	padding: 20px 50px;
+	background-color: #eee;
+	max-height: 300px;
+	overflow: scroll;
+	border:0px;
+}
+
+#CollocBtnGrp, #SynoBtnGrp, #OthersBtnGrp {
+	margin-left: 20px;
+	width: 800px;
+}
+
+#ResultList {
+	background-color: #fff;
+}
+
+#ResultPageNav {
+	text-align: center;
+}
+
+.result-callout {
+	padding: 30px;
+	margin: 20px 20px;
+	margin-top: 50px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-left-width: 7px;
+	border-left-color: #333;
+	border-radius: 3px
+}
+
+.result-table-container {
+	margin: 20px 20px;
+	margin-top: 5px;
+}
+
+.result-table-cell {
+	border: 1px solid #ddd;
+	padding: 10px 25px;
+}
+
+.result-subtitle {
+	font-weight: 700;
+	float: left;
+	padding: 6px;
+}
+
+.detail-table-cell {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	padding: 20px;
+}
+
+.btn-result-detail {
+	min-width: 150px;
+    color: #333;
+    background-color: #fff;
+}
+
+.btn-result-others {
+	background-color: #eee;
+}
+
+.pagination > li > a {
+	background-color: #eee;
+	color: #333;
+	border: none;
+}
+
+.result-list-item {
+	padding: 20px;
+	font-size: 16px;
+	border: solid 1px #eee;
+}
+
+.result-list-label {
+	color: #ccc;
+	font-weight: 700;
+	float: left;
+	margin-right: 30px;
+}
+
+.result-list-content {
+	width: 95%;
+	display: inline-block;
+}
+.result-list-content > p > a{
+	color: #ccc;
 }

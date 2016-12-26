@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Esoda</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand esoda-brand" href="#">Esoda</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <div id="ResultSearchBar" class="nav navbar-nav navbar-left input-group">
+            <input id="ResultSearchBox" type="text" class="form-control">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+          </div><!-- /btn-group -->
+          <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
+            <li role="presentation"><a href="#">登陆</a></li>
+            <li role="presentation" class="active"><a href="#">注册</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <div style="margin-bottom:0;background-color:#eee">
+      <div class="container">
+        <div class="result-callout">
+          <div class="row">
+            <div class="col-sm-6 col-md-6" style="border-right:dashed 1px #ddd">
+              <p id="ResultItem">quality</p>
+              <div class="row">
+                <div class="col-sm-6 col-md-4">
+                  <span class="glyphicon glyphicon-volume-up"></span>
+                  <span>英</span>
+                  <span id="EnglishPronounce">['kwɒlɪtɪ]</span>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                  <span class="glyphicon glyphicon-volume-up"></span>
+                  <span>美</span>
+                  <span id="AmericanPronounce">['kwɑləti]</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+              <div id="WordExplanation">
+                <p>n. 质量，[统计] 品质；特性；才能</p>
+                <p>adj. 优质的；高品质的；&lt;英俚&gt;棒极了</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="result-table-container">
+          <div class="result-table-cell" style="background-color:#ccc;">
+            <span>找到相关用法&nbsp;<span id="NumOfRelateUsage">222</span>&nbsp;个：</span>
+            <span style="float:right">现在搜索领域为：<span id="SearchArea">人机交互</span>&nbsp;&nbsp;不是您的领域？<a href="#"style="color:#5bc0de">自定义搜索领域</a></span>
+          </div>
+          <div class="result-table-cell" style="color:#666">
+            <div style="margin-top:30px;margin-bottom:10px">
+              <div class="detail-table-cell" style="padding-bottom: 5px;">
+                <div>
+                  <div class="result-subtitle">搭配</div>
+                  <div id="CollocBtnGrp" class="btn-group">
+                    <button type="button" class="btn btn-result-detail">全部</button>
+                    <button type="button" class="btn btn-result-detail">quality (主谓)*</button>
+                    <button type="button" class="btn btn-result-detail">quality (修饰)*</button>
+                    <button type="button" class="btn btn-result-detail">quality (介词)*</button>
+                    <button type="button" class="btn btn-result-detail">*(修饰) quality</button>
+                    <button type="button" class="btn btn-result-detail">*(介词) quality</button>
+                    <button type="button" class="btn btn-result-detail">*(动宾) quality</button>
+                  </div>
+                  <div id="CollocResults">
+                    <p>search ... engine  （82）</p>
+                    <p>search ... space  （82）</p>
+                    <p>search ... web  （82）</p>
+                    <p>search ... engine  （82）</p>
+                    <p>search ... space  （82）</p>
+                    <p>search ... web  （82）</p>
+                    <p>search ... web  （82）</p>
+                    <p>search ... engine  （82）</p>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-table-cell">
+                <div class="result-subtitle">同义</div>
+                  <div id="SynoBtnGrp" class="btn-group">
+                    <button type="button" class="btn btn-result-detail">trait</button>
+                    <button type="button" class="btn btn-result-detail">characteristic</button>
+                    <button type="button" class="btn btn-result-detail">feature</button>
+                    <button type="button" class="btn btn-result-detail">attribute</button>
+                    <button type="button" class="btn btn-result-detail">property</button>
+                  </div>
+              </div>
+            </div>
+            <div>
+              <div class="result-subtitle">大家也在搜</div>
+              <div id="OthersBtnGrp" class="btn-group">
+                <button type="button" class="btn btn-result-detail btn-result-others">high quality</button>
+                <button type="button" class="btn btn-result-detail btn-result-others">improve quality</button>
+                <button type="button" class="btn btn-result-detail btn-result-others">ensure quality</button>
+                <button type="button" class="btn btn-result-detail btn-result-others">*(修饰) quality</button>
+              </div>
+            </div>
+          </div>
+          <div id="ResultList" class="result-table-cell" style="padding:0">
+            <div class="result-list-item">
+              <div class="result-list-label">1.</div>
+              <div class="result-list-content">
+                <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
+                <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+              </div>
+            </div>
+            <div class="result-list-item">
+              <div class="result-list-label">2.</div>
+              <div class="result-list-content">
+                <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
+                <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+              </div>
+            </div>
+            <div class="result-list-item">
+              <div class="result-list-label">3.</div>
+              <div class="result-list-content">
+                <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
+                <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+              </div>
+            </div>
+            <div class="result-list-item">
+              <div class="result-list-label">4.</div>
+              <div class="result-list-content">
+                <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
+                <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+              </div>
+            </div>
+            <div class="result-list-item">
+              <div class="result-list-label">5.</div>
+              <div class="result-list-content">
+                <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
+                <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+              </div>
+            </div>
+            <div class="result-list-item">
+              <div class="result-list-label">6.</div>
+              <div class="result-list-content">
+                <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
+                <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+              </div>
+            </div>
+            <div class="result-list-item">
+              <div class="result-list-label">7.</div>
+              <div class="result-list-content">
+                <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
+                <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <nav id="ResultPageNav">
+          <ul class="pagination">
+            <li><a href="#"><span class="glyphicon glyphicon-chevron-left"></span>上一页</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">6</a></li>
+            <li><a href="#">7</a></li>
+            <li><a href="#">8</a></li>
+            <li><a>...</a></li>
+            <li><a href="#">20</a></li>
+            <li><a href="#">下一页<span class="glyphicon glyphicon-chevron-right"></span></a></li>
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <div class="container center-align container-footer">
+        <div class="row" style="width:700px;margin:0 auto;">
+          <div class="col-sm-6 col-md-3">
+            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          </div>
+        </div>
+        <p style="margin-top:15px">Esoda &copy; 2012-2017.</p>
+      </div>
+    <footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

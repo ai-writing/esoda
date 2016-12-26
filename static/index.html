@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
 
-    <title>ESODA Template for Bootstrap</title>
+    <title>Esoda</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +33,7 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -42,57 +42,178 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">ESODA</a>
+          <a class="navbar-brand esoda-brand" href="#">Esoda</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+          <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
+            <li role="presentation"><a href="#">登陆</a></li>
+            <li role="presentation" class="active"><a href="#">注册</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">添加收藏</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">关于我们</a></li>
+          </ul>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-      <div class="container">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+      <div class="container center-align" style="height:320px">
+        <h1 class="esoda-brand">Esoda</h1>
+        <p style="color:#888;font-size:14px;margin-bottom:90px">易搜易搭易搜搭</p>
+        <div id="SearchBar" class="input-group">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-search dropdown-toggle" data-toggle="dropdown">全部<span class="caret"></span></button>
+            <ul class="dropdown-menu menu-search" role="menu">
+              <li><a href="#">搜搭配</a></li>
+              <li class="divider" style="margin: 2px 0"></li>
+              <li><a href="#">搜同义</a></li>
+            </ul>
+          </div><!-- /btn-group -->
+          <!-- The "Search" icon cannot be placed into searchbox-->
+          <!--span class="glyphicon glyphicon-search"></span-->
+          <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？"/>
+          <span class="input-group-btn">
+            <button class="btn btn-info" style="height:40px;width:70px" type="button">搜索</button>
+          </span>
+        </div><!-- /input-group -->
+        <div id="SuggestionContainer" style="display:none">
+          <div id="RecentSearchedList">
+            <div id="RecentListTitle">
+              <span>最近搜过</span>
+              <div class="btn" style="float:right;border:none;padding:0">
+                <span class="glyphicon glyphicon-trash"></span>
+              </div>
+            </div>
+            <div class="suggest-list-item"><a href="#">quality</a></div>
+            <div class="suggest-list-item"><a href="#">image</a></div>
+            <div class="suggest-list-item"><a href="#">style</a></div>
+          </div>
+          <div id="UsageExampleList">
+            <div id="UsageListTitle">用法示例</div>
+            <div class="suggest-list-item">
+              <span>主谓</span>
+              <div class="suggest-list-item-right-link"><a href="#">quality have</a></div>
+            </div>
+            <div class="suggest-list-item">
+              <span>修饰</span>
+              <div class="suggest-list-item-right-link"><a href="#">quality data</a></div>
+            </div>
+            <div class="suggest-list-item">
+              <span>介词</span>
+              <div class="suggest-list-item-right-link"><a href="#">quality of</a></div>
+            </div>
+            <div class="suggest-list-item">
+              <span>动宾</span>
+              <div class="suggest-list-item-right-link"><a href="#">used quality</a></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="container">
-      <!-- Example row of columns -->
+    <div class="container center-align container-usage" style="z-index:-1">
+      <h4 style="margin-bottom:50px">如何使用</h4>
       <div class="row">
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        <div class="col-sm-6 col-md-3 col-guide">
+          <div class="thumbnail thumbnail-guide">
+            <img src="images/img1.png" alt="...">
+            <div class="caption caption-usage">
+              <h4 style="font-style: italic">circumstance? (semantic)</h4>
+              <p>...</p>
+            </div>
+          </div>
         </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        <div class="col-sm-6 col-md-3 col-guide">
+          <div class="thumbnail thumbnail-guide">
+            <img src="images/img1.png" alt="...">
+            <div class="caption caption-usage">
+              <h4 style="font-style: italic">circumstance? (semantic)</h4>
+              <p>...</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-guide">
+          <div class="thumbnail thumbnail-guide">
+            <img src="images/img1.png" alt="...">
+            <div class="caption caption-usage">
+              <h4 style="font-style: italic">circumstance? (semantic)</h4>
+              <p>...</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-guide">
+          <div class="thumbnail thumbnail-guide">
+            <img src="images/img1.png" alt="...">
+            <div class="caption caption-usage">
+              <h4 style="font-style: italic">circumstance? (semantic)</h4>
+              <p>...</p>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      <hr>
+    <div class="jumbotron" style="margin-bottom:0">
+      <div class="container center-align container-usage">
+        <h4 style="margin-bottom:50px">师兄评价</h4>
+        <div class="row">
+          <div class="col-sm-6 col-md-4 col-comments">
+            <div class="thumbnail">
+              <img src="images/img2.png" alt="...">
+              <div class="caption" style="margin-top: 30px">
+                <p style="font-size:14px">好用好用很好用！Esoda给了我很多帮助，赞！</p>
+                <h4 style="margin-top:30px">王海超</h4>
+                <h4>Google</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-comments">
+            <div class="thumbnail">
+              <img src="images/img2.png" alt="...">
+              <div class="caption" style="margin-top: 30px">
+                <p style="font-size:14px">好用好用很好用！Esoda给了我很多帮助，赞！</p>
+                <h4 style="margin-top:30px">王海超</h4>
+                <h4>Google</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-comments">
+            <div class="thumbnail">
+              <img src="images/img2.png" alt="...">
+              <div class="caption" style="margin-top: 30px">
+                <p style="font-size:14px">好用好用很好用！Esoda给了我很多帮助，赞！</p>
+                <h4 style="margin-top:30px">王海超</h4>
+                <h4>Google</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <footer>
-        <p>&copy; 2016 Company, Inc.</p>
-      </footer>
-    </div> <!-- /container -->
+
+    <footer class="footer">
+      <div class="container center-align container-footer">
+        <div class="row" style="width:700px;margin:0 auto;">
+          <div class="col-sm-6 col-md-3">
+            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          </div>
+        </div>
+        <p style="margin-top:15px">Esoda &copy; 2012-2017.</p>
+      </div>
+    <footer>
 
 
     <!-- Bootstrap core JavaScript
