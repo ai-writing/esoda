@@ -12,10 +12,6 @@ strong {
 	margin: 0 auto;
 }
 
-/*#SearchBox {
-	height: 40px;
-}*/
-
 #SuggestionContainer {
 	width: 410px;
 	margin: 0 auto;
@@ -74,7 +70,8 @@ strong {
 	background-color: #5bc0de;
 }
 
-.nav > li > a {
+
+.nav-pills > li > a {
 	color: #5bc0de;
 }
 
@@ -164,17 +161,33 @@ strong {
 	border:0px;
 }
 
-#CollocBtnGrp, #SynoBtnGrp, #OthersBtnGrp {
-	margin-left: 20px;
-	width: 800px;
-}
-
 #ResultList {
 	background-color: #fff;
 }
 
 #ResultPageNav {
 	text-align: center;
+}
+
+.result-page {
+	margin-bottom: 0;
+	background-color: #eee;
+}
+
+.result-main > .container {
+	width: 100%;
+}
+
+.result-sidebar {
+	text-align: center;
+}
+
+.result-sidebar > .container {
+	background-color: #fff;
+	width: 100%;
+	margin-top: 50px;
+	padding: 20px 10px;
+	border: solid 1px #ddd;
 }
 
 .result-callout {
@@ -188,36 +201,32 @@ strong {
 	border-radius: 3px
 }
 
-.result-table-container {
-	margin: 20px 20px;
-	margin-top: 5px;
+.result-warning {
+	background-color:#ccc;
+	margin: 0px 20px;
+	margin-bottom: 10px;
+	padding: 10px 25px;
 }
 
 .result-table-cell {
 	border: 1px solid #ddd;
+	background-color: #fff;
 	padding: 10px 25px;
+	margin: 20px 20px;
+	margin-top: 5px;
 }
 
 .result-subtitle {
 	font-weight: 700;
 	float: left;
-	padding: 6px;
 }
 
-.detail-table-cell {
-	background-color: #fff;
-	border: 1px solid #ddd;
-	padding: 20px;
+#Synonymous > span {
+	padding: 0px 10px;
 }
 
-.btn-result-detail {
-	min-width: 150px;
-    color: #333;
-    background-color: #fff;
-}
-
-.btn-result-others {
-	background-color: #eee;
+.colloc-result {
+	padding: 20px 10px;
 }
 
 .pagination > li > a {

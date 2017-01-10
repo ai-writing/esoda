@@ -13,6 +13,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -29,6 +30,62 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    $( function() {
+      function split( val ) {
+        return val.split( /,\s*/ );
+      }
+      function extractLast( term ) {
+        return split( term ).pop();
+      }
+
+      var words = [
+        {
+          label: "quality",
+          desc: "质量；品质；上乘；优质"
+        },
+        {
+          label: "quote",
+          desc: "报价；引用；引述；举例说明"
+        },
+        {
+          label: "query",
+          desc: "询问；疑问；问号"
+        }
+      ];
+      $( "#SearchBox" ).autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          response( $.ui.autocomplete.filter(
+            words, extractLast( request.term ) ) );
+        },
+        search: function() {
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        },
+        focus: function( event, ui ) {
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          terms.pop();
+          terms.push( ui.item.value );
+          terms.push( "" );
+          this.value = terms.join( ", " );
+          return false;
+        }
+      })
+      .autocomplete( "instance" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+          .append( "<div>" + item.label + "&nbsp;&nbsp;<span style=\"color:#999\">" + item.desc + "</span></div>" )
+          .appendTo( ul );
+      };
+    } );
+    </script>
   </head>
 
   <body>
@@ -62,18 +119,9 @@
     <div class="jumbotron">
       <div class="container center-align" style="height:320px">
         <h1 class="esoda-brand">Esoda</h1>
-        <p style="color:#888;font-size:14px;margin-bottom:90px">易搜易搭易搜搭</p>
         <div id="SearchBar" class="row">
           <form class="form-horizontal" role="search" action="result.html">
             <div class="input-group input-group-lg">
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-search dropdown-toggle" data-toggle="dropdown">全部<span class="caret"></span></button>
-                <ul class="dropdown-menu menu-search" role="menu">
-                  <li><a href="#">搜搭配</a></li>
-                  <li class="divider" style="margin: 2px 0"></li>
-                  <li><a href="#">搜同义</a></li>
-                </ul>
-              </div><!-- /btn-group -->
               <!-- The "Search" icon cannot be placed into searchbox-->
               <!--span class="glyphicon glyphicon-search"></span-->
               <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？"/>
@@ -82,38 +130,6 @@
               </span>
             </div>
           </form>
-        </div><!-- /input-group -->
-        <div id="SuggestionContainer" style="display:none">
-          <div id="RecentSearchedList">
-            <div id="RecentListTitle">
-              <span>最近搜过</span>
-              <div class="btn" style="float:right;border:none;padding:0">
-                <span class="glyphicon glyphicon-trash"></span>
-              </div>
-            </div>
-            <div class="suggest-list-item"><a href="#">quality</a></div>
-            <div class="suggest-list-item"><a href="#">image</a></div>
-            <div class="suggest-list-item"><a href="#">style</a></div>
-          </div>
-          <div id="UsageExampleList">
-            <div id="UsageListTitle">用法示例</div>
-            <div class="suggest-list-item">
-              <span>主谓</span>
-              <div class="suggest-list-item-right-link"><a href="#">quality have</a></div>
-            </div>
-            <div class="suggest-list-item">
-              <span>修饰</span>
-              <div class="suggest-list-item-right-link"><a href="#">quality data</a></div>
-            </div>
-            <div class="suggest-list-item">
-              <span>介词</span>
-              <div class="suggest-list-item-right-link"><a href="#">quality of</a></div>
-            </div>
-            <div class="suggest-list-item">
-              <span>动宾</span>
-              <div class="suggest-list-item-right-link"><a href="#">used quality</a></div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -217,13 +233,13 @@
         </div>
         <p style="margin-top:15px">Esoda &copy; 2012-2017.</p>
       </div>
-    <footer>
+    </footer>
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <!-- script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script -->
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
