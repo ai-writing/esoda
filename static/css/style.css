@@ -94,21 +94,20 @@ strong {
 	color: #888;
 }
 
-.suggest-list-item {
-	padding: 10px 30px;
-	color: #333;
-	border-top: solid 1px #ddd;
+.ui-autocomplete-category {
+	font-weight: bold;
+	font-size: 18px;
+    padding: .2em .4em;
+    margin: .8em 0 .2em;
+    line-height: 1.5;
 }
 
-.suggest-list-item > a, 
-.suggest-list-item-right-link > a {
-	color: #5bc0de;
+.ui-autocomplete-label {
+	font-weight: bold;
 }
 
-.suggest-list-item-right-link {
-	display: inline-block;
-	float: right;
-	padding-right: 10px;
+.ui-autocomplete-desc {
+	color: #999;
 }
 
 .col-guide {
