@@ -34,6 +34,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
     $( function() {
+      // These two lists and function getData are just for testing use
       var words = [
         { label: "survey", desc: "调查.测验", category: "Words" },
         { label: "upset", desc: "心烦意乱的;不安的,不适的", category: "Words" },
@@ -165,6 +166,35 @@
         { label: "give in", desc: "投降.屈服.让步", category: "Expressions" },
         { label: "as usual", desc: "照常", category: "Expressions" }
       ];
+      var defList = [
+        { label: "quality", desc: "", category: "最近搜过" },
+        { label: "image", desc: "", category: "最近搜过" },
+        { label: "style", desc: "", category: "最近搜过" },
+        { label: "主谓", desc: "quality have", value: "quality have", category: "用法示例" },
+        { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
+        { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
+      ];
+      function getData( request ) {
+        if (request == "") {
+          return defList;
+        } else {
+          var matcher = new RegExp( "^" + request, "i" );
+          return $.grep( words, function( item ) {
+            return matcher.test( item.label );
+          });
+        }
+      }
+
+
+      var defaultList = getData("");
+      /*
+      var defaultList = [];
+      $.getJSON( "search.php", "", function(data, status, xhr) {
+        defaultList = data;
+      });
+      */
+
+      $( "#SearchBox" ).val("");
 
       $.widget( "custom.catcomplete", $.ui.autocomplete, {
         _create: function() {
@@ -188,26 +218,54 @@
         },
         _renderItem: function( ul, item ) {
           return $( "<li>" )
-            .append( "<div><span class=\"ui-autocomplete-label\">" + item.label +
-                     "</span>&nbsp;&nbsp;<span class=\"ui-autocomplete-desc\">" + item.desc + "</span></div>" )
+            .append( "<div><span class=\"ui-autocomplete-label\">" + item.label + "</span>" +
+                     "&nbsp;&nbsp;<span class=\"ui-autocomplete-desc\">" + item.desc + "</span></div>" )
             .appendTo( ul );
         }
       });
+      /*
       function split( val ) {
         return val.split( /\s+/ );
       }
       function extractLast( term ) {
         return split( term ).pop();
       }
+      */
 
+      var cache = {};
       $( "#SearchBox" ).catcomplete({
-        minLength: 1,
+        minLength: 0,
         source: function( request, response ) {
-          var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( extractLast( request.term ) ), "i" );
+          /*
+          var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
           response( $.grep( words, function( item ){
               return matcher.test( item.label );
           }) );
+          */
+
+          var term = request.term;
+          if ( term.length < 1) {
+            response( defaultList );
+            return;
+          }
+
+          if (term in cache) {
+            response( cache[ term ] );
+            return;
+          }
+
+          var data = getData( term );
+          cache[ term ] = data;
+          response( data );
+          /*
+          $.getJSON( "search.php", request.term, function(data, status, xhr) {
+            cache[ term ] = data;
+            response( data );
+          });
+          */
+
       	},
+        /*
         search: function() {
           var term = extractLast( this.value );
           if ( term.length < 1 ) {
@@ -216,15 +274,23 @@
         },
         focus: function( event, ui ) {
           return false;
-        },
+        },*/
         select: function( event, ui ) {
+          /*
           var terms = split( this.value );
           terms.pop();
           terms.push( ui.item.value );
           terms.push( "" );
           this.value = terms.join( " " );
+          */
+          this.value = ui.item.value;
+          $( "#SearchForm" ).submit();
           return false;
         }
+      })
+      .focus(function() {
+        if (this.value == "")
+          $(this).catcomplete("search", "");
       });
     } );
     </script>
@@ -262,7 +328,7 @@
       <div class="container center-align" style="height:320px">
         <h1 class="esoda-brand">Esoda</h1>
         <div id="SearchBar" class="row">
-          <form class="form-horizontal" role="search" action="result.html">
+          <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
             <div class="input-group input-group-lg">
               <!-- The "Search" icon cannot be placed into searchbox-->
               <!--span class="glyphicon glyphicon-search"></span-->
