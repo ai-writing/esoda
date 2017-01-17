@@ -31,10 +31,10 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/jquery-ui.js"></script>
     <script>
     $( function() {
-      // These two lists and function getData are just for testing use
+      /* -------------------- Testing code -------------------- */
       var words = [
         { label: "survey", desc: "调查.测验", category: "Words" },
         { label: "upset", desc: "心烦意乱的;不安的,不适的", category: "Words" },
@@ -167,9 +167,6 @@
         { label: "as usual", desc: "照常", category: "Expressions" }
       ];
       var defList = [
-        { label: "quality", desc: "", category: "最近搜过" },
-        { label: "image", desc: "", category: "最近搜过" },
-        { label: "style", desc: "", category: "最近搜过" },
         { label: "主谓", desc: "quality have", value: "quality have", category: "用法示例" },
         { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
         { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
@@ -184,9 +181,93 @@
           });
         }
       }
+      /* -------------------- Testing code --------------------- */
+
+      Storage.prototype.setObj = function(key, obj) {
+        return this.setItem(key, JSON.stringify(obj))
+      }
+      Storage.prototype.getObj = function(key) {
+        return JSON.parse(this.getItem(key))
+      }
+      function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      } 
+      function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+      function insertHistory(history, val) {
+        history.unshift(val);
+        for (var i = 1; i < history.length; i++) {
+          if (history[i] == history[0]) {
+            history.splice(i, 1);
+            i--;
+          }
+        }
+        if (history.length > 5) history.pop();
+        return history;
+      }
+
+      function clearHistory() {
+        if (("localStorage" in window) && window.localStorage !== null) {
+          localStorage.setObj("history", []);
+        } else {
+          setCookie("history", "[]", 365);
+        }
+      }
+
+      function storeHistory() {
+        if ($("#SearchBox").val().length == 0) return;
+        if (("localStorage" in window) && window.localStorage !== null) {
+          var history = localStorage.getObj("history");
+          history = insertHistory(history, $("#SearchBox").val());
+          localStorage.setObj("history", history);
+        } else {
+          var history = JSON.parse(getCookie("history"));
+          history = insertHistory(history, $("#SearchBox").val());
+          setCookie("history", JSON.stringify(history), 365);
+        }
+      }
+
+      function readHistory() {
+        if (("localStorage" in window) && window.localStorage !== null) {
+          var history = localStorage.getObj("history");
+          if (typeof(history) == "undefined") {
+            history = [];
+            localStorage.setObj("history", history);
+          }
+        } else {
+          var history = JSON.parse(getCookie("history"));
+          if (typeof(history) == "undefined") {
+            history = [];
+            setCookie("history", JSON.stringify(history), 365);
+          }
+        }
+
+        defaultList = $.map(history, function( value ) {
+          return {label: value, desc: "", category: "最近搜过"};
+        });
+      }
 
 
-      var defaultList = getData("");
+      var defaultList = [];
+      //clearHistory();
+      readHistory();
+      defaultList = defaultList.concat(getData(""));
       /*
       var defaultList = [];
       $.getJSON( "search.php", "", function(data, status, xhr) {
@@ -223,14 +304,14 @@
             .appendTo( ul );
         }
       });
-      /*
+      
       function split( val ) {
         return val.split( /\s+/ );
       }
       function extractLast( term ) {
         return split( term ).pop();
       }
-      */
+      
 
       var cache = {};
       $( "#SearchBox" ).catcomplete({
@@ -243,7 +324,7 @@
           }) );
           */
 
-          var term = request.term;
+          var term = extractLast( request.term );
           if ( term.length < 1) {
             response( defaultList );
             return;
@@ -265,8 +346,8 @@
           */
 
       	},
-        /*
         search: function() {
+          if (this.value.length == 0) return true;
           var term = extractLast( this.value );
           if ( term.length < 1 ) {
             return false;
@@ -274,24 +355,31 @@
         },
         focus: function( event, ui ) {
           return false;
-        },*/
+        },
         select: function( event, ui ) {
-          /*
           var terms = split( this.value );
           terms.pop();
           terms.push( ui.item.value );
-          terms.push( "" );
           this.value = terms.join( " " );
-          */
+          if (event.keyCode !== $.ui.keyCode.TAB)
+            $( "#SearchForm" ).submit();
+          else
+            this.value += " ";
+          return false;
+
+          /*
           this.value = ui.item.value;
           $( "#SearchForm" ).submit();
           return false;
+          */
         }
       })
       .focus(function() {
         if (this.value == "")
           $(this).catcomplete("search", "");
       });
+
+      $("#SearchForm").on("submit", storeHistory);
     } );
     </script>
   </head>
@@ -332,7 +420,7 @@
             <div class="input-group input-group-lg">
               <!-- The "Search" icon cannot be placed into searchbox-->
               <!--span class="glyphicon glyphicon-search"></span-->
-              <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？"/>
+              <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？" name="q"/>
               <span class="input-group-btn">
                 <button type="submit" class="btn btn-info">搜索</button>
               </span>

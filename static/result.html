@@ -17,6 +17,7 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
+    <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
 
@@ -35,9 +36,87 @@
     <script>
     $( function() {
       $('#CollocationTab a').click(function (e) {
-        e.preventDefault()
-        $(this).tab('show')
+        e.preventDefault();
+        $(this).tab('show');
       })
+
+      /*----------------- Testing code ------------------*/
+      var examples = [
+        {
+        label: "improve...quality(609)",
+        content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
+        source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
+        },
+        {
+        label: "improve...quality(609)",
+        content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
+        source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
+        },
+        {
+        label: "improve...quality(609)",
+        content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
+        source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
+        },
+        {
+        label: "improve...quality(609)",
+        content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
+        source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
+        },
+        {
+        label: "improve...quality(609)",
+        content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
+        source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
+        },
+      ];
+      function getData() {
+        return {array: examples, end: 0};
+      }
+
+      function appendExampleList( list ) {
+        var cur = $("#ExampleList > div").length;
+        $("#ExampleList div:first").css("display","none");
+        list.forEach(function (value) {
+          var example = $("#ExampleList div:first").clone().css("display", "block");
+          var labelHtml = $(example).children("div:eq(0)").html();
+          var contentHtml = $(example).children("div:eq(1)").html();
+          var sourceHtml = $(example).children("div:eq(2)").html();
+
+          $(example).children("div:eq(0)").html(labelHtml.replace("{{ label }}", cur + ". " + value.label));
+          $(example).children("div:eq(1)").html(contentHtml.replace("{{ content }}", value.content));
+          $(example).children("div:eq(2)").html(sourceHtml.replace("{{ source }}", value.source));
+
+          $("#ExampleList").append(example);
+          cur++;
+        });
+      }    
+      /*----------------- Testing code ------------------*/
+
+      appendExampleList( getData().array );
+
+      var loadCount = 1, loading = 0, loaded = 0;
+
+      $( window ).scroll( function () {
+        if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
+          if (loading == 1 || loaded == 1 || loadCount > 3) return;
+
+          loading = 1;
+          $("#Loading").show();
+          var obj = getData();
+          setTimeout(function() {
+            $("#Loading").hide();
+            loading = 0;
+            if (typeof(obj) == "undefined") {
+              // failed to load obj
+            } else if (obj.end == 1) {
+              loaded = 1;
+            } else {
+              loadCount++;
+              appendExampleList( obj.array );
+            }
+          }, 2000);
+        }
+      });
+
     } );
     </script>
   </head>
@@ -58,7 +137,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-left" role="search" action="result.html">
             <div id="ResultSearchBar" class="input-group">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" name="q">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="submit">
                   <span class="glyphicon glyphicon-search"></span>
@@ -165,75 +244,25 @@
               
             </div>
 
-
-            <div id="ResultList" class="result-table-cell" style="padding:0">
-              <div class="result-list-item">
-                <div class="result-list-label">1.</div>
-                <div class="result-list-content">
-                  <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
-                  <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+            <!-- TODO: Modify the list to collapse panel. To achieve multiselection, do not use "data-parent" -->
+            <div id="ExampleList" class="panel-group">
+              <div class="panel panel-default result-table-cell">
+                <div class="panel-heading">
+                  {{ label }}
                 </div>
-              </div>
-              <div class="result-list-item">
-                <div class="result-list-label">2.</div>
-                <div class="result-list-content">
-                  <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
-                  <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+                <div class="panel-body example-list-content">
+                  {{ content }}
                 </div>
-              </div>
-              <div class="result-list-item">
-                <div class="result-list-label">3.</div>
-                <div class="result-list-content">
-                  <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
-                  <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
-                </div>
-              </div>
-              <div class="result-list-item">
-                <div class="result-list-label">4.</div>
-                <div class="result-list-content">
-                  <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
-                  <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
-                </div>
-              </div>
-              <div class="result-list-item">
-                <div class="result-list-label">5.</div>
-                <div class="result-list-content">
-                  <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
-                  <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
-                </div>
-              </div>
-              <div class="result-list-item">
-                <div class="result-list-label">6.</div>
-                <div class="result-list-content">
-                  <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
-                  <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
-                </div>
-              </div>
-              <div class="result-list-item">
-                <div class="result-list-label">7.</div>
-                <div class="result-list-content">
-                  <p>The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.</p>
-                  <p class="result-list-from"><a href="#">From：UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.</a></p>
+                <div class="panel-footer example-list-source">
+                  {{ source }}
                 </div>
               </div>
             </div>
 
-            <nav id="ResultPageNav">
-              <ul class="pagination">
-                <li><a href="#"><span class="glyphicon glyphicon-chevron-left"></span>上一页</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">6</a></li>
-                <li><a href="#">7</a></li>
-                <li><a href="#">8</a></li>
-                <li><a>...</a></li>
-                <li><a href="#">20</a></li>
-                <li><a href="#">下一页<span class="glyphicon glyphicon-chevron-right"></span></a></li>
-              </ul>
-            </nav>
+            <div id="Loading" class="result-table-cell center-align">
+              <p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p>
+            </div>
+
           </div>
         </div>
 

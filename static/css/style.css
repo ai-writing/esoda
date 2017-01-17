@@ -3,10 +3,6 @@ body {
 	padding-top: 50px;
 }
 
-strong {
-	color: #5bc0de;
-}
-
 #SearchBar {
 	width: 550px;
 	margin: 0 auto;
@@ -253,4 +249,12 @@ strong {
 }
 .result-list-content > p > a{
 	color: #ccc;
+}
+
+.example-list-content > strong {
+	color: #5bc0de;
+}
+
+.example-list-source {
+	color: #999;
 }
