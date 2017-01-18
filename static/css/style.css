@@ -3,6 +3,12 @@ body {
 	padding-top: 50px;
 }
 
+@media (min-width: 1200px) {
+  .container {
+    width: 1080px;
+  }
+}
+
 .center-align {
 	text-align: center;
 	position: relative;
@@ -127,11 +133,11 @@ body {
 	color: #999;
 }
 
-#ResultSearchBar {
-	width: 400px;
-	margin-left: 50px;
-	/*margin-top: 10px;*/
+
+.full-width {
+	width: 100%;
 }
+
 
 #ResultItem {
 	font-size: 28px;
@@ -174,10 +180,6 @@ body {
 .result-page {
 	margin-bottom: 0;
 	background-color: #eee;
-}
-
-.result-main > .container {
-	width: 100%;
 }
 
 .result-sidebar {
