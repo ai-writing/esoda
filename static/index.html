@@ -210,10 +210,13 @@
         }
         return "";
       }
+
       function insertHistory(history, val) {
-        history = history.filter(function(item) {
-          return item !== val;
-        });
+        if (history.length > 0) {
+          history = history.filter(function(item) {
+            return item !== val;
+          });
+        }
         history.unshift(val);
         if (history.length > 5) history.pop();
         return history;
@@ -243,13 +246,13 @@
       function readHistory() {
         if (("localStorage" in window) && window.localStorage !== null) {
           var history = localStorage.getObj("history");
-          if (typeof(history) == "undefined") {
+          if (history == null) {
             history = [];
             localStorage.setObj("history", history);
           }
         } else {
           var history = JSON.parse(getCookie("history"));
-          if (typeof(history) == "undefined") {
+          if (history == "") {
             history = [];
             setCookie("history", JSON.stringify(history), 365);
           }
@@ -377,6 +380,33 @@
       });
 
       $("#SearchForm").on("submit", storeHistory);
+
+      $("#AddBookmark").click(function(e){
+        e.preventDefault();
+        var bookmarkUrl = window.location.href;
+        var bookmarkTitle = document.title;
+
+        if ('addToHomescreen' in window && addToHomescreen.isCompatible) { // Mobile browsers
+          addToHomescreen({ autostart: false, startDelay: 0 }).show(true);
+        } else if (window.sidebar && window.sidebar.addPanel) { // Firefox <=22
+          window.sidebar.addPanel(document.title, window.location.href,'');
+        } else if ((window.sidebar && /Firefox/i.test(navigator.userAgent))
+                   || (window.opera && window.print)) { // Firefox 23+ and Opera <=14 
+          $(this).attr({
+            href: bookmarkUrl,
+            title: bookmarkTitle,
+            rel: 'sidebar'
+          }).off(e);
+          return true;
+        } else if( window.external && ('AddFavorite' in window.external)) { // For IE Favorite
+          window.external.AddFavorite( bookmarkUrl, bookmarkTitle);
+        } else { // for other browsers which does not support (Chrome/Safari/Opera15+)
+          alert("您的浏览器不支持该操作。\n请按 " +
+                (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Command/Cmd' : 'CTRL') +
+                "+D 添加收藏。");
+        }
+        return false;
+      });
     } );
     </script>
   </head>
@@ -400,7 +430,7 @@
             <li role="presentation" class="active"><a href="#">注册</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">添加收藏</a></li>
+            <li><a id="AddBookmark" href="#" title="Bookmark this page">添加收藏</a></li>
             <li><a href="#">联系方式</a></li>
             <li><a href="#">关于我们</a></li>
           </ul>
