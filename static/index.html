@@ -211,13 +211,10 @@
         return "";
       }
       function insertHistory(history, val) {
+        history = history.filter(function(item) {
+          return item !== val;
+        });
         history.unshift(val);
-        for (var i = 1; i < history.length; i++) {
-          if (history[i] == history[0]) {
-            history.splice(i, 1);
-            i--;
-          }
-        }
         if (history.length > 5) history.pop();
         return history;
       }
@@ -413,25 +410,27 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-      <div class="container center-align" style="height:320px">
-        <h1 class="esoda-brand">Esoda</h1>
-        <div id="SearchBar" class="row">
-          <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
-            <div class="input-group input-group-lg">
-              <!-- The "Search" icon cannot be placed into searchbox-->
-              <!--span class="glyphicon glyphicon-search"></span-->
-              <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？" name="q"/>
-              <span class="input-group-btn">
-                <button type="submit" class="btn btn-info">搜索</button>
-              </span>
-            </div>
-          </form>
+      <div class="container main-container">
+        <div class="row">
+          <h1 class="esoda-brand col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 title">Esoda</h1>
+          <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+            <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
+              <div class="input-group input-group-lg">
+                <!-- The "Search" icon cannot be placed into searchbox-->
+                <!--span class="glyphicon glyphicon-search"></span-->
+                <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？" name="q"/>
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-info">搜索</button>
+                </span>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="container center-align container-usage" style="z-index:-1">
-      <h4 style="margin-bottom:50px">如何使用</h4>
+    <div class="container container-usage">
+      <h4 class="usage-title">如何使用</h4>
       <div class="row">
         <div class="col-sm-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
@@ -472,9 +471,9 @@
       </div>
     </div>
 
-    <div class="jumbotron" style="margin-bottom:0">
-      <div class="container center-align container-usage">
-        <h4 style="margin-bottom:50px">师兄评价</h4>
+    <div class="container-feedback">
+      <div class="container">
+        <h4 class="usage-title">师兄评价</h4>
         <div class="row">
           <div class="col-sm-6 col-md-4 col-comments">
             <div class="thumbnail">
@@ -512,22 +511,22 @@
 
 
     <footer class="footer">
-      <div class="container center-align container-footer">
-        <div class="row" style="width:700px;margin:0 auto;">
-          <div class="col-sm-6 col-md-3">
-            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+      <div class="container container-footer">
+        <div class="row">
+          <div class="col-sm-3 col-md-2 col-md-offset-2">
+            <p><a href="#" class="footer-link">FOOTER链接</a></p>
           </div>
-          <div class="col-sm-6 col-md-3">
-            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">FOOTER链接</a></p>
           </div>
-          <div class="col-sm-6 col-md-3">
-            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">FOOTER链接</a></p>
           </div>
-          <div class="col-sm-6 col-md-3">
-            <p><a href="#" style="color:#999">FOOTER链接</a></p>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">FOOTER链接</a></p>
           </div>
         </div>
-        <p style="margin-top:15px">Esoda &copy; 2012-2017.</p>
+        <p class="copyright col-sm-4 col-sm-offset-4">Esoda &copy; 2012-2017.</p>
       </div>
     </footer>
 
