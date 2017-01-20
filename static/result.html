@@ -62,7 +62,11 @@
           "ensure quality",
           "*(修饰) quality"
         ],
-        hot: []
+        hot: [
+          "interaction",
+          "algorithm",
+          "application"
+        ]
       }
       var r = {
         domain: "人机交互",
@@ -203,20 +207,23 @@
 
       function appendExampleList( list ) {
         var cur = $("#ExampleList > div").length;
-        $("#ExampleList div:first").css("display","none");
         list.forEach(function (value) {
           var example = $("#ExampleList div:first").clone().css("display", "block");
-          var labelHtml = $(example).children("div:eq(0)").html();
-          var contentHtml = $(example).children("div:eq(1)").html();
-          var sourceHtml = $(example).children("div:eq(2)").html();
+          var labelHtml = $(example).children("div:first").children("div:eq(0)").html();
+          var contentHtml = $(example).children("div:first").children("div:eq(1)").html();
+          var sourceHtml = $(example).children("div:first").children("div:eq(2)").html();
 
-          $(example).children("div:eq(0)").html(labelHtml.replace("{{ label }}", cur + ". "));
-          $(example).children("div:eq(1)").html(contentHtml.replace("{{ content }}", value.content));
-          $(example).children("div:eq(2)").html(sourceHtml.replace("{{ source }}", value.source));
+          $(example).children("div:first").children("div:eq(0)").html(
+              labelHtml.replace("{{ label }}", cur + ". "));
+          $(example).children("div:first").children("div:eq(1)").html(
+              contentHtml.replace("{{ content }}", value.content));
+          $(example).children("div:first").children("div:eq(2)").html(
+              sourceHtml.replace("{{ source }}", value.source));
 
           $("#ExampleList").append(example);
           cur++;
         });
+        $("#ExampleList div:first").css("display","none");
       }
 
       function initialLoading() {
@@ -303,11 +310,10 @@
           setTimeout(function() {
             $("#Loading").hide();
             loading = 0;
-            if (typeof(obj) == "undefined") {
+            if (obj == null) {
               // failed to load obj
-            } else if (obj.ended == 1) {
-              loaded = 1;
             } else {
+              if (obj.ended == 1)
               loadCount++;
               appendExampleList( obj.list );
             }
@@ -315,7 +321,18 @@
         }
       });
 
+      $(".back-to-top").click(function() {
+        $("html,body").animate({scrollTop: 0}, "fast");
+        return false;
+      });
+
     } );
+
+    function clickHeart(e) {
+      e.preventDefault();
+      $(e.target).toggleClass("glyphicon-heart-empty");
+      $(e.target).toggleClass("glyphicon-heart");
+    }
     </script>
   </head>
 
@@ -358,7 +375,7 @@
     <div class="result-page">
       <div class="container">
         <div class="row">
-          <div class="col-sm-8 result-main">
+          <div class="col-sm-9 result-main">
             <div>
               <div class="result-callout">
                 <div class="row">
@@ -429,16 +446,24 @@
               </div>
 
               <!-- TODO: Modify the list to collapse panel. To achieve multiselection, do not use "data-parent" -->
+              <!-- TODO: Add a "favorite" button to every sentence. Modify the layout-->
               <div id="ExampleList" class="panel-group">
-                <div class="panel panel-default result-table-cell">
-                  <div class="panel-heading">
-                    {{ label }}
+                <div class="panel panel-default result-example row">
+                  <div class="col-xs-11">
+                    <div class="panel-heading">
+                      {{ label }}
+                    </div>
+                    <div class="panel-body example-list-content">
+                      {{ content }}
+                    </div>
+                    <div class="panel-footer example-list-source">
+                      {{ source }}
+                    </div>
                   </div>
-                  <div class="panel-body example-list-content">
-                    {{ content }}
-                  </div>
-                  <div class="panel-footer example-list-source">
-                    {{ source }}
+                  <div class="col-xs-1">
+                    <div class="panel-heading panel-heart">
+                      <a href="" onclick="clickHeart(event);"><p class="glyphicon glyphicon-heart-empty"></p></a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -451,14 +476,23 @@
           </div>
 
           <!--TODO: make these fixed and add a "return to top" button-->
-          <div class="col-sm-3 result-sidebar">
-            <div class="container" id="RelatedWords">
-              <h4>大家都在搜</h4>
-              <p><a href="">{{ related }}</a></p>
+          <div class="col-sm-3">
+            <div class="affix result-sidebar">
+              <div class="suggestion-container" id="RelatedWords">
+                <h4>大家都在搜</h4>
+                <p><a href="">{{ related }}</a></p>
+              </div>
+              <div class="suggestion-container" id="HotWords">
+                <h4>领域内热词</h4>
+                <p><a href="">{{ hot }}</a></p>
+              </div>
             </div>
-            <div class="container" id="HotWords">
-              <h4>领域内热词</h4>
-              <p><a href="">{{ hot }}</a></p>
+          </div>
+
+          <div class="affix back-to-top-affix">
+            <div class="btn back-to-top">
+              <p class="glyphicon glyphicon-chevron-up"></p>
+              <p>回到顶部</p>
             </div>
           </div>
         </div>
