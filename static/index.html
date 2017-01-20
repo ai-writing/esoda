@@ -386,7 +386,7 @@
         var bookmarkUrl = window.location.href;
         var bookmarkTitle = document.title;
 
-        if ('addToHomescreen' in window && addToHomescreen.isCompatible) { // Mobile browsers
+        if ("addToHomescreen" in window && addToHomescreen.isCompatible) { // Mobile browsers
           addToHomescreen({ autostart: false, startDelay: 0 }).show(true);
         } else if (window.sidebar && window.sidebar.addPanel) { // Firefox <=22
           window.sidebar.addPanel(document.title, window.location.href,'');
@@ -395,10 +395,10 @@
           $(this).attr({
             href: bookmarkUrl,
             title: bookmarkTitle,
-            rel: 'sidebar'
+            rel: "sidebar"
           }).off(e);
           return true;
-        } else if( window.external && ('AddFavorite' in window.external)) { // For IE Favorite
+        } else if( window.external && ("AddFavorite" in window.external)) { // For IE Favorite
           window.external.AddFavorite( bookmarkUrl, bookmarkTitle);
         } else { // for other browsers which does not support (Chrome/Safari/Opera15+)
           alert("您的浏览器不支持该操作。\n请按 " +
