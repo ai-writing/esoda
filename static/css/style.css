@@ -76,11 +76,30 @@ body {
 	padding-bottom: 15px;
 }
 
+.modal-register-header {
+	text-align: center;
+	padding: 0px;
+}
+
+.modal-register-body {
+	padding: 0px 20px;
+}
+
 .form-login {
 	margin: 10px auto;
 }
 
+.form-register {
+	margin: 10px auto;
+}
+
 .btn-login {
+	margin: 10px 0px;
+	background-color: #5bc0de;
+	width: 100%;
+}
+
+.btn-register {
 	margin: 10px 0px;
 	background-color: #5bc0de;
 	width: 100%;

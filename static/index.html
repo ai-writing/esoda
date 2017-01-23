@@ -203,10 +203,10 @@
           <a class="navbar-brand esoda-brand" href="index.html">Esoda</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <!--TODO: add a modal for login-->
+          <!--TODO: add a modal for login and register-->
           <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
             <li role="presentation"><a href="#" data-toggle="modal" data-target="#ModalLogin">登陆</a></li>
-            <li role="presentation" class="active"><a href="#">注册</a></li>
+            <li role="presentation" class="active"><a href="#" data-toggle="modal" data-target="#ModalRegister">注册</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a id="AddBookmark" href="#" title="Bookmark this page">添加收藏</a></li>
@@ -238,8 +238,30 @@
               <p><a href="">忘记密码？</a></p>
             </div>
             <div class="modal-register">
-              <p><a href="">注册，加入易搜搭</a></p>
+              <p><a href="" data-toggle="modal" data-target="#ModalRegister">注册，加入易搜搭</a></p>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="ModalRegister">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header modal-register-header">
+            <h1 class="esoda-brand">Esoda</h1>
+            <p>加入易搜搭，享受更多个性化服务</p>
+          </div>
+          <div class="modal-body modal-register-body">
+            <form id="RegisterForm" class="form-horizontal" role="register" action="">
+              <input type="text" class="form-control form-register" placeholder="电子邮箱地址" name="id"/>
+              <input type="password" class="form-control form-register" placeholder="设置密码" name="password"/>
+              <input type="password" class="form-control form-register" placeholder="确认密码" name="conform"/>
+              <h6>By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></h6>
+              <span class="form-register">
+                <button type="submit" class="btn btn-register">开始搜搭</button>
+              </span>
+            </form>
           </div>
         </div>
       </div>
