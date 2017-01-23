@@ -235,15 +235,19 @@ body {
 	text-align: center;
 }
 
+#Loading {
+	display: none;
+}
+
 .result-page {
 	margin-bottom: 0;
 	background-color: #eee;
 }
 
-/*.result-sidebar {
+.result-sidebar {
 	text-align: center;
-	width: 15%;
-}*/
+	width: 200px;
+}
 
 .suggestion-container {
 	background-color: #fff;
@@ -269,6 +273,7 @@ body {
 	margin: 0px 20px;
 	margin-bottom: 10px;
 	padding: 10px 25px;
+	text-align: center;
 }
 
 .result-table-cell {
@@ -348,13 +353,22 @@ body {
 	color: #999;
 }
 
-.affix, .affix-top, .affix-bottom {
-	width: 100%;
+.affix-bottom {
+	position: absolute;
 }
 
-.back-to-top-affix {
-	left: 76%;
-	bottom: 5%;
+.back-to-top-cell {
+	left: 80%;
+	position: relative;
+}
+
+.back-to-top-affix.affix {
+	bottom: 10px;
+}
+
+.back-to-top-affix.affix-top {
+	position: fixed;
+	bottom: 10px;
 }
 
 .back-to-top {

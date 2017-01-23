@@ -90,10 +90,9 @@
                 </div>
               </div>
 
-              <!--TODO: Fix the problem of displaying in small screens-->
-              <div class="result-warning">
-                <span>找到相关用法&nbsp;<span id="CountUsage">{{ count }}</span>&nbsp;个：</span>
-                <span style="float:right">现在搜索领域为：<span id="SearchDomain">{{ domain }}</span>&nbsp;&nbsp;不是您的领域？<a href="#">自定义搜索领域</a></span>
+              <div class="result-warning row">
+                <div class="col-sm-4">找到相关用法&nbsp;<span id="CountUsage">{{ count }}</span>&nbsp;个：</div>
+                <div class="col-sm-8">现在搜索领域为：<span id="SearchDomain">{{ domain }}</span>&nbsp;&nbsp;不是您的领域？<a href="#">自定义搜索领域</a></div>
               </div>
 
               <div class="result-table-cell row">
@@ -131,10 +130,8 @@
                     </div>
                   </div>
                 </div>
-                
               </div>
 
-              <!-- TODO: Delete the heading line or make the index at the left fixed position-->
               <div id="ExampleList" class="panel-group">
                 <div class="panel panel-default result-example row">
                   <div class="col-xs-11">
@@ -164,8 +161,8 @@
           </div>
 
           <!--TODO: fix the problem of data-spy data-offset-bottom and top, with the fixed width -->
-          <div class="col-sm-3">
-            <div class="affix result-sidebar">
+          <div class="col-sm-3 hidden-xs">
+            <div id="SidebarAffix" class="affix result-sidebar" data-spy="affix">
               <div class="suggestion-container" id="RelatedWords">
                 <h4>大家都在搜</h4>
                 <p><a href="">{{ related }}</a></p>
@@ -177,10 +174,12 @@
             </div>
           </div>
 
-          <div class="affix back-to-top-affix">
-            <div class="btn back-to-top">
-              <p class="glyphicon glyphicon-chevron-up"></p>
-              <p>回到顶部</p>
+          <div class="back-to-top-cell">
+            <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
+              <div class="btn back-to-top">
+                <p class="glyphicon glyphicon-chevron-up"></p>
+                <p>回到顶部</p>
+              </div>
             </div>
           </div>
         </div>
@@ -630,6 +629,6 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
     <script src="js/esoda-main.js"></script>
-    
+
   </body>
 </html>
