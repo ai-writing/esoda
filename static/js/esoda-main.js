@@ -2,9 +2,279 @@
  * Main logic for ESODA front end
  */
 
-(function () {
+$(function () {
   'use strict';
 
-  // TODO: Initialize autocomplete etc.
+  var getData = $.getData;
 
-})();
+  // TODO: Initialize autocomplete etc.
+  Storage.prototype.setObj = function(key, obj) {
+    return this.setItem(key, JSON.stringify(obj))
+  }
+  Storage.prototype.getObj = function(key) {
+    return JSON.parse(this.getItem(key))
+  }
+  function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  } 
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  function insertHistory(history, val) {
+    if (history.length > 0) {
+      history = history.filter(function(item) {
+        return item !== val;
+      });
+    }
+    history.unshift(val);
+    if (history.length > 5) history.pop();
+    return history;
+  }
+
+  function clearHistory() {
+    if (("localStorage" in window) && window.localStorage !== null) {
+      localStorage.setObj("history", []);
+    } else {
+      setCookie("history", "[]", 365);
+    }
+  }
+
+  function storeHistory() {
+    if ($("#SearchBox").val().length == 0) return;
+    if (("localStorage" in window) && window.localStorage !== null) {
+      var history = localStorage.getObj("history");
+      history = insertHistory(history, $("#SearchBox").val());
+      localStorage.setObj("history", history);
+    } else {
+      var history = JSON.parse(getCookie("history"));
+      history = insertHistory(history, $("#SearchBox").val());
+      setCookie("history", JSON.stringify(history), 365);
+    }
+  }
+
+  function readHistory() {
+    if (("localStorage" in window) && window.localStorage !== null) {
+      var history = localStorage.getObj("history");
+      if (history == null) {
+        history = [];
+        localStorage.setObj("history", history);
+      }
+    } else {
+      var history = JSON.parse(getCookie("history"));
+      if (history == "") {
+        history = [];
+        setCookie("history", JSON.stringify(history), 365);
+      }
+    }
+
+    defaultList = $.map(history, function( value ) {
+      return {label: value, desc: "", category: "最近搜过"};
+    });
+  }
+
+
+  var defaultList = [];
+  //clearHistory();
+  readHistory();
+  defaultList = defaultList.concat(getData(""));
+  /*
+  var defaultList = [];
+  $.getJSON( "search.php", "", function(data, status, xhr) {
+    defaultList = data;
+  });
+  */
+
+  $.widget( "custom.catcomplete", $.ui.autocomplete, {
+    _create: function() {
+      this._super();
+      this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+    },
+    _renderMenu: function( ul, items ) {
+      var that = this,
+        currentCategory = "";
+      $.each( items, function( index, item ) {
+        var li;
+        if ( item.category != currentCategory ) {
+          ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+          currentCategory = item.category;
+        }
+        li = that._renderItemData( ul, item );
+        if ( item.category ) {
+          li.attr( "aria-label", item.category + " : " + item.label );
+        }
+      });
+    },
+    _renderItem: function( ul, item ) {
+      return $( "<li>" )
+        .append( "<div><span class=\"ui-autocomplete-label\">" + item.label + "</span>" +
+                 "&nbsp;&nbsp;<span class=\"ui-autocomplete-desc\">" + item.desc + "</span></div>" )
+        .appendTo( ul );
+    }
+  });
+  
+  function split( val ) {
+    return val.split( /\s+/ );
+  }
+  function extractLast( term ) {
+    return split( term ).pop();
+  }
+  
+
+  var cache = {};
+  $( "#SearchBox" ).catcomplete({
+    minLength: 0,
+    source: function( request, response ) {
+
+      var term = extractLast( request.term );
+      if ( term.length < 1) {
+        response( defaultList );
+        return;
+      }
+
+      if (term in cache) {
+        response( cache[ term ] );
+        return;
+      }
+
+      var data = getData( {term: term} );
+      cache[ term ] = data;
+      response( data );
+      /*
+      $.getJSON( "search.php", request.term, function(data, status, xhr) {
+        cache[ term ] = data;
+        response( data );
+      });
+      */
+
+  	},
+    search: function() {
+      if (this.value.length == 0) return true;
+      var term = extractLast( this.value );
+      if ( term.length < 1 ) {
+        return false;
+      }
+    },
+    focus: function( event, ui ) {
+      return false;
+    },
+    select: function( event, ui ) {
+      var terms = split( this.value );
+      terms.pop();
+      terms.push( ui.item.value );
+      this.value = terms.join( " " );
+      if (event.keyCode !== $.ui.keyCode.TAB)
+        $( "#SearchForm" ).submit();
+      else
+        this.value += " ";
+      return false;
+
+      /*
+      this.value = ui.item.value;
+      $( "#SearchForm" ).submit();
+      return false;
+      */
+    }
+  })
+  .focus(function() {
+    if (this.value == "")
+      $(this).catcomplete("search", "");
+  });
+
+  $("#SearchForm").on("submit", storeHistory);
+
+  $("#AddBookmark").click(function(e){
+    e.preventDefault();
+    var bookmarkUrl = window.location.href;
+    var bookmarkTitle = document.title;
+
+    if ("addToHomescreen" in window && addToHomescreen.isCompatible) { // Mobile browsers
+      addToHomescreen({ autostart: false, startDelay: 0 }).show(true);
+    } else if (window.sidebar && window.sidebar.addPanel) { // Firefox <=22
+      window.sidebar.addPanel(document.title, window.location.href,'');
+    } else if ((window.sidebar && /Firefox/i.test(navigator.userAgent))
+               || (window.opera && window.print)) { // Firefox 23+ and Opera <=14 
+      $(this).attr({
+        href: bookmarkUrl,
+        title: bookmarkTitle,
+        rel: "sidebar"
+      }).off(e);
+      return true;
+    } else if( window.external && ("AddFavorite" in window.external)) { // For IE Favorite
+      window.external.AddFavorite( bookmarkUrl, bookmarkTitle);
+    } else { // for other browsers which does not support (Chrome/Safari/Opera15+)
+      alert("您的浏览器不支持该操作。\n请按 " +
+            (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Command/Cmd' : 'CTRL') +
+            "+D 添加收藏。");
+    }
+    return false;
+  });
+
+	
+  $("#CollocationTab a").click(function (e) {
+    e.preventDefault();
+    $(this).tab("show");
+  });
+
+  var loadCount = 1, loading = 0, loaded = 0;
+
+  $( window ).scroll( function () {
+    if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
+      if (loading == 1 || loaded == 1 || loadCount > 4) return;
+
+      loading = 1;
+      $("#Loading").show();
+      var obj = getData("example");
+      setTimeout(function() {
+        $("#Loading").hide();
+        loading = 0;
+        if (obj == null) {
+          // failed to load obj
+        } else {
+          if (obj.ended == 1) {
+            loaded = 1;
+            return;
+          }
+          loadCount++;
+          $.appendExampleList( obj.list );
+        }
+      }, 2000);
+    }
+  });
+
+  $(".back-to-top").click(function() {
+    $("html,body").animate({scrollTop: 0}, "fast");
+    return false;
+  });
+
+  $(".affix").affix();
+
+  $.clickHeart = function(e) {
+		e.preventDefault();
+		$(e.target).toggleClass("glyphicon-heart-empty");
+		$(e.target).toggleClass("glyphicon-heart");
+  }
+});
+
+/*
+function clickHeart(e) {
+  e.preventDefault();
+  $(e.target).toggleClass("glyphicon-heart-empty");
+  $(e.target).toggleClass("glyphicon-heart");
+}
+*/

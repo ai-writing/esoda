@@ -34,6 +34,7 @@
     <script src="js/jquery-ui.js"></script>
     <script>
     $( function() {
+
       /* -------------------- Testing code -------------------- */
       var words = [
         { label: "survey", desc: "调查.测验", category: "Words" },
@@ -171,7 +172,7 @@
         { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
         { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
       ];
-      function getData( request ) {
+      $.getData = function( request ) {
         if (request == "") {
           return defList;
         } else {
@@ -180,233 +181,10 @@
             return matcher.test( item.label );
           });
         }
-      }
+      };
       /* -------------------- Testing code --------------------- */
 
-      Storage.prototype.setObj = function(key, obj) {
-        return this.setItem(key, JSON.stringify(obj))
-      }
-      Storage.prototype.getObj = function(key) {
-        return JSON.parse(this.getItem(key))
-      }
-      function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays*24*60*60*1000));
-        var expires = "expires="+ d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-      } 
-      function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-          }
-          if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-          }
-        }
-        return "";
-      }
-
-      function insertHistory(history, val) {
-        if (history.length > 0) {
-          history = history.filter(function(item) {
-            return item !== val;
-          });
-        }
-        history.unshift(val);
-        if (history.length > 5) history.pop();
-        return history;
-      }
-
-      function clearHistory() {
-        if (("localStorage" in window) && window.localStorage !== null) {
-          localStorage.setObj("history", []);
-        } else {
-          setCookie("history", "[]", 365);
-        }
-      }
-
-      function storeHistory() {
-        if ($("#SearchBox").val().length == 0) return;
-        if (("localStorage" in window) && window.localStorage !== null) {
-          var history = localStorage.getObj("history");
-          history = insertHistory(history, $("#SearchBox").val());
-          localStorage.setObj("history", history);
-        } else {
-          var history = JSON.parse(getCookie("history"));
-          history = insertHistory(history, $("#SearchBox").val());
-          setCookie("history", JSON.stringify(history), 365);
-        }
-      }
-
-      function readHistory() {
-        if (("localStorage" in window) && window.localStorage !== null) {
-          var history = localStorage.getObj("history");
-          if (history == null) {
-            history = [];
-            localStorage.setObj("history", history);
-          }
-        } else {
-          var history = JSON.parse(getCookie("history"));
-          if (history == "") {
-            history = [];
-            setCookie("history", JSON.stringify(history), 365);
-          }
-        }
-
-        defaultList = $.map(history, function( value ) {
-          return {label: value, desc: "", category: "最近搜过"};
-        });
-      }
-
-
-      var defaultList = [];
-      //clearHistory();
-      readHistory();
-      defaultList = defaultList.concat(getData(""));
-      /*
-      var defaultList = [];
-      $.getJSON( "search.php", "", function(data, status, xhr) {
-        defaultList = data;
-      });
-      */
-
       $( "#SearchBox" ).val("");
-
-      $.widget( "custom.catcomplete", $.ui.autocomplete, {
-        _create: function() {
-          this._super();
-          this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
-        },
-        _renderMenu: function( ul, items ) {
-          var that = this,
-            currentCategory = "";
-          $.each( items, function( index, item ) {
-            var li;
-            if ( item.category != currentCategory ) {
-              ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-              currentCategory = item.category;
-            }
-            li = that._renderItemData( ul, item );
-            if ( item.category ) {
-              li.attr( "aria-label", item.category + " : " + item.label );
-            }
-          });
-        },
-        _renderItem: function( ul, item ) {
-          return $( "<li>" )
-            .append( "<div><span class=\"ui-autocomplete-label\">" + item.label + "</span>" +
-                     "&nbsp;&nbsp;<span class=\"ui-autocomplete-desc\">" + item.desc + "</span></div>" )
-            .appendTo( ul );
-        }
-      });
-      
-      function split( val ) {
-        return val.split( /\s+/ );
-      }
-      function extractLast( term ) {
-        return split( term ).pop();
-      }
-      
-
-      var cache = {};
-      $( "#SearchBox" ).catcomplete({
-        minLength: 0,
-        source: function( request, response ) {
-          /*
-          var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
-          response( $.grep( words, function( item ){
-              return matcher.test( item.label );
-          }) );
-          */
-
-          var term = extractLast( request.term );
-          if ( term.length < 1) {
-            response( defaultList );
-            return;
-          }
-
-          if (term in cache) {
-            response( cache[ term ] );
-            return;
-          }
-
-          var data = getData( term );
-          cache[ term ] = data;
-          response( data );
-          /*
-          $.getJSON( "search.php", request.term, function(data, status, xhr) {
-            cache[ term ] = data;
-            response( data );
-          });
-          */
-
-      	},
-        search: function() {
-          if (this.value.length == 0) return true;
-          var term = extractLast( this.value );
-          if ( term.length < 1 ) {
-            return false;
-          }
-        },
-        focus: function( event, ui ) {
-          return false;
-        },
-        select: function( event, ui ) {
-          var terms = split( this.value );
-          terms.pop();
-          terms.push( ui.item.value );
-          this.value = terms.join( " " );
-          if (event.keyCode !== $.ui.keyCode.TAB)
-            $( "#SearchForm" ).submit();
-          else
-            this.value += " ";
-          return false;
-
-          /*
-          this.value = ui.item.value;
-          $( "#SearchForm" ).submit();
-          return false;
-          */
-        }
-      })
-      .focus(function() {
-        if (this.value == "")
-          $(this).catcomplete("search", "");
-      });
-
-      $("#SearchForm").on("submit", storeHistory);
-
-      $("#AddBookmark").click(function(e){
-        e.preventDefault();
-        var bookmarkUrl = window.location.href;
-        var bookmarkTitle = document.title;
-
-        if ("addToHomescreen" in window && addToHomescreen.isCompatible) { // Mobile browsers
-          addToHomescreen({ autostart: false, startDelay: 0 }).show(true);
-        } else if (window.sidebar && window.sidebar.addPanel) { // Firefox <=22
-          window.sidebar.addPanel(document.title, window.location.href,'');
-        } else if ((window.sidebar && /Firefox/i.test(navigator.userAgent))
-                   || (window.opera && window.print)) { // Firefox 23+ and Opera <=14 
-          $(this).attr({
-            href: bookmarkUrl,
-            title: bookmarkTitle,
-            rel: "sidebar"
-          }).off(e);
-          return true;
-        } else if( window.external && ("AddFavorite" in window.external)) { // For IE Favorite
-          window.external.AddFavorite( bookmarkUrl, bookmarkTitle);
-        } else { // for other browsers which does not support (Chrome/Safari/Opera15+)
-          alert("您的浏览器不支持该操作。\n请按 " +
-                (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Command/Cmd' : 'CTRL') +
-                "+D 添加收藏。");
-        }
-        return false;
-      });
     } );
     </script>
   </head>
@@ -425,8 +203,9 @@
           <a class="navbar-brand esoda-brand" href="index.html">Esoda</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+          <!--TODO: add a modal for login-->
           <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
-            <li role="presentation"><a href="#">登陆</a></li>
+            <li role="presentation"><a href="#" data-toggle="modal" data-target="#ModalLogin">登陆</a></li>
             <li role="presentation" class="active"><a href="#">注册</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -437,6 +216,34 @@
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
+
+    <div class="modal fade" id="ModalLogin">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-login-content">
+          <div class="modal-header modal-login-header">
+            <h1 class="esoda-brand">Esoda</h1>
+            <p>登陆易搜搭，开启英文写作新体验</p>
+          </div>
+          <div class="modal-body modal-login-body">
+            <form id="LoginForm" class="form-horizontal" role="login" action="">
+              <input type="text" class="form-control form-login" placeholder="用户名" name="id"/>
+              <input type="password" class="form-control form-login" placeholder="密码" name="password"/>
+              <span class="form-login">
+                <button type="submit" class="btn btn-login">登入易搜搭</button>
+              </span>
+            </form>
+          </div>
+          <div class="modal-footer modal-login-footer">
+            <div class="modal-forgot-password">
+              <p><a href="">忘记密码？</a></p>
+            </div>
+            <div class="modal-register">
+              <p><a href="">注册，加入易搜搭</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
@@ -568,5 +375,6 @@
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/esoda-main.js"></script>
   </body>
 </html>

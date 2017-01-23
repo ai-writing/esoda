@@ -61,6 +61,45 @@ body {
 	color: #5bc0de;
 }
 
+.modal-login-header {
+	text-align: center;
+	padding: 0px;
+}
+
+.modal-login-body {
+	padding: 0px 20px;
+}
+
+.modal-login-footer {
+	font-size: 12px;
+	padding: 0px 20px;
+	padding-bottom: 15px;
+}
+
+.form-login {
+	margin: 10px auto;
+}
+
+.btn-login {
+	margin: 10px 0px;
+	background-color: #5bc0de;
+	width: 100%;
+}
+
+.modal-forgot-password {
+	text-align: left;
+	float: left;
+}
+
+.modal-forgot-password > p > a{
+	color: #999;
+}
+
+.modal-register {
+	text-align: right;
+	float: right;
+}
+
 .container-usage {
 	color: #888;
 	margin-top: 60px;
@@ -182,10 +221,10 @@ body {
 	background-color: #eee;
 }
 
-.result-sidebar {
+/*.result-sidebar {
 	text-align: center;
 	width: 15%;
-}
+}*/
 
 .suggestion-container {
 	background-color: #fff;
@@ -274,12 +313,24 @@ body {
 	font-size: 18px;
 }
 
+.panel-heart > a {
+	color: #f90;
+}
+
+.example-list-label {
+	display: none;
+}
+
 .example-list-content > strong {
 	color: #5bc0de;
 }
 
 .example-list-source {
 	color: #999;
+}
+
+.affix, .affix-top, .affix-bottom {
+	width: 100%;
 }
 
 .back-to-top-affix {

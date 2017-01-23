@@ -13,6 +13,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -33,18 +34,149 @@
 
     <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
     <script>
-    // TODO: put some of the js code into .js
+    // TODO: put the non-testing code into esoda-main.js and move the js files at the end of the body.
+    // TODO: make the headers and footers of index and result the same.
     $( function() {
-      $("#CollocationTab a").click(function (e) {
-        e.preventDefault();
-        $(this).tab("show");
-      })
-
-      var loadCount = 1, loading = 0, loaded = 0;
 
       /*----------------- Testing code ------------------*/
-      
+      var words = [
+        { label: "survey", desc: "调查.测验", category: "Words" },
+        { label: "upset", desc: "心烦意乱的;不安的,不适的", category: "Words" },
+        { label: "ignore", desc: "不理睬.忽视", category: "Words" },
+        { label: "concern", desc: "(使)担心:涉及;关系到 n 担心;关注.(利害)关系", category: "Words" },
+        { label: "vet", desc: "兽医", category: "Words" },
+        { label: "Amsterdam", desc: "阿姆斯特丹(荷兰首都)", category: "Words" },
+        { label: "Netherlands", desc: "荷兰(西欧国家)", category: "Words" },
+        { label: "Jew", desc: "犹太人的;犹太族的", category: "Words" },
+        { label: "German", desc: "德国的.德国人的.德语的.", category: "Words" },
+        { label: "Nazi", desc: "纳粹党人 adj 纳粹党的", category: "Words" },
+        { label: "series", desc: "连续,系列", category: "Words" },
+        { label: "outdoors", desc: "在户外.在野外", category: "Words" },
+        { label: "spellbind", desc: "迷住;疑惑", category: "Words" },
+        { label: "purpose", desc: "故意", category: "Words" },
+        { label: "dusk", desc: "黄昏傍晚", category: "Words" },
+        { label: "loose", desc: "adj 松的.松开的", category: "Words" },
+        { label: "entire", desc: "adj 整个的;完全的,全部的", category: "Words" },
+        { label: "entirely", desc: "ady. 完全地.全然地.整个地", category: "Words" },
+        { label: "power", desc: "能力.力量.权力。", category: "Words" },
+        { label: "thunder", desc: "vi 打雷雷鸣 n 雷,雷声", category: "Words" },
+        { label: "curtain", desc: "窗帘;门帘.幕布", category: "Words" },
+        { label: "dusty", desc: "adj 积满灰尘的", category: "Words" },
+        { label: "partner", desc: "伙伴.合作者.合伙人", category: "Words" },
+        { label: "settle", desc: "安家.定居.停留 vt 使定居.安排.解决", category: "Words" },
+        { label: "suffer", desc: "vt &遭受;忍受经历", category: "Words" },
+        { label: "loneliness", desc: "孤单寂寞", category: "Words" },
+        { label: "highway", desc: "高速公路", category: "Words" },
+        { label: "recover", desc: "痊愈;恢复", category: "Words" },
+        { label: "pack", desc: "捆扎;包装打行李 n 小包:包裹", category: "Words" },
+        { label: "suitcase", desc: "手提箱;衣箱", category: "Words" },
+        { label: "overcoat", desc: "大衣外套", category: "Words" },
+        { label: "teenager", desc: "十几岁的青少年", category: "Words" },
+        { label: "gossip", desc: "闲话 闲谈", category: "Words" },
+        { label: "exactly", desc: "确实如此.正是;确切地山", category: "Words" },
+        { label: "disagree", desc: "不同意", category: "Words" },
+        { label: "grateful", desc: "感激的.表示谢意的", category: "Words" },
+        { label: "dislike", desc: "不喜欢.厌恶", category: "Words" },
+        { label: "tip", desc: "提示.技巧.尖;尖端.小费 倾斜;翻倒", category: "Words" },
+        { label: "secondly", desc: "第二.其次", category: "Words" },
+        { label: "swap", desc: "交换", category: "Words" },
+        { label: "item", desc: "项目.条款", category: "Words" },
+        { label: "subway", desc: "<美>地铁", category: "Words" },
+        { label: "elevator", desc: "n 电梯;升降机", category: "Words" },
+        { label: "petrol", desc: "<英>汽油( = <美> gasoline )", category: "Words" },
+        { label: "gasoline", desc: "汽油.气体.煤气;毒气。", category: "Words" },
+        { label: "official", desc: "adj 官方的.正式的.公务的", category: "Words" },
+        { label: "voyage", desc: "n 航行.航海", category: "Words" },
+        { label: "conquer", desc: "征服.占领", category: "Words" },
+        { label: "native", desc: "本国的;本地的 n 本地人.本国人", category: "Words" },
+        { label: "apartment", desc: "<美>公寓住宅.单元住宅", category: "Words" },
+        { label: "actually", desc: "实际上,事实上", category: "Words" },
+        { label: "base", desc: "根据 n 基部;基地,墓础", category: "Words" },
+        { label: "gradual", desc: "逐渐的.逐步的", category: "Words" },
+        { label: "enrich", desc: "使富裕;充实,改善", category: "Words" },
+        { label: "vocabulary", desc: "词汇.词汇量.词表", category: "Words" },
+        { label: "spelling", desc: "拼写.拼法", category: "Words" },
+        { label: "latter", desc: "较后的后平的;(两者中)后者的 .", category: "Words" },
+        { label: "identity", desc: "本身.本体", category: "Words" },
+        { label: "fluent", desc: "流利的.流畅的", category: "Words" },
+        { label: "frequent", desc: "adj 频繁的.常见的", category: "Words" },
+        { label: "usage", desc: "使用.用法.词语惯用法", category: "Words" },
+        { label: "command", desc: "命令;指令;把握", category: "Words" },
+        { label: "request", desc: "哀求;要求", category: "Words" },
+        { label: "dialect", desc: "方言", category: "Words" },
+        { label: "expression", desc: "词语;表示表达", category: "Words" },
+        { label: "midwestern", desc: "中西部的.有中西部特性的", category: "Words" },
+        { label: "African", desc: "adj 非洲的:非洲人的;非洲语言的", category: "Words" },
+        { label: "lightning", desc: "闪电", category: "Words" },
+        { label: "straight", desc: "街区", category: "Words" },
+        { label: "cab", desc: "出租车", category: "Words" },
+        { label: "journal", desc: "日记;杂志.定期刊物", category: "Words" },
+        { label: "transport", desc: "运送.运输", category: "Words" },
+        { label: "prefer", desc: "更喜欢选择某事物而不选择其他事物", category: "Words" },
+        { label: "disadvantage", desc: "不利条件;不便之处", category: "Words" },
+        { label: "fare", desc: "费用", category: "Words" },
+        { label: "route", desc: "人路线.路途", category: "Words" },
+        { label: "flow", desc: "流动.流出 n 流动.流量", category: "Words" },
+        { label: "persuade", desc: "说服.劝说", category: "Words" },
+        { label: "cycle", desc: "骑自行车", category: "Words" },
+        { label: "graduate", desc: "毕业 n 大学毕业生", category: "Words" },
+        { label: "finally", desc: "最后.终于", category: "Words" },
+        { label: "schedule", desc: "进度表", category: "Words" },
+        { label: "fond", desc: "心喜爱的.慈祥的宠爱的", category: "Words" },
+        { label: "stubborn", desc: "顽固的;固执的", category: "Words" },
+        { label: "organize", desc: "组织,成立", category: "Words" },
+        { label: "detail", desc: "细节;详情", category: "Words" },
+        { label: "determine", desc: "讨决定;确定;下定决心", category: "Words" },
+        { label: "journey", desc: "旅行.旅程", category: "Words" },
+        { label: "altitude", desc: "海拔高度.高处", category: "Words" },
+        { label: "valley", desc: "谷流域", category: "Words" },
+        { label: "waterfall", desc: "瀑布", category: "Words" },
+        { label: "pace", desc: "缓漫而行.踱步入一步.速度;步调", category: "Words" },
+        { label: "bend", desc: "弯,拐角", category: "Words" },
+        { label: "meander", desc: "蜿蜒缓慢流动飞", category: "Words" },
+        { label: "attitude", desc: "看法", category: "Words" },
+        { label: "forecast", desc: "猜测;预告", category: "Words" },
+        { label: "parcel", desc: "小包;包裹", category: "Words" },
+        { label: "insurance", desc: "保险", category: "Words" },
+        { label: "wool", desc: "羊毛.毛织", category: "Words" },
+        { label: "add up", desc: "合计", category: "Expressions" },
+        { label: "have got to", desc: "不得不;必须", category: "Expressions" },
+        { label: "be concerned about", desc: "关心.挂念", category: "Expressions" },
+        { label: "walk the dog", desc: "遇狗", category: "Expressions" },
+        { label: "go through", desc: "经历;经受", category: "Expressions" },
+        { label: "set down", desc: "记下;放下.登记", category: "Expressions" },
+        { label: "a series of", desc: "一连串的.一系列;一套", category: "Expressions" },
+        { label: "in order to", desc: "为了", category: "Expressions" },
+        { label: "at dusk", desc: "在黄昏时刻", category: "Expressions" },
+        { label: "face to face", desc: "面对面地", category: "Expressions" },
+        { label: "no longer/not any longer", desc: "不再", category: "Expressions" },
+        { label: "suffer from", desc: "遭受.患病", category: "Expressions" },
+        { label: "get/be tired of", desc: "对 厌烦", category: "Expressions" },
+        { label: "pack ( sth ) up", desc: "将(东西)装箱打包", category: "Expressions" },
+        { label: "get along with", desc: "与 相处.进展", category: "Expressions" },
+        { label: "fall in love", desc: "相爱;爱上", category: "Expressions" },
+        { label: "join in", desc: "参加.加入", category: "Expressions" },
+        { label: "because of", desc: "因为", category: "Expressions" },
+        { label: "come up", desc: "走近,上来.提出", category: "Expressions" },
+        { label: "at present", desc: "现在;目前", category: "Expressions" },
+        { label: "make use of", desc: "利用 使用", category: "Expressions" },
+        { label: "play a part ( in )", desc: "扮演个角色:参与", category: "Expressions" },
+        { label: "ever since", desc: "从那以后", category: "Expressions" },
+        { label: "be fond of", desc: "喜爱;喜欢", category: "Expressions" },
+        { label: "short coming", desc: "缺点", category: "Expressions" },
+        { label: "care about", desc: "关心;忧虑;", category: "Expressions" },
+        { label: "change one’s mind", desc: "改变主意", category: "Expressions" },
+        { label: "make up one’s mind", desc: "下决心.决定", category: "Expressions" },
+        { label: "give in", desc: "投降.屈服.让步", category: "Expressions" },
+        { label: "as usual", desc: "照常", category: "Expressions" }
+      ];
+      var defList = [
+        { label: "主谓", desc: "quality have", value: "quality have", category: "用法示例" },
+        { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
+        { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
+      ];
       var q = "quality";
       var dict = {
         word: "quality",
@@ -194,18 +326,25 @@
         ended: false
       };
 
-      function getData( request ) {
+      $.getData = function( request ) {
+        if (typeof(request.term) !== "undefined") {
+          var matcher = new RegExp( "^" + request.term, "i" );
+          return $.grep( words, function( item ) {
+            return matcher.test( item.label );
+          });
+        }
         switch (request) {
           case "q": return q;
           case "dict": return dict;
           case "suggestion": return suggestion;
           case "r": return r;
           case "example": return s;
+          case "": return defList;
           default: return null;
         }
-      }
+      };
 
-      function appendExampleList( list ) {
+      $.appendExampleList = function( list ) {
         var cur = $("#ExampleList > div").length;
         list.forEach(function (value) {
           var example = $("#ExampleList div:first").clone().css("display", "block");
@@ -224,12 +363,12 @@
           cur++;
         });
         $("#ExampleList div:first").css("display","none");
-      }
+      };
 
-      function initialLoading() {
-        $("#SearchBox").val($("#SearchBox").val().replace("{{ q }}", getData("q")));
+      (function initialLoading() {
+        $("#SearchBox").val($("#SearchBox").val().replace("{{ q }}", $.getData("q")));
 
-        var dict = getData("dict");
+        var dict = $.getData("dict");
         $("#ResultItem").html($("#ResultItem").html().replace("{{ word }}", dict.word));
         $("#EnglishPronounce").html($("#EnglishPronounce").html().replace("{{ english }}", dict.english));
         $("#AmericanPronounce").html($("#AmericanPronounce").html().replace("{{ american }}", dict.american));
@@ -240,7 +379,7 @@
           $("#WordExplanation").append(explanation);
         });
 
-        var r = getData("r");
+        var r = $.getData("r");
         $("#CountUsage").html($("#CountUsage").html().replace("{{ count }}", r.count));
         $("#SearchDomain").html($("#SearchDomain").html().replace("{{ domain }}", r.domain));
         $("#Synonymous span:first").css("display", "none");
@@ -278,7 +417,7 @@
         $("#CollocationTab li:eq(1)").css("display", "none");
         $("#CollocContent div:eq(1)").css("display", "none");
 
-        var suggestion = getData("suggestion");
+        var suggestion = $.getData("suggestion");
         suggestion.related.forEach(function (value) {
           var related = $("#RelatedWords p:first").clone();
           related.html(related.html().replace("{{ related }}", value));
@@ -292,47 +431,13 @@
         $("#RelatedWords p:first").css("display", "none");
         $("#HotWords p:first").css("display", "none");
 
-        var example = getData("example");
-        appendExampleList( example.list );
+        var example = $.getData("example");
+        $.appendExampleList( example.list );
         if (example.ended) loaded = 1;
-      }
+      })();
       /*----------------- Testing code ------------------*/
 
-      initialLoading();
-
-      $( window ).scroll( function () {
-        if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
-          if (loading == 1 || loaded == 1 || loadCount > 4) return;
-
-          loading = 1;
-          $("#Loading").show();
-          var obj = getData("example");
-          setTimeout(function() {
-            $("#Loading").hide();
-            loading = 0;
-            if (obj == null) {
-              // failed to load obj
-            } else {
-              if (obj.ended == 1)
-              loadCount++;
-              appendExampleList( obj.list );
-            }
-          }, 2000);
-        }
-      });
-
-      $(".back-to-top").click(function() {
-        $("html,body").animate({scrollTop: 0}, "fast");
-        return false;
-      });
-
     } );
-
-    function clickHeart(e) {
-      e.preventDefault();
-      $(e.target).toggleClass("glyphicon-heart-empty");
-      $(e.target).toggleClass("glyphicon-heart");
-    }
     </script>
   </head>
 
@@ -352,7 +457,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <div class="row">
             <div class="col-sm-4">
-              <form class="navbar-form navbar-left full-width" role="search" action="result.html">
+              <form class="navbar-form navbar-left full-width" id="SearchForm" role="search" action="result.html">
                 <div id="ResultSearchBar" class="input-group full-width">
                   <input type="text" id="SearchBox" class="form-control" name="q" value="{{ q }}">
                   <span class="input-group-btn">
@@ -402,6 +507,7 @@
                 </div>
               </div>
 
+              <!--TODO: Fix the problem of displaying in small screens-->
               <div class="result-warning">
                 <span>找到相关用法&nbsp;<span id="CountUsage">{{ count }}</span>&nbsp;个：</span>
                 <span style="float:right">现在搜索领域为：<span id="SearchDomain">{{ domain }}</span>&nbsp;&nbsp;不是您的领域？<a href="#">自定义搜索领域</a></span>
@@ -445,12 +551,11 @@
                 
               </div>
 
-              <!-- TODO: Modify the list to collapse panel. To achieve multiselection, do not use "data-parent" -->
-              <!-- TODO: Add a "favorite" button to every sentence. Modify the layout-->
+              <!-- TODO: Delete the heading line or make the index at the left fixed position-->
               <div id="ExampleList" class="panel-group">
                 <div class="panel panel-default result-example row">
                   <div class="col-xs-11">
-                    <div class="panel-heading">
+                    <div class="panel-heading example-list-label" >
                       {{ label }}
                     </div>
                     <div class="panel-body example-list-content">
@@ -462,7 +567,7 @@
                   </div>
                   <div class="col-xs-1">
                     <div class="panel-heading panel-heart">
-                      <a href="" onclick="clickHeart(event);"><p class="glyphicon glyphicon-heart-empty"></p></a>
+                      <a href="" onclick="$.clickHeart(event);"><p class="glyphicon glyphicon-heart-empty"></p></a>
                     </div>
                   </div>
                 </div>
@@ -475,7 +580,7 @@
             </div>
           </div>
 
-          <!--TODO: make these fixed and add a "return to top" button-->
+          <!--TODO: fix the problem of data-spy data-offset-bottom and top, with the fixed width -->
           <div class="col-sm-3">
             <div class="affix result-sidebar">
               <div class="suggestion-container" id="RelatedWords">
@@ -526,5 +631,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/esoda-main.js"></script>
   </body>
 </html>
