@@ -270,11 +270,3 @@ $(function () {
 		$(e.target).toggleClass("glyphicon-heart");
   }
 });
-
-/*
-function clickHeart(e) {
-  e.preventDefault();
-  $(e.target).toggleClass("glyphicon-heart-empty");
-  $(e.target).toggleClass("glyphicon-heart");
-}
-*/

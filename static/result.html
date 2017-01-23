@@ -22,6 +22,196 @@
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
 
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand esoda-brand" href="index.html">Esoda</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <div class="row">
+            <div class="col-sm-4">
+              <form class="navbar-form navbar-left full-width" id="SearchForm" role="search" action="result.html">
+                <div id="ResultSearchBar" class="input-group full-width">
+                  <input type="text" id="SearchBox" class="form-control" name="q" value="{{ q }}">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                      <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
+              <li role="presentation"><a href="#">登陆</a></li>
+              <li role="presentation" class="active"><a href="#">注册</a></li>
+            </ul>
+          </div>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <div class="result-page">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-9 result-main">
+            <div>
+              <div class="result-callout">
+                <div class="row">
+                  <div class="col-sm-6 col-md-6" style="border-right:dashed 1px #ddd">
+                    <p id="ResultItem">{{ word }}</p>
+                    <div class="row">
+                      <div class="col-sm-6 col-md-4">
+                        <span class="glyphicon glyphicon-volume-up"></span>
+                        <span>英</span>
+                        <span id="EnglishPronounce">{{ english }}</span>
+                      </div>
+                      <div class="col-sm-6 col-md-4">
+                        <span class="glyphicon glyphicon-volume-up"></span>
+                        <span>美</span>
+                        <span id="AmericanPronounce">{{ american }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-6">
+                    <div id="WordExplanation">
+                      <p>{{ explanation }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--TODO: Fix the problem of displaying in small screens-->
+              <div class="result-warning">
+                <span>找到相关用法&nbsp;<span id="CountUsage">{{ count }}</span>&nbsp;个：</span>
+                <span style="float:right">现在搜索领域为：<span id="SearchDomain">{{ domain }}</span>&nbsp;&nbsp;不是您的领域？<a href="#">自定义搜索领域</a></span>
+              </div>
+
+              <div class="result-table-cell row">
+                <div class="result-subtitle col-sm-1">同义</div>
+                <div id="Synonymous" class="col-sm-11">
+                  <span><a href=""> {{ synonymous }} </a></span>
+                </div>
+              </div>
+
+              <div class="result-table-cell row">
+                <div class="result-subtitle col-sm-1">搭配</div>
+                <div class="col-sm-11" id="Collocation">
+                  <ul class="nav nav-tabs" id="CollocationTab" role="tablist">
+                    <li role="presentation" class="active">
+                      <a href="#CollocAll" role="tab" data-toggle="tab">全部</a>
+                    </li>
+                    <li role="presentation">
+                      <a href="#{{ collocation_label }}" role="tab" data-toggle="tab">{{ collocation }}</a>
+                    </li>
+                  </ul>
+                  <div id="CollocContent" class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade" id="CollocAll"></div>
+                    <div role="tabpanel" class="tab-pane fade" id="{{ collocation_label }}">
+                      <div class="row colloc-result">
+                        <div class="col-sm-4">
+                          <p><a href="">{{ usage }}({{ count }})</a></p>
+                        </div>
+                        <div class="col-sm-4">
+                          <p><a href="">{{ usage }}({{ count }})</a></p>
+                        </div>
+                        <div class="col-sm-4">
+                          <p><a href="">{{ usage }}({{ count }})</a></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+
+              <!-- TODO: Delete the heading line or make the index at the left fixed position-->
+              <div id="ExampleList" class="panel-group">
+                <div class="panel panel-default result-example row">
+                  <div class="col-xs-11">
+                    <div class="panel-heading example-list-label" >
+                      {{ label }}
+                    </div>
+                    <div class="panel-body example-list-content">
+                      {{ content }}
+                    </div>
+                    <div class="panel-footer example-list-source">
+                      {{ source }}
+                    </div>
+                  </div>
+                  <div class="col-xs-1">
+                    <div class="panel-heading panel-heart">
+                      <a href="" onclick="$.clickHeart(event);"><p class="glyphicon glyphicon-heart-empty"></p></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="Loading" class="result-table-cell center-align">
+                <p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p>
+              </div>
+
+            </div>
+          </div>
+
+          <!--TODO: fix the problem of data-spy data-offset-bottom and top, with the fixed width -->
+          <div class="col-sm-3">
+            <div class="affix result-sidebar">
+              <div class="suggestion-container" id="RelatedWords">
+                <h4>大家都在搜</h4>
+                <p><a href="">{{ related }}</a></p>
+              </div>
+              <div class="suggestion-container" id="HotWords">
+                <h4>领域内热词</h4>
+                <p><a href="">{{ hot }}</a></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="affix back-to-top-affix">
+            <div class="btn back-to-top">
+              <p class="glyphicon glyphicon-chevron-up"></p>
+              <p>回到顶部</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <footer class="footer">
+      <div class="container container-footer">
+        <div class="row">
+          <div class="col-sm-3 col-md-2 col-md-offset-2">
+            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+          </div>
+        </div>
+        <p class="copyright col-sm-4 col-sm-offset-4">Esoda &copy; 2012-2017.</p>
+      </div>
+    </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="js/ie-emulation-modes-warning.js"></script>
@@ -32,12 +222,9 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="js/jquery-ui.js"></script>
     <script>
-    // TODO: put the non-testing code into esoda-main.js and move the js files at the end of the body.
-    // TODO: make the headers and footers of index and result the same.
     $( function() {
 
       /*----------------- Testing code ------------------*/
@@ -436,201 +623,13 @@
         if (example.ended) loaded = 1;
       })();
       /*----------------- Testing code ------------------*/
-
     } );
     </script>
-  </head>
-
-  <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand esoda-brand" href="index.html">Esoda</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <div class="row">
-            <div class="col-sm-4">
-              <form class="navbar-form navbar-left full-width" id="SearchForm" role="search" action="result.html">
-                <div id="ResultSearchBar" class="input-group full-width">
-                  <input type="text" id="SearchBox" class="form-control" name="q" value="{{ q }}">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">
-                      <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                  </span>
-                </div>
-              </form>
-            </div>
-            <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
-              <li role="presentation"><a href="#">登陆</a></li>
-              <li role="presentation" class="active"><a href="#">注册</a></li>
-            </ul>
-          </div>
-        </div><!--/.navbar-collapse -->
-      </div>
-    </nav>
-
-    <div class="result-page">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-9 result-main">
-            <div>
-              <div class="result-callout">
-                <div class="row">
-                  <div class="col-sm-6 col-md-6" style="border-right:dashed 1px #ddd">
-                    <p id="ResultItem">{{ word }}</p>
-                    <div class="row">
-                      <div class="col-sm-6 col-md-4">
-                        <span class="glyphicon glyphicon-volume-up"></span>
-                        <span>英</span>
-                        <span id="EnglishPronounce">{{ english }}</span>
-                      </div>
-                      <div class="col-sm-6 col-md-4">
-                        <span class="glyphicon glyphicon-volume-up"></span>
-                        <span>美</span>
-                        <span id="AmericanPronounce">{{ american }}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-6">
-                    <div id="WordExplanation">
-                      <p>{{ explanation }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!--TODO: Fix the problem of displaying in small screens-->
-              <div class="result-warning">
-                <span>找到相关用法&nbsp;<span id="CountUsage">{{ count }}</span>&nbsp;个：</span>
-                <span style="float:right">现在搜索领域为：<span id="SearchDomain">{{ domain }}</span>&nbsp;&nbsp;不是您的领域？<a href="#">自定义搜索领域</a></span>
-              </div>
-
-              <div class="result-table-cell row">
-                <div class="result-subtitle col-sm-1">同义</div>
-                <div id="Synonymous" class="col-sm-11">
-                  <span><a href=""> {{ synonymous }} </a></span>
-                </div>
-              </div>
-
-              <div class="result-table-cell row">
-                <div class="result-subtitle col-sm-1">搭配</div>
-                <div class="col-sm-11" id="Collocation">
-                  <ul class="nav nav-tabs" id="CollocationTab" role="tablist">
-                    <li role="presentation" class="active">
-                      <a href="#CollocAll" role="tab" data-toggle="tab">全部</a>
-                    </li>
-                    <li role="presentation">
-                      <a href="#{{ collocation_label }}" role="tab" data-toggle="tab">{{ collocation }}</a>
-                    </li>
-                  </ul>
-                  <div id="CollocContent" class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade" id="CollocAll"></div>
-                    <div role="tabpanel" class="tab-pane fade" id="{{ collocation_label }}">
-                      <div class="row colloc-result">
-                        <div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
-                        </div>
-                        <div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
-                        </div>
-                        <div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
-
-              <!-- TODO: Delete the heading line or make the index at the left fixed position-->
-              <div id="ExampleList" class="panel-group">
-                <div class="panel panel-default result-example row">
-                  <div class="col-xs-11">
-                    <div class="panel-heading example-list-label" >
-                      {{ label }}
-                    </div>
-                    <div class="panel-body example-list-content">
-                      {{ content }}
-                    </div>
-                    <div class="panel-footer example-list-source">
-                      {{ source }}
-                    </div>
-                  </div>
-                  <div class="col-xs-1">
-                    <div class="panel-heading panel-heart">
-                      <a href="" onclick="$.clickHeart(event);"><p class="glyphicon glyphicon-heart-empty"></p></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div id="Loading" class="result-table-cell center-align">
-                <p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p>
-              </div>
-
-            </div>
-          </div>
-
-          <!--TODO: fix the problem of data-spy data-offset-bottom and top, with the fixed width -->
-          <div class="col-sm-3">
-            <div class="affix result-sidebar">
-              <div class="suggestion-container" id="RelatedWords">
-                <h4>大家都在搜</h4>
-                <p><a href="">{{ related }}</a></p>
-              </div>
-              <div class="suggestion-container" id="HotWords">
-                <h4>领域内热词</h4>
-                <p><a href="">{{ hot }}</a></p>
-              </div>
-            </div>
-          </div>
-
-          <div class="affix back-to-top-affix">
-            <div class="btn back-to-top">
-              <p class="glyphicon glyphicon-chevron-up"></p>
-              <p>回到顶部</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <footer class="footer">
-      <div class="container container-footer">
-        <div class="row">
-          <div class="col-sm-3 col-md-2 col-md-offset-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
-          </div>
-          <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
-          </div>
-          <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
-          </div>
-          <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
-          </div>
-        </div>
-        <p class="copyright col-sm-4 col-sm-offset-4">Esoda &copy; 2012-2017.</p>
-      </div>
-    </footer>
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!--script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script-->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
     <script src="js/esoda-main.js"></script>
+    
   </body>
 </html>
