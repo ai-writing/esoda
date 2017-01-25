@@ -384,7 +384,7 @@
         if (request == "") {
           return defList;
         } else {
-          var matcher = new RegExp( "^" + request, "i" );
+          var matcher = new RegExp( "^" + request.term, "i" );
           return $.grep( words, function( item ) {
             return matcher.test( item.label );
           });

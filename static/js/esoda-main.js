@@ -134,6 +134,9 @@ $(function () {
   function extractLast( term ) {
     return split( term ).pop();
   }
+  function extractPrefix( term ) {
+  	return term.replace("<strong>", "").replace("</strong>", "");
+  }
   
 
   var cache = {};
@@ -147,14 +150,28 @@ $(function () {
         return;
       }
 
+
       if (term in cache) {
         response( cache[ term ] );
         return;
       }
 
       var data = getData( {term: term} );
-      cache[ term ] = data;
-      response( data );
+      var show = [];
+      var matcher = new RegExp( "^" + term, "i" );
+      // As experimented, the items in *data* are references through getData method,
+      // so that there's a new array needed for showing.
+      data.forEach(function (item) {
+      	show.push(
+      	{
+      		label: item.label.replace(matcher, "<strong>" + item.label.match(matcher) + "</strong>"),
+      		desc: item.desc,
+      		category: item.category
+      	});
+      });
+      console.log(show);
+      cache[ term ] = show;
+      response( show );
       /*
       $.getJSON( "search.php", request.term, function(data, status, xhr) {
         cache[ term ] = data;
@@ -176,7 +193,7 @@ $(function () {
     select: function( event, ui ) {
       var terms = split( this.value );
       terms.pop();
-      terms.push( ui.item.value );
+      terms.push( extractPrefix(ui.item.value) );
       this.value = terms.join( " " );
       if (event.keyCode !== $.ui.keyCode.TAB)
         $( "#SearchForm" ).submit();

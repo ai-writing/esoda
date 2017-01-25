@@ -161,6 +161,11 @@ body {
 	font-weight: bold;
 }
 
+.ui-autocomplete-label > strong {
+	font-weight: initial;
+	color: #999;
+}
+
 .ui-autocomplete-desc {
 	color: #999;
 }
