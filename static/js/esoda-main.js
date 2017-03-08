@@ -248,6 +248,11 @@ $(function () {
     $(this).tab("show");
   });
 
+  $("#FeedbackTab a").click(function (e) {
+    e.preventDefault();
+    $(this).tab("show");
+  });
+
   var loadCount = 1, loading = 0, loaded = 0;
 
   $( window ).scroll( function () {

@@ -1,6 +1,6 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-	padding-top: 50px;
+	/*padding-top: 50px;*/
 }
 
 @media (min-width: 1200px) {
@@ -15,20 +15,71 @@ body {
 	margin: 0 auto;
 }
 
+.right-align {
+	text-align: right;
+}
+
 .esoda-brand {
 	font-family: 'Arial-Black', 'Arial Black';
 	font-weight: 900;
 }
 
+.esoda-brand-main {
+	color: #fff;
+	font-size: 70px;
+}
+
+.esoda-brand-subtitle {
+	color: #fff;
+	padding-top: 8px;
+	border-top: 2px solid #FFFFFF;
+}
+
+.navbar-default {
+	height: 135px;
+	background: #fff;
+	border-color: #fff;
+}
+
+.navbar-index {
+	margin-top: 46px;
+}
+
+.container-navbar {
+	position: relative;
+	margin: 0 auto;
+}
+
 .title {
+	margin-bottom: 43px;
 	text-align: center;
 }
 
-.main-container {
-	padding-bottom: 100px;
+.jumbotron {
+	background-color: #63b7e6;
+	padding-top: 112px;
+	padding-bottom: 195px;
 }
-.nav-pills-reg {
-	margin-top:4px;
+
+.btn {
+	background-color: #63B7E6;
+}
+
+.btn:active {
+	background-color: #60b4e2 !important;
+}
+
+ .btn:hover {
+ 	background-color: #60b4e2 !important;
+ }
+
+ .btn:focus {
+ 	background-color: #60b4e2 !important;
+ }
+
+.btn-info {
+	border-radius: 3px;
+	border: 1px solid #fff;
 }
 
 .btn-search {
@@ -37,6 +88,13 @@ body {
     border-color: #ccc;
     width: 70px;
     height: 40px;
+}
+
+.btn-message {
+	margin-top: 13px;
+	border-radius: 5px;
+	border: 2px solid #fff;
+	font-size: 18px;
 }
 
 .menu-search {
@@ -53,12 +111,13 @@ body {
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
 	color: #fff;
-	background-color: #5bc0de;
+	background-color: #63B7E6;
+	border-radius: 100px;
 }
 
 
 .nav-pills > li > a {
-	color: #5bc0de;
+	color: #9b9b9b;
 }
 
 .modal-login-header {
@@ -95,13 +154,11 @@ body {
 
 .btn-login {
 	margin: 10px 0px;
-	background-color: #5bc0de;
 	width: 100%;
 }
 
 .btn-register {
 	margin: 10px 0px;
-	background-color: #5bc0de;
 	width: 100%;
 }
 
@@ -120,18 +177,46 @@ body {
 }
 
 .container-usage {
-	color: #888;
-	margin-top: 60px;
+	color: #63B7E6;
+	margin-top: 45px;
+}
+
+.container-feature {
+	margin-top: 120px;
+	margin-bottom: 45px;
 }
 
 .container-footer {
+	margin-top: 19px;
+	border-top: 1px solid #979797;
 	padding-top: 20px;
-	text-align: center;
+	padding-bottom: 35px;
+	color: #9b9b9b;
 }
 
-.footer {
-	background-color: #333;
-	color: #999;
+.container-message {
+	padding-top: 40px;
+	padding-bottom: 30px;
+	font-size: 22px;
+	color: #fff;
+}
+
+.message-title {
+	margin-top: 40px;
+}
+
+.message-content {
+	margin-top: 15px;
+}
+
+.message-box {
+	font-size: 16px;
+	height: 82px;
+	text-align: left;
+	color: #000;
+	width: 100%;
+	resize: none;
+	overflow-y: scroll;
 }
 
 .caption > h4 {
@@ -143,9 +228,20 @@ body {
 	color: #888;
 }
 
-.container-feedback {
-	color: #888;
-	background-color: #eee;
+.back-introduction {
+	background: #63B7E6;
+	height: 120px;
+	padding-top: 10px;
+}
+
+.back-message {
+	background: #63B7E6;
+	height: 320px;
+	border: 1px solid #9b9b9b;
+}
+
+.back-feedback {
+	border-top: 2px solid #979797;
 	padding-top: 60px;
 }
 
@@ -171,9 +267,40 @@ body {
 }
 
 .col-guide {
-	padding-left: 20px;
-	padding-right: 20px;
+	padding-left: 30px;
+	padding-right: 30px;
 }
+
+.col-introduction {
+	border: 1px solid #979797;
+	background: #fff;
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+.col-introduction > h3 {
+	color: #000;
+}
+
+.col-introduction > p {
+	color: #9b9b9b;
+	font-size: 18px;
+}
+
+.col-feature-img > img {
+	width: 100%;
+}
+
+.col-feature-intro > p {
+	margin: 0 0;
+	color: #9b9b9b;
+}
+
+.col-message-right {
+	text-align: right;
+}
+
 .usage-title {
 	margin-bottom: 50px;
 	text-align: center;
@@ -193,14 +320,24 @@ body {
 }
 
 .footer-link {
-	color: #999;
+	color: #9b9b9b;
 }
 
+.footer-shares {
+	margin-top: 40px;
+}
 
 .full-width {
 	width: 100%;
 }
 
+.shares {
+	margin-right: 31px;
+}
+
+#LikeOurSite {
+	color: #fff;
+}
 
 #ResultItem {
 	font-size: 28px;

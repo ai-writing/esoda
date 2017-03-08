@@ -25,8 +25,7 @@
   </head>
 
   <body>
-
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -35,18 +34,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand esoda-brand" href="index.html">Esoda</a>
+          <h1><a class="navbar-brand esoda-brand" href="index.html">Esoda</a></h1>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <!--TODO: add a modal for login and register-->
-          <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
-            <li role="presentation"><a href="#" data-toggle="modal" data-target="#ModalLogin">登陆</a></li>
-            <li role="presentation" class="active"><a href="#" data-toggle="modal" data-target="#ModalRegister">注册</a></li>
-          </ul>
+        <div id="navbar" class="navbar-index navbar-collapse collapse">
+          
           <ul class="nav navbar-nav navbar-right">
-            <li><a id="AddBookmark" href="#" title="Bookmark this page">添加收藏</a></li>
-            <li><a href="#">联系方式</a></li>
-            <li><a href="#">关于我们</a></li>
+          	<li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+          	<li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
+          </ul>
+          <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
+          	<li role="presentation" class="active"><a href="index.html">主页</a></li>
+            <li role="presentation"><a id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
+            <li role="presentation"><a href="#">个人领域</a></li>
+            <li role="presentation"><a href="#">搜搭教程</a></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -104,17 +104,22 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-      <div class="container main-container">
+      <div class="container">
         <div class="row">
-          <h1 class="esoda-brand col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 title">Esoda</h1>
+	      <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 title">
+         	  <div class="esoda-brand esoda-brand-main">Esoda</div>
+	          <div class="esoda-brand-subtitle">
+	          	<span>专业论文写作助手</span>
+	          </div>
+          </div>
           <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
             <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
               <div class="input-group input-group-lg">
                 <!-- The "Search" icon cannot be placed into searchbox-->
                 <!--span class="glyphicon glyphicon-search"></span-->
-                <input id="SearchBox" type="text" class="form-control" placeholder="想搜什么？" name="q"/>
+                <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
                 <span class="input-group-btn">
-                  <button type="submit" class="btn btn-info">搜索</button>
+                  <button type="submit" class="btn btn-info">搜搭&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
                 </span>
               </div>
             </form>
@@ -124,103 +129,202 @@
     </div>
 
     <div class="container container-usage">
-      <h4 class="usage-title">如何使用</h4>
+      <h4 class="usage-title">试试看易搜搭的神奇搜索</h4>
       <div class="row">
         <div class="col-sm-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
-            <img src="images/img1.png" alt="...">
+            <img src="images/icons-搜同义.png" alt="...">
             <div class="caption caption-usage">
-              <h4 style="font-style: italic">circumstance? (semantic)</h4>
-              <p>...</p>
+              <h4>搜同义</h4>
+              <p>论文里感到单词词汇用的不地道，找找看母语论文里别人怎么说</p>
             </div>
           </div>
         </div>
         <div class="col-sm-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
-            <img src="images/img1.png" alt="...">
+            <img src="images/icons-找搭配.png" alt="...">
             <div class="caption caption-usage">
-              <h4 style="font-style: italic">circumstance? (semantic)</h4>
-              <p>...</p>
+              <h4>找搭配</h4>
+              <p>感到搭配用的不够漂亮，想换种说法，看看别人怎么搭配</p>
             </div>
           </div>
         </div>
         <div class="col-sm-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
-            <img src="images/img1.png" alt="...">
+            <img src="images/icons-中文搜索.png" alt="...">
             <div class="caption caption-usage">
-              <h4 style="font-style: italic">circumstance? (semantic)</h4>
-              <p>...</p>
+              <h4>中文查找</h4>
+              <p>满腹经纶难以用英文讲述？中文查找功能帮助你更好表达自我</p>
             </div>
           </div>
         </div>
         <div class="col-sm-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
-            <img src="images/img1.png" alt="...">
+            <img src="images/icons-词组搜索.png" alt="...">
             <div class="caption caption-usage">
-              <h4 style="font-style: italic">circumstance? (semantic)</h4>
-              <p>...</p>
+              <h4>词组搜搭</h4>
+              <p>先进算法让你不但能够查找单词连词组的搭配也能搜搭的得心应手</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="container-feedback">
+    <div class="back-introduction">
+    	<div class="container container-usage">
+    		<div class="row">
+    			<div class="col-sm-6 col-md-3 col-introduction">
+    				<h3>149,000,000</h3>
+    				<p>专业论文库</p>
+    			</div>
+    			<div class="col-sm-6 col-md-3 col-introduction">
+    				<h3>3,000+</h3>
+    				<p>日均浏览量</p>
+    			</div>
+    			<div class="col-sm-6 col-md-3 col-introduction">
+    				<h3>32+</h3>
+    				<p>个人领域</p>
+    			</div>
+    			<div class="col-sm-6 col-md-3 col-introduction">
+    				<h3>4+</h3>
+    				<p>创新搜索方式</p>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+    <div class="container container-feature">
+    	<div class="row">
+    		<div class="col-sm-6">
+    			<div class="row">
+	    			<div class="col-xs-3 col-feature-img">
+	    				<img src="images/icons-快捷.png">
+	    			</div>
+	    			<div class="col-xs-9 col-feature-intro">
+	    				<h3>快捷</h3>
+	    				<p>先进的算法，便捷的搭配查找方法，轻松替换每一个中式英文单词，搭配最漂亮的英文表达，给你最棒的论文写作体验</p>
+	    			</div>
+    			</div>
+    		</div>
+
+    		<div class="col-sm-6">
+    			<div class="row">
+	    			<div class="col-xs-3 col-feature-img">
+	    				<img src="images/icons-地道.png">
+	    			</div>
+	    			<div class="col-xs-9 col-feature-intro">
+	    				<h3>地道</h3>
+	    				<p>精准查看母语论文里的地道用法，更符合论文书写规范。大量例句随意查，引用出处轻松看，还原最原汁原味的母语表达，解决论文写作难题</p>
+	    			</div>
+    			</div>
+    		</div>
+
+    		<div class="col-sm-6">
+    			<div class="row">
+	    			<div class="col-xs-3 col-feature-img">
+	    				<img src="images/icons-专业.png">
+	    			</div>
+	    			<div class="col-xs-9 col-feature-intro">
+	    				<h3>专业</h3>
+	    				<p>针对32种专业领域的论文写作助手，查看顶级会议，国际期刊中英语选词用法，再不担心用词不专业，甩掉犹豫，自信写论文</p>
+	    			</div>
+    			</div>
+    		</div>
+
+    		<div class="col-sm-6">
+    			<div class="row">
+	    			<div class="col-xs-3 col-feature-img">
+	    				<img src="images/icons-全面.png">
+	    			</div>
+	    			<div class="col-xs-9 col-feature-intro">
+	    				<h3>全面</h3>
+	    				<p>海量论文库，涉及147900000篇论文，覆盖近30年领域内全面信息，轻松查看单词，搭配使用量，最佳的中国化论文写作工具</p>
+	    			</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+    <div class="back-feedback">
       <div class="container">
-        <h4 class="usage-title">师兄评价</h4>
-        <div class="row">
-          <div class="col-sm-6 col-md-4 col-comments">
-            <div class="thumbnail">
-              <img src="images/img2.png" alt="...">
-              <div class="caption" style="margin-top: 30px">
-                <p style="font-size:14px">好用好用很好用！Esoda给了我很多帮助，赞！</p>
-                <h4 style="margin-top:30px">王海超</h4>
-                <h4>Google</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-comments">
-            <div class="thumbnail">
-              <img src="images/img2.png" alt="...">
-              <div class="caption" style="margin-top: 30px">
-                <p style="font-size:14px">好用好用很好用！Esoda给了我很多帮助，赞！</p>
-                <h4 style="margin-top:30px">王海超</h4>
-                <h4>Google</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4 col-comments">
-            <div class="thumbnail">
-              <img src="images/img2.png" alt="...">
-              <div class="caption" style="margin-top: 30px">
-                <p style="font-size:14px">好用好用很好用！Esoda给了我很多帮助，赞！</p>
-                <h4 style="margin-top:30px">王海超</h4>
-                <h4>Google</h4>
-              </div>
-            </div>
-          </div>
+      	<div style="text-align: center">
+	      	<ul class="nav nav-pills" id="FeedbackTab" role="tablist">
+	          <li role="presentation" class="active">
+	            <a href="#Experts" role="tab" data-toggle="tab">专家评价</a>
+	          </li>
+	          <li role="presentation">
+	            <a href="#Users" role="tab" data-toggle="tab">用户留言</a>
+	          </li>
+	        </ul>
+	      </div>
+	      <div id="tab-content">
+		      <div id="Experts" role="tabpanel" class="tab-pane fade active in">
+	        	<h4 class="usage-title">清华大学PCG工作室出品，目前最好用的英文论文写作工具！</h4>
+	        </div>
+	        <div id="Users" role="tabpanel" class="tab-pane fade">
+	        </div>
         </div>
       </div>
     </div>
 
+    <div class="back-message">
+    	<div class="container container-message">
+	    	<div class="row">
+	    		<div class="col-xs-6">
+	    			为我们的工作点赞
+	    		</div>
+	    		<div class="col-xs-6 col-message-right">
+	    			<span id="CountOfFavorite">12049</span>
+	    			&nbsp;&nbsp;
+	    			<a href="#"><span id="LikeOurSite" class="glyphicon glyphicon-heart-empty"></span></a>
+	    		</div>
+    		</div>
+    		<div class="message-title">留言帮助我们改进易搜搭</div>
+    		<div class="row message-content">
+    			<div class="col-xs-hide col-sm-2">
+    			</div>
+    			<div class="col-xs-10 col-sm-10">
+    				<textarea class="message-box"></textarea>
+    			</div>
+    		</div>
+    		<div class="col-message-right">
+    			<div id="MessageBtn" class="btn btn-message">留言</div>
+    		</div>
+    	</div>
+    </div>
 
     <footer class="footer">
       <div class="container container-footer">
         <div class="row">
-          <div class="col-sm-3 col-md-2 col-md-offset-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">联系我们</a></p>
           </div>
           <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+            <p><a href="#" class="footer-link">PCG工作室</a></p>
           </div>
           <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+            <p><a href="#" class="footer-link">我们的团队</a></p>
           </div>
           <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+            <p><a href="#" class="footer-link">版权声明</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">商业合作</a></p>
           </div>
         </div>
-        <p class="copyright col-sm-4 col-sm-offset-4">Esoda &copy; 2012-2017.</p>
+        <div class="row footer-shares">
+        	<div class="col-sm-6">
+        		<h1 class="esoda-brand">Esoda</h1>
+        		<p>专业英文写作助手</p>
+        	</div>
+        	<div class="col-sm-6 right-align">
+	    			<a href="#"><img class="shares" src="images/email_F.svg"></a>
+	    			<a href="#"><img class="shares" src="images/wechat_F.svg"></a>
+	    			<a href="#"><img class="shares" src="images/QQ_F.svg"></a>
+	    			<a href="#"><img src="images/sina_weibo_F.svg"></a>
+        	</div>
+        </div>
+        <p class="copyright col-sm-4 col-sm-offset-4">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
       </div>
     </footer>
 
