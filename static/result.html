@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="">
 
     <title>Esoda</title>
 
@@ -18,7 +18,7 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
 
@@ -26,7 +26,7 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -35,27 +35,25 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand esoda-brand" href="index.html">Esoda</a>
+          <h1><a class="navbar-brand esoda-brand" href="index.html">Esoda</a></h1>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <div class="row">
-            <div class="col-sm-4">
-              <form class="navbar-form navbar-left full-width" id="SearchForm" role="search" action="result.html">
-                <div id="ResultSearchBar" class="input-group full-width">
-                  <input type="text" id="SearchBox" class="form-control" name="q" value="{{ q }}">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">
-                      <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                  </span>
-                </div>
-              </form>
+        <div id="navbar" class="navbar-index navbar-collapse collapse">
+
+          <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search" action="result.html">
+            <div id="ResultSearchBar" class="input-group full-width">
+              <span class="input-group-btn">
+                <button class="btn-navbar-search" type="submit">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+              </span>
+              <input type="text" id="SearchBox" class="navbar-search-box form-control" name="q" value="{{ q }}">
             </div>
-            <ul class="nav nav-pills navbar-right nav-pills-reg" role="tablist">
-              <li role="presentation"><a href="#">登陆</a></li>
-              <li role="presentation" class="active"><a href="#">注册</a></li>
-            </ul>
-          </div>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+            <li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
+          </ul>
+          
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
@@ -65,6 +63,11 @@
         <div class="row">
           <div class="col-sm-9 result-main">
             <div>
+
+              <div class="result-warning">
+                当前个人领域为：<span id="SearchDomain">{{ domain }}</span>，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage">{{ count }}</span>句例句，在其他<a href="#">个人领域</a>中搜索
+              </div>
+
               <div class="result-callout">
                 <div class="row">
                   <div class="col-sm-6 col-md-6" style="border-right:dashed 1px #ddd">
@@ -88,11 +91,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="result-warning row">
-                <div class="col-sm-4">找到相关用法&nbsp;<span id="CountUsage">{{ count }}</span>&nbsp;个：</div>
-                <div class="col-sm-8">现在搜索领域为：<span id="SearchDomain">{{ domain }}</span>&nbsp;&nbsp;不是您的领域？<a href="#">自定义搜索领域</a></div>
               </div>
 
               <div class="result-table-cell row">
@@ -190,23 +188,37 @@
     <footer class="footer">
       <div class="container container-footer">
         <div class="row">
-          <div class="col-sm-3 col-md-2 col-md-offset-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">联系我们</a></p>
           </div>
           <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+            <p><a href="#" class="footer-link">PCG工作室</a></p>
           </div>
           <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+            <p><a href="#" class="footer-link">我们的团队</a></p>
           </div>
           <div class="col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">FOOTER链接</a></p>
+            <p><a href="#" class="footer-link">版权声明</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">商业合作</a></p>
           </div>
         </div>
-        <p class="copyright col-sm-4 col-sm-offset-4">Esoda &copy; 2012-2017.</p>
+        <div class="row footer-shares">
+          <div class="col-sm-6">
+            <h1 class="esoda-brand">Esoda</h1>
+            <p>专业英文写作助手</p>
+          </div>
+          <div class="col-sm-6 right-align">
+            <a href="#"><img class="shares" src="images/email_F.svg"></a>
+            <a href="#"><img class="shares" src="images/wechat_F.svg"></a>
+            <a href="#"><img class="shares" src="images/QQ_F.svg"></a>
+            <a href="#"><img src="images/sina_weibo_F.svg"></a>
+          </div>
+        </div>
+        <p class="copyright">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
       </div>
     </footer>
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -553,6 +565,7 @@
 
       (function initialLoading() {
         $("#SearchBox").val($("#SearchBox").val().replace("{{ q }}", $.getData("q")));
+        $("#SearchKeyWord").html($("#SearchKeyWord").html().replace("{{ q }}", $.getData("q")));
 
         var dict = $.getData("dict");
         $("#ResultItem").html($("#ResultItem").html().replace("{{ word }}", dict.word));

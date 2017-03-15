@@ -47,7 +47,7 @@ $(function () {
     return history;
   }
 
-  function clearHistory() {
+  window.clearHistory = function() {
     if (("localStorage" in window) && window.localStorage !== null) {
       localStorage.setObj("history", []);
     } else {
@@ -119,6 +119,11 @@ $(function () {
           li.attr( "aria-label", item.category + " : " + item.label );
         }
       });
+      ul.append("<li class='ui-autocomplete-category ui-autocomplete-warnings'>" +
+                  "<div class=\"inline\">按“回车”发起检索</div>" +
+                  "<div class=\"right-float\">" +
+                  "<a href=\"index.html\" id=\"ClearHistory\" onclick=\"window.clearHistory()\">清楚搜索历史" +
+                  "<span class=\"glyphicon glyphicon-time\"></span></a></div></li>");
     },
     _renderItem: function( ul, item ) {
       return $( "<li>" )

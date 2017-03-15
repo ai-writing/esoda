@@ -5,7 +5,7 @@ body {
 
 @media (min-width: 1200px) {
   .container {
-    width: 1080px;
+    width: 980px;
   }
 }
 
@@ -17,6 +17,15 @@ body {
 
 .right-align {
 	text-align: right;
+}
+
+.right-float {
+	display: inline;
+	float: right;
+}
+
+.inline {
+	display: inline;
 }
 
 .esoda-brand {
@@ -36,13 +45,17 @@ body {
 }
 
 .navbar-default {
-	height: 135px;
+	height: 115px;
 	background: #fff;
 	border-color: #fff;
 }
 
 .navbar-index {
 	margin-top: 46px;
+}
+
+.navbar-search {
+	width: 60%;
 }
 
 .container-navbar {
@@ -67,14 +80,17 @@ body {
 
 .btn:active {
 	background-color: #60b4e2 !important;
+	border-color: #53a7d6;
 }
 
  .btn:hover {
  	background-color: #60b4e2 !important;
+	border-color: #53a7d6;
  }
 
  .btn:focus {
  	background-color: #60b4e2 !important;
+	border-color: #53a7d6;
  }
 
 .btn-info {
@@ -107,17 +123,16 @@ body {
     color: #888;
 }
 
+.nav-pills > li > a {
+	border-radius: 50px;
+	color: #9b9b9b;
+}
+
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
 	color: #fff;
 	background-color: #63B7E6;
-	border-radius: 100px;
-}
-
-
-.nav-pills > li > a {
-	color: #9b9b9b;
 }
 
 .modal-login-header {
@@ -174,6 +189,10 @@ body {
 .modal-register {
 	text-align: right;
 	float: right;
+}
+
+.form-control, .form-control:focus {
+	border-color: #fff;
 }
 
 .container-usage {
@@ -266,6 +285,18 @@ body {
 	color: #999;
 }
 
+.ui-autocomplete-warnings {
+	font-size: 12px;
+	color: #9b9b9b;
+	background-color: #ebebef;
+	padding: .2em .4em;
+	margin: 0;
+}
+
+.ui-autocomplete-warnings > div > a {
+	color: #9b9b9b;
+}
+
 .col-guide {
 	padding-left: 30px;
 	padding-right: 30px;
@@ -316,7 +347,7 @@ body {
 }
 
 .copyright {
-	margin-top: 15px;
+	text-align: center;
 }
 
 .footer-link {
@@ -383,12 +414,29 @@ body {
 
 .result-page {
 	margin-bottom: 0;
-	background-color: #eee;
+	background-color: #f6f6f6;
 }
 
 .result-sidebar {
 	text-align: center;
 	width: 200px;
+}
+
+.btn-navbar-search {
+	background-color: #fff;
+	border: 0;
+	border-bottom: 1px solid #63B7E6;
+	color: #63B7E6;
+	font-size: 20px;
+	width: 100%;
+}
+
+.navbar-search-box {
+	border: 0;
+	border-bottom: 1px solid #63B7E6;
+	border-radius: 0px;
+	box-shadow: none;
+	color: #9b9b9b;
 }
 
 .suggestion-container {
@@ -411,7 +459,6 @@ body {
 }
 
 .result-warning {
-	background-color:#ccc;
 	margin: 0px 20px;
 	margin-bottom: 10px;
 	padding: 10px 25px;
@@ -480,7 +527,7 @@ body {
 }
 
 .panel-heart > a {
-	color: #f90;
+	color: #63B7E6;
 }
 
 .example-list-label {

@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="">
 
     <title>Esoda</title>
 
@@ -42,7 +42,11 @@
           	<li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
           	<li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
           </ul>
-          <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
+          <ul class="nav navbar-nav navbar-right hide">
+            <li><a id="UserId" href="#">叶霜</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+          </ul>
+          <ul class="nav nav-pills navbar-right" role="tablist">
           	<li role="presentation" class="active"><a href="index.html">主页</a></li>
             <li role="presentation"><a id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
             <li role="presentation"><a href="#">个人领域</a></li>
@@ -115,8 +119,6 @@
           <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
             <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
               <div class="input-group input-group-lg">
-                <!-- The "Search" icon cannot be placed into searchbox-->
-                <!--span class="glyphicon glyphicon-search"></span-->
                 <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
                 <span class="input-group-btn">
                   <button type="submit" class="btn btn-info">搜搭&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
@@ -131,7 +133,7 @@
     <div class="container container-usage">
       <h4 class="usage-title">试试看易搜搭的神奇搜索</h4>
       <div class="row">
-        <div class="col-sm-6 col-md-3 col-guide">
+        <div class="col-xs-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
             <img src="images/icons-搜同义.png" alt="...">
             <div class="caption caption-usage">
@@ -140,7 +142,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-md-3 col-guide">
+        <div class="col-xs-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
             <img src="images/icons-找搭配.png" alt="...">
             <div class="caption caption-usage">
@@ -149,7 +151,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-md-3 col-guide">
+        <div class="col-xs-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
             <img src="images/icons-中文搜索.png" alt="...">
             <div class="caption caption-usage">
@@ -158,7 +160,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-md-3 col-guide">
+        <div class="col-xs-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
             <img src="images/icons-词组搜索.png" alt="...">
             <div class="caption caption-usage">
@@ -170,22 +172,23 @@
       </div>
     </div>
 
+    <!--TODO: fix the displaying problem in small screens-->
     <div class="back-introduction">
     	<div class="container container-usage">
-    		<div class="row">
-    			<div class="col-sm-6 col-md-3 col-introduction">
+    		<div class="row xs-hide">
+    			<div class="col-xs-6 col-sm-3 col-introduction">
     				<h3>149,000,000</h3>
     				<p>专业论文库</p>
     			</div>
-    			<div class="col-sm-6 col-md-3 col-introduction">
+    			<div class="col-xs-6 col-sm-3 col-introduction">
     				<h3>3,000+</h3>
     				<p>日均浏览量</p>
     			</div>
-    			<div class="col-sm-6 col-md-3 col-introduction">
+    			<div class="col-xs-6 col-sm-3 col-introduction">
     				<h3>32+</h3>
     				<p>个人领域</p>
     			</div>
-    			<div class="col-sm-6 col-md-3 col-introduction">
+    			<div class="col-xs-6 col-sm-3 col-introduction">
     				<h3>4+</h3>
     				<p>创新搜索方式</p>
     			</div>
@@ -247,7 +250,8 @@
 
     <div class="back-feedback">
       <div class="container">
-      	<div style="text-align: center">
+      	<div>
+      		<!--TODO: make the nav pills in the center.-->
 	      	<ul class="nav nav-pills" id="FeedbackTab" role="tablist">
 	          <li role="presentation" class="active">
 	            <a href="#Experts" role="tab" data-toggle="tab">专家评价</a>
@@ -324,7 +328,7 @@
 	    			<a href="#"><img src="images/sina_weibo_F.svg"></a>
         	</div>
         </div>
-        <p class="copyright col-sm-4 col-sm-offset-4">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
+        <p class="copyright">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
       </div>
     </footer>
 
