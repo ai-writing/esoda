@@ -9,6 +9,18 @@ body {
   }
 }
 
+a {
+	color: #63B7E6;
+}
+
+.display-none {
+	display: none;
+}
+
+.display-inline {
+	display: inline;
+}
+
 .center-align {
 	text-align: center;
 	position: relative;
@@ -444,12 +456,24 @@ body {
 
 .result-page {
 	margin-bottom: 0;
-	background-color: #f6f6f6;
+	background-color: #f5f5f9;
 }
 
 .result-sidebar {
 	text-align: center;
 	width: 200px;
+	margin-top: 20px;
+}
+
+.result-sidebar-title {
+	color: #63B7E6;
+}
+
+.result-sidebar>.panel-group>.panel {
+	margin-top: 15px;
+}
+.result-sidebar>.panel-group>.panel>.panel-heading {
+	margin-bottom: 0px;
 }
 
 .btn-navbar-search {
@@ -477,15 +501,78 @@ body {
 	border: solid 1px #ddd;
 }
 
-.result-callout {
-	padding: 30px;
-	margin: 20px 20px;
-	margin-top: 30px;
+.panel {
+	background: transparent;
+	border: none;
+}
+
+.panel-default > .panel-heading {
 	background-color: #fff;
-	border: 1px solid #ddd;
-	border-left-width: 7px;
-	border-left-color: #333;
-	border-radius: 3px
+	margin-bottom: 6px;
+}
+
+.panel-default > .panel-collapse {
+	background-color: #fff;
+}
+
+.panel-subtitle {
+	color: #9b9b9b;
+}
+
+.panel-footer {
+	border: none;
+	background-color: #fff;
+	padding: 0px;
+}
+
+.panel-body {
+	padding-left: 0px;
+}
+
+.dictionary-container {
+	padding: 0px 10px;
+	margin: 0px;
+	background-color: #fff;
+}
+
+.dictionary-left {
+	border-right: 2px solid #979797;
+	padding: 5px 3px;
+}
+
+.dictionary-right {
+	padding: 5px 3px;
+}
+
+.dictionary-hint {
+	color: #979797;
+}
+
+.nav-tabs {
+	border-bottom-color: transparent;
+}
+
+.nav-tabs>li>a {
+	border-bottom: 2px solid #999;
+}
+
+.nav-tabs>li>a:hover,
+.nav-tabs>li>a:focus {
+	border-color: transparent;
+	border-bottom: 2px solid #eee;
+	background-color: #fff;
+}
+
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover {
+	color: #4a4a4a;
+	border-color: transparent;
+	border-bottom: 2px solid #63B7E6;
+}
+
+.usage-panel-content {
+	padding: 10px;
 }
 
 .result-warning {
@@ -496,16 +583,21 @@ body {
 }
 
 .result-table-cell {
-	border: 1px solid #ddd;
-	background-color: #fff;
+	background-color: transparent;
 	padding: 10px 25px;
-	margin: 20px 20px;
 	margin-top: 5px;
+	margin-bottom: 3px;
 }
 
 .result-subtitle {
 	font-weight: 700;
 	float: left;
+}
+
+#ExampleEnd {
+	border-top: 1px solid #979797;
+	color: #9b9b9b;
+	display: none;
 }
 
 #Synonymous > span {
@@ -544,10 +636,9 @@ body {
 }
 
 .result-example {
-	border: 1px solid #ddd;
 	background-color: #fff;
 	padding: 10px 10px;
-	margin: 20px 20px;
+	margin: 0px;
 	margin-top: 5px;
 }
 
@@ -561,7 +652,10 @@ body {
 }
 
 .example-list-label {
-	display: none;
+}
+
+.example-list-content {
+	width: 95%;
 }
 
 .example-list-content > strong {

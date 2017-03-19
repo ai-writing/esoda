@@ -275,9 +275,13 @@ $(function () {
         } else {
           if (obj.ended == 1) {
             loaded = 1;
+            $("#ExampleEnd").show();
             return;
           }
           loadCount++;
+          if (loadCount == 5) {
+            $("#ExampleEnd").show();
+          }
           $.appendExampleList( obj.list );
         }
       }, 2000);
@@ -311,5 +315,10 @@ $(function () {
 		e.preventDefault();
 		$(e.target).toggleClass("glyphicon-heart-empty");
 		$(e.target).toggleClass("glyphicon-heart");
+  }
+
+  $.clickChevron = function(e) {
+    $(e.target).toggleClass("glyphicon-chevron-up");
+    $(e.target).toggleClass("glyphicon-chevron-down");
   }
 });

@@ -68,76 +68,145 @@
                 当前个人领域为：<span id="SearchDomain">{{ domain }}</span>，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage">{{ count }}</span>句例句，在其他<a href="#">个人领域</a>中搜索
               </div>
 
-              <div class="result-callout">
-                <div class="row">
-                  <div class="col-sm-6 col-md-6" style="border-right:dashed 1px #ddd">
-                    <p id="ResultItem">{{ word }}</p>
-                    <div class="row">
-                      <div class="col-sm-6 col-md-4">
-                        <span class="glyphicon glyphicon-volume-up"></span>
-                        <span>英</span>
-                        <span id="EnglishPronounce">{{ english }}</span>
-                      </div>
-                      <div class="col-sm-6 col-md-4">
-                        <span class="glyphicon glyphicon-volume-up"></span>
-                        <span>美</span>
-                        <span id="AmericanPronounce">{{ american }}</span>
-                      </div>
+              <div class="panel-group" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="HeadingDict">
+                    <div class="panel-title display-inline">
+                      词典
+                      <span class="panel-subtitle">Dictionary</span>
                     </div>
+                    <a role="button" data-toggle="collapse" href="#CollapseDict" aria-expanded="true" aria-controls="CollapseDict" onclick="$.clickChevron(event);">
+                      <span class="glyphicon glyphicon-chevron-down right-float"></span>
+                    </a>
                   </div>
-                  <div class="col-sm-6 col-md-6">
-                    <div id="WordExplanation">
-                      <p>{{ explanation }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                  <div id="CollapseDict" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingDict">
+                    <div class="dictionary-container row">
+                      <div class="col-sm-6 dictionary-left dictionary-hint">
+                        搜索内容：英文
+                      </div>
+                      <div class="col-sm-6 dictionary-right dictionary-hint">
+                        中文翻译
+                      </div>
 
-              <div class="result-table-cell row">
-                <div class="result-subtitle col-sm-1">同义</div>
-                <div id="Synonymous" class="col-sm-11">
-                  <span><a href=""> {{ synonymous }} </a></span>
-                </div>
-              </div>
-
-              <div class="result-table-cell row">
-                <div class="result-subtitle col-sm-1">搭配</div>
-                <div class="col-sm-11" id="Collocation">
-                  <ul class="nav nav-tabs" id="CollocationTab" role="tablist">
-                    <li role="presentation" class="active">
-                      <a href="#CollocAll" role="tab" data-toggle="tab">全部</a>
-                    </li>
-                    <li role="presentation">
-                      <a href="#{{ collocation_label }}" role="tab" data-toggle="tab">{{ collocation }}</a>
-                    </li>
-                  </ul>
-                  <div id="CollocContent" class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade" id="CollocAll"></div>
-                    <div role="tabpanel" class="tab-pane fade" id="{{ collocation_label }}">
-                      <div class="row colloc-result">
-                        <div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
+                      <div class="col-sm-6 dictionary-left">
+                        <p id="ResultItem">{{ word }}</p>
+                        <div class="row">
+                          <div class="col-sm-6 col-md-4">
+                            <span class="glyphicon glyphicon-volume-up"></span>
+                            <span>英</span>
+                            <span id="EnglishPronounce">{{ english }}</span>
+                          </div>
+                          <div class="col-sm-6 col-md-4">
+                            <span class="glyphicon glyphicon-volume-up"></span>
+                            <span>美</span>
+                            <span id="AmericanPronounce">{{ american }}</span>
+                          </div>
                         </div>
-                        <div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
-                        </div>
-                        <div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
+                      </div>
+                      <div class="col-sm-6 dictionary-right">
+                        <div id="WordExplanation">
+                          <p>{{ explanation }}</p>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </div> <!-- dictionary panel -->
+
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="HeadingUsage">
+                    <div class="panel-title display-inline">
+                      用法
+                      <span class="panel-subtitle">Usage</span>
+                    </div>
+                    <a role="button" data-toggle="collapse" href="#CollapseUsage" aria-expanded="true" aria-controls="CollapseUsage" onclick="$.clickChevron(event);">
+                      <span class="glyphicon glyphicon-chevron-down right-float"></span>
+                    </a>
+                  </div>
+                  <div id="CollapseUsage" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
+                    <ul class="nav nav-tabs" id="UsageTab" role="tablist">
+                      <!--li role="presentation">
+                        <a href="#{{ usage_label }}" role="tab" data-toggle="tab">{{ usage_title }}</a>
+                      </li-->
+                      <li role="presentation" class="active">
+                        <a href="#SynContent" role="tab" data-toggle="tab">quality&nbsp;&nbsp;同义表达</a>
+                      </li>
+                      <li role="presentation">
+                        <a href="#PhraseContent" role="tab" data-toggle="tab">quality&nbsp;&nbsp;常用短语</a>
+                      </li>
+                      <li role="presentation">
+                        <a href="#ColContent" role="tab" data-toggle="tab">quality&nbsp;&nbsp;常用搭配</a>
+                      </li>
+                    </ul>
+                    <div id="UsageContent" class="tab-content">
+                      <!--div role="tabpanel" class="tab-pane fade" id="{{ usage_label }}">
+                      </div-->
+                      <div role="tabpanel" class="tab-pane fade active in" id="SynContent">
+                        <div class="usage-panel-content">
+                          <a href="#">talent</a>&nbsp;&nbsp;
+                          <a href="#">capability</a>&nbsp;&nbsp;
+                          <a href="#">ability</a>&nbsp;&nbsp;
+                          <a href="#">identity</a>&nbsp;&nbsp;
+                          <a href="#">character</a>
+                        </div>
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="PhraseContent">
+                      </div>
+                      <div role="tabpanel" class="tab-pane fade" id="ColContent">
+                      </div>
+                    </div>
+                  </div>
+                </div> <!-- usage panel -->
+
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="HeadingColloc">
+                    <div class="panel-title display-inline">
+                      搭配
+                      <span class="panel-subtitle">Collocation</span>
+                    </div>
+                    <a role="button" data-toggle="collapse" href="#CollapseColloc" aria-expanded="true" aria-controls="CollapseColloc" onclick="$.clickChevron(event);">
+                      <span class="glyphicon glyphicon-chevron-down right-float"></span>
+                    </a>
+                  </div>
+                  <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
+                    <ul class="nav nav-tabs" id="CollocationTab" role="tablist">
+                      <li role="presentation" class="active">
+                        <a href="#CollocAll" role="tab" data-toggle="tab">全部</a>
+                      </li>
+                      <li role="presentation">
+                        <a href="#{{ collocation_label }}" role="tab" data-toggle="tab">{{ collocation }}</a>
+                      </li>
+                    </ul>
+                    <div id="CollocContent" class="tab-content">
+                      <div role="tabpanel" class="tab-pane fade" id="CollocAll"></div>
+                      <div role="tabpanel" class="tab-pane fade" id="{{ collocation_label }}">
+                        <div class="row colloc-result">
+                          <div class="col-sm-4">
+                            <p><a href="">{{ usage }}({{ count }})</a></p>
+                          </div>
+                          <div class="col-sm-4">
+                            <p><a href="">{{ usage }}({{ count }})</a></p>
+                          </div>
+                          <div class="col-sm-4">
+                            <p><a href="">{{ usage }}({{ count }})</a></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> <!-- collocation panel -->
+
+              </div> <!-- panel-group -->
 
               <div id="ExampleList" class="panel-group">
                 <div class="panel panel-default result-example row">
                   <div class="col-xs-11">
-                    <div class="panel-heading example-list-label" >
-                      {{ label }}
-                    </div>
-                    <div class="panel-body example-list-content">
-                      {{ content }}
+                    <div class="panel-body">
+                      <div class="display-inline example-list-label">
+                        {{ label }}
+                      </div>
+                      <div class="right-float example-list-content">
+                        {{ content }}
+                      </div>
                     </div>
                     <div class="panel-footer example-list-source">
                       {{ source }}
@@ -149,25 +218,49 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> <!-- panel-group -->
 
               <div id="Loading" class="result-table-cell center-align">
                 <p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p>
               </div>
 
+              <div id="ExampleEnd" class="result-table-cell center-align">
+                <span>您已浏览完全部结果</span>
+              </div>
+
             </div>
           </div>
 
-          <!--TODO: fix the problem of data-spy data-offset-bottom and top, with the fixed width -->
           <div class="col-sm-3 hidden-xs">
             <div id="SidebarAffix" class="affix result-sidebar" data-spy="affix">
-              <div class="suggestion-container" id="RelatedWords">
-                <h4>大家都在搜</h4>
-                <p><a href="">{{ related }}</a></p>
-              </div>
-              <div class="suggestion-container" id="HotWords">
-                <h4>领域内热词</h4>
-                <p><a href="">{{ hot }}</a></p>
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="HeadingRelated">
+                    <div class="result-sidebar-title">
+                      大家都在搜
+                    </div>
+                  </div>
+                  <a role="button" data-toggle="collapse" href="#CollapseRelated" aria-expanded="true" aria-controls="CollapseRelated" onclick="$.clickChevron(event);">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                  </a>
+                  <div id="CollapseRelated" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRelated">
+                    <p><a href="">{{ related }}</a></p>
+                  </div>
+                </div>
+
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="HeadingHot">
+                    <div class="result-sidebar-title">
+                        领域内热词
+                    </div>
+                  </div>
+                  <a role="button" data-toggle="collapse" href="#CollapseHot" aria-expanded="true" aria-controls="CollapseHot" onclick="$.clickChevron(event);">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                  </a>
+                  <div id="CollapseHot" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingHot">
+                    <p><a href="">{{ hot }}</a></p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -546,15 +639,15 @@
         var cur = $("#ExampleList > div").length;
         list.forEach(function (value) {
           var example = $("#ExampleList div:first").clone().css("display", "block");
-          var labelHtml = $(example).children("div:first").children("div:eq(0)").html();
-          var contentHtml = $(example).children("div:first").children("div:eq(1)").html();
-          var sourceHtml = $(example).children("div:first").children("div:eq(2)").html();
+          var labelHtml = $(example).children("div:first").children(".panel-body").children(".example-list-label").html();
+          var contentHtml = $(example).children("div:first").children(".panel-body").children(".example-list-content").html();
+          var sourceHtml = $(example).children("div:first").children(".panel-footer").html();
 
-          $(example).children("div:first").children("div:eq(0)").html(
+          $(example).children("div:first").children(".panel-body").children(".example-list-label").html(
               labelHtml.replace("{{ label }}", cur + ". "));
-          $(example).children("div:first").children("div:eq(1)").html(
+          $(example).children("div:first").children(".panel-body").children(".example-list-content").html(
               contentHtml.replace("{{ content }}", value.content));
-          $(example).children("div:first").children("div:eq(2)").html(
+          $(example).children("div:first").children(".panel-footer").html(
               sourceHtml.replace("{{ source }}", value.source));
 
           $("#ExampleList").append(example);
@@ -581,12 +674,14 @@
         var r = $.getData("r");
         $("#CountUsage").html($("#CountUsage").html().replace("{{ count }}", r.count));
         $("#SearchDomain").html($("#SearchDomain").html().replace("{{ domain }}", r.domain));
+        /*
         $("#Synonymous span:first").css("display", "none");
         r.synonymous.forEach(function (value) {
           var synonymous = $("#Synonymous span:first").clone().css("display", "inline");
           synonymous.html(synonymous.html().replace("{{ synonymous }}", value));
           $("#Synonymous").append(synonymous);
         });
+        */
 
         r.collocation.forEach(function (value) {
           var nav = $("#CollocationTab li:eq(1)").clone();
@@ -618,21 +713,24 @@
 
         var suggestion = $.getData("suggestion");
         suggestion.related.forEach(function (value) {
-          var related = $("#RelatedWords p:first").clone();
+          var related = $("#CollapseRelated p:first").clone();
           related.html(related.html().replace("{{ related }}", value));
-          $("#RelatedWords").append(related);
+          $("#CollapseRelated").append(related);
         });
         suggestion.hot.forEach(function (value) {
-          var hot = $("#HotWords p:first").clone();
+          var hot = $("#CollapseHot p:first").clone();
           hot.html(hot.html().replace("{{ hot }}", value));
-          $("#HotWords").append(hot);
+          $("#CollapseHot").append(hot);
         });
-        $("#RelatedWords p:first").css("display", "none");
-        $("#HotWords p:first").css("display", "none");
+        $("#CollapseRelated p:first").css("display", "none");
+        $("#CollapseHot p:first").css("display", "none");
 
         var example = $.getData("example");
         $.appendExampleList( example.list );
-        if (example.ended) loaded = 1;
+        if (example.ended) {
+          $("#ExampleEnd").show();
+          loaded = 1;
+        }
       })();
       /*----------------- Testing code ------------------*/
     } );
