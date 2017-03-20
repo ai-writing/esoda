@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="">
+
+    <title>Esoda</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="index.html"><img src="images/LOGO.png"  class="navbar-logo" ></a>
+        </div>
+        <div id="navbar" class="navbar-index navbar-collapse collapse">
+
+          <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search" action="result.html">
+            <div id="ResultSearchBar" class="input-group full-width">
+              <span class="input-group-btn">
+                <button class="btn-navbar-search" type="submit">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+              </span>
+              <input type="text" id="SearchBox" class="navbar-search-box form-control" name="q" placeholder="搜搭从这里开始">
+            </div>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><img src="images/user.png"></a></li>
+            <li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
+          </ul>
+          
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <div class="modal fade" id="ModalLogin">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-login-content">
+          <div class="modal-header modal-login-header">
+            <h1 class="esoda-brand">Esoda</h1>
+            <p>登陆易搜搭，开启英文写作新体验</p>
+          </div>
+          <div class="modal-body modal-login-body">
+            <form id="LoginForm" class="form-horizontal" role="login" action="">
+              <input type="text" class="form-control form-login" placeholder="用户名" name="id"/>
+              <input type="password" class="form-control form-login" placeholder="密码" name="password"/>
+              <span class="form-login">
+                <button type="submit" class="btn btn-login">登入易搜搭</button>
+              </span>
+            </form>
+          </div>
+          <div class="modal-footer modal-login-footer">
+            <div class="modal-forgot-password">
+              <p><a href="">忘记密码？</a></p>
+            </div>
+            <div class="modal-register">
+              <p><a href="" data-toggle="modal" data-target="#ModalRegister">注册，加入易搜搭</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="ModalRegister">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header modal-register-header">
+            <h1 class="esoda-brand">Esoda</h1>
+            <p>加入易搜搭，享受更多个性化服务</p>
+          </div>
+          <div class="modal-body modal-register-body">
+            <form id="RegisterForm" class="form-horizontal" role="register" action="">
+              <input type="text" class="form-control form-register" placeholder="电子邮箱地址" name="id"/>
+              <input type="password" class="form-control form-register" placeholder="设置密码" name="password"/>
+              <input type="password" class="form-control form-register" placeholder="确认密码" name="conform"/>
+              <h6>By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></h6>
+              <span class="form-register">
+                <button type="submit" class="btn btn-register">开始搜搭</button>
+              </span>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-page">
+      <div class="container">
+        <div class="row warning-page-main">
+          <div class="col-sm-6">
+            <img src="images/404.svg" class="warning-page-icon">
+          </div>
+          <div class="col-sm-6">
+            <div class="warning-page-hints">
+              <div class="huge-title-number">404</div>
+              <div class="middle-title">好论文不是一次改完的</div>
+              <div class="middle-subtitle">你所搜索的页面并不存在哦</div>
+              <button type="button" class="btn btn-warning-page" onclick="window.history.go(-1)">回到上一页</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container container-footer">
+        <div class="row">
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">联系我们</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">PCG工作室</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">我们的团队</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">版权声明</a></p>
+          </div>
+          <div class="col-sm-3 col-md-2">
+            <p><a href="#" class="footer-link">商业合作</a></p>
+          </div>
+        </div>
+        <div class="row footer-shares">
+          <div class="col-sm-6">
+            <img src="images/LOGO.png" class="footer-logo">
+            <p>专业英文写作助手</p>
+          </div>
+          <div class="col-sm-6 right-align">
+            <a href="#"><img class="shares" src="images/email_F.svg"></a>
+            <a href="#"><img class="shares" src="images/wechat_F.svg"></a>
+            <a href="#"><img class="shares" src="images/QQ_F.svg"></a>
+            <a href="#"><img src="images/sina_weibo_F.svg"></a>
+          </div>
+        </div>
+        <p class="copyright">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <!--script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script-->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/esoda-main.js"></script>
+
+  </body>
+</html>

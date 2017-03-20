@@ -58,6 +58,56 @@
       </div>
     </nav>
 
+    <div class="modal fade" id="ModalLogin">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-login-content">
+          <div class="modal-header modal-login-header">
+            <h1 class="esoda-brand">Esoda</h1>
+            <p>登陆易搜搭，开启英文写作新体验</p>
+          </div>
+          <div class="modal-body modal-login-body">
+            <form id="LoginForm" class="form-horizontal" role="login" action="">
+              <input type="text" class="form-control form-login" placeholder="用户名" name="id"/>
+              <input type="password" class="form-control form-login" placeholder="密码" name="password"/>
+              <span class="form-login">
+                <button type="submit" class="btn btn-login">登入易搜搭</button>
+              </span>
+            </form>
+          </div>
+          <div class="modal-footer modal-login-footer">
+            <div class="modal-forgot-password">
+              <p><a href="">忘记密码？</a></p>
+            </div>
+            <div class="modal-register">
+              <p><a href="" data-toggle="modal" data-target="#ModalRegister">注册，加入易搜搭</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="ModalRegister">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header modal-register-header">
+            <h1 class="esoda-brand">Esoda</h1>
+            <p>加入易搜搭，享受更多个性化服务</p>
+          </div>
+          <div class="modal-body modal-register-body">
+            <form id="RegisterForm" class="form-horizontal" role="register" action="">
+              <input type="text" class="form-control form-register" placeholder="电子邮箱地址" name="id"/>
+              <input type="password" class="form-control form-register" placeholder="设置密码" name="password"/>
+              <input type="password" class="form-control form-register" placeholder="确认密码" name="conform"/>
+              <h6>By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></h6>
+              <span class="form-register">
+                <button type="submit" class="btn btn-register">开始搜搭</button>
+              </span>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="result-page">
       <div class="container">
         <div class="row">
