@@ -40,20 +40,32 @@ a {
 	display: inline;
 }
 
+.navbar-logo {
+	width: 135px;
+	margin-top: 32px;
+}
+
+.navbar-static-top {
+	z-index: 50;
+}
+
 .esoda-brand {
 	font-family: 'Arial-Black', 'Arial Black';
 	font-weight: 900;
 }
 
 .esoda-brand-main {
-	color: #fff;
-	font-size: 70px;
+	width: 230px;
+	padding-bottom: 10px;
+}
+
+.esoda-brand-hr {
+	border: 1px solid #fff;
+	margin: 8px 30px;
 }
 
 .esoda-brand-subtitle {
 	color: #fff;
-	padding-top: 8px;
-	border-top: 2px solid #FFFFFF;
 }
 
 .navbar-default {
@@ -78,6 +90,7 @@ a {
 .title {
 	margin-bottom: 43px;
 	text-align: center;
+	font-size: 18px;
 }
 
 .jumbotron {
@@ -379,6 +392,11 @@ a {
 	text-align: center;
 }
 
+.usage-title-hr {
+	border: 1px solid #979797;
+	width: 70%;
+}
+
 .thumbnail-guide {
 	border: none;
 }
@@ -400,12 +418,35 @@ a {
 	margin-top: 40px;
 }
 
+.footer-logo {
+	width: 135px;
+	margin-bottom: 9px;
+}
+
 .full-width {
 	width: 100%;
 }
 
 .shares {
 	margin-right: 31px;
+}
+
+.message-notepad {
+	padding-left: 30%;
+}
+
+#FeedbackTab {
+	margin-left: 40%;
+	margin-bottom: 40px;
+}
+
+#UserFeedback {
+	text-align: center;
+	color: #898989;
+}
+
+#UserFeedback>h5 {
+	color: #63B7E6;
 }
 
 #LikeOurSite {
@@ -474,6 +515,11 @@ a {
 }
 .result-sidebar>.panel-group>.panel>.panel-heading {
 	margin-bottom: 0px;
+}
+
+.result-sidebar>.panel-group>.panel>.panel-collapse {
+	padding-top: 8px;
+	padding-bottom: 15px;
 }
 
 .btn-navbar-search {

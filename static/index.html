@@ -34,16 +34,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <h1><a class="navbar-brand esoda-brand" href="index.html">Esoda</a></h1>
+          <a href="index.html"><img src="images/LOGO.png"  class="navbar-logo"></a>
         </div>
         <div id="navbar" class="navbar-index navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+          	<li><a href="#"><img src="images/user.png"></a></li>
           	<li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right hide">
             <li><a id="UserId" href="#">叶霜</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+            <li><a href="#"><img src="images/user.png"></a></li>
           </ul>
           <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
           	<li role="presentation" class="active"><a href="index.html">主页</a></li>
@@ -109,28 +109,29 @@
     <div class="jumbotron">
       <div class="container">
         <div class="row">
-	      <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 title">
-         	  <div class="esoda-brand esoda-brand-main">Esoda</div>
+		      <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 title">
+		      	<img src="images/ESODA.png" class="esoda-brand-main">
+		      	<hr class="esoda-brand-hr">
 	          <div class="esoda-brand-subtitle">
-	          	<span>专业论文写作助手</span>
+	          	<span>专业英文论文写作助手</span>
 	          </div>
-          </div>
-          <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
-            <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
-              <div class="input-group input-group-lg">
-                <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
-                <span class="input-group-btn">
-                  <button type="submit" class="btn btn-info">搜搭&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
-                </span>
-              </div>
-            </form>
-          </div>
+	        </div>
+	        <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+	          <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
+	            <div class="input-group input-group-lg">
+	              <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
+	              <span class="input-group-btn">
+	                <button type="submit" class="btn btn-info">搜搭&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
+	              </span>
+	            </div>
+	          </form>
+	        </div>
         </div>
       </div>
     </div>
 
     <div class="container container-usage">
-      <h4 class="usage-title">试试看易搜搭的神奇搜索</h4>
+      <h4 class="usage-title">点击预览易搜搭的神奇搜索</h4>
       <div class="row">
         <div class="col-xs-6 col-md-3 col-guide">
           <div class="thumbnail thumbnail-guide">
@@ -250,7 +251,6 @@
     <div class="back-feedback">
       <div class="container">
       	<div>
-      		<!--TODO: make the nav pills in the center.-->
 	      	<ul class="nav nav-pills" id="FeedbackTab" role="tablist">
 	          <li role="presentation" class="active">
 	            <a href="#Experts" role="tab" data-toggle="tab">专家评价</a>
@@ -260,11 +260,22 @@
 	          </li>
 	        </ul>
 	      </div>
-	      <div id="tab-content">
+	      <div class="tab-content">
 		      <div id="Experts" role="tabpanel" class="tab-pane fade active in">
 	        	<h4 class="usage-title">清华大学PCG工作室出品，目前最好用的英文论文写作工具！</h4>
 	        </div>
 	        <div id="Users" role="tabpanel" class="tab-pane fade">
+	        	<h4 class="usage-title">用户这样评价易搜搭</h4>
+	        	<div id="UserFeedback">
+	        		<p>"无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。"</p>
+	        		<h5>潘星宇</h5>
+	        	</div>
+	        	<nav aria-label="...">
+						  <ul class="pager">
+						    <li><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+						    <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+						  </ul>
+						</nav>
 	        </div>
         </div>
       </div>
@@ -285,6 +296,7 @@
     		<div class="message-title">留言帮助我们改进易搜搭</div>
     		<div class="row message-content">
     			<div class="col-xs-hide col-sm-2">
+    				<img src="images/notepad_L.svg" class="message-notepad">
     			</div>
     			<div class="col-xs-10 col-sm-10">
     				<textarea class="message-box"></textarea>
@@ -317,7 +329,7 @@
         </div>
         <div class="row footer-shares">
         	<div class="col-sm-6">
-        		<h1 class="esoda-brand">Esoda</h1>
+        		<img src="images/LOGO.png" class="footer-logo">
         		<p>专业英文写作助手</p>
         	</div>
         	<div class="col-sm-6 right-align">
