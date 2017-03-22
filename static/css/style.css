@@ -13,6 +13,10 @@ a {
 	color: #63B7E6;
 }
 
+body {
+	font-family: PingFangSC;
+}
+
 .display-none {
 	display: none;
 }
@@ -66,6 +70,10 @@ a {
 
 .esoda-brand-subtitle {
 	color: #fff;
+}
+
+.user-image {
+	width: 20px;
 }
 
 .navbar-default {
@@ -757,7 +765,7 @@ a {
 .huge-title-number {
 	font-size: 120px;
 	color: #63B7E6;
-	font-weight: bold;
+	font-family: DINCondensed-Bold;
 }
 
 .middle-title {
