@@ -321,4 +321,16 @@ $(function () {
     $(e.target).toggleClass("glyphicon-chevron-up");
     $(e.target).toggleClass("glyphicon-chevron-down");
   }
+
+  $.clickRemove = function(e) {
+    e.preventDefault();
+    $(e.target).parent().parent().hide();
+  }
+
+  $("#OpenRegister").click(function() {
+    $("#ModalLogin").modal("hide");
+    setTimeout(function() {
+      $(document.body).addClass("modal-open");
+    }, 500);
+  })
 });

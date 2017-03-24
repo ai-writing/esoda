@@ -175,19 +175,50 @@ body {
 	margin-top: 5px;
 }
 
-.modal-login-header {
+.modal-login-sm {
+	width: 400px;
+	margin: 200px auto;
+}
+
+.modal-register-sm {
+	width: 400px;
+	margin: 150px auto;
+}
+
+.modal-login-content {
+	border-radius: 3px;
+}
+
+.modal-logo {
+	width: 125px;
+	margin: 30px auto;
+	margin-bottom: 15px;
+}
+
+.modal-header {
+	border-bottom: none;
+}
+
+.modal-header {
 	text-align: center;
 	padding: 0px;
+	color: #63B7E6;
+	font-size: 16px;
 }
 
 .modal-login-body {
 	padding: 0px 20px;
 }
 
+.modal-body>.form-horizonal {
+	padding: 0px 15px;
+}
+
 .modal-login-footer {
 	font-size: 12px;
-	padding: 0px 20px;
+	padding: 5px 35px;
 	padding-bottom: 15px;
+	border-top: none;
 }
 
 .modal-register-header {
@@ -195,16 +226,66 @@ body {
 	padding: 0px;
 }
 
+.modal-register-hint {
+	margin-bottom: -10px;
+	font-size: 12px;
+	text-align: center;
+	letter-spacing: 3px;
+}
+
+.modal-register-click-hint {
+	font-size: 12px;
+	text-align: center;
+}
+
 .modal-register-body {
 	padding: 0px 20px;
 }
 
-.form-login {
-	margin: 10px auto;
+.modal-register-valid {
+	background-color: #dff0d8;
+	border: solid 0.5px #d6e9c6;
+	color: #468847;
+	font-size: 12px;
+	padding: 2px 3px;
+	margin-bottom: 15px;
 }
 
-.form-register {
+.hint-remove {
+	float: right;
+	color: #9b9b9b;
+}
+
+.form-login, .form-register {
 	margin: 10px auto;
+	font-size: 16px;
+	text-align: center;
+	height: 40px;
+}
+
+.form-login .form-control {
+	padding: 10px 12px;
+}
+
+.form-login>.btn {
+	font-size: 16px;
+	padding: 10px 12px;
+	color: #fff;
+}
+
+.form-register>.btn {
+	font-size: 16px;
+	padding: 10px 12px;
+	color: #fff;
+	border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 3px;
+    border-top-left-radius: 3px;
+    letter-spacing: 3px;
+}
+
+#RegisterForm {
+	padding-bottom: 20px;
 }
 
 .input-group-lg>.form-control,
@@ -217,7 +298,7 @@ body {
 }
 
 .btn-login {
-	margin: 10px 0px;
+	margin: 5px 0px;
 	width: 100%;
 }
 
