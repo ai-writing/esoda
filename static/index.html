@@ -59,16 +59,16 @@
       <div class="modal-dialog modal-sm modal-login-sm">
         <div class="modal-content modal-login-content">
           <div class="modal-header modal-login-header">
-          	<img src="images/LOGO.png" class="modal-logo">
+            <img src="images/LOGO.png" class="modal-logo">
             <p>登陆易搜搭，开启英文写作新体验</p>
           </div>
           <div class="modal-body modal-login-body">
             <form id="LoginForm" class="form-horizonal" role="login" action="">
               <input type="text" class="form-control form-login" placeholder="电子邮箱" name="id"/>
               <input type="password" class="form-control form-login" placeholder="密码" name="password"/>
-              <div class="modal-login-invalid">
-              	密码错误！
-              	<a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                密码错误！
               </div>
               <span class="form-login">
                 <button type="submit" class="btn btn-login">登入易搜搭</button>
@@ -91,28 +91,28 @@
       <div class="modal-dialog modal-sm modal-register-sm">
         <div class="modal-content">
           <div class="modal-header modal-register-header">
-          	<img src="images/LOGO.png" class="modal-logo">
+            <img src="images/LOGO.png" class="modal-logo">
             <p>加入易搜搭，享受更多个性化服务</p>
           </div>
           <div class="modal-body modal-register-body">
             <form id="RegisterForm" class="form-horizonal" role="register" action="">
-            	<div class="modal-register-hint">电子邮箱地址</div>
+              <div class="modal-register-hint">电子邮箱地址</div>
               <input type="text" class="form-control form-register" name="id"/>
-              <div class="modal-register-valid">
-              	邮箱可以使用！
-              	<a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
+              <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                邮箱可以使用！
               </div>
-            	<div class="modal-register-hint">设置密码</div>
+              <div class="modal-register-hint">设置密码</div>
               <input type="password" class="form-control form-register" name="password"/>
-              <div class="modal-login-invalid">
-              	密码不能少于6位！
-              	<a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                密码不能少于6位！
               </div>
-            	<div class="modal-register-hint">确认密码</div>
+              <div class="modal-register-hint">确认密码</div>
               <input type="password" class="form-control form-register" name="conform"/>
-              <div class="modal-login-invalid">
-              	确认密码错误！
-              	<a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                确认密码错误！
               </div>
               <div class="modal-register-click-hint">By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></div>
               <span class="form-register">

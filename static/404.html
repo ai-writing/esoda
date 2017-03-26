@@ -67,9 +67,9 @@
             <form id="LoginForm" class="form-horizonal" role="login" action="">
               <input type="text" class="form-control form-login" placeholder="电子邮箱" name="id"/>
               <input type="password" class="form-control form-login" placeholder="密码" name="password"/>
-              <div class="modal-login-invalid">
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 密码错误！
-                <a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
               </div>
               <span class="form-login">
                 <button type="submit" class="btn btn-login">登入易搜搭</button>
@@ -99,21 +99,21 @@
             <form id="RegisterForm" class="form-horizonal" role="register" action="">
               <div class="modal-register-hint">电子邮箱地址</div>
               <input type="text" class="form-control form-register" name="id"/>
-              <div class="modal-register-valid">
+              <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 邮箱可以使用！
-                <a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
               </div>
               <div class="modal-register-hint">设置密码</div>
               <input type="password" class="form-control form-register" name="password"/>
-              <div class="modal-login-invalid">
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 密码不能少于6位！
-                <a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
               </div>
               <div class="modal-register-hint">确认密码</div>
               <input type="password" class="form-control form-register" name="conform"/>
-              <div class="modal-login-invalid">
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 确认密码错误！
-                <a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
               </div>
               <div class="modal-register-click-hint">By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></div>
               <span class="form-register">

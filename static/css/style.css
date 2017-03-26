@@ -246,18 +246,28 @@ body {
 	padding: 0px 20px;
 }
 
-.modal-login-invalid {
+.alert-dismissible .close {
+	right: 0px;
+}
+
+button.close:focus {
+	outline: none;
+}
+
+.alert-danger {
 	background-color: #f2dede;
 	border: solid 0.5px #eed3d7;
+	border-radius: 0px;
 	color: #b94a48;
 	font-size: 12px;
 	padding: 2px 3px;
 	margin-bottom: 15px;
 }
 
-.modal-register-valid {
+.alert-success {
 	background-color: #dff0d8;
 	border: solid 0.5px #d6e9c6;
+	border-radius: 0px;
 	color: #468847;
 	font-size: 12px;
 	padding: 2px 3px;
