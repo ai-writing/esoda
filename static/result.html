@@ -149,17 +149,13 @@
                     </a>
                   </div>
                   <div id="CollapseDict" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingDict">
-                    <div class="dictionary-container row">
-                      <div class="col-sm-6 dictionary-left dictionary-hint">
-                        搜索内容：英文
-                      </div>
-                      <div class="col-sm-6 dictionary-right dictionary-hint">
-                        中文翻译
-                      </div>
-
-                      <div class="col-sm-6 dictionary-left">
+                    <div class="dictionary-container">
+                      <div class="dictionary-left">
+                        <div class="dictionary-hint">
+                          搜索内容：英文
+                        </div>
                         <p id="ResultItem">{{ word }}</p>
-                        <div class="row">
+                        <div class="row display-none">
                           <div class="col-sm-6 col-md-4">
                             <span class="glyphicon glyphicon-volume-up"></span>
                             <span>英</span>
@@ -171,8 +167,17 @@
                             <span id="AmericanPronounce">{{ american }}</span>
                           </div>
                         </div>
+                        <div class="dictionary-edit">
+                          <a href="">编辑&nbsp;<span class="glyphicon glyphicon-pencil"></span></a>
+                        </div>
                       </div>
-                      <div class="col-sm-6 dictionary-right">
+                      <div class="dictionary-middle">
+                        <div class="dictionary-middle-line"></div>
+                        <a href=""><span class="glyphicon glyphicon-refresh"></span></a>
+                        <div class="dictionary-middle-line"></div>
+                      </div>
+                      <div class="dictionary-right">
+                        <div class="dictionary-hint">中文翻译</div>
                         <div id="WordExplanation">
                           <p>{{ explanation }}</p>
                         </div>
@@ -267,6 +272,9 @@
               </div> <!-- panel-group -->
 
               <div id="ExampleList" class="panel-group">
+                <div class="example-hint">
+                  找到{{ example_number }}句例句，为您提供前50个，排序根据点赞和相关度自动生成，耗时{{ search_time }}秒
+                </div>
                 <div class="panel panel-default result-example row">
                   <div class="col-xs-11">
                     <div class="panel-body">
@@ -278,12 +286,14 @@
                       </div>
                     </div>
                     <div class="panel-footer example-list-source">
-                      {{ source }}
+                      文章来源：{{ source }}
                     </div>
                   </div>
                   <div class="col-xs-1">
                     <div class="panel-heading panel-heart">
-                      <a href="" onclick="$.clickHeart(event);"><p class="glyphicon glyphicon-heart-empty"></p></a>
+                      <a href="" onclick="$.clickHeart(event);"><span class="glyphicon glyphicon-heart-empty"></span></a>
+                      <span>{{ heart_number }}&nbsp;&nbsp;</span>
+                      <a href="" onclick="$.clickStar(event);"><span class="glyphicon glyphicon-star-empty"></span></a>
                     </div>
                   </div>
                 </div>
@@ -705,12 +715,13 @@
       };
 
       $.appendExampleList = function( list ) {
-        var cur = $("#ExampleList > div").length;
+        var cur = $("#ExampleList > div").length - 1;
         list.forEach(function (value) {
-          var example = $("#ExampleList div:first").clone().css("display", "block");
+          var example = $("#ExampleList div:eq(1)").clone().css("display", "block");
           var labelHtml = $(example).children("div:first").children(".panel-body").children(".example-list-label").html();
           var contentHtml = $(example).children("div:first").children(".panel-body").children(".example-list-content").html();
           var sourceHtml = $(example).children("div:first").children(".panel-footer").html();
+          var heartnumHtml = $(example).children("div:eq(1)").children("div:first").children("span:first").html();
 
           $(example).children("div:first").children(".panel-body").children(".example-list-label").html(
               labelHtml.replace("{{ label }}", cur + ". "));
@@ -718,11 +729,12 @@
               contentHtml.replace("{{ content }}", value.content));
           $(example).children("div:first").children(".panel-footer").html(
               sourceHtml.replace("{{ source }}", value.source));
+          $(example).children("div:eq(1)").children("div:first").children("span:first").html(heartnumHtml.replace("{{ heart_number }}", "129"));
 
           $("#ExampleList").append(example);
           cur++;
         });
-        $("#ExampleList div:first").css("display","none");
+        $("#ExampleList div:eq(1)").css("display","none");
       };
 
       (function initialLoading() {
@@ -800,6 +812,8 @@
           $("#ExampleEnd").show();
           loaded = 1;
         }
+
+        $("#ExampleList div:first").html($("#ExampleList div:first").html().replace("{{ example_number }}", "1209").replace("{{ search_time }}", "0.1"));
       })();
       /*----------------- Testing code ------------------*/
     } );

@@ -317,6 +317,12 @@ $(function () {
 		$(e.target).toggleClass("glyphicon-heart");
   }
 
+  $.clickStar = function(e) {
+    e.preventDefault();
+    $(e.target).toggleClass("glyphicon-star-empty");
+    $(e.target).toggleClass("glyphicon-star");
+  }
+
   $.clickChevron = function(e) {
     $(e.target).toggleClass("glyphicon-chevron-up");
     $(e.target).toggleClass("glyphicon-chevron-down");
