@@ -66,6 +66,10 @@
             <form id="LoginForm" class="form-horizonal" role="login" action="">
               <input type="text" class="form-control form-login" placeholder="电子邮箱" name="id"/>
               <input type="password" class="form-control form-login" placeholder="密码" name="password"/>
+              <div class="modal-login-invalid">
+              	密码错误！
+              	<a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
+              </div>
               <span class="form-login">
                 <button type="submit" class="btn btn-login">登入易搜搭</button>
               </span>
@@ -100,8 +104,16 @@
               </div>
             	<div class="modal-register-hint">设置密码</div>
               <input type="password" class="form-control form-register" name="password"/>
+              <div class="modal-login-invalid">
+              	密码不能少于6位！
+              	<a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
+              </div>
             	<div class="modal-register-hint">确认密码</div>
               <input type="password" class="form-control form-register" name="conform"/>
+              <div class="modal-login-invalid">
+              	确认密码错误！
+              	<a href="" class="hint-remove" onclick="$.clickRemove(event)"><span class="glyphicon glyphicon-remove"></span></a>
+              </div>
               <div class="modal-register-click-hint">By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></div>
               <span class="form-register">
                 <button type="submit" class="btn btn-register">开始搜搭</button>

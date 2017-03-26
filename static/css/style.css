@@ -171,6 +171,10 @@ body {
 	background-color: #63B7E6;
 }
 
+.navbar-default .navbar-nav>li>a:focus {
+	outline: none;
+}
+
 .nav-pills-index {
 	margin-top: 5px;
 }
@@ -240,6 +244,15 @@ body {
 
 .modal-register-body {
 	padding: 0px 20px;
+}
+
+.modal-login-invalid {
+	background-color: #f2dede;
+	border: solid 0.5px #eed3d7;
+	color: #b94a48;
+	font-size: 12px;
+	padding: 2px 3px;
+	margin-bottom: 15px;
 }
 
 .modal-register-valid {
@@ -621,6 +634,10 @@ body {
 	color: #63B7E6;
 	font-size: 20px;
 	width: 100%;
+}
+
+.btn-navbar-search:focus {
+	outline: none;
 }
 
 .navbar-search-box {
