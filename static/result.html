@@ -140,13 +140,15 @@
               <div class="panel-group" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="HeadingDict">
-                    <div class="panel-title display-inline">
-                      词典
-                      <span class="panel-subtitle">Dictionary</span>
+                    <div class="panel-title-wrapper">
+                      <div class="panel-title display-inline">
+                        词典
+                        <span class="panel-subtitle">Dictionary</span>
+                      </div>
+                      <a role="button" data-toggle="collapse" href="#CollapseDict" aria-expanded="true" aria-controls="CollapseDict" onclick="$.clickChevron(event);">
+                        <span class="glyphicon glyphicon-chevron-down right-float"></span>
+                      </a>
                     </div>
-                    <a role="button" data-toggle="collapse" href="#CollapseDict" aria-expanded="true" aria-controls="CollapseDict" onclick="$.clickChevron(event);">
-                      <span class="glyphicon glyphicon-chevron-down right-float"></span>
-                    </a>
                   </div>
                   <div id="CollapseDict" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingDict">
                     <div class="dictionary-container">
@@ -188,16 +190,18 @@
 
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="HeadingUsage">
-                    <div class="panel-title display-inline">
-                      用法
-                      <span class="panel-subtitle">Usage</span>
+                    <div class="panel-title-wrapper">
+                      <div class="panel-title display-inline">
+                        用法
+                        <span class="panel-subtitle">Usage</span>
+                      </div>
+                      <a role="button" data-toggle="collapse" href="#CollapseUsage" aria-expanded="true" aria-controls="CollapseUsage" onclick="$.clickChevron(event);">
+                        <span class="glyphicon glyphicon-chevron-down right-float"></span>
+                      </a>
                     </div>
-                    <a role="button" data-toggle="collapse" href="#CollapseUsage" aria-expanded="true" aria-controls="CollapseUsage" onclick="$.clickChevron(event);">
-                      <span class="glyphicon glyphicon-chevron-down right-float"></span>
-                    </a>
                   </div>
                   <div id="CollapseUsage" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
-                    <ul class="nav nav-tabs" id="UsageTab" role="tablist">
+                    <ul class="nav nav-tabs nav-tabs-usage" id="UsageTab" role="tablist">
                       <!--li role="presentation">
                         <a href="#{{ usage_label }}" role="tab" data-toggle="tab">{{ usage_title }}</a>
                       </li-->
@@ -233,18 +237,20 @@
 
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="HeadingColloc">
-                    <div class="panel-title display-inline">
-                      搭配
-                      <span class="panel-subtitle">Collocation</span>
+                    <div class="panel-title-wrapper">
+                      <div class="panel-title display-inline">
+                        搭配
+                        <span class="panel-subtitle">Collocation</span>
+                      </div>
+                      <a role="button" data-toggle="collapse" href="#CollapseColloc" aria-expanded="true" aria-controls="CollapseColloc" onclick="$.clickChevron(event);">
+                        <span class="glyphicon glyphicon-chevron-down right-float"></span>
+                      </a>
                     </div>
-                    <a role="button" data-toggle="collapse" href="#CollapseColloc" aria-expanded="true" aria-controls="CollapseColloc" onclick="$.clickChevron(event);">
-                      <span class="glyphicon glyphicon-chevron-down right-float"></span>
-                    </a>
                   </div>
                   <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                    <ul class="nav nav-tabs" id="CollocationTab" role="tablist">
+                    <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
                       <li role="presentation" class="active">
-                        <a href="#CollocAll" role="tab" data-toggle="tab">全部</a>
+                        <a href="#CollocAll" role="tab" data-toggle="tab">全部搭配</a>
                       </li>
                       <li role="presentation">
                         <a href="#{{ collocation_label }}" role="tab" data-toggle="tab">{{ collocation }}</a>
@@ -598,6 +604,30 @@
                 count: 609
               },
               {
+                content: "improve...quality",
+                count: 609
+              },
+              {
+                content: "improve...quality",
+                count: 609
+              },
+              {
+                content: "improve...quality",
+                count: 609
+              },
+              {
+                content: "evaluate...quality",
+                count: 185
+              },
+              {
+                content: "evaluate...quality",
+                count: 185
+              },
+              {
+                content: "evaluate...quality",
+                count: 185
+              },
+              {
                 content: "evaluate...quality",
                 count: 185
               },
@@ -620,6 +650,30 @@
               {
                 content: "measure...quality",
                 count: 173
+              },
+              {
+                content: "measure...quality",
+                count: 173
+              },
+              {
+                content: "measure...quality",
+                count: 173
+              },
+              {
+                content: "measure...quality",
+                count: 173
+              },
+              {
+                content: "assess...quality",
+                count: 149
+              },
+              {
+                content: "assess...quality",
+                count: 149
+              },
+              {
+                content: "assess...quality",
+                count: 149
               },
               {
                 content: "assess...quality",
