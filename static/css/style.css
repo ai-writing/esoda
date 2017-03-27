@@ -161,12 +161,31 @@ body {
 	background-color: #63B7E6;
 }
 
-.navbar-default .navbar-nav>li>a:focus {
-	outline: none;
-}
-
 .nav-pills-index {
 	margin-top: 5px;
+}
+
+.nav-pills-feedback>li>a {
+	border-radius: 4px;
+	color: #63B7E6;
+	border: 2px solid #63B7E6;
+	margin: -4px;
+	padding: 10px 30px;
+}
+
+.nav-pills-feedback>li>a:hover {
+	background: transparent;
+}
+
+.nav-pills-feedback > li.active > a,
+.nav-pills-feedback > li.active > a:hover,
+.nav-pills-feedback > li.active > a:focus {
+	color: #fff;
+	background-color: #63B7E6;
+}
+
+.navbar-default .navbar-nav>li>a:focus {
+	outline: none;
 }
 
 .modal-login-sm {
@@ -509,6 +528,7 @@ button.close:focus {
 
 .usage-title {
 	margin-bottom: 30px;
+	margin-top: 80px;
 	text-align: center;
 	font-size: 20px;
 }
@@ -579,6 +599,17 @@ button.close:focus {
 	padding-right: 30px;
 }
 
+.pager li>a {
+	color: #9b9b9b;
+	background: #f5f5f9;
+	border: transparent;
+	font-size: 18px;
+}
+
+.pager li>a:hover {
+	color: #4a4a4a;
+}
+
 .copyright {
 	text-align: center;
 	font-family: PingFangSC-Medium;
@@ -611,7 +642,9 @@ button.close:focus {
 }
 
 #FeedbackTab {
-	margin-left: 40%;
+	position: absolute;
+	left: 50%;
+	margin-left: -120px;
 	margin-bottom: 40px;
 }
 
