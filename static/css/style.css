@@ -14,7 +14,7 @@ a {
 }
 
 body {
-	font-family: PingFangSC;
+	font-family: PingFangSC-Regular, Microsoft Yahei;
 }
 
 .display-none {
@@ -482,6 +482,7 @@ button.close:focus {
 .col-introduction > p {
 	color: #9b9b9b;
 	font-size: 18px;
+	font-family: PingFangSC-Medium;
 }
 
 .col-feature {
@@ -499,6 +500,7 @@ button.close:focus {
 .col-feature-intro > p {
 	margin: 0 0;
 	color: #9b9b9b;
+	font-family: PingFangSC-Light;
 }
 
 .col-message-right {
@@ -579,10 +581,12 @@ button.close:focus {
 
 .copyright {
 	text-align: center;
+	font-family: PingFangSC-Medium;
 }
 
 .footer-link {
 	color: #9b9b9b;
+	font-family: PingFangSC-Medium;
 }
 
 .footer-shares {
@@ -863,6 +867,7 @@ button.close:focus {
 	margin: 0px 20px;
 	padding: 10px 25px;
 	text-align: center;
+	font-family: PingFangSC-Light;
 }
 
 .result-table-cell {
