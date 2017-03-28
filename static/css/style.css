@@ -501,7 +501,7 @@ button.close:focus {
 .col-introduction > p {
 	color: #9b9b9b;
 	font-size: 18px;
-	font-family: PingFangSC-Medium;
+	font-family: PingFangSC-Medium, Microsoft Yahei-Bold;
 }
 
 .col-feature {
@@ -519,16 +519,21 @@ button.close:focus {
 .col-feature-intro > p {
 	margin: 0 0;
 	color: #9b9b9b;
-	font-family: PingFangSC-Light;
+	font-family: PingFangSC-Light, Microsoft Yahei;
 }
 
 .col-message-right {
 	text-align: right;
 }
 
-.usage-title {
+.feedback-title {
 	margin-bottom: 30px;
 	margin-top: 80px;
+	text-align: center;
+	font-size: 20px;
+}
+.usage-title {
+	margin-bottom: 30px;
 	text-align: center;
 	font-size: 20px;
 }
@@ -612,12 +617,12 @@ button.close:focus {
 
 .copyright {
 	text-align: center;
-	font-family: PingFangSC-Medium;
+	font-family: PingFangSC-Medium, Microsoft Yahei-Bold;
 }
 
 .footer-link {
 	color: #9b9b9b;
-	font-family: PingFangSC-Medium;
+	font-family: PingFangSC-Medium, Microsoft Yahei-Bold;
 }
 
 .footer-shares {
@@ -673,11 +678,6 @@ button.close:focus {
 }
 
 #CountUsage {
-	font-weight: 700;
-	color: #666;
-}
-
-#SearchDomain {
 	font-weight: 700;
 	color: #666;
 }
@@ -900,7 +900,8 @@ button.close:focus {
 	margin: 0px 20px;
 	padding: 10px 25px;
 	text-align: center;
-	font-family: PingFangSC-Light;
+	color: #4a4a4a;
+	font-family: PingFangSC-Light, Microsoft Yahei;
 }
 
 .result-table-cell {
