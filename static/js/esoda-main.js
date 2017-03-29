@@ -261,7 +261,7 @@ $(function () {
   var loadCount = 1, loading = 0, loaded = 0;
 
   $( window ).scroll( function () {
-    if ($(document).height() <= $(window).scrollTop() + $(window).height() + 20) {
+    if ($(document).height() <= $(window).scrollTop() + $(window).height() + 30) {
       if (loading == 1 || loaded == 1 || loadCount > 4) return;
 
       loading = 1;

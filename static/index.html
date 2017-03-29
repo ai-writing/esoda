@@ -294,8 +294,10 @@
 	        <div id="Users" role="tabpanel" class="tab-pane fade">
 	        	<h4 class="feedback-title">用户这样评价易搜搭</h4>
 	        	<div id="UserFeedback">
-	        		<p>"无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。"</p>
-	        		<h5>潘星宇</h5>
+	        		<div class="user-feedback">
+		        		<p>"{{ feedback_content }}"</p>
+		        		<h5>{{ feedback_user_name }}</h5>
+		        	</div>
 	        	</div>
 	        	<nav aria-label="...">
 						  <ul class="pager">
@@ -315,9 +317,9 @@
 	    			为我们的工作点赞
 	    		</div>
 	    		<div class="col-xs-6 col-message-right">
-	    			<span id="CountOfFavorite">12049</span>
+	    			<span id="CountOfFavorite">{{ count_of_favorite }}</span>
 	    			&nbsp;&nbsp;
-	    			<a href="#"><span id="LikeOurSite" class="glyphicon glyphicon-heart-empty"></span></a>
+	    			<a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>
 	    		</div>
     		</div>
     		<div class="message-title xs-font-size-18">留言帮助我们改进易搜搭</div>
@@ -526,6 +528,10 @@
         { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
         { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
       ];
+      var userFeedback = [
+      	{ content: "无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。", name: "潘星宇"},
+      	{ content: "无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。", name: "潘星宇"}
+      ]
       $.getData = function( request ) {
         if (request == "") {
           return defList;
@@ -536,9 +542,18 @@
           });
         }
       };
+      $( "#CountOfFavorite" ).html($("#CountOfFavorite").html().replace("{{ count_of_favorite }}", "12049"));
+    	$( "#UserFeedback div:first" ).css("display", "none");
+    	userFeedback.forEach(function (value) {
+    		var feedback = $("#UserFeedback div:first").clone().css("display", "block");
+    		feedback.children("p:first").html(feedback.children("p:first").html().replace("{{ feedback_content }}", value.content));
+    		feedback.children("h5:first").html(feedback.children("h5:first").html().replace("{{ feedback_user_name }}", value.name));
+    		$("#UserFeedback").append(feedback);
+    	});
       /* -------------------- Testing code --------------------- */
 
       $( "#SearchBox" ).val("");
+
     } );
     </script>
     <!-- script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script -->

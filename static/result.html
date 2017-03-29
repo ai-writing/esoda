@@ -220,11 +220,7 @@
                       </div-->
                       <div role="tabpanel" class="tab-pane fade active in" id="SynContent">
                         <div class="usage-panel-content">
-                          <a href="#">talent</a>&nbsp;&nbsp;
-                          <a href="#">capability</a>&nbsp;&nbsp;
-                          <a href="#">ability</a>&nbsp;&nbsp;
-                          <a href="#">identity</a>&nbsp;&nbsp;
-                          <a href="#">character</a>
+                          <a href="#">{{ synonymous }}</a>
                         </div>
                       </div>
                       <div role="tabpanel" class="tab-pane fade" id="PhraseContent">
@@ -585,7 +581,10 @@
           "characteristic",
           "feature",
           "attribute",
-          "property"
+          "property",
+          "ability",
+          "talent",
+          "capability"
         ],
         collocation: [
           {
@@ -810,14 +809,13 @@
         var r = $.getData("r");
         $("#CountUsage").html($("#CountUsage").html().replace("{{ count }}", r.count));
         $("#SearchDomain").html($("#SearchDomain").html().replace("{{ domain }}", r.domain));
-        /*
-        $("#Synonymous span:first").css("display", "none");
+
+        $("#SynContent div:first a:first").css("display", "none");
         r.synonymous.forEach(function (value) {
-          var synonymous = $("#Synonymous span:first").clone().css("display", "inline");
+          var synonymous = $("#SynContent div:first a:first").clone().css("display", "inline");
           synonymous.html(synonymous.html().replace("{{ synonymous }}", value));
-          $("#Synonymous").append(synonymous);
+          $("#SynContent div:first").append(synonymous).append("&nbsp;&nbsp;");
         });
-        */
 
         r.collocation.forEach(function (value) {
           var nav = $("#CollocationTab li:eq(1)").clone();

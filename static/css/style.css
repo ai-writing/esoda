@@ -638,6 +638,10 @@ button.close:focus {
 	color: #4a4a4a;
 }
 
+.user-feedback {
+	margin-bottom: 50px;
+}
+
 .copyright {
 	text-align: center;
 	font-family: PingFangSC, Microsoft Yahei;
@@ -683,7 +687,7 @@ button.close:focus {
 	color: #898989;
 }
 
-#UserFeedback>h5 {
+#UserFeedback>div>h5 {
 	color: #63B7E6;
 }
 
@@ -1065,9 +1069,20 @@ button.close:focus {
 	padding-bottom: 120px;
 }
 
+.warning-page-circle {
+	border-radius: 200px;
+	width: 320px;
+	height: 320px;
+	margin-left: 40px;
+	margin-top: -30px;
+	background-color: #fff;
+	position: absolute;
+}
+
 .warning-page-icon {
 	width: 400px;
 	float: right;
+	position: absolute;
 }
 
 .warning-page-hints {
