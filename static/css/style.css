@@ -74,10 +74,6 @@ body {
 	padding-bottom: 10px;
 }
 
-.esoda-brand {
-	font-family: 'Arial-Black', 'Arial Black';
-	font-weight: 900;
-}
 
 .esoda-brand-main {
 	width: 80%;
@@ -458,7 +454,8 @@ button.close:focus {
 }
 
 .ui-autocomplete-category {
-	font-weight: bold;
+	font-family: PingFangSC, Microsoft Yahei;
+	font-weight: 500;
 	font-size: 18px;
     padding: .2em .4em;
     margin: .8em 0 .2em;
@@ -466,11 +463,13 @@ button.close:focus {
 }
 
 .ui-autocomplete-label {
-	font-weight: bold;
+	font-family: PingFangSC, Microsoft Yahei;
+	font-weight: 500;
 }
 
 .ui-autocomplete-label > strong {
-	font-weight: initial;
+	font-family: PingFangSC, Microsoft Yahei;
+	font-weight: 500;
 	color: #999;
 }
 
@@ -522,7 +521,8 @@ button.close:focus {
 .col-introduction > p {
 	color: #9b9b9b;
 	font-size: 18px;
-	font-family: PingFangSC-Medium, Microsoft Yahei-Bold;
+	font-family: PingFangSC, Microsoft Yahei;
+	font-weight: 500;
 }
 
 .col-feature {
@@ -540,7 +540,8 @@ button.close:focus {
 .col-feature-intro > p {
 	margin: 0 0;
 	color: #9b9b9b;
-	font-family: PingFangSC-Light, Microsoft Yahei;
+	font-family: PingFangSC, Microsoft Yahei;
+	font-weight: 200;
 }
 
 .col-message-right {
@@ -639,12 +640,14 @@ button.close:focus {
 
 .copyright {
 	text-align: center;
-	font-family: PingFangSC-Medium, Microsoft Yahei-Bold;
+	font-family: PingFangSC, Microsoft Yahei;
+	font-weight: 500;
 }
 
 .footer-link {
 	color: #9b9b9b;
-	font-family: PingFangSC-Medium, Microsoft Yahei-Bold;
+	font-family: PingFangSC, Microsoft Yahei;
+	font-weight: 500;
 }
 
 .footer-shares {
@@ -690,6 +693,7 @@ button.close:focus {
 
 #ResultItem {
 	font-size: 18px;
+	font-family: PingFangSC, Microsoft Yahei;
 	font-weight: 700;
 	text-align: center;
 }
@@ -700,6 +704,7 @@ button.close:focus {
 }
 
 #CountUsage {
+	font-family: PingFangSC, Microsoft Yahei;
 	font-weight: 700;
 	color: #666;
 }
@@ -927,7 +932,8 @@ button.close:focus {
 	padding: 10px 25px;
 	text-align: center;
 	color: #4a4a4a;
-	font-family: PingFangSC-Light, Microsoft Yahei;
+	font-family: PingFangSC, Microsoft Yahei;
+	font-weight: 200;
 }
 
 .result-table-cell {
@@ -935,11 +941,6 @@ button.close:focus {
 	padding: 10px 25px;
 	margin-top: 5px;
 	margin-bottom: 3px;
-}
-
-.result-subtitle {
-	font-weight: 700;
-	float: left;
 }
 
 #ExampleEnd {
@@ -975,13 +976,6 @@ button.close:focus {
 	padding: 20px;
 	font-size: 16px;
 	border: solid 1px #eee;
-}
-
-.result-list-label {
-	color: #ccc;
-	font-weight: 700;
-	float: left;
-	margin-right: 30px;
 }
 
 .result-list-content {
