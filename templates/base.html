@@ -12,7 +12,7 @@
     <meta name="author" content="">
     <link rel="icon" href="">
 
-    <title>Esoda</title>
+    <title>{% block title %}{% trans "ESODA" %}{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -23,43 +23,45 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    {% block head %}{% endblock head %}
+    {% block head %}{% endblock %}
   </head>
 
   <body>
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="index.html"><img src="images/LOGO.png"  class="navbar-logo"></a>
+    {% block header %}
+      <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}"  class="navbar-logo" ></a>
+          </div>
+          <div id="navbar" class="navbar-index navbar-collapse collapse">
+            <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search" action="{% url 'result' %}">
+              <div id="ResultSearchBar" class="input-group full-width">
+                <span class="input-group-btn">
+                  <button class="btn-navbar-search" type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                  </button>
+                </span>
+                <input type="text" id="SearchBox" class="navbar-search-box form-control" name="q" value="{{ q }}">
+              </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
+              <li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
         </div>
-        <div id="navbar" class="navbar-index navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-          	<li><a href="#"><img src="images/user.png" class="user-image"></a></li>
-          	<li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right hide">
-            <li><a id="UserId" href="#">叶霜</a></li>
-            <li><a href="#"><img src="images/user.png" class="user-image"></a></li>
-          </ul>
-          <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
-          	<li role="presentation" class="active"><a role="tab" href="index.html" data-toggle="tab">主页</a></li>
-            <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
-            <li role="presentation"><a role="tab" href="#" data-toggle="tab">个人领域</a></li>
-            <li role="presentation"><a role="tab" href="#" data-toggle="tab">搜搭教程</a></li>
-          </ul>
-        </div><!--/.navbar-collapse -->
-      </div>
-    </nav>
+      </nav>
+    {% endblock %}
 
     {% block content %}
       
-    {% endblock content %}
+    {% endblock %}
 
     <footer class="footer">
       <div class="container container-footer">
@@ -82,14 +84,14 @@
         </div>
         <div class="row footer-shares">
         	<div class="col-sm-6">
-        		<img src="images/LOGO.png" class="footer-logo">
+        		<img src="{% static 'img/LOGO.png' %}" class="footer-logo">
         		<p>专业英文写作助手</p>
         	</div>
         	<div class="col-sm-6 right-align xs-left-align xs-margin-bottom">
-	    			<a href="#"><img class="shares" src="images/email_F.svg"></a>
-	    			<a href="#"><img class="shares" src="images/wechat_F.svg"></a>
-	    			<a href="#"><img class="shares" src="images/QQ_F.svg"></a>
-	    			<a href="#"><img src="images/sina_weibo_F.svg"></a>
+	    			<a href="#"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
+	    			<a href="#"><img class="shares" src="{% static 'img/wechat_F.svg' %}"></a>
+	    			<a href="#"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
+	    			<a href="#"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
         	</div>
         </div>
         <p class="copyright">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
@@ -113,7 +115,10 @@
     <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+  {% if not DEBUG %}
+    <!--Baidu statistics-->
+  {% endif %}
     {% block script %}{% endblock script %}
   </body>
 </html>

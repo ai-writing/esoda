@@ -10,7 +10,7 @@ Project home for ESODA (http://www.esoda.org)
 pip install -U -r requirements_x64.txt
 ```
 
-* Download and run the latest [Stanford CoreNLP Server](http://stanfordnlp.github.io/CoreNLP/corenlp-server.html)
+* (Optional) Download and run the latest [Stanford CoreNLP Server](http://stanfordnlp.github.io/CoreNLP/corenlp-server.html)
 
 ```shell
 java -mx8g -cp "path/to/stanford-corenlp-full-XXXX-XX-XX/*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000
