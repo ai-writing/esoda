@@ -1,60 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="">
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
 
-    <title>Esoda</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet">
-
-    
-  </head>
-
-  <body>
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="index.html"><img src="images/LOGO.png"  class="navbar-logo"></a>
-        </div>
-        <div id="navbar" class="navbar-index navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-          	<li><a href="#"><img src="images/user.png" class="user-image"></a></li>
-          	<li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right hide">
-            <li><a id="UserId" href="#">叶霜</a></li>
-            <li><a href="#"><img src="images/user.png" class="user-image"></a></li>
-          </ul>
-          <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
-          	<li role="presentation" class="active"><a role="tab" href="index.html" data-toggle="tab">主页</a></li>
-            <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
-            <li role="presentation"><a role="tab" href="#" data-toggle="tab">个人领域</a></li>
-            <li role="presentation"><a role="tab" href="#" data-toggle="tab">搜搭教程</a></li>
-          </ul>
-        </div><!--/.navbar-collapse -->
-      </div>
-    </nav>
-
+{% block content %}
     <div class="modal fade" id="ModalLogin">
       <div class="modal-dialog modal-sm modal-login-sm">
         <div class="modal-content modal-login-content">
@@ -128,23 +76,23 @@
     <div class="jumbotron">
       <div class="container">
         <div class="row">
-		      <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4 title">
-		      	<img src="images/ESODA.png" class="esoda-brand-main">
-		      	<hr class="esoda-brand-hr">
-	          <div class="esoda-brand-subtitle">
-	          	<span>专业英文论文写作助手</span>
-	          </div>
-	        </div>
-	        <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-	          <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
-	            <div class="input-group input-group-lg">
-	              <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
-	              <span class="input-group-btn">
-	                <button type="submit" class="btn btn-info">搜搭&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
-	              </span>
-	            </div>
-	          </form>
-	        </div>
+          <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4 title">
+            <img src="images/ESODA.png" class="esoda-brand-main">
+            <hr class="esoda-brand-hr">
+            <div class="esoda-brand-subtitle">
+              <span>专业英文论文写作助手</span>
+            </div>
+          </div>
+          <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+            <form id="SearchForm" class="form-horizontal" role="search" action="result.html">
+              <div class="input-group input-group-lg">
+                <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-info">搜搭&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
+                </span>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -152,12 +100,12 @@
     <div class="container container-usage">
       <div class="usage-title">点击预览易搜搭的神奇搜索</div>
       <div class="hr hidden-xs">
-      	<span class="hr-inner">
-	      	<a href=""><span class="hr-inner-circle"></span></a>
-	      	<a href=""><span class="hr-inner-circle hr-inner-circle-2"></span></a>
-	      	<a href=""><span class="hr-inner-circle hr-inner-circle-3"></span></a>
-	      	<a href=""><span class="hr-inner-circle hr-inner-circle-4"></span></a>
-      	</span>
+        <span class="hr-inner">
+          <a href=""><span class="hr-inner-circle"></span></a>
+          <a href=""><span class="hr-inner-circle hr-inner-circle-2"></span></a>
+          <a href=""><span class="hr-inner-circle hr-inner-circle-3"></span></a>
+          <a href=""><span class="hr-inner-circle hr-inner-circle-4"></span></a>
+        </span>
       </div>
       <div class="row">
         <div class="col-xs-6 col-sm-3 col-guide">
@@ -201,193 +149,145 @@
 
     <!--TODO: fix the displaying problem in small screens-->
     <div class="back-introduction">
-    	<div class="container container-usage">
-    		<div class="row hidden-xs">
-    			<div class="col-xs-6 col-sm-3 col-introduction">
-    				<h3>149,000,000</h3>
-    				<p>专业论文库</p>
-    			</div>
-    			<div class="col-xs-6 col-sm-3 col-introduction">
-    				<h3>3,000+</h3>
-    				<p>日均浏览量</p>
-    			</div>
-    			<div class="col-xs-6 col-sm-3 col-introduction">
-    				<h3>32+</h3>
-    				<p>个人领域</p>
-    			</div>
-    			<div class="col-xs-6 col-sm-3 col-introduction">
-    				<h3>4+</h3>
-    				<p>创新搜索方式</p>
-    			</div>
-    		</div>
-    	</div>
+      <div class="container container-usage">
+        <div class="row hidden-xs">
+          <div class="col-xs-6 col-sm-3 col-introduction">
+            <h3>149,000,000</h3>
+            <p>专业论文库</p>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-introduction">
+            <h3>3,000+</h3>
+            <p>日均浏览量</p>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-introduction">
+            <h3>32+</h3>
+            <p>个人领域</p>
+          </div>
+          <div class="col-xs-6 col-sm-3 col-introduction">
+            <h3>4+</h3>
+            <p>创新搜索方式</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="container container-feature">
-    	<div class="row">
-    		<div class="col-sm-6 col-feature">
-    			<div class="row">
-	    			<div class="col-xs-3 col-feature-img">
-	    				<img src="images/icons-快捷.png">
-	    			</div>
-	    			<div class="col-xs-9 col-feature-intro">
-	    				<h4>快捷</h4>
-	    				<p>先进的算法，便捷的搭配查找方法，轻松替换每一个中式英文单词，搭配最漂亮的英文表达，给你最棒的论文写作体验</p>
-	    			</div>
-    			</div>
-    		</div>
+      <div class="row">
+        <div class="col-sm-6 col-feature">
+          <div class="row">
+            <div class="col-xs-3 col-feature-img">
+              <img src="images/icons-快捷.png">
+            </div>
+            <div class="col-xs-9 col-feature-intro">
+              <h4>快捷</h4>
+              <p>先进的算法，便捷的搭配查找方法，轻松替换每一个中式英文单词，搭配最漂亮的英文表达，给你最棒的论文写作体验</p>
+            </div>
+          </div>
+        </div>
 
-    		<div class="col-sm-6 col-feature">
-    			<div class="row">
-	    			<div class="col-xs-3 col-feature-img">
-	    				<img src="images/icons-地道.png">
-	    			</div>
-	    			<div class="col-xs-9 col-feature-intro">
-	    				<h4>地道</h4>
-	    				<p>精准查看母语论文里的地道用法，更符合论文书写规范。大量例句随意查，引用出处轻松看，还原最原汁原味的母语表达，解决论文写作难题</p>
-	    			</div>
-    			</div>
-    		</div>
+        <div class="col-sm-6 col-feature">
+          <div class="row">
+            <div class="col-xs-3 col-feature-img">
+              <img src="images/icons-地道.png">
+            </div>
+            <div class="col-xs-9 col-feature-intro">
+              <h4>地道</h4>
+              <p>精准查看母语论文里的地道用法，更符合论文书写规范。大量例句随意查，引用出处轻松看，还原最原汁原味的母语表达，解决论文写作难题</p>
+            </div>
+          </div>
+        </div>
 
-    		<div class="col-sm-6 col-feature">
-    			<div class="row">
-	    			<div class="col-xs-3 col-feature-img">
-	    				<img src="images/icons-专业.png">
-	    			</div>
-	    			<div class="col-xs-9 col-feature-intro">
-	    				<h4>专业</h4>
-	    				<p>针对32种专业领域的论文写作助手，查看顶级会议，国际期刊中英语选词用法，再不担心用词不专业，甩掉犹豫，自信写论文</p>
-	    			</div>
-    			</div>
-    		</div>
+        <div class="col-sm-6 col-feature">
+          <div class="row">
+            <div class="col-xs-3 col-feature-img">
+              <img src="images/icons-专业.png">
+            </div>
+            <div class="col-xs-9 col-feature-intro">
+              <h4>专业</h4>
+              <p>针对32种专业领域的论文写作助手，查看顶级会议，国际期刊中英语选词用法，再不担心用词不专业，甩掉犹豫，自信写论文</p>
+            </div>
+          </div>
+        </div>
 
-    		<div class="col-sm-6 col-feature">
-    			<div class="row">
-	    			<div class="col-xs-3 col-feature-img">
-	    				<img src="images/icons-全面.png">
-	    			</div>
-	    			<div class="col-xs-9 col-feature-intro">
-	    				<h4>全面</h4>
-	    				<p>海量论文库，涉及147900000篇论文，覆盖近30年领域内全面信息，轻松查看单词，搭配使用量，最佳的中国化论文写作工具</p>
-	    			</div>
-    			</div>
-    		</div>
-    	</div>
+        <div class="col-sm-6 col-feature">
+          <div class="row">
+            <div class="col-xs-3 col-feature-img">
+              <img src="images/icons-全面.png">
+            </div>
+            <div class="col-xs-9 col-feature-intro">
+              <h4>全面</h4>
+              <p>海量论文库，涉及147900000篇论文，覆盖近30年领域内全面信息，轻松查看单词，搭配使用量，最佳的中国化论文写作工具</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="back-feedback">
       <div class="container">
-      	<div>
-	      	<ul class="nav nav-pills nav-pills-feedback" id="FeedbackTab" role="tablist">
-	          <li role="presentation" class="active">
-	            <a href="#Experts" role="tab" data-toggle="tab">专家评价</a>
-	          </li>
-	          <li role="presentation">
-	            <a href="#Users" role="tab" data-toggle="tab">用户留言</a>
-	          </li>
-	        </ul>
-	      </div>
-	      <div class="tab-content">
-		      <div id="Experts" role="tabpanel" class="tab-pane fade active in">
-	        	<h4 class="feedback-title">清华大学PCG工作室出品，目前最好用的英文论文写作工具！</h4>
-	        </div>
-	        <div id="Users" role="tabpanel" class="tab-pane fade">
-	        	<h4 class="feedback-title">用户这样评价易搜搭</h4>
-	        	<div id="UserFeedback">
-	        		<div class="user-feedback">
-		        		<p>"{{ feedback_content }}"</p>
-		        		<h5>{{ feedback_user_name }}</h5>
-		        	</div>
-	        	</div>
-	        	<nav aria-label="...">
-						  <ul class="pager">
-						    <li><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-						    <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-						  </ul>
-						</nav>
-	        </div>
+        <div>
+          <ul class="nav nav-pills nav-pills-feedback" id="FeedbackTab" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#Experts" role="tab" data-toggle="tab">专家评价</a>
+            </li>
+            <li role="presentation">
+              <a href="#Users" role="tab" data-toggle="tab">用户留言</a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content">
+          <div id="Experts" role="tabpanel" class="tab-pane fade active in">
+            <h4 class="feedback-title">清华大学PCG工作室出品，目前最好用的英文论文写作工具！</h4>
+          </div>
+          <div id="Users" role="tabpanel" class="tab-pane fade">
+            <h4 class="feedback-title">用户这样评价易搜搭</h4>
+            <div id="UserFeedback">
+              <div class="user-feedback">
+                <p>"{{ feedback_content }}"</p>
+                <h5>{{ feedback_user_name }}</h5>
+              </div>
+            </div>
+            <nav aria-label="...">
+              <ul class="pager">
+                <li><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="back-message">
-    	<div class="container container-message">
-	    	<div class="row">
-	    		<div class="col-xs-6 xs-font-size-18">
-	    			为我们的工作点赞
-	    		</div>
-	    		<div class="col-xs-6 col-message-right">
-	    			<span id="CountOfFavorite">{{ count_of_favorite }}</span>
-	    			&nbsp;&nbsp;
-	    			<a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>
-	    		</div>
-    		</div>
-    		<div class="message-title xs-font-size-18">留言帮助我们改进易搜搭</div>
-    		<div class="row message-content">
-    			<div class="col-sm-2 hidden-xs">
-    				<img src="images/notepad_L.svg" class="message-notepad">
-    			</div>
-    			<div class="col-sm-10">
-    				<textarea class="message-box"></textarea>
-    			</div>
-    		</div>
-    		<div class="col-message-right">
-    			<div id="MessageBtn" class="btn btn-message">留言</div>
-    		</div>
-    	</div>
-    </div>
-
-    <footer class="footer">
-      <div class="container container-footer">
+      <div class="container container-message">
         <div class="row">
-          <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">联系我们</a></p>
+          <div class="col-xs-6 xs-font-size-18">
+            为我们的工作点赞
           </div>
-          <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">PCG工作室</a></p>
-          </div>
-          <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">我们的团队</a></p>
-          </div>
-          <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">版权声明</a></p>
-          </div>
-          <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">商业合作</a></p>
+          <div class="col-xs-6 col-message-right">
+            <span id="CountOfFavorite">{{ count_of_favorite }}</span>
+            &nbsp;&nbsp;
+            <a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>
           </div>
         </div>
-        <div class="row footer-shares">
-        	<div class="col-sm-6">
-        		<img src="images/LOGO.png" class="footer-logo">
-        		<p>专业英文写作助手</p>
-        	</div>
-        	<div class="col-sm-6 right-align xs-left-align xs-margin-bottom">
-	    			<a href="#"><img class="shares" src="images/email_F.svg"></a>
-	    			<a href="#"><img class="shares" src="images/wechat_F.svg"></a>
-	    			<a href="#"><img class="shares" src="images/QQ_F.svg"></a>
-	    			<a href="#"><img src="images/sina_weibo_F.svg"></a>
-        	</div>
+        <div class="message-title xs-font-size-18">留言帮助我们改进易搜搭</div>
+        <div class="row message-content">
+          <div class="col-sm-2 hidden-xs">
+            <img src="images/notepad_L.svg" class="message-notepad">
+          </div>
+          <div class="col-sm-10">
+            <textarea class="message-box"></textarea>
+          </div>
         </div>
-        <p class="copyright">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
+        <div class="col-message-right">
+          <div id="MessageBtn" class="btn btn-message">留言</div>
+        </div>
       </div>
-    </footer>
+    </div>
+{% endblock content %}
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="js/ie-emulation-modes-warning.js"></script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="js/jquery-ui.js"></script>
+{% block script %}
+<script src="js/jquery-ui.js"></script>
     <script>
     $( function() {
 
@@ -529,8 +429,8 @@
         { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
       ];
       var userFeedback = [
-      	{ content: "无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。", name: "潘星宇"},
-      	{ content: "无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。", name: "潘星宇"}
+        { content: "无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。", name: "潘星宇"},
+        { content: "无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。", name: "潘星宇"}
       ]
       $.getData = function( request ) {
         if (request == "") {
@@ -543,24 +443,22 @@
         }
       };
       $( "#CountOfFavorite" ).html($("#CountOfFavorite").html().replace("{{ count_of_favorite }}", "12049"));
-    	$( "#UserFeedback div:first" ).css("display", "none");
-    	userFeedback.forEach(function (value) {
-    		var feedback = $("#UserFeedback div:first").clone().css("display", "block");
-    		feedback.children("p:first").html(feedback.children("p:first").html().replace("{{ feedback_content }}", value.content));
-    		feedback.children("h5:first").html(feedback.children("h5:first").html().replace("{{ feedback_user_name }}", value.name));
-    		$("#UserFeedback").append(feedback);
-    	});
+      $( "#UserFeedback div:first" ).css("display", "none");
+      userFeedback.forEach(function (value) {
+        var feedback = $("#UserFeedback div:first").clone().css("display", "block");
+        feedback.children("p:first").html(feedback.children("p:first").html().replace("{{ feedback_content }}", value.content));
+        feedback.children("h5:first").html(feedback.children("h5:first").html().replace("{{ feedback_user_name }}", value.name));
+        $("#UserFeedback").append(feedback);
+      });
       /* -------------------- Testing code --------------------- */
 
       $( "#SearchBox" ).val("");
 
     } );
     </script>
-    <!-- script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script -->
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
-    <script src="js/esoda-main.js"></script>
 
-  </body>
-</html>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+
+    <script src="{% static 'js/esoda-main.js' %}"></script>
+{% endblock script %}
