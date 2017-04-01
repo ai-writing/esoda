@@ -23,11 +23,10 @@ As the project uses [python-decouple](https://github.com/henriquebastos/python-d
 
 ```
 DEBUG=True
-SECRET_KEY='mys3cr3tk3y'
-STANFORD_CORENLP_SERVER='localhost:9000'
+...
 ```
 
-The project also uses [dj-database-url](https://pypi.python.org/pypi/dj-database-url/), so in the `.env` file you can set the `DATABASE_URL` as:
+The project also uses [dj-database-url](https://pypi.python.org/pypi/dj-database-url/), so in the `.env` file you should set the `DATABASE_URL` as:
 
 ```
 (on Windows) DATABASE_URL='sqlite:///C:\\path\\to\\project\\db.sqlite3'
@@ -39,6 +38,8 @@ The project also uses [dj-database-url](https://pypi.python.org/pypi/dj-database
 ```shell 
 python manage.py migrate
 ```
+
+If `syncdb` fails, check the `DATABASE_URL` in your `.env` file.
 
 * Runserver
 
