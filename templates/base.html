@@ -50,10 +50,18 @@
                 <input type="text" id="SearchBox" class="navbar-search-box form-control" autocomplete="off" name="q" value="{{ q }}">
               </div>
             </form>
+            {% if not user.is_authenticated %}
+            <ul class="nav navbar-nav navbar-right">
+              <!--li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li-->
+              <li><a href="#" data-toggle="modal" data-target="#ModalLogin">您好，请登录</a></li>
+            </ul>
+            {% else %}
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
-              <li><a href="#" data-toggle="modal" data-target="#ModalLogin">欢迎回来，请登录</a></li>
+              <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
+              <li><a href="logout">登出</a></li>
             </ul>
+            {% endif %}
           </div><!--/.navbar-collapse -->
         </div>
       </nav>
