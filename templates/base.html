@@ -59,7 +59,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
               <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
-              <li><a href="logout">登出</a></li>
+              <li><a href="/logout">登出</a></li>
             </ul>
             {% endif %}
           </div><!--/.navbar-collapse -->
@@ -67,6 +67,9 @@
       </nav>
     {% endblock %}
 
+    {% include "esoda/modal_login.html" %}
+    {% include "esoda/modal_register.html" %}
+    
     {% block content %}
       
     {% endblock %}
