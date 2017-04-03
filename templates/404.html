@@ -7,5 +7,27 @@
 {% block content %}
 
 {# TODO: Add your code here #}
+  {% include "esoda/modal_login.html" %}
+
+  {% include "esoda/modal_register.html" %}
+
+	<div class="result-page">
+    <div class="container">
+      <div class="row warning-page-main">
+        <div class="col-sm-6">
+          <div class="warning-page-circle"></div>
+          <img src="images/404.svg" class="warning-page-icon">
+        </div>
+        <div class="col-sm-6">
+          <div class="warning-page-hints">
+            <div class="huge-title-number">404</div>
+            <div class="middle-title">好论文不是一次改完的</div>
+            <div class="middle-subtitle">你所搜索的页面并不存在哦</div>
+            <button type="button" class="btn btn-warning-page" onclick="window.history.go(-1)">回到上一页</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   
 {% endblock %}
