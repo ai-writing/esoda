@@ -139,7 +139,7 @@
                     </li>
                   </ul>
                   <div id="CollocContent" class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade" id="CollocAll"></div>
+                    <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
                     <div role="tabpanel" class="tab-pane fade" id="{{ collocation_label }}">
                       <div class="row colloc-result">
                         <div class="col-sm-4">
@@ -246,6 +246,7 @@
 {% endblock %}
 
 {% block script %}
+<script src="{% static 'js/jquery-ui.js' %}"></script>
   <script>
     $( function() {
 
@@ -656,8 +657,8 @@
         r.collocation.forEach(function (value) {
           var nav = $("#CollocationTab li:eq(1)").clone();
           nav.children("a").attr("href", nav.children("a").attr("href").
-                                         replace("{{ collocation_label }}", value.label));
-          nav.html(nav.html().replace("{{ collocation }}", value.type));
+                                         replace("{{ collocation_label }}#", "#"+value.label));
+          nav.children("a").html(nav.children("a").html().replace("{{ collocation }}", value.type));
           $("#CollocationTab").append(nav);
 
           var content = $("#CollocContent div:eq(1)").clone();

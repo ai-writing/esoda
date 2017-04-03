@@ -47,7 +47,7 @@
                     <span class="glyphicon glyphicon-search"></span>
                   </button>
                 </span>
-                <input type="text" id="SearchBox" class="navbar-search-box form-control" name="q" value="{{ q }}">
+                <input type="text" id="SearchBox" class="navbar-search-box form-control" autocomplete="off" name="q" value="{{ q }}">
               </div>
             </form>
             <ul class="nav navbar-nav navbar-right">
@@ -83,16 +83,16 @@
           </div>
         </div>
         <div class="row footer-shares">
-        	<div class="col-sm-6">
-        		<img src="{% static 'img/logo.png' %}" class="footer-logo">
-        		<p>专业英文写作助手</p>
-        	</div>
-        	<div class="col-sm-6 right-align xs-left-align xs-margin-bottom">
-	    			<a href="#"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
-	    			<a href="#"><img class="shares" src="{% static 'img/wechat_F.svg' %}"></a>
-	    			<a href="#"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
-	    			<a href="#"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
-        	</div>
+          <div class="col-sm-6">
+            <img src="{% static 'img/logo.png' %}" class="footer-logo">
+            <p>专业英文写作助手</p>
+          </div>
+          <div class="col-sm-6 right-align xs-left-align xs-margin-bottom">
+            <a href="#"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
+            <a href="#"><img class="shares" src="{% static 'img/wechat_F.svg' %}"></a>
+            <a href="#"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
+            <a href="#"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
+          </div>
         </div>
         <p class="copyright">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
       </div>

@@ -122,7 +122,7 @@ $(function () {
       ul.append("<li class='ui-autocomplete-category ui-autocomplete-warnings'>" +
                   "<div class=\"inline\">按“回车”发起检索</div>" +
                   "<div class=\"right-float\">" +
-                  "<a href=\"index.html\" id=\"ClearHistory\" onclick=\"window.clearHistory()\">清除搜索历史" +
+                  "<a href=\"\" id=\"ClearHistory\" onclick=\"window.clearHistory()\">清除搜索历史" +
                   "<span class=\"glyphicon glyphicon-time\"></span></a></div></li>");
     },
     _renderItem: function( ul, item ) {

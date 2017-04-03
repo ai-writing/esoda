@@ -24,10 +24,10 @@
           <li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
         </ul>
         <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
-          <li role="presentation" class="active"><a role="tab" href="index.html" data-toggle="tab">主页</a></li>
+          <li role="presentation" class="active"><a role="tab" href="{% url 'index' %}">主页</a></li>
           <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
-          <li role="presentation"><a role="tab" href="#" data-toggle="tab">个人领域</a></li>
-          <li role="presentation"><a role="tab" href="#" data-toggle="tab">搜搭教程</a></li>
+          <li role="presentation"><a role="tab" href="#">个人领域</a></li>
+          <li role="presentation"><a role="tab" href="#">搜搭教程</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
