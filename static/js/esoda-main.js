@@ -88,11 +88,17 @@ $(function () {
     });
   }
 
+/*--------Testing code---------*/
+  var defList = [
+    { label: "主谓", desc: "quality have", value: "quality have", category: "用法示例" },
+    { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
+    { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
+  ];
+/*--------Testing code---------*/
 
   var defaultList = [];
-  //clearHistory();
   readHistory();
-  defaultList = defaultList.concat(getData(""));
+  defaultList = defaultList.concat(defList);
   /*
   var defaultList = [];
   $.getJSON( "search.php", "", function(data, status, xhr) {
