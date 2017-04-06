@@ -17,7 +17,7 @@
           <div>
 
             <div class="result-warning">
-              当前个人领域为"<span id="SearchDomain">{{ domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage">{{ count }}</span>句例句，在其他<a href="#">个人领域</a>中搜索
+              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage">{{ r.count }}</span>句例句，在其他<a href="#">个人领域</a>中搜索
             </div>
 
             <div class="panel-group" role="tablist" aria-multiselectable="true">
@@ -39,17 +39,17 @@
                       <div class="dictionary-hint">
                         搜索内容：英文
                       </div>
-                      <p id="ResultItem">{{ word }}</p>
+                      <p id="ResultItem">{{ dictionary.word }}</p>
                       <div class="row display-none">
                         <div class="col-sm-6 col-md-4">
                           <span class="glyphicon glyphicon-volume-up"></span>
                           <span>英</span>
-                          <span id="EnglishPronounce">{{ english }}</span>
+                          <span id="EnglishPronounce">{{ dictionary.english }}</span>
                         </div>
                         <div class="col-sm-6 col-md-4">
                           <span class="glyphicon glyphicon-volume-up"></span>
                           <span>美</span>
-                          <span id="AmericanPronounce">{{ american }}</span>
+                          <span id="AmericanPronounce">{{ dictionary.american }}</span>
                         </div>
                       </div>
                       <div class="dictionary-edit">
@@ -64,7 +64,9 @@
                     <div class="dictionary-right">
                       <div class="dictionary-hint">中文翻译</div>
                       <div id="WordExplanation">
+                        {% for explanation in dictionary.explanationList %}
                         <p>{{ explanation }}</p>
+                        {% endfor %}
                       </div>
                     </div>
                   </div>
@@ -103,7 +105,9 @@
                     </div-->
                     <div role="tabpanel" class="tab-pane fade active in" id="SynContent">
                       <div class="usage-panel-content">
-                        <a href="#">{{ synonymous }}</a>
+                        {% for syn in r.synonymous %}
+                        <a href="#">{{ syn }}</a>&nbsp;&nbsp;
+                        {% endfor %}
                       </div>
                     </div>
                     <div role="tabpanel" class="tab-pane fade" id="PhraseContent">
@@ -131,25 +135,31 @@
                     <li role="presentation" class="active">
                       <a href="#CollocAll" role="tab" data-toggle="tab">全部搭配</a>
                     </li>
+                    {% for collocation in r.collocationList %}
                     <li role="presentation">
-                      <a href="#{{ collocation_label }}" role="tab" data-toggle="tab">{{ collocation }}</a>
+                      <a href="#{{ collocation.label }}" role="tab" data-toggle="tab">{{ collocation.type }}</a>
                     </li>
+                    {% endfor %}
                   </ul>
                   <div id="CollocContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
-                    <div role="tabpanel" class="tab-pane fade" id="{{ collocation_label }}">
+                    {% for collocation in r.collocationList %}
+                    <div role="tabpanel" class="tab-pane fade" id="{{ collocation.label }}">
                       <div class="row colloc-result">
+                        {% for usage in collocation.usageList %}
                         <div class="col-sm-4">
+                          <p><a href="">{{ usage.content }}({{ usage.count }})</a></p>
+                        </div>
+                        {% endfor %}
+                        <!--div class="col-sm-4">
                           <p><a href="">{{ usage }}({{ count }})</a></p>
                         </div>
                         <div class="col-sm-4">
                           <p><a href="">{{ usage }}({{ count }})</a></p>
-                        </div>
-                        <div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
-                        </div>
+                        </div-->
                       </div>
                     </div>
+                    {% endfor %}
                   </div>
                 </div>
               </div> <!-- collocation panel -->
@@ -208,7 +218,9 @@
                   <span class="glyphicon glyphicon-chevron-down"></span>
                 </a>
                 <div id="CollapseRelated" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRelated">
+                  {% for related in suggestion.relatedList %}
                   <p><a href="">{{ related }}</a></p>
+                  {% endfor %}
                 </div>
               </div>
 
@@ -222,7 +234,9 @@
                   <span class="glyphicon glyphicon-chevron-down"></span>
                 </a>
                 <div id="CollapseHot" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingHot">
+                  {% for hot in suggestion.hotList %}
                   <p><a href="">{{ hot }}</a></p>
+                  {% endfor %}
                 </div>
               </div>
             </div>
@@ -383,160 +397,6 @@
         { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
         { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
       ];
-      var q = "quality";
-      var dict = {
-        word: "quality",
-        english: "['kwɒlɪtɪ]",
-        american: "['kwɑləti]",
-        explanation: [
-          "n. 质量，[统计] 品质；特性；才能",
-          "adj. 优质的；高品质的；&lt;英俚&gt;棒极了"
-        ]
-      };
-      var suggestion = {
-        related: [
-          "high quality",
-          "improve quality",
-          "ensure quality",
-          "*(修饰) quality"
-        ],
-        hot: [
-          "interaction",
-          "algorithm",
-          "application"
-        ]
-      }
-      var r = {
-        domain: "人机交互",
-        count: 222,
-        synonymous: [
-          "trait",
-          "characteristic",
-          "feature",
-          "attribute",
-          "property",
-          "ability",
-          "talent",
-          "capability"
-        ],
-        collocation: [
-          {
-            type: "quality (主谓)*",
-            label: "Colloc1",
-            usage: [
-              {
-                content: "improve...quality",
-                count: 609
-              },
-              {
-                content: "improve...quality",
-                count: 609
-              },
-              {
-                content: "improve...quality",
-                count: 609
-              },
-              {
-                content: "improve...quality",
-                count: 609
-              },
-              {
-                content: "improve...quality",
-                count: 609
-              },
-              {
-                content: "improve...quality",
-                count: 609
-              },
-              {
-                content: "evaluate...quality",
-                count: 185
-              },
-              {
-                content: "evaluate...quality",
-                count: 185
-              },
-              {
-                content: "evaluate...quality",
-                count: 185
-              },
-              {
-                content: "evaluate...quality",
-                count: 185
-              },
-              {
-                content: "evaluate...quality",
-                count: 185
-              },
-              {
-                content: "evaluate...quality",
-                count: 185
-              },
-              {
-                content: "measure...quality",
-                count: 173
-              },
-              {
-                content: "measure...quality",
-                count: 173
-              },
-              {
-                content: "measure...quality",
-                count: 173
-              },
-              {
-                content: "measure...quality",
-                count: 173
-              },
-              {
-                content: "measure...quality",
-                count: 173
-              },
-              {
-                content: "measure...quality",
-                count: 173
-              },
-              {
-                content: "assess...quality",
-                count: 149
-              },
-              {
-                content: "assess...quality",
-                count: 149
-              },
-              {
-                content: "assess...quality",
-                count: 149
-              },
-              {
-                content: "assess...quality",
-                count: 149
-              },
-              {
-                content: "assess...quality",
-                count: 149
-              },
-              {
-                content: "assess...quality",
-                count: 149
-              }
-            ],
-            count: 12
-          },
-          {
-            type: "quality (修饰)*",
-            label: "Colloc2"
-          },
-          {
-            type: "quality (介词)*",
-            label: "Colloc3"
-          },
-          {
-            type: "*(修饰) quality",
-            label: "Colloc4"
-          },
-        ]
-      }
       var s = {
         list: [
           {
@@ -625,7 +485,7 @@
       };
 
       (function initialLoading() {
-        $("#SearchBox").val($("#SearchBox").val().replace("{{ q }}", $.getData("q")));
+        /*$("#SearchBox").val($("#SearchBox").val().replace("{{ q }}", $.getData("q")));
         $("#SearchKeyWord").html($("#SearchKeyWord").html().replace("{{ q }}", $.getData("q")));
 
         var dict = $.getData("dict");
@@ -691,6 +551,7 @@
         });
         $("#CollapseRelated p:first").css("display", "none");
         $("#CollapseHot p:first").css("display", "none");
+        */
 
         var example = $.getData("example");
         $.appendExampleList( example.list );
@@ -699,7 +560,7 @@
           loaded = 1;
         }
 
-        $("#ExampleList div:first").html($("#ExampleList div:first").html().replace("{{ example_number }}", "1209").replace("{{ search_time }}", "0.1"));
+        //$("#ExampleList div:first").html($("#ExampleList div:first").html().replace("{{ example_number }}", "1209").replace("{{ search_time }}", "0.1"));
       })();
       /*----------------- Testing code ------------------*/
     } );

@@ -16,7 +16,83 @@ def home_view(request):
 		],
 		'count_of_favorite': 12049
 	}
-	return render(request, 'esoda/index.html', info);
+	return render(request, 'esoda/index.html', info)
 
 def result_view(request):
-	return render(request, 'esoda/result.html', {});
+	usageList = []
+	for i in range(1, 28):
+		usageList.append({
+	        'content': 'improve...quality',
+	        'count': 609
+		})
+	r = {
+		'domain': u'人机交互',
+        'count': 222,
+        'synonymous': [
+          'trait',
+          'characteristic',
+          'feature',
+          'attribute',
+          'property',
+          'ability',
+          'talent',
+          'capability'
+        ],
+        'collocationList': [
+          	{
+            	'type': u'quality (主谓)*',
+            	'label': 'Colloc1',
+            	'usageList': usageList,
+          	},
+	        {
+	            'type': u'quality (修饰)*',
+	            'label': 'Colloc2',
+	            'usageList': usageList,
+	        },
+	        {
+	            'type': u'quality (介词)*',
+	            'label': 'Colloc3',
+	            'usageList': usageList
+	        },
+	        {
+	            'type': u'*(修饰) quality',
+	            'label': 'Colloc4',
+	            'usageList': usageList
+	        }
+        ]
+	}
+
+	dictionary = {
+		'word': 'quality',
+        'english': u'[\'kwɒlɪtɪ]',
+        'american': u'[\'kwɑləti]',
+        'explanationList': [
+          u'n. 质量，[统计] 品质；特性；才能',
+          u'adj. 优质的；高品质的；<英俚>棒极了'
+        ]
+	}
+
+	suggestion = {
+		'relatedList': [
+	        'high quality',
+	        'improve quality',
+	        'ensure quality',
+	        '*(修饰) quality'
+        ],
+        'hotList': [
+            'interaction',
+            'algorithm',
+            'application'
+        ]
+    }
+
+	q = 'quality'
+	info = {
+		'r': r,
+		'q': q,
+		'dictionary': dictionary,
+		'suggestion': suggestion,
+		'example_number': 1209,
+		'search_time': 0.1
+	}
+	return render(request, 'esoda/result.html', info)
