@@ -211,8 +211,10 @@
           <h4 class="feedback-title">用户这样评价易搜搭</h4>
           <div id="UserFeedback">
             <div class="user-feedback">
-              <p>"{{ feedback_content }}"</p>
-              <h5>{{ feedback_user_name }}</h5>
+              {% for feedback in feedbackList %}
+              <p>"{{ feedback.content }}"</p>
+              <h5>{{ feedback.user_name }}</h5>
+              {% endfor %}
             </div>
           </div>
           <nav aria-label="...">
@@ -410,6 +412,7 @@
         });
       }
     };
+    /*
     $( "#CountOfFavorite" ).html($("#CountOfFavorite").html().replace("{{ count_of_favorite }}", "12049"));
     $( "#UserFeedback div:first" ).css("display", "none");
     userFeedback.forEach(function (value) {
@@ -418,6 +421,7 @@
       feedback.children("h5:first").html(feedback.children("h5:first").html().replace("{{ feedback_user_name }}", value.name));
       $("#UserFeedback").append(feedback);
     });
+    */
     /* -------------------- Testing code --------------------- */
 
     $( "#SearchBox" ).val("");
