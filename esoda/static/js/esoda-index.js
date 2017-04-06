@@ -38,4 +38,6 @@ $(function () {
     $(this).tab("show");
   });
 
+  $( "#SearchBox" ).val("");
+
 });
