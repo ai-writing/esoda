@@ -7,7 +7,7 @@ Project home for ESODA (http://www.esoda.org)
 * Install python packages
 
 ```shell
-pip install -U -r requirements_x64.txt
+pip install -U -r requirements.txt
 ```
 
 * (Optional) Download and run the latest [Stanford CoreNLP Server](http://stanfordnlp.github.io/CoreNLP/corenlp-server.html)

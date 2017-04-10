@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
-import views
+
+from . import views
 
 
 urlpatterns = [
@@ -8,4 +9,5 @@ urlpatterns = [
     #url(r'^result/$', TemplateView.as_view(template_name='esoda/result.html'), name='result'),
     url(r'^$', views.home_view, name='index'),
     url(r'^result/$', views.result_view, name='result'),
+    url(r'^suggest/$', views.dict_suggest_view, name='dict_suggest'),
 ]
