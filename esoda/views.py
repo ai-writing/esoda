@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
+from django.http import JsonResponse
+
+import requests
+
 
 # Create your views here.
 def home_view(request):
@@ -105,3 +109,14 @@ def result_view(request):
 		'exampleList': exampleList
 	}
 	return render(request, 'esoda/result.html', info)
+
+YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
+def dict_suggest_view(request):
+	q = request.GET.get('q', '')
+	r = {} # must be a dict object
+	try:
+		xml = requests.get(YOUDAO_SUGGEST_URL % q, timeout=10).text
+		# TODO @wyx: parse xml to get r
+	except Exception as e:
+		print repr(e)
+	return JsonResponse(r)

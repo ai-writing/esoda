@@ -161,35 +161,29 @@ $(function () {
         return;
       }
 
-
       if (term in cache) {
         response( cache[ term ] );
         return;
       }
 
-      var data = getData( {term: term} );
-      var show = [];
-      var matcher = new RegExp( "^" + term, "i" );
-      // As experimented, the items in *data* are references through getData method,
-      // so that there's a new array needed for showing.
-      data.forEach(function (item) {
-      	show.push(
-      	{
-      		label: item.label.replace(matcher, "<strong>" + item.label.match(matcher) + "</strong>"),
-      		desc: item.desc,
-      		category: item.category
-      	});
-      });
-      console.log(show);
-      cache[ term ] = show;
-      response( show );
-      /*
-      $.getJSON( "search.php", request.term, function(data, status, xhr) {
+      $.getJSON( "/suggest/", request, function( data, status, xhr ) {
         cache[ term ] = data;
-        response( data );
+        var show = [];
+        var matcher = new RegExp( "^" + term, "i" );
+        // As experimented, the items in *data* are references through getData method,
+        // so that there's a new array needed for showing.
+        data.forEach(function (item) {
+          show.push(
+          {
+            label: item.label.replace(matcher, "<strong>" + item.label.match(matcher) + "</strong>"),
+            desc: item.desc,
+            category: item.category
+          });
+        });
+        // console.log(show);
+        cache[ term ] = show;
+        response( show );
       });
-      */
-
   	},
     search: function() {
       if (this.value.length == 0) return true;
