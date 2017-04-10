@@ -170,28 +170,30 @@
               <div class="example-hint">
                 找到{{ example_number }}句例句，为您提供前50个，排序根据点赞和相关度自动生成，耗时{{ search_time }}秒
               </div>
-              <div class="panel panel-default result-example row">
+              {% for example in exampleList %}
+              <div class="panel panel-default result-example row {% if example.label > 10 %}display-none{% endif %}" id="Example{{ example.label }}">
                 <div class="col-xs-11">
                   <div class="panel-body">
                     <div class="display-inline example-list-label">
-                      {{ label }}
+                      {{ example.label }}.
                     </div>
                     <div class="right-float example-list-content">
-                      {{ content }}
+                      {{ example.content|safe }}
                     </div>
                   </div>
                   <div class="panel-footer example-list-source">
-                    文章来源：{{ source }}
+                    文章来源：{{ example.source }}
                   </div>
                 </div>
                 <div class="col-xs-1">
                   <div class="panel-heading panel-heart">
                     <a href="" onclick="$.clickHeart(event);"><span class="glyphicon glyphicon-heart-empty"></span></a>
-                    <span>{{ heart_number }}&nbsp;&nbsp;</span>
+                    <span>{{ example.heart_number }}&nbsp;&nbsp;</span>
                     <a href="" onclick="$.clickStar(event);"><span class="glyphicon glyphicon-star-empty"></span></a>
                   </div>
                 </div>
               </div>
+              {% endfor %}
             </div> <!-- panel-group -->
 
             <div id="Loading" class="result-table-cell center-align">
@@ -461,6 +463,7 @@
         }
       };
 
+/*
       $.appendExampleList = function( list ) {
         var cur = $("#ExampleList > div").length - 1;
         list.forEach(function (value) {
@@ -483,6 +486,7 @@
         });
         $("#ExampleList div:eq(1)").css("display","none");
       };
+*/
 
       (function initialLoading() {
         /*$("#SearchBox").val($("#SearchBox").val().replace("{{ q }}", $.getData("q")));
@@ -551,7 +555,7 @@
         });
         $("#CollapseRelated p:first").css("display", "none");
         $("#CollapseHot p:first").css("display", "none");
-        */
+      
 
         var example = $.getData("example");
         $.appendExampleList( example.list );
@@ -559,7 +563,7 @@
           $("#ExampleEnd").show();
           loaded = 1;
         }
-
+        */
         //$("#ExampleList div:first").html($("#ExampleList div:first").html().replace("{{ example_number }}", "1209").replace("{{ search_time }}", "0.1"));
       })();
       /*----------------- Testing code ------------------*/

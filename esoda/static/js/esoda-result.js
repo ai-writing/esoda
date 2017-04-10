@@ -25,23 +25,23 @@ $(function () {
 
       loading = 1;
       $("#Loading").show();
-      var obj = $.getData("example");
       setTimeout(function() {
         $("#Loading").hide();
         loading = 0;
-        if (obj == null) {
-          // failed to load obj
-        } else {
-          if (obj.ended == 1) {
-            loaded = 1;
-            $("#ExampleEnd").show();
-            return;
-          }
-          loadCount++;
-          if (loadCount == 5) {
-            $("#ExampleEnd").show();
-          }
-          $.appendExampleList( obj.list );
+        /*
+        if (obj.ended == 1) {
+          loaded = 1;
+          $("#ExampleEnd").show();
+          return;
+        }
+        */
+        for (var i = loadCount * 10 + 1; i <= (loadCount + 1) * 10; i++) {
+          console.log("Example" + i);
+          $("#Example" + i).show();
+        }
+        loadCount++;
+        if (loadCount == 5) {
+          $("#ExampleEnd").show();
         }
       }, 2000);
     }
