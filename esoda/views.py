@@ -89,7 +89,6 @@ def result_view(request):
 	exampleList = []
 	for i in range(1, 51):
 		exampleList.append({
-    		'label': i,
     		'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
     		'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
     		'heart_number': 129

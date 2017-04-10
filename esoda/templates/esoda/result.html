@@ -151,12 +151,6 @@
                           <p><a href="">{{ usage.content }}({{ usage.count }})</a></p>
                         </div>
                         {% endfor %}
-                        <!--div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
-                        </div>
-                        <div class="col-sm-4">
-                          <p><a href="">{{ usage }}({{ count }})</a></p>
-                        </div-->
                       </div>
                     </div>
                     {% endfor %}
@@ -171,11 +165,11 @@
                 找到{{ example_number }}句例句，为您提供前50个，排序根据点赞和相关度自动生成，耗时{{ search_time }}秒
               </div>
               {% for example in exampleList %}
-              <div class="panel panel-default result-example row {% if example.label > 10 %}display-none{% endif %}" id="Example{{ example.label }}">
+              <div class="panel panel-default result-example row {% if example.label > 10 %}display-none{% endif %}" id="Example{{ forloop.counter }}">
                 <div class="col-xs-11">
                   <div class="panel-body">
                     <div class="display-inline example-list-label">
-                      {{ example.label }}.
+                      {{ forloop.counter }}.
                     </div>
                     <div class="right-float example-list-content">
                       {{ example.content|safe }}
@@ -399,51 +393,6 @@
         { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
         { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
       ];
-      var s = {
-        list: [
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          },
-          {
-          content: "The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist's interpretation of the information.",
-          source: "UIST'07. M. Morris et. al.SearchTogether: an interface for collaborative web search."
-          }
-        ],
-        ended: false
-      };
 
       $.getData = function( request ) {
         if (typeof(request.term) !== "undefined") {
@@ -488,84 +437,6 @@
       };
 */
 
-      (function initialLoading() {
-        /*$("#SearchBox").val($("#SearchBox").val().replace("{{ q }}", $.getData("q")));
-        $("#SearchKeyWord").html($("#SearchKeyWord").html().replace("{{ q }}", $.getData("q")));
-
-        var dict = $.getData("dict");
-        $("#ResultItem").html($("#ResultItem").html().replace("{{ word }}", dict.word));
-        $("#EnglishPronounce").html($("#EnglishPronounce").html().replace("{{ english }}", dict.english));
-        $("#AmericanPronounce").html($("#AmericanPronounce").html().replace("{{ american }}", dict.american));
-        $("#WordExplanation p:first").css("display","none");
-        dict.explanation.forEach(function (value) {
-          var explanation = $("#WordExplanation p:first").clone().css("display", "block");
-          explanation.html(explanation.html().replace("{{ explanation }}", value));
-          $("#WordExplanation").append(explanation);
-        });
-
-        var r = $.getData("r");
-        $("#CountUsage").html($("#CountUsage").html().replace("{{ count }}", r.count));
-        $("#SearchDomain").html($("#SearchDomain").html().replace("{{ domain }}", r.domain));
-
-        $("#SynContent div:first a:first").css("display", "none");
-        r.synonymous.forEach(function (value) {
-          var synonymous = $("#SynContent div:first a:first").clone().css("display", "inline");
-          synonymous.html(synonymous.html().replace("{{ synonymous }}", value));
-          $("#SynContent div:first").append(synonymous).append("&nbsp;&nbsp;");
-        });
-
-        r.collocation.forEach(function (value) {
-          var nav = $("#CollocationTab li:eq(1)").clone();
-          nav.children("a").attr("href", nav.children("a").attr("href").
-                                         replace("{{ collocation_label }}#", "#"+value.label));
-          nav.children("a").html(nav.children("a").html().replace("{{ collocation }}", value.type));
-          $("#CollocationTab").append(nav);
-
-          var content = $("#CollocContent div:eq(1)").clone();
-          content.attr("id", content.attr("id").replace("{{ collocation_label }}", value.label));
-          if (value.usage) {
-            var i = 0;
-            value.usage.forEach(function (usage) {
-              var contentItem = content.children("div").children("div:eq(" + i + ")").
-                                children("p:first").clone();
-              contentItem.html(contentItem.html().
-                               replace("{{ usage }}", usage.content).replace("{{ count }}", usage.count));
-              content.children("div").children("div:eq(" + i + ")").append(contentItem);
-              i = (i + 1) % 3;
-            });
-          }
-          content.children("div").children("div:eq(0)").children("p:first").css("display", "none");
-          content.children("div").children("div:eq(1)").children("p:first").css("display", "none");
-          content.children("div").children("div:eq(2)").children("p:first").css("display", "none");
-          $("#CollocContent").append(content);
-        });
-        $("#CollocationTab li:eq(1)").css("display", "none");
-        $("#CollocContent div:eq(1)").css("display", "none");
-
-        var suggestion = $.getData("suggestion");
-        suggestion.related.forEach(function (value) {
-          var related = $("#CollapseRelated p:first").clone();
-          related.html(related.html().replace("{{ related }}", value));
-          $("#CollapseRelated").append(related);
-        });
-        suggestion.hot.forEach(function (value) {
-          var hot = $("#CollapseHot p:first").clone();
-          hot.html(hot.html().replace("{{ hot }}", value));
-          $("#CollapseHot").append(hot);
-        });
-        $("#CollapseRelated p:first").css("display", "none");
-        $("#CollapseHot p:first").css("display", "none");
-      
-
-        var example = $.getData("example");
-        $.appendExampleList( example.list );
-        if (example.ended) {
-          $("#ExampleEnd").show();
-          loaded = 1;
-        }
-        */
-        //$("#ExampleList div:first").html($("#ExampleList div:first").html().replace("{{ example_number }}", "1209").replace("{{ search_time }}", "0.1"));
-      })();
       /*----------------- Testing code ------------------*/
     } );
     </script>
