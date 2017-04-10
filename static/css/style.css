@@ -453,6 +453,11 @@ button.close:focus {
 	padding-top: 60px;
 }
 
+.ui-menu-item {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .ui-autocomplete-category {
 	font-family: PingFangSC, Microsoft Yahei;
 	font-weight: 500;
@@ -475,6 +480,7 @@ button.close:focus {
 
 .ui-autocomplete-desc {
 	color: #999;
+	white-space: nowrap;
 }
 
 .ui-autocomplete-warnings {

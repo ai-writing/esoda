@@ -5,7 +5,7 @@
 $(function () {
   'use strict';
 
-  var getData = $.getData;
+  //var getData = $.getData;
 
   // TODO: Initialize autocomplete etc.
   Storage.prototype.setObj = function(key, obj) {
@@ -136,6 +136,10 @@ $(function () {
         .append( "<div><span class=\"ui-autocomplete-label\">" + item.label + "</span>" +
                  "&nbsp;&nbsp;<span class=\"ui-autocomplete-desc\">" + item.desc + "</span></div>" )
         .appendTo( ul );
+    },
+    _resizeMenu: function() {
+      console.log($(".ui-autocomplete-input").outerWidth());
+      this.menu.element.outerWidth( $(".ui-autocomplete-input").outerWidth() );
     }
   });
   
@@ -166,13 +170,12 @@ $(function () {
         return;
       }
 
-      $.getJSON( "/suggest/", request, function( data, status, xhr ) {
-        cache[ term ] = data;
+      $.getJSON( "/suggest/", {term: term}, function( data, status, xhr ) {
         var show = [];
         var matcher = new RegExp( "^" + term, "i" );
         // As experimented, the items in *data* are references through getData method,
         // so that there's a new array needed for showing.
-        data.forEach(function (item) {
+        data.suggest.forEach(function (item) {
           show.push(
           {
             label: item.label.replace(matcher, "<strong>" + item.label.match(matcher) + "</strong>"),

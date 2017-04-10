@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import JsonResponse
+import xml.sax
 
 import requests
 
@@ -110,13 +111,47 @@ def result_view(request):
 	}
 	return render(request, 'esoda/result.html', info)
 
+class DictHandler( xml.sax.ContentHandler ):
+	def __init__(self):
+		self.suggest = []
+		self.CurNum = 0
+		self.CurTag = ''
+		self.category = ''
+
+	def startElement(self, tag, attributes):
+		self.CurTag = tag
+		if tag == 'item':
+			self.suggest.append({})
+
+	def endElement(self, tag):
+		if tag == 'item':
+			self.suggest[self.CurNum]['category'] = self.category
+			self.category = ''
+			self.CurNum += 1
+		self.CurTag = ''
+
+	def characters(self, content):
+		if self.CurTag == 'title':
+			self.suggest[self.CurNum]['label'] = content
+			if content.find(' ') < 0:
+				self.category = 'Words'
+			else:
+				self.category = 'Expressions'
+		elif self.CurTag == 'explain':
+			self.suggest[self.CurNum]['desc'] = content
+
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
 def dict_suggest_view(request):
-	q = request.GET.get('q', '')
-	r = {} # must be a dict object
+	q = request.GET.get('term', '')
+	r = {}
 	try:
-		xml = requests.get(YOUDAO_SUGGEST_URL % q, timeout=10).text
-		# TODO @wyx: parse xml to get r
+		xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=10).text
+		parser = xml.sax.make_parser()
+		parser.setFeature(xml.sax.handler.feature_namespaces, 0)
+
+		Handler = DictHandler()
+		xml.sax.parseString(xmlstring.encode('utf-8'), Handler)
+		r['suggest'] = Handler.suggest
 	except Exception as e:
 		print repr(e)
 	return JsonResponse(r)
