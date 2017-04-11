@@ -19,6 +19,14 @@ from django.utils.translation import ugettext_lazy as _
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+# Registration settings
+
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 30
+REGISTRATION_AUTO_LOGIN = False
+LOGIN_REDIRECT_URL = '.'
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -37,6 +45,7 @@ SITE_ID = 1
 INSTALLED_APPS = [
     'django.contrib.admin',
     # 'django.contrib.sites',
+    'authentication',
     'registration',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,8 +54,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'common',
-    'authentication',
     'esoda',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

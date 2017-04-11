@@ -37,7 +37,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}"  class="navbar-logo" ></a>
+            <a href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"  class="navbar-logo" ></a>
           </div>
           <div id="navbar" class="navbar-index navbar-collapse collapse">
             <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search" action="{% url 'result' %}">
@@ -59,7 +59,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
               <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
-              <li><a href="/logout">登出</a></li>
+              <li><a href="{% url 'logout' %}">登出</a></li>
             </ul>
             {% endif %}
           </div><!--/.navbar-collapse -->
@@ -67,12 +67,10 @@
       </nav>
     {% endblock %}
 
-    {% include "esoda/modal_login.html" %}
-    {% include "esoda/modal_register.html" %}
+    <div class="modal fade" id="ModalLogin"></div>
+    <div class="modal fade" id="ModalRegister">{% include "registration/registration_form.html" %}</div>
     
-    {% block content %}
-      
-    {% endblock %}
+    {% block content %}{% endblock %}
 
     <footer class="footer">
       <div class="container container-footer">
@@ -131,8 +129,13 @@
     <!--Baidu statistics-->
   {% endif %}
     <script src="{% static 'js/jquery-ui-modified.js' %}"></script>
-    {% block script %}{% endblock script %}
+    {% block script %}{% endblock %}
     <script src="{% static 'js/esoda-main.js' %}"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+      $('#ModalLogin').load('{% url "login" %}');
+    });
+    </script>
 
   </body>
 </html>

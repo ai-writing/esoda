@@ -152,11 +152,12 @@ $(function () {
   function extractPrefix( term ) {
   	return term.replace("<strong>", "").replace("</strong>", "");
   }
-  
+
 
   var cache = {};
   $( "#SearchBox" ).catcomplete({
     minLength: 0,
+    delay: 500,
     source: function( request, response ) {
 
       var term = extractLast( request.term );
@@ -227,12 +228,5 @@ $(function () {
 		e.preventDefault();
 		$(e.target).toggleClass("glyphicon-heart-empty");
 		$(e.target).toggleClass("glyphicon-heart");
-  }
-
-  $("#OpenRegister").click(function() {
-    $("#ModalLogin").modal("hide");
-    setTimeout(function() {
-      $(document.body).addClass("modal-open");
-    }, 500);
-  })
+  };
 });

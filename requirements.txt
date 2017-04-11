@@ -4,3 +4,4 @@ python-decouple
 dj-database-url
 pymongo
 django-registration-redux
+django-widget-tweaks
