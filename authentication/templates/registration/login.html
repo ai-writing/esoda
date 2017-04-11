@@ -1,0 +1,79 @@
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+<div class="modal-dialog modal-sm modal-login-sm">
+  <div class="modal-content modal-login-content">
+    <div class="modal-header modal-login-header">
+      <img src="{% static 'img/logo.png' %}" class="modal-logo">
+      <p>登陆易搜搭，开启英文写作新体验</p>
+    </div>
+    <div class="modal-body modal-login-body">
+      <form id="LoginForm" class="form-horizonal" role="login" method="post" action="">
+        {% csrf_token %}
+
+        {% render_field form.username class="form-control form-login" placeholder="电子邮箱" %}
+        {% if form.username.errors %}
+          <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ form.username.errors.as_text }}
+          </div>
+        {% endif %}
+
+        {% render_field form.password class="form-control form-login" placeholder="密码" %}
+        {% if form.password.errors %}
+          <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ form.password.errors.as_text }}
+          </div>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ form.non_field_errors.as_text }}
+          </div>
+        {% endif %}
+        
+        <input type="hidden" name="next" value="{{ next }}" />
+        <span class="form-login">
+          <button type="submit" class="btn btn-login">登入易搜搭</button>
+        </span>
+      </form>
+    </div>
+    <div class="modal-footer modal-login-footer">
+      <div class="modal-forgot-password">
+        <p><a href="{% url 'password_reset' %}">忘记密码？</a></p>
+      </div>
+      <div class="modal-register">
+        <p><a href="#" data-toggle="modal" id="OpenRegister" data-target="#ModalRegister">注册，加入易搜搭</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#LoginForm').submit(function (event) {
+    // var data = $(this).serializeArray().reduce(function(obj, item) {
+    //     obj[item.name] = item.value;
+    //     return obj;
+    // }, {});
+    $.post('{% url "login" %}', $(this).serialize(), function (data, status, xhr) {
+      // TODO: better test login success
+      if (data.indexOf('<!DOCTYPE html>') < 0) {
+        $('#ModalLogin').html(data);
+      } else {
+        window.location.reload();
+      }
+    });
+    // $('#ModalLogin').load('{% url "login" %}', data);
+    event.preventDefault();
+  });
+
+  $("#OpenRegister").click(function() {
+    $("#ModalLogin").modal("hide");
+    setTimeout(function() {
+      $(document.body).addClass("modal-open");
+    }, 500);
+  })
+</script>
