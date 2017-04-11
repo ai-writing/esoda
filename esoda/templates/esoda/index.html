@@ -18,7 +18,7 @@
         {% if not user.is_authenticated %}
         <ul class="nav navbar-nav navbar-right">
           <!--li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li-->
-          <li><a href="#" data-toggle="modal" data-target="#ModalLogin">您好，请登录</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请登录</a></li>
         </ul>
         {% else %}
         <ul class="nav navbar-nav navbar-right">
@@ -51,7 +51,7 @@
             <span>专业英文论文写作助手</span>
           </div>
         </div>
-        <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6">
           <form id="SearchForm" class="form-horizontal" role="search" action="{% url 'esoda' %}">
             <div class="input-group input-group-lg">
               <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
@@ -249,7 +249,7 @@
           <textarea class="message-box"></textarea>
         </div>
       </div>
-      <div class="col-message-right">
+      <div class="col-message-right col-btn">
         <div id="MessageBtn" class="btn btn-message">留言</div>
       </div>
     </div>

@@ -52,8 +52,13 @@ body {
 }
 
 .navbar-logo {
-	width: 135px;
+	width: 137px;
 	margin-top: 32px;
+}
+
+#SearchBox{
+	width: 496px;
+	height: 60px;
 }
 
 .navbar-static-top {
@@ -76,17 +81,24 @@ body {
 
 
 .esoda-brand-main {
-	width: 80%;
+	width: 234px;
 	padding-bottom: 10px;
 }
 
 .esoda-brand-hr {
 	border: 1px solid #fff;
-	margin: 8px 12%;
+	margin: 8px;
+	margin-left: 46px;
+	width: 67%;
 }
 
 .esoda-brand-subtitle {
 	color: #fff;
+}
+
+.esoda-brand-subtitle {
+	color: #fff;
+	font-size: 20px;
 }
 
 .user-image {
@@ -176,10 +188,16 @@ body {
 .nav-pills > li.active > a:focus {
 	color: #fff;
 	background-color: #63B7E6;
+	padding-left: 22px;
+    padding-right: 22px;
 }
 
 .nav-pills-index {
 	margin-top: 5px;
+}
+
+.nav-pills-index > li > a {
+	font-size: 12px;
 }
 
 .nav-pills-feedback>li>a {
@@ -188,6 +206,7 @@ body {
 	border: 2px solid #63B7E6;
 	margin: -4px;
 	padding: 10px 30px;
+	font-size: 20px;
 }
 
 .nav-pills-feedback>li>a:hover {
@@ -203,6 +222,11 @@ body {
 
 .navbar-default .navbar-nav>li>a:focus {
 	outline: none;
+}
+
+.login {
+	font-size: 12px;
+    padding-top: 13px;
 }
 
 .modal-login-sm {
@@ -345,6 +369,14 @@ button.close:focus {
 .input-group-lg>.input-group-btn>.btn {
 	border-bottom-left-radius: 0px;
 	border-top-left-radius: 0px;
+	width: 144px;
+	height: 60px;
+	padding-top: 8px;
+}
+
+.glyphicon-search {
+	font-size: 30px;
+	vertical-align: bottom;
 }
 
 .ui-widget.ui-widget-content {
@@ -400,17 +432,25 @@ button.close:focus {
 	padding-top: 20px;
 	padding-bottom: 35px;
 	color: #9b9b9b;
+	width: 65.3%;
+	font-size: 18px;
 }
 
 .container-message {
 	padding-top: 40px;
 	padding-bottom: 30px;
-	font-size: 22px;
+	font-size: 24px;
 	color: #fff;
 }
 
+.glyphicon-heart-empty{
+	font-size: 27px;
+	vertical-align: sub;
+}
+
 .message-title {
-	margin-top: 40px;
+	margin-top: 15px;
+	margin-bottom: 34px;
 }
 
 .message-content {
@@ -422,9 +462,17 @@ button.close:focus {
 	height: 82px;
 	text-align: left;
 	color: #000;
-	width: 100%;
+	width: 101.8%;
 	resize: none;
 	overflow-y: scroll;
+	border-color: white;
+}
+
+#MessageBtn {
+	margin-top: 8px;
+	width: 84px;
+    height: 37px;
+    padding-top: 4px;
 }
 
 .caption > p {
@@ -520,17 +568,19 @@ button.close:focus {
 	border: 1px solid #979797;
 	background: #fff;
 	text-align: center;
-	padding-top: 30px;
-	padding-bottom: 30px;
+	padding-top: 19px;
+	padding-bottom: 19px;
+	width: 24%;
 }
 
 .col-introduction > h3 {
 	color: #000;
+	font-size: 23px;
 }
 
 .col-introduction > p {
 	color: #9b9b9b;
-	font-size: 18px;
+	font-size: 17px;
 	font-family: PingFangSC, Microsoft Yahei;
 	font-weight: 500;
 }
@@ -540,11 +590,12 @@ button.close:focus {
 }
 
 .col-feature-img > img {
-	width: 120%;
+	width: 135%;
 }
 
 .col-feature-intro > h4 {
 	margin-bottom: 20px;
+	font-size: 20px;
 }
 
 .col-feature-intro > p {
@@ -552,17 +603,22 @@ button.close:focus {
 	color: #9b9b9b;
 	font-family: PingFangSC, Microsoft Yahei;
 	font-weight: 200;
+	margin-top: 30px;
 }
 
 .col-message-right {
 	text-align: right;
 }
 
+.col-btn {
+	width: 101.3%;
+}
+
 .feedback-title {
 	margin-bottom: 30px;
 	margin-top: 80px;
 	text-align: center;
-	font-size: 20px;
+	font-size: 24px;
 }
 .usage-title {
 	margin-bottom: 30px;
@@ -587,9 +643,9 @@ button.close:focus {
 
 
 .hr-inner {
-	border-top-color: #d8d8d8;
+	border-top-color: #979797;
     position: absolute;
-    height: 1px;
+    height: 1.6px;
     left: 13%;
     top: 50%;
     width: 74%;
@@ -601,8 +657,8 @@ button.close:focus {
 .hr-inner-circle {
 	background-color: #d8d8d8;
 	border: 2px solid #d8d8d8;
-	width: 30px;
-	height: 30px;
+	width: 32px;
+	height: 32px;
 	border-radius: 15px;
 	display: block;
     position: absolute;
@@ -632,6 +688,18 @@ button.close:focus {
 	border: none;
 }
 
+.thumbnail-guide > img {
+	width: 128px;
+}
+
+.caption-usage > h4 {
+	font-size: 19px;
+}
+
+.caption-usage > p {
+	font-size: 13px;
+}
+
 .col-comments {
 	padding-left: 30px;
 	padding-right: 30px;
@@ -648,6 +716,10 @@ button.close:focus {
 	color: #4a4a4a;
 }
 
+.login {
+	padding-top: 13px;
+}
+
 .user-feedback {
 	margin-bottom: 50px;
 }
@@ -656,6 +728,7 @@ button.close:focus {
 	text-align: center;
 	font-family: PingFangSC, Microsoft Yahei;
 	font-weight: 500;
+	font-size: 14px;
 }
 
 .footer-link {
@@ -668,8 +741,13 @@ button.close:focus {
 	margin-top: 40px;
 }
 
+.footer-shares .col-sm-6  > p {
+	margin-top: 10px;
+	font-size: 20px;
+}
+
 .footer-logo {
-	width: 135px;
+	width: 137px;
 	margin-bottom: 9px;
 }
 
@@ -681,6 +759,10 @@ button.close:focus {
 	margin-right: 31px;
 }
 
+.col-icon {
+	padding-right: 0px;
+}
+
 .message-notepad {
 	padding-left: 30%;
 }
@@ -690,6 +772,7 @@ button.close:focus {
 	left: 50%;
 	margin-left: -120px;
 	margin-bottom: 40px;
+	left: 700px;
 }
 
 #UserFeedback {
