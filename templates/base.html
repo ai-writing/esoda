@@ -112,7 +112,6 @@
 
     <!-- Bootstrap core JavaScript ================================================== -->
     <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- Placed at the end of the document so the pages load faster -->
@@ -131,6 +130,7 @@
   {% if not DEBUG %}
     <!--Baidu statistics-->
   {% endif %}
+    <script src="{% static 'js/jquery-ui-modified.js' %}"></script>
     {% block script %}{% endblock script %}
     <script src="{% static 'js/esoda-main.js' %}"></script>
 
