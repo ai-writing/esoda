@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 import xml.sax
+import json
 import requests
 
 
@@ -71,15 +72,24 @@ def esoda_view(request):
         ]
     }
 
-    dictionary = {
-        'word': 'quality',
-        'english': u'[\'kwɒlɪtɪ]',
-        'american': u'[\'kwɑləti]',
-        'explanationList': [
-          u'n. 质量，[统计] 品质；特性；才能',
-          u'adj. 优质的；高品质的；<英俚>棒极了'
-        ]
-    }
+    YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
+    jsonString = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).text
+    jsonObj = json.loads(jsonString.encode('utf-8'))
+
+    if jsonObj.has_key('simple') and jsonObj.has_key('ec'):
+        dictionary = {
+            'word': q,
+            'english': jsonObj['simple']['word'][0].get('ukphone',''),
+            'american': jsonObj['simple']['word'][0].get('usphone',''),
+            'explanationList': []
+        }
+        for explain in jsonObj['ec']['word'][0]['trs']:
+            dictionary['explanationList'].append(explain['tr'][0]['l']['i'][0])
+    else:
+        dictionary = {
+            'word': q,
+            'explanationList': ['没有字典释义']
+        }
 
     suggestion = {
         'relatedList': [

@@ -106,7 +106,7 @@
                     <div role="tabpanel" class="tab-pane fade active in" id="SynContent">
                       <div class="usage-panel-content">
                         {% for syn in r.synonymous %}
-                        <a href="#">{{ syn }}</a>&nbsp;&nbsp;
+                        <a href="{% url 'esoda' %}?q={{ syn }}">{{ syn }}</a>&nbsp;&nbsp;
                         {% endfor %}
                       </div>
                     </div>
@@ -187,7 +187,7 @@
                 </a>
                 <div id="CollapseRelated" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRelated">
                   {% for related in suggestion.relatedList %}
-                  <p><a href="">{{ related }}</a></p>
+                  <p><a href="{% url 'esoda' %}?q={{ related }}">{{ related }}</a></p>
                   {% endfor %}
                 </div>
               </div>
@@ -203,7 +203,7 @@
                 </a>
                 <div id="CollapseHot" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingHot">
                   {% for hot in suggestion.hotList %}
-                  <p><a href="">{{ hot }}</a></p>
+                  <p><a href="{% url 'esoda' %}?q={{ hot }}">{{ hot }}</a></p>
                   {% endfor %}
                 </div>
               </div>
@@ -233,7 +233,7 @@
       $(".colloc-usage").click(function (e) {
         e.preventDefault();
         $("#ExampleEnd").hide();
-        
+
         $("#SentenceResult").html("<h3>Loading...</h3>");
         collocQ = $(this).html();
         loadCount = 1;
