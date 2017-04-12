@@ -95,28 +95,48 @@ def esoda_view(request):
         ]
     }
 
-    exampleList = []
-    for i in range(1, 51):
-        exampleList.append({
-            'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
-            'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
-            'heart_number': 129
-        })
 
     info = {
         'r': r,
         'q': q,
         'dictionary': dictionary,
         'suggestion': suggestion,
-        'example_number': 1209,
-        'search_time': 0.1,
-        'exampleList': exampleList
     }
     return render(request, 'esoda/result.html', info)
 
 def sentence_view(request):
-    # TODO
-    return
+    # Empty q - load the initial exampleList
+    if not request.GET:
+        exampleList = []
+        for i in range(1, 51):
+            exampleList.append({
+                'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
+                'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
+                'heart_number': 129,
+            })
+
+        info = {
+            'example_number': 1209,
+            'search_time': 0.1,
+            'exampleList': exampleList
+        }
+    # With collocation category q - load the specific exampleList
+    else:
+        q = request.GET.keys()[0]
+        exampleList = []
+        for i in range(1, 34):
+            exampleList.append({
+                'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
+                'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
+                'heart_number': 222,
+            })
+
+        info = {
+            'example_number': 33,
+            'search_time': 0.5,
+            'exampleList': exampleList
+        }
+    return render(request, 'esoda/sentence_result.html', info)
 
 class DictHandler( xml.sax.ContentHandler ):
     def __init__(self):

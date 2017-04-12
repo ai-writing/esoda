@@ -148,7 +148,7 @@
                       <div class="row colloc-result">
                         {% for usage in collocation.usageList %}
                         <div class="col-sm-4">
-                          <p><a href="">{{ usage.content }}({{ usage.count }})</a></p>
+                          <p><a href="" class="colloc-usage" id="CollocationUsage{{ forloop.counter }}">{{ usage.content }}({{ usage.count }})</a></p>
                         </div>
                         {% endfor %}
                       </div>
@@ -160,35 +160,7 @@
 
             </div> <!-- panel-group -->
 
-            <div id="ExampleList" class="panel-group">
-              <div class="example-hint">
-                找到{{ example_number }}句例句，为您提供前50个，排序根据点赞和相关度自动生成，耗时{{ search_time }}秒
-              </div>
-              {% for example in exampleList %}
-              <div class="panel panel-default result-example row {% if example.label > 10 %}display-none{% endif %}" id="Example{{ forloop.counter }}">
-                <div class="col-xs-11">
-                  <div class="panel-body">
-                    <div class="display-inline example-list-label">
-                      {{ forloop.counter }}.
-                    </div>
-                    <div class="right-float example-list-content">
-                      {{ example.content|safe }}
-                    </div>
-                  </div>
-                  <div class="panel-footer example-list-source">
-                    文章来源：{{ example.source }}
-                  </div>
-                </div>
-                <div class="col-xs-1">
-                  <div class="panel-heading panel-heart">
-                    <a href="" onclick="$.clickHeart(event);"><span class="glyphicon glyphicon-heart-empty"></span></a>
-                    <span>{{ example.heart_number }}&nbsp;&nbsp;</span>
-                    <a href="" onclick="$.clickStar(event);"><span class="glyphicon glyphicon-star-empty"></span></a>
-                  </div>
-                </div>
-              </div>
-              {% endfor %}
-            </div> <!-- panel-group -->
+            <div id="SentenceResult"></div>
 
             <div id="Loading" class="result-table-cell center-align">
               <p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p>
@@ -253,61 +225,26 @@
 {% endblock %}
 
 {% block script %}
+  <script src="{% static 'js/esoda-result.js' %}"></script>
   <script>
     $( function() {
 
-      /*----------------- Testing code ------------------*/
-      var defList = [
-        { label: "主谓", desc: "quality have", value: "quality have", category: "用法示例" },
-        { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
-        { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
-      ];
+      var collocQ = "";
+      $(".colloc-usage").click(function (e) {
+        e.preventDefault();
+        $("#ExampleEnd").hide();
+        
+        $("#SentenceResult").html("<h3>Loading...</h3>");
+        collocQ = $(this).html();
+        loadCount = 1;
+        loading = 0;
+        loaded = 0;
 
-      $.getData = function( request ) {
-        if (typeof(request.term) !== "undefined") {
-          var matcher = new RegExp( "^" + request.term, "i" );
-          return $.grep( words, function( item ) {
-            return matcher.test( item.label );
-          });
-        }
-        switch (request) {
-          case "q": return q;
-          case "dict": return dict;
-          case "suggestion": return suggestion;
-          case "r": return r;
-          case "example": return s;
-          case "": return defList;
-          default: return null;
-        }
-      };
+        $("#SentenceResult").load("{% url 'sentences' %}", collocQ);
+      });
 
-/*
-      $.appendExampleList = function( list ) {
-        var cur = $("#ExampleList > div").length - 1;
-        list.forEach(function (value) {
-          var example = $("#ExampleList div:eq(1)").clone().css("display", "block");
-          var labelHtml = $(example).children("div:first").children(".panel-body").children(".example-list-label").html();
-          var contentHtml = $(example).children("div:first").children(".panel-body").children(".example-list-content").html();
-          var sourceHtml = $(example).children("div:first").children(".panel-footer").html();
-          var heartnumHtml = $(example).children("div:eq(1)").children("div:first").children("span:first").html();
+      $("#SentenceResult").load("{% url 'sentences' %}", collocQ);
 
-          $(example).children("div:first").children(".panel-body").children(".example-list-label").html(
-              labelHtml.replace("{{ label }}", cur + ". "));
-          $(example).children("div:first").children(".panel-body").children(".example-list-content").html(
-              contentHtml.replace("{{ content }}", value.content));
-          $(example).children("div:first").children(".panel-footer").html(
-              sourceHtml.replace("{{ source }}", value.source));
-          $(example).children("div:eq(1)").children("div:first").children("span:first").html(heartnumHtml.replace("{{ heart_number }}", "129"));
-
-          $("#ExampleList").append(example);
-          cur++;
-        });
-        $("#ExampleList div:eq(1)").css("display","none");
-      };
-*/
-
-      /*----------------- Testing code ------------------*/
     } );
-    </script>
-  <script src="{% static 'js/esoda-result.js' %}"></script>
+  </script>
 {% endblock %}

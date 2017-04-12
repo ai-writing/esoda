@@ -2,6 +2,8 @@
 * Logic for esoda result page.
 */
 
+var loadCount = 1, loading = 0, loaded = 0;
+
 $(function () {
 	'use strict';
 
@@ -17,32 +19,28 @@ $(function () {
   });
 
 
-  var loadCount = 1, loading = 0, loaded = 0;
 
   $( window ).scroll( function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height() + 30) {
-      if (loading == 1 || loaded == 1 || loadCount > 4) return;
+      if (loading == 1 || loaded == 1) return;
 
+      var total = $("#ExampleNumber").html();
+      console.log(total);
       loading = 1;
       $("#Loading").show();
       setTimeout(function() {
         $("#Loading").hide();
         loading = 0;
-        /*
-        if (obj.ended == 1) {
+        var i;
+        for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
+          $("#Example" + i).show();
+        }
+        if (i > total) {
           loaded = 1;
           $("#ExampleEnd").show();
           return;
         }
-        */
-        for (var i = loadCount * 10 + 1; i <= (loadCount + 1) * 10; i++) {
-          console.log("Example" + i);
-          $("#Example" + i).show();
-        }
         loadCount++;
-        if (loadCount == 5) {
-          $("#ExampleEnd").show();
-        }
       }, 2000);
     }
   });
