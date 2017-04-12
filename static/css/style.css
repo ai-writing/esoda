@@ -937,6 +937,7 @@ button.close:focus {
 	margin: 0px;
 	background-color: #fff;
 	height: 100px;
+	overflow-y: hidden;
 }
 
 .dictionary-left {

@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 import xml.sax
+import json
 import requests
 
 
@@ -47,6 +48,16 @@ def esoda_view(request):
           'talent',
           'capability'
         ],
+        'phrase': [
+            'improve quality',
+            'standard quality',
+            'best quality'
+        ],
+        'commonColloc': [
+            u'quality (主谓)*',
+            u'quality (修饰)*',
+            u'quality (介词)*'
+        ],
         'collocationList': [
             {
                 'type': u'quality (主谓)*',
@@ -71,16 +82,6 @@ def esoda_view(request):
         ]
     }
 
-    dictionary = {
-        'word': 'quality',
-        'english': u'[\'kwɒlɪtɪ]',
-        'american': u'[\'kwɑləti]',
-        'explanationList': [
-          u'n. 质量，[统计] 品质；特性；才能',
-          u'adj. 优质的；高品质的；<英俚>棒极了'
-        ]
-    }
-
     suggestion = {
         'relatedList': [
             'high quality',
@@ -95,13 +96,27 @@ def esoda_view(request):
         ]
     }
 
-
     info = {
         'r': r,
         'q': q,
-        'dictionary': dictionary,
         'suggestion': suggestion,
     }
+
+    YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
+    jsonString = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).text
+    jsonObj = json.loads(jsonString.encode('utf-8'))
+
+    if jsonObj.has_key('simple') and jsonObj.has_key('ec'):
+        dictionary = {
+            'word': q,
+            'english': jsonObj['simple']['word'][0].get('ukphone',''),
+            'american': jsonObj['simple']['word'][0].get('usphone',''),
+            'explanationList': []
+        }
+        for explain in jsonObj['ec']['word'][0]['trs']:
+            dictionary['explanationList'].append(explain['tr'][0]['l']['i'][0])
+        info['dictionary'] = dictionary
+
     return render(request, 'esoda/result.html', info)
 
 def sentence_view(request):

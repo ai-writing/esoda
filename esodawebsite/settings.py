@@ -24,6 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REGISTRATION_OPEN = True
 ACCOUNT_ACTIVATION_DAYS = 30
 REGISTRATION_AUTO_LOGIN = False
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '.'
 LOGOUT_REDIRECT_URL = '/'
 
