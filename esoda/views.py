@@ -138,6 +138,12 @@ def sentence_view(request):
         }
     return render(request, 'esoda/sentence_result.html', info)
 
+def personal_view(request):
+    info={
+        'tab':"personal"
+    }
+    return render(request, 'esoda/personal.html',info)
+
 class DictHandler( xml.sax.ContentHandler ):
     def __init__(self):
         self.suggest = []

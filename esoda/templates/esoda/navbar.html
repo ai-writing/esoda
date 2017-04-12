@@ -1,0 +1,47 @@
+{% load static %}
+{% load i18n %}
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"  class="navbar-logo"></a>
+    </div>
+    <div id="navbar" class="navbar-index navbar-collapse collapse">
+      {% if not user.is_authenticated %}
+      <ul class="nav navbar-nav navbar-right">
+        <!--li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li-->
+        <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请登录{{fa}}</a></li>
+      </ul>
+      {% else %}
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
+        <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
+        <li><a href="/logout">登出</a></li>
+      </ul>
+      {% endif %}
+      <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
+        <script>
+          if ("{{tab}}"=="index")
+            document.write('<li role="presentation" class="active"><a role="tab" href="{% url "esoda" %}">主页</a></li>');
+          else 
+            document.write('<li role="presentation"><a role="tab" href="{% url "esoda" %}">主页</a></li>')
+           document.write('<li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>');
+          if ("{{tab}}"=="personal")
+            document.write('<li role="presentation" class="active"><a role="tab" href="#">个人领域</a></li>');
+          else 
+            document.write('<li role="presentation"><a role="tab" href="#">个人领域</a></li>')
+          if ("{{tab}}"=="guide")
+            document.write('<li role="presentation" class="active"><a role="tab" href="#">搜搭教程</a></li>');
+          else 
+            document.write('<li role="presentation"><a role="tab" href="#">搜搭教程</a></li>')
+        </script>
+      </ul>
+    </div><!--/.navbar-collapse -->
+  </div>
+</nav>
+ 
