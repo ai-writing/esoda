@@ -139,8 +139,18 @@ def sentence_view(request):
     return render(request, 'esoda/sentence_result.html', info)
 
 def personal_view(request):
-    info={
-        'tab':"personal"
+    exampleList = []
+    for i in range(1, 51):
+        exampleList.append({
+            'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
+            'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
+            'heart_number': 129,
+        })
+
+    info = {
+        'example_number': 50,
+        'search_time': 0.1,
+        'exampleList': exampleList
     }
     return render(request, 'esoda/personal.html',info)
 

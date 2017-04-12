@@ -1225,11 +1225,10 @@ button.close:focus {
 	margin-bottom:5px;
 }
 .personal-line {
-	width: 600px;
+	width: 720px;
 	height: 0px;
 	border: solid 1px #4a4a4a;
 	margin: 0px;
-	margin-left: 0px;
 }
 .personal-describe {
 	padding-top:0px;
@@ -1238,6 +1237,19 @@ button.close:focus {
 	color: #4a4a4a;
   	font-weight: 600;
 	margin-top:3px;
+}
+#search-collection {
+	padding-top: 30px;
+	padding-bottom: 60px;
+  	background-color: #f5f5f9;
+}
+#search-collection-box{
+	width: 560px;
+	height: 45px;
+}
+#search-collection-btn>.btn{
+	width: 80px;
+	height: 45px;
 }
 .huge-title-number {
 	font-size: 120px;
