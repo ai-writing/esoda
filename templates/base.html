@@ -39,7 +39,7 @@
             </button>
             <a href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"  class="navbar-logo" ></a>
           </div>
-          <div id="navbar" class="navbar-index navbar-collapse collapse">
+          <div id="navbar" class="navbar-index navbar-collapse collapse result-index">
             <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search" action="{% url 'esoda' %}">
               <div id="ResultSearchBar" class="input-group full-width">
                 <span class="input-group-btn">
@@ -47,13 +47,13 @@
                     <span class="glyphicon glyphicon-search"></span>
                   </button>
                 </span>
-                <input type="text" id="SearchBox" class="navbar-search-box form-control" autocomplete="off" name="q" value="{{ q }}">
+                <input type="text" id="SearchBox" class="navbar-search-box form-control result-search" placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q }}">
               </div>
             </form>
             {% if not user.is_authenticated %}
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right result-login">
               <!--li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li-->
-              <li><a href="#" data-toggle="modal" data-target="#ModalLogin">您好，请登录</a></li>
+              <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请登录</a></li>
             </ul>
             {% else %}
             <ul class="nav navbar-nav navbar-right">
