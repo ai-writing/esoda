@@ -3,5 +3,45 @@
 {% load i18n %}
 
 {% block header %}
-  {% include "esoda/navbar.html" %}
+	{% include "esoda/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="result-page">
+	<div class="container">
+		<div class="row personal-page-main">
+      <div class="col-md-3">
+      	<ul id="myTab" class="nav nav-tabs nav-stacked personal-page-tab">
+			    <li><a href="#field" data-toggle="tab" class="active">领域选择</a></li>
+			    <li><a href="#info" data-toggle="tab">个人信息</a></li>
+			    <li><a href="#safe" data-toggle="tab">安全与隐私</a></li>
+			    <li><a href="#collection" data-toggle="tab"">收藏夹</a></li>
+				</ul>
+      </div>
+      <div class="col-md-9">
+        <div id="myTabContent" class="tab-content">
+			    <div class="tab-pane fade in active" id="field">
+	        	<p class="personal-title">学术领域选择</p>
+	        	<hr class="personal-line"/>
+	        	<p class="personal-describe">通过选择学术领域缩小文章范围</p>
+			    </div>
+			    <div class="tab-pane fade" id="info">
+	        	<p>info</p>
+			    </div>
+			    <div class="tab-pane fade" id="safe">
+	        	<p class="personal-title">更改密码</p>
+	        	<hr class="personal-line"/>
+	        	<p class="personal-describe">若要更改密码，需要输入旧密码</p>			   
+	       	</div>
+			    <div class="tab-pane fade" id="collection">
+	        	<p>collection</p>
+			    </div>
+			    </div>
+				</div>
+      </div>
+    </div>
+		
+	</div>
+</div>
+
 {% endblock %}

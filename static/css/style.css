@@ -1189,6 +1189,56 @@ button.close:focus {
 	margin-left: 50px;
 }
 
+.personal-page-main {
+	padding-top: 45px;
+	padding-bottom: 390px;
+}
+
+.personal-page-tab> li {
+	background-color: #fff;
+	width: 140px;
+  	border: solid 1px #d7dcde;
+} 
+
+
+.personal-page-tab>li>a {
+	padding-top:2px;
+	height: 30px; 
+	width: 140px;
+	text-align: center;
+	font-size: 18px;
+  	font-weight: 600;;
+	color: 	#9b9b9b;
+}
+
+.personal-page-tab>li.active>a,
+.personal-page-tab>li.active>a:focus,
+.personal-page-tab>li.active>a:hover {
+	color: 	#63b7e6
+}
+
+.personal-title {
+	font-size:18px;
+	font-family: PingFangSC;
+	color: #4a4a4a;
+  	font-weight: 600;
+	margin-bottom:5px;
+}
+.personal-line {
+	width: 600px;
+	height: 0px;
+	border: solid 1px #4a4a4a;
+	margin: 0px;
+	margin-left: 0px;
+}
+.personal-describe {
+	padding-top:0px;
+	font-size:12px;
+	font-family: PingFangSC;
+	color: #4a4a4a;
+  	font-weight: 600;
+	margin-top:3px;
+}
 .huge-title-number {
 	font-size: 120px;
 	color: #63B7E6;
