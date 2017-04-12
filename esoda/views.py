@@ -8,22 +8,26 @@ import requests
 
 # Create your views here.
 def esoda_view(request):
-    info = {
-        'feedbackList': [
-            {
-                'content': u'无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                'user_name': u'潘星宇'
-            },
-            {
-                'content': u'无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                'user_name': u'潘星宇'
-            }
-        ],
-        'count_of_favorite': 12049
-    }
-    return render(request, 'esoda/index.html', info)
+    q = request.GET.get('q', '').strip()
 
-def result_view(request):
+    # No query - render index.html
+    if not q:
+        info = {
+            'feedbackList': [
+                {
+                    'content': u'无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                }
+            ],
+            'count_of_favorite': 12049
+        }
+        return render(request, 'esoda/index.html', info)
+
+    # With query - render result.html
     usageList = []
     for i in range(1, 28):
         usageList.append({
@@ -99,7 +103,6 @@ def result_view(request):
             'heart_number': 129
         })
 
-    q = 'quality'
     info = {
         'r': r,
         'q': q,
