@@ -27,6 +27,9 @@
   </head>
 
   <body>
+    {% if debug %}
+      <div style="padding-left: 1%; background: cornsilk; position: absolute; z-index: 100;">NOTE: You are running in DEBUG mode.</div>
+    {% endif %}
     {% block header %}
       <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
@@ -129,13 +132,27 @@
     <!--Baidu statistics-->
   {% endif %}
     <script src="{% static 'js/jquery-ui-modified.js' %}"></script>
-    {% block script %}{% endblock %}
     <script src="{% static 'js/esoda-main.js' %}"></script>
     <script type="text/javascript">
     $(document).ready(function () {
-      $('#ModalLogin').load('{% url "login" %}');
+      function onLoginFormLoaded() {
+        $('#LoginForm').submit(function (event) {
+          $.post('{% url "login" %}', $(this).serialize(), function (data, status, xhr) {
+            // TODO: better logic to test login success, e.g., $(data).find('#LoginForm').length > 0
+            if (data.indexOf('<!DOCTYPE html>') > 0) {
+              window.location.reload();
+            } else {
+              $('#ModalLogin').html(data);
+              onLoginFormLoaded();
+            }
+          });
+          event.preventDefault();
+        });
+      }
+      $('#ModalLogin').load('{% url "login" %}', onLoginFormLoaded);
     });
     </script>
+    {% block script %}{% endblock %}
 
   </body>
 </html>
