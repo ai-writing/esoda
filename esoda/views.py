@@ -150,10 +150,15 @@ def personal_view(request):
     info = {
         'example_number': 50,
         'search_time': 0.1,
-        'exampleList': exampleList
+        'exampleList': exampleList,
+        'tab': "personal"
     }
     return render(request, 'esoda/personal.html',info)
-
+def guide_view(request):
+    info = {
+        'tab': "guide"
+    }
+    return render(request, 'esoda/guide.html',info)
 class DictHandler( xml.sax.ContentHandler ):
     def __init__(self):
         self.suggest = []

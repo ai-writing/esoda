@@ -26,19 +26,20 @@
       {% endif %}
       <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
         <script>
+          //alert('{{tab}}');
           if ("{{tab}}"=="index")
             document.write('<li role="presentation" class="active"><a role="tab" href="{% url "esoda" %}">主页</a></li>');
           else 
             document.write('<li role="presentation"><a role="tab" href="{% url "esoda" %}">主页</a></li>')
            document.write('<li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>');
           if ("{{tab}}"=="personal")
-            document.write('<li role="presentation" class="active"><a role="tab" href="#">个人领域</a></li>');
+            document.write('<li role="presentation" class="active"><a role="tab" href="{% url "personal" %}">个人领域</a></li>');
           else 
-            document.write('<li role="presentation"><a role="tab" href="#">个人领域</a></li>')
+            document.write('<li role="presentation"><a role="tab" href="{% url "personal" %}">个人领域</a></li>')
           if ("{{tab}}"=="guide")
-            document.write('<li role="presentation" class="active"><a role="tab" href="#">搜搭教程</a></li>');
+            document.write('<li role="presentation" class="active"><a role="tab" href="{% url "guide" %}">搜搭教程</a></li>');
           else 
-            document.write('<li role="presentation"><a role="tab" href="#">搜搭教程</a></li>')
+            document.write('<li role="presentation"><a role="tab" href="{% url "guide" %}">搜搭教程</a></li>')
         </script>
       </ul>
     </div><!--/.navbar-collapse -->

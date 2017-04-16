@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block header %}
+  {% include "esoda/navbar.html" %}
+{% endblock %}
+{% block content %}
+<div class="result-page">
+  <div class="container">
+    <dic class="row">
+      <div class="guide-title1">搜哒教程</div>
+        {% include "esoda/guide_content.html" %}
+      </div>
+    </dic>
+  </div>
+</div>
+{% endblock content %}

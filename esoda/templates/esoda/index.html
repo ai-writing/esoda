@@ -31,7 +31,7 @@
           <li role="presentation" class="active"><a role="tab" href="{% url 'esoda' %}">主页</a></li>
           <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
           <li role="presentation"><a role="tab" href="{% url 'personal' %}">个人领域</a></li>
-          <li role="presentation"><a role="tab" href="#">搜搭教程</a></li>
+          <li role="presentation"><a role="tab" href="{% url 'guide' %}">搜搭教程</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
@@ -69,10 +69,10 @@
     <div class="usage-title">点击预览易搜搭的神奇搜索</div>
     <div class="hr hidden-xs">
       <span class="hr-inner">
-        <a href=""><span class="hr-inner-circle"></span></a>
-        <a href=""><span class="hr-inner-circle hr-inner-circle-2"></span></a>
-        <a href=""><span class="hr-inner-circle hr-inner-circle-3"></span></a>
-        <a href=""><span class="hr-inner-circle hr-inner-circle-4"></span></a>
+        <a href="#guide0"><span class="hr-inner-circle"></span></a>
+        <a href="#guide1"><span class="hr-inner-circle hr-inner-circle-2"></span></a>
+        <a href="#guide2"><span class="hr-inner-circle hr-inner-circle-3"></span></a>
+        <a href="#guide3"><span class="hr-inner-circle hr-inner-circle-4"></span></a>
       </span>
     </div>
     <div class="row">
@@ -112,6 +112,16 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="result-page">
+    <div class="container">
+      <dic class="row">
+        <div class="guide-title1">进阶搜哒</div>
+          {% include "esoda/guide_content.html" %}
+        </div>
+      </dic>
     </div>
   </div>
 

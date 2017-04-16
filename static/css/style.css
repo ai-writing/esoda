@@ -1268,6 +1268,42 @@ button.close:focus {
 	width: 560px;
 	height: 45px;
 }
+.guide-group {
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+.guide-title1 {
+	font-family: .PingFangSC;
+	font-size: 24px;
+	font-weight: 600;
+	color: #4a4a4a;
+}
+.guide-title2 {
+	font-family: .PingFangSC;
+	font-size: 20px;
+	font-weight: 600;
+	color: #4a4a4a;
+	float:left;
+}
+.guide-content1 {
+	font-family: .PingFangSC;
+	font-size: 20px;
+	color: #4a4a4a;
+}
+.guide-content2 {
+	font-family: .PingFangSC;
+  	font-size: 20px;
+  	color: #9b9b9b;
+}
+.guide-btn {
+	font-family: .PingFangSC;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff; width: 140px;
+	height: 40px;
+	border-radius: 3px;
+	background-color: #63b7e6;
+}
 #search-collection-btn>.btn{
 	width: 80px;
 	height: 45px;
