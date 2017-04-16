@@ -1238,6 +1238,16 @@ button.close:focus {
   	font-weight: 600;
 	margin-top:3px;
 }
+.personal-changepassword {
+	padding-top:8px;
+	margin-bottom:30px;
+}
+.personal-passwordinput {
+	width: 220px;
+	height: 25px;
+	background-color: #ffffff;
+	border: solid 1px #d7dcde;
+}
 #search-collection {
 	padding-top: 30px;
 	padding-bottom: 60px;
