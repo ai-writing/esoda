@@ -5,8 +5,6 @@
 $(function () {
   'use strict';
 
-  //var getData = $.getData;
-
   // TODO: Initialize autocomplete etc.
   Storage.prototype.setObj = function(key, obj) {
     return this.setItem(key, JSON.stringify(obj))

@@ -267,39 +267,6 @@
 {% endblock content %}
 
 {% block script %}
-  
-  <script>
-  $( function() {
-
-    /* -------------------- Testing code -------------------- */
-    /*
-    $.getData = function( request ) {
-      if (request == "") {
-        return defList;
-      } else {
-        var matcher = new RegExp( "^" + request.term, "i" );
-        return $.grep( words, function( item ) {
-          return matcher.test( item.label );
-        });
-      }
-    };
-    */
-    /*
-    $( "#CountOfFavorite" ).html($("#CountOfFavorite").html().replace("{{ count_of_favorite }}", "12049"));
-    $( "#UserFeedback div:first" ).css("display", "none");
-    userFeedback.forEach(function (value) {
-      var feedback = $("#UserFeedback div:first").clone().css("display", "block");
-      feedback.children("p:first").html(feedback.children("p:first").html().replace("{{ feedback_content }}", value.content));
-      feedback.children("h5:first").html(feedback.children("h5:first").html().replace("{{ feedback_user_name }}", value.name));
-      $("#UserFeedback").append(feedback);
-    });
-    */
-    /* -------------------- Testing code --------------------- */
-
-
-  } );
-  </script>
-
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
 
