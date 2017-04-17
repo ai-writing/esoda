@@ -14,7 +14,6 @@
     <div id="navbar" class="navbar-index navbar-collapse collapse">
       {% if not user.is_authenticated %}
       <ul class="nav navbar-nav navbar-right">
-        <!--li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li-->
         <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请登录{{fa}}</a></li>
       </ul>
       {% else %}
@@ -25,22 +24,10 @@
       </ul>
       {% endif %}
       <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
-        <script>
-          //alert('{{tab}}');
-          if ("{{tab}}"=="index")
-            document.write('<li role="presentation" class="active"><a role="tab" href="{% url "esoda" %}">主页</a></li>');
-          else 
-            document.write('<li role="presentation"><a role="tab" href="{% url "esoda" %}">主页</a></li>')
-           document.write('<li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>');
-          if ("{{tab}}"=="personal")
-            document.write('<li role="presentation" class="active"><a role="tab" href="{% url "personal" %}">个人领域</a></li>');
-          else 
-            document.write('<li role="presentation"><a role="tab" href="{% url "personal" %}">个人领域</a></li>')
-          if ("{{tab}}"=="guide")
-            document.write('<li role="presentation" class="active"><a role="tab" href="{% url "guide" %}">搜搭教程</a></li>');
-          else 
-            document.write('<li role="presentation"><a role="tab" href="{% url "guide" %}">搜搭教程</a></li>')
-        </script>
+        <li role="presentation" {% if tab == "index" %}class="active"{% endif %}><a role="tab" href="{% url "esoda" %}">主页</a></li>
+        <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
+        <li role="presentation" {% if tab == "personal" %}class="active"{% endif %}><a role="tab" href="{% url "personal" %}">个人领域</a></li>
+        <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}><a role="tab" href="{% url "guide" %}">搜搭教程</a></li>
       </ul>
     </div><!--/.navbar-collapse -->
   </div>

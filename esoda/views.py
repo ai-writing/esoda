@@ -24,7 +24,8 @@ def esoda_view(request):
                     'user_name': u'潘星宇'
                 }
             ],
-            'count_of_favorite': 12049
+            'count_of_favorite': 12049,
+            'tab': 'index'
         }
         return render(request, 'esoda/index.html', info)
 
@@ -166,14 +167,16 @@ def personal_view(request):
         'example_number': 50,
         'search_time': 0.1,
         'exampleList': exampleList,
-        'tab': "personal"
+        'tab': 'personal'
     }
-    return render(request, 'esoda/personal.html',info)
+    return render(request, 'esoda/personal.html', info)
+
 def guide_view(request):
     info = {
-        'tab': "guide"
+        'tab': 'guide'
     }
-    return render(request, 'esoda/guide.html',info)
+    return render(request, 'esoda/guide.html', info)
+
 class DictHandler( xml.sax.ContentHandler ):
     def __init__(self):
         self.suggest = []
