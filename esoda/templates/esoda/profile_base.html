@@ -15,7 +15,7 @@
       	<ul id="myTab" class="nav nav-tabs nav-stacked personal-page-tab">
 			    <li {% if profileTab == "domain" %}class="active"{% endif %}><a href="{% url 'domain' %}">领域选择</a></li>
 			    <li {% if profileTab == "personal" %}class="active"{% endif %}><a href="{% url 'personal' %}">个人信息</a></li>
-			    <li {% if profileTab == "security" %}class="active"{% endif %}><a href="{% url 'security' %}">安全与隐私</a></li>
+			    <li {% if profileTab != "domain" and profileTab != "personal" and profileTab != "favorites" %}class="active"{% endif %}><a href="{% url 'auth_password_change' %}">安全与隐私</a></li>
 			    <li {% if profileTab == "favorites" %}class="active"{% endif %}><a href="{% url 'favorites' %}">收藏夹</a></li>
 				</ul>
       </div>

@@ -218,12 +218,6 @@ def personal_view(request):
         'profileTab': 'personal'
     }
     return render(request, 'esoda/profile/personal.html', info)
-def security_view(request):
-    info = {
-        'tab': 'profile',
-        'profileTab': 'security'
-    }
-    return render(request, 'esoda/profile/security.html', info)
 def favorites_view(request):
     exampleList = []
     for i in range(1, 51):
