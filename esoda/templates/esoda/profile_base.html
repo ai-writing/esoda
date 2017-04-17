@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}ESODA | profile{% endblock %}
+{% block header %}
+	{% include "esoda/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="result-page">
+	<div class="container">
+		<div class="row personal-page-main">
+      <div class="col-md-3">
+      	<ul id="myTab" class="nav nav-tabs nav-stacked personal-page-tab">
+			    <li {% if profileTab == "domain" %}class="active"{% endif %}><a href="{% url 'domain' %}">领域选择</a></li>
+			    <li {% if profileTab == "personal" %}class="active"{% endif %}><a href="{% url 'personal' %}">个人信息</a></li>
+			    <li {% if profileTab == "security" %}class="active"{% endif %}><a href="{% url 'security' %}">安全与隐私</a></li>
+			    <li {% if profileTab == "favorites" %}class="active"{% endif %}><a href="{% url 'favorites' %}">收藏夹</a></li>
+				</ul>
+      </div>
+      <div class="col-md-9">
+      	{% block profile_content %}{% endblock %}
+      </div>
+    </div>
+	</div>
+</div>
+{% endblock %}

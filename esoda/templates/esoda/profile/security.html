@@ -1,0 +1,12 @@
+{% extends "esoda/profile_base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block profile_content %}
+<div id="safe">
+	<p class="personal-title">更改密码</p>
+	<hr class="personal-line"/>
+	<p class="personal-describe">若要更改密码，需要输入旧密码</p>
+	{% include "registration/password_change_form.html" %}
+</div>
+{% endblock %}

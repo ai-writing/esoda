@@ -1,0 +1,45 @@
+{% extends "esoda/profile_base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block profile_content %}
+<div id="collection">
+	<p class="personal-title">收藏夹</p>
+	<hr class="personal-line"/>
+	<p class="personal-describe">收藏的文章句子</p>
+	<div id="search-collection">
+    <form id="search-collection-form" class="form-horizontal" role="search">
+      <div class="input-group input-group-lg">
+        <input id="search-collection-box" type="text" class="form-control" placeholder="查找收藏夹" name="q"/>
+        <span id="search-collection-btn" class="input-group-btn">
+          <button type="submit" class="btn btn-info ">&nbsp;<span class="glyphicon glyphicon-search"></span></button>
+        </span>
+      </div>
+    </form>
+  </div>
+	{% for example in exampleList %}
+  <div class="panel panel-default result-example row {% if forloop.counter > 10 %}display-none{% endif %}" id="Example{{ forloop.counter }}">
+    <div class="col-xs-11">
+      <div class="panel-body">
+        <div class="display-inline example-list-label">
+          {{ forloop.counter }}.
+        </div>
+        <div class="right-float example-list-content">
+          {{ example.content|safe }}
+        </div>
+      </div>
+      <div class="panel-footer example-list-source">
+        文章来源：{{ example.source|safe }}
+      </div>
+    </div>
+    <div class="col-xs-1">
+      <div class="panel-heading panel-heart">
+        <a href="" onclick="$.clickHeart(event);"><span class="glyphicon glyphicon-heart-empty"></span></a>
+        <span>{{ example.heart_number }}&nbsp;&nbsp;</span>
+        <a href="" onclick="$.clickStar(event);"><span class="glyphicon glyphicon-star-empty"></span></a>
+      </div>
+    </div>
+  </div>
+	{% endfor %}
+</div>
+{% endblock %}

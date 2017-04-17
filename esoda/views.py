@@ -154,29 +154,6 @@ def sentence_view(request):
         }
     return render(request, 'esoda/sentence_result.html', info)
 
-def personal_view(request):
-    exampleList = []
-    for i in range(1, 51):
-        exampleList.append({
-            'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
-            'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
-            'heart_number': 129,
-        })
-
-    info = {
-        'example_number': 50,
-        'search_time': 0.1,
-        'exampleList': exampleList,
-        'tab': 'personal'
-    }
-    return render(request, 'esoda/personal.html', info)
-
-def guide_view(request):
-    info = {
-        'tab': 'guide'
-    }
-    return render(request, 'esoda/guide.html', info)
-
 class DictHandler( xml.sax.ContentHandler ):
     def __init__(self):
         self.suggest = []
@@ -221,3 +198,47 @@ def dict_suggest_view(request):
     except Exception as e:
         print repr(e)
     return JsonResponse(r)
+
+def guide_view(request):
+    info = {
+        'tab': 'guide'
+    }
+    return render(request, 'esoda/guide.html', info)
+
+# Views for profile urls
+def domain_view(request):
+    info = {
+        'tab': 'profile',
+        'profileTab': 'domain'
+    }
+    return render(request, 'esoda/profile/domain_select.html', info)
+def personal_view(request):
+    info = {
+        'tab': 'profile',
+        'profileTab': 'personal'
+    }
+    return render(request, 'esoda/profile/personal.html', info)
+def security_view(request):
+    info = {
+        'tab': 'profile',
+        'profileTab': 'security'
+    }
+    return render(request, 'esoda/profile/security.html', info)
+def favorites_view(request):
+    exampleList = []
+    for i in range(1, 51):
+        exampleList.append({
+            'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
+            'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
+            'heart_number': 129,
+        })
+
+    info = {
+        'example_number': 50,
+        'search_time': 0.1,
+        'exampleList': exampleList,
+        'tab': 'profile',
+        'profileTab': 'favorites'
+    }
+    return render(request, 'esoda/profile/favorites.html', info)
+
