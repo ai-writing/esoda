@@ -3,7 +3,7 @@ from django.conf.urls import url, include
 from . import views
 urlpatterns = [
     url(r'', include('registration.backends.default.urls')),
-    url(r'', include('django.contrib.auth.urls')),
+    # url(r'', include('django.contrib.auth.urls')),
     
     # urls for profile pages
     url(r'^domain/$', views.domain_view, name='domain'),

@@ -61,7 +61,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
               <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
-              <li><a href="{% url 'logout' %}">登出</a></li>
+              <li><a href="{% url 'auth_logout' %}">登出</a></li>
             </ul>
             {% endif %}
           </div><!--/.navbar-collapse -->
@@ -135,7 +135,7 @@
     $(document).ready(function () {
       function onLoginFormLoaded() {
         $('#LoginForm').submit(function (event) {
-          $.post('{% url "login" %}', $(this).serialize(), function (data, status, xhr) {
+          $.post('{% url "auth_login" %}', $(this).serialize(), function (data, status, xhr) {
             // TODO: better logic to test login success, e.g., $(data).find('#LoginForm').length > 0
             if (data.indexOf('<!DOCTYPE html>') > 0) {
               window.location.reload();
@@ -147,7 +147,7 @@
           event.preventDefault();
         });
       }
-      $('#ModalLogin').load('{% url "login" %}', onLoginFormLoaded);
+      $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
     });
     </script>
     {% block script %}{% endblock %}

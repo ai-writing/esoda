@@ -9,7 +9,7 @@
       <p>登陆易搜搭，开启英文写作新体验</p>
     </div>
     <div class="modal-body modal-login-body">
-      <form id="LoginForm" class="form-horizonal" role="login" method="post" action="{% url 'login' %}">
+      <form id="LoginForm" class="form-horizonal" role="login" method="post" action="">
         {% csrf_token %}
 
         {% with debug|yesno:'test,,' as default_username %}
@@ -47,7 +47,7 @@
     </div>
     <div class="modal-footer modal-login-footer">
       <div class="modal-forgot-password">
-        <p><a href="{% url 'password_reset' %}">忘记密码？</a></p>
+        <p><a href="{% url 'auth_password_reset' %}">忘记密码？</a></p>
       </div>
       <div class="modal-register">
         <p><a href="{% url 'registration_register' %}">注册，加入易搜搭</a></p>

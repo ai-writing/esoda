@@ -23,6 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 REGISTRATION_OPEN = True
 ACCOUNT_ACTIVATION_DAYS = 30
+INCLUDE_AUTH_URLS = True
+INCLUDE_REGISTER_URL = True
 REGISTRATION_AUTO_LOGIN = False
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
@@ -47,19 +49,18 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
-    #'django.contrib.admin',
-    # 'django.contrib.sites',
     'authentication',
     'registration',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
     'common',
     'esoda',
     'widget_tweaks',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    # 'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -156,4 +157,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Email configuration
+
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
