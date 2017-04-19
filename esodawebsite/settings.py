@@ -26,6 +26,7 @@ ACCOUNT_ACTIVATION_DAYS = 30
 INCLUDE_AUTH_URLS = True
 INCLUDE_REGISTER_URL = True
 REGISTRATION_AUTO_LOGIN = False
+REGISTRATION_FORM = 'authentication.forms.RegistrationFormEmailAsUsername'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -113,6 +114,9 @@ AUTH_PASSWORD_VALIDATORS = [
     # },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': config('MIN_PASSWORD_LENGTH', default=1, cast=int),
+        }
     },
     # {
     #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
