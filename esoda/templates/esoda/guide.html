@@ -3,7 +3,9 @@
 {% load i18n %}
 
 {% block header %}
+{% with tab="guide" %}
   {% include "esoda/navbar.html" %}
+{% endwith %}
 {% endblock %}
 {% block content %}
 <div class="result-page">

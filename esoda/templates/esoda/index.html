@@ -3,7 +3,9 @@
 {% load i18n %}
 
 {% block header %}
+{% with tab="index" %}
   {% include "esoda/navbar.html" %}
+{% endwith %}
 {% endblock %}
 
 {% block content %}

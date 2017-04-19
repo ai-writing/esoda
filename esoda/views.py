@@ -25,7 +25,6 @@ def esoda_view(request):
                 }
             ],
             'count_of_favorite': 12049,
-            'tab': 'index'
         }
         return render(request, 'esoda/index.html', info)
 
@@ -201,20 +200,17 @@ def dict_suggest_view(request):
 
 def guide_view(request):
     info = {
-        'tab': 'guide'
     }
     return render(request, 'esoda/guide.html', info)
 
 # Views for profile urls
 def domain_view(request):
     info = {
-        'tab': 'profile',
         'profileTab': 'domain'
     }
     return render(request, 'esoda/profile/domain_select.html', info)
 def personal_view(request):
     info = {
-        'tab': 'profile',
         'profileTab': 'personal'
     }
     return render(request, 'esoda/profile/personal.html', info)
@@ -231,7 +227,6 @@ def favorites_view(request):
         'example_number': 50,
         'search_time': 0.1,
         'exampleList': exampleList,
-        'tab': 'profile',
         'profileTab': 'favorites'
     }
     return render(request, 'esoda/profile/favorites.html', info)

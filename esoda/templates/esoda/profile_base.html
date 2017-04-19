@@ -4,7 +4,9 @@
 
 {% block title %}ESODA | profile{% endblock %}
 {% block header %}
-	{% include "esoda/navbar.html" %}
+{% with tab="profile" %}
+  {% include "esoda/navbar.html" %}
+{% endwith %}
 {% endblock %}
 
 {% block content %}
