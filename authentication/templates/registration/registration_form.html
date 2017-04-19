@@ -1,38 +1,42 @@
+{% extends "base.html" %}
 {% load static %}
 {% load i18n %}
 
-<div class="modal-dialog modal-sm modal-register-sm">
-  <div class="modal-content">
-    <div class="modal-header modal-register-header">
-      <img src="{% static 'img/logo.png' %}" class="modal-logo">
-      <p>加入易搜搭，享受更多个性化服务</p>
-    </div>
-    <div class="modal-body modal-register-body">
-      <form id="RegisterForm" class="form-horizonal" role="register" method="post" action="{% url 'registration_register' %}">
-        {% csrf_token %}
-        <div class="modal-register-hint">电子邮箱地址</div>
-        <input type="text" class="form-control form-register" name="id"/>
-        <div class="alert alert-success alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          邮箱可以使用！
-        </div>
-        <div class="modal-register-hint">设置密码</div>
-        <input type="password" class="form-control form-register" name="password"/>
-        <div class="alert alert-danger alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          密码不能少于6位！
-        </div>
-        <div class="modal-register-hint">确认密码</div>
-        <input type="password" class="form-control form-register" name="conform"/>
-        <div class="alert alert-danger alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          确认密码错误！
-        </div>
-        <div class="modal-register-click-hint">By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></div>
-        <span class="form-register">
-          <button type="submit" class="btn btn-register">开始搜搭</button>
-        </span>
-      </form>
-    </div>
+{% block title %}ESODA | register{% endblock %}
+{% block header %}
+  {% include "esoda/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="result-page">
+  <div class="container">
+    <h3>加入易搜搭，享受更多个性化服务</h3>
+    <form class="form-horizonal" role="register" method="post" action=".">
+      {% csrf_token %}
+      <div class='form-group'>
+        <label>{{ form.email.label }}</label> 
+        {{ form.email }}
+        {% if form.email.errors %}
+        <p class="validation-summary-errors"><small>{{form.email.errors.as_text}}</small></p>
+        {% endif %}
+      </div>
+      <div class='form-group'>
+        <label>{{ form.password1.label }}</label> 
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+        <p class="validation-summary-errors"><small>{{form.password1.errors.as_text}}</small></p>
+        {% endif %}
+      </div>
+      <div class='form-group'>
+        <label>{{ form.password2.label }}</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+        <p class="validation-summary-errors"><small>{{form.password2.errors.as_text}}</small></p>
+        {% endif %}
+      </div>
+      <h5>By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></h5>
+      <input type="submit" style="margin-top: 20px;" class="btn btn-default" value="开始搜搭" />
+    </form>
   </div>
 </div>
+{% endblock %}

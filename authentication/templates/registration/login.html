@@ -50,7 +50,7 @@
         <p><a href="{% url 'password_reset' %}">忘记密码？</a></p>
       </div>
       <div class="modal-register">
-        <p><a href="#" data-toggle="modal" id="OpenRegister" data-target="#ModalRegister" onclick="$('#ModalLogin').modal('hide'); setTimeout(function() { $(document.body).addClass('modal-open'); }, 500); return false;">注册，加入易搜搭</a></p>
+        <p><a href="{% url 'registration_register' %}">注册，加入易搜搭</a></p>
       </div>
     </div>
   </div>
