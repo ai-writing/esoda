@@ -1363,3 +1363,10 @@ button.close:focus {
 .result-login {
 	margin-top: 20px;
 }
+
+.registration-title {
+	text-align: center;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	font-size: 24px;
+}
