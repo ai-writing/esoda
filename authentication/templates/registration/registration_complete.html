@@ -6,7 +6,16 @@
   <div class="container">
 		<div style="text-align: center;margin-top: 50px;font-size: 24px;">
 		    <h3><span class="glyphicon glyphicon-ok" style="color:#80c269;"></span>&nbsp;{% trans "An activation email has been sent to your E-mail." %}</h3>
+		    <h3 id="Resend" class="display-none">{% trans "Haven't received E-mail? " %}&nbsp;&nbsp;<a href="{% url 'registration_resend_activation' %}">{% trans "Resend E-mail" %}</a></h3>
 		</div>
 	</div>
 </div>
+{% endblock %}
+
+{% block script%}
+<script>
+$(document).ready(function(){
+	setTimeout("$(\"#Resend\").show()", 2000);
+});
+</script>
 {% endblock %}
