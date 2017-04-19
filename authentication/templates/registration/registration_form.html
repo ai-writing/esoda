@@ -21,6 +21,13 @@
         {% endif %}
       </div>
       <div class='form-group'>
+        <label>{{ form.username.label }}</label> 
+        {{ form.username }}
+        {% if form.username.errors %}
+        <p class="validation-summary-errors"><small>{{form.username.errors.as_text}}</small></p>
+        {% endif %}
+      </div>
+      <div class='form-group'>
         <label>{{ form.password1.label }}</label> 
         {{ form.password1 }}
         {% if form.password1.errors %}

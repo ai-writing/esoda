@@ -5,7 +5,7 @@
 <div class="result-page">
   <div class="container">
 		<div style="text-align: center;margin-top: 50px;font-size: 24px;">
-		    <h3><span class="glyphicon glyphicon-ok" style="color:#80c269;"></span>&nbsp;{% trans "An activation email has been sent to your E-mail." %}</h3>
+		    <h3><span class="glyphicon glyphicon-ok" style="color:#80c269;"></span>&nbsp;{% trans "Your account is now activated." %}{% if not user.is_authenticated %}{% trans "You can log in." %}{% endif %}</h3>
 		</div>
 	</div>
 </div>
