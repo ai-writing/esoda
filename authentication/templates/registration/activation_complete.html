@@ -5,8 +5,18 @@
 <div class="result-page">
   <div class="container">
 		<div style="text-align: center;margin-top: 50px;font-size: 24px;">
-		    <h3><span class="glyphicon glyphicon-ok" style="color:#80c269;"></span>&nbsp;{% trans "Your account is now activated." %}{% if not user.is_authenticated %}{% trans "You can log in." %}{% endif %}</h3>
+		  <h3><span class="glyphicon glyphicon-ok" style="color:#80c269;"></span>&nbsp;{% trans "Your account is now activated." %} {% if not user.is_authenticated %} {% trans " You can " %}<a href="#" data-toggle="modal" data-target="#ModalLogin">{% trans "log in." %}</a>{% else %} {% trans "Redirecting to" %} <a id="HomeLink" href="{% url 'esoda' %}">{% trans "home page" %}</a>...{% endif %}</h3>
 		</div>
 	</div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+	if ($("#HomeLink").length > 0) {
+		setTimeout("location.href = \"{% url 'esoda' %}\";", 2000);
+	}
+});
+</script>
 {% endblock %}
