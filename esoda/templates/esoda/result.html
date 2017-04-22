@@ -63,7 +63,7 @@
                       <div class="dictionary-middle-line"></div>
                     </div>
                     <div class="dictionary-right">
-                      <div class="dictionary-hint">中文翻译</div>
+                      <span class="dictionary-hint">中文翻译</span>
                       <div id="WordExplanation">
                         {% for explanation in dictionary.explanationList %}
                         <p>{{ explanation }}</p>
@@ -202,7 +202,7 @@
         <div class="col-sm-3 hidden-xs">
           <div id="SidebarAffix" class="affix result-sidebar" data-spy="affix">
             <div class="panel-group">
-              <div class="panel panel-default">
+              <div class="panel panel-default sideword">
                 <div class="panel-heading" role="tab" id="HeadingRelated">
                   <div class="result-sidebar-title">
                     大家都在搜
@@ -211,14 +211,14 @@
                 <a role="button" data-toggle="collapse" href="#CollapseRelated" aria-expanded="true" aria-controls="CollapseRelated" onclick="$.clickChevron(event);">
                   <span class="glyphicon glyphicon-chevron-down"></span>
                 </a>
-                <div id="CollapseRelated" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRelated">
+                <div id="CollapseRelated" class="hotword panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRelated">
                   {% for related in suggestion.relatedList %}
                   <p><a href="{% url 'esoda' %}?q={{ related }}">{{ related }}</a></p>
                   {% endfor %}
                 </div>
               </div>
 
-              <div class="panel panel-default">
+              <div class="panel panel-default sideword">
                 <div class="panel-heading" role="tab" id="HeadingHot">
                   <div class="result-sidebar-title">
                       领域内热词
@@ -227,7 +227,7 @@
                 <a role="button" data-toggle="collapse" href="#CollapseHot" aria-expanded="true" aria-controls="CollapseHot" onclick="$.clickChevron(event);">
                   <span class="glyphicon glyphicon-chevron-down"></span>
                 </a>
-                <div id="CollapseHot" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingHot">
+                <div id="CollapseHot" class="panel-collapse collapse in hotword" role="tabpanel" aria-labelledby="HeadingHot">
                   {% for hot in suggestion.hotList %}
                   <p><a href="{% url 'esoda' %}?q={{ hot }}">{{ hot }}</a></p>
                   {% endfor %}

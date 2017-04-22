@@ -102,7 +102,7 @@ body {
 }
 
 .user-image {
-	width: 20px;
+	width: 25px;
 }
 
 .navbar-default {
@@ -193,7 +193,7 @@ body {
 }
 
 .nav-pills-index {
-	margin-top: 5px;
+	margin-top: 7px;
 }
 
 .nav-pills-index > li > a {
@@ -417,7 +417,8 @@ button.close:focus {
 }
 
 #ResultSearchBar {
-	padding-left: 10px;
+	margin-left: 10px;
+	border-bottom: 1px solid #63B7E6;
 }
 
 .container-usage {
@@ -448,10 +449,13 @@ button.close:focus {
 }
 
 .glyphicon-heart-empty{
-	font-size: 27px;
+	font-size: 20px;
 	vertical-align: sub;
 }
 
+.glyphicon-star-empty {
+	vertical-align: sub;
+}
 .message-title {
 	margin-top: 15px;
 	margin-bottom: 34px;
@@ -843,10 +847,6 @@ button.close:focus {
 	margin-top: 40px;
 }
 
-.result-sidebar-title {
-	color: #63B7E6;
-}
-
 .result-sidebar>.panel-group>.panel {
 	margin-top: 15px;
 }
@@ -862,7 +862,6 @@ button.close:focus {
 .btn-navbar-search {
 	background-color: #fff;
 	border: 0;
-	border-bottom: 1px solid #63B7E6;
 	color: #63B7E6;
 	font-size: 20px;
 	width: 100%;
@@ -877,7 +876,6 @@ button.close:focus {
 
 .navbar-search-box {
 	border: 0;
-	border-bottom: 1px solid #63B7E6;
 	border-radius: 0px;
 	box-shadow: none;
 	color: #9b9b9b;
@@ -912,6 +910,10 @@ button.close:focus {
 
 .panel-title-wrapper {
 	border-bottom: 1px solid #9b9b9b;
+}
+
+.panel-title {
+	font-size: 17px;
 }
 
 .panel-subtitle {
@@ -1364,9 +1366,54 @@ button.close:focus {
 	margin-top: 20px;
 }
 
+
 .registration-title {
 	text-align: center;
 	margin-top: 50px;
 	margin-bottom: 50px;
 	font-size: 24px;
+}
+
+#SearchKeyWord {
+	color: #63b7e6;
+}
+
+.welback {
+	font-size: 12px;
+	margin-top: 18px;
+	display: flex;
+    align-items: center;
+}
+
+.indexback {
+	font-size: 12px;
+	margin-top: -3px;
+	display: flex;
+    align-items: center;
+}
+
+.glyphicon-chevron-down {
+	font-size: 10px;
+    margin-top: 9px;
+}
+
+.glyphicon-chevron-up{
+	font-size: 10px;
+    margin-top: 9px;
+}
+
+.hotword > p > a {
+	color: black;
+}
+
+.hotword > p > a:hover {
+	color: #63B7E6;;
+}
+
+.sideword> a {
+	color: black;
+}
+
+.sideword> a:hover {
+	color: #63b7e6;
 }

@@ -17,7 +17,7 @@
         <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请登录</a></li>
       </ul>
       {% else %}
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="indexback nav navbar-nav navbar-right">
         <li><a href="{% url 'auth_password_change' %}"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
         <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
         <li><a href="/logout">登出</a></li>
