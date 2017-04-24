@@ -76,7 +76,7 @@ $(function () {
   }
 
   $.clickChevron = function(e) {
-    $(e.target).toggleClass("glyphicon-chevron-up");
     $(e.target).toggleClass("glyphicon-chevron-down");
+    $(e.target).toggleClass("glyphicon-chevron-up");
   }
 });

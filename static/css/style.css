@@ -178,14 +178,14 @@ body {
     color: #888;
 }
 
-.nav-pills > li > a {
+.navbar-index .nav-pills > li > a {
 	border-radius: 50px;
 	color: #9b9b9b;
 }
 
-.nav-pills > li.active > a,
-.nav-pills > li.active > a:hover,
-.nav-pills > li.active > a:focus {
+.navbar-index .nav-pills > li.active > a,
+.navbar-index .nav-pills > li.active > a:hover,
+.navbar-index .nav-pills > li.active > a:focus {
 	color: #fff;
 	background-color: #63B7E6;
 	padding-left: 22px;
@@ -1197,45 +1197,41 @@ button.close:focus {
 	padding-bottom: 390px;
 }
 
-.personal-page-tab> li {
-	background-color: #fff;
-	width: 140px;
-  	border: solid 1px #d7dcde;
-} 
-
-
-.personal-page-tab>li>a {
-	padding-top:2px;
-	height: 30px; 
-	width: 140px;
-	text-align: center;
-	font-size: 18px;
-  	font-weight: 600;;
-	color: 	#9b9b9b;
+.personal-page-main .nav-pills a {
+	padding-top: 2px;
+    height: 30px;
+    width: 140px;
+    font-size: 18px;
+  	font-weight: 500;
+  	color: #9b9b9b;
+  	border-radius: 0px;
+  	border: 1px solid grey;
+  	background: white;
 }
 
 .personal-page-tab>li.active>a,
 .personal-page-tab>li.active>a:focus,
 .personal-page-tab>li.active>a:hover {
-	color: 	#63b7e6
+	color: 	#63b7e6;
+	background-color: white;
 }
 
 .personal-title {
-	font-size:20px;
+	font-size:18px;
 	font-family: PingFangSC;
 	color: #4a4a4a;
   	font-weight: 600;
 	margin-bottom:1px;
 }
 .personal-line {
-	width: 720px;
+	width: 700px;
 	height: 0px;
 	border: solid 0.5px #4a4a4a;
 	margin: 0px;
 }
 .personal-describe {
 	padding-top:0px;
-	font-size:14px;
+	font-size:12px;
 	font-family: PingFangSC;
 	color: #4a4a4a;
   	font-weight: 600;
@@ -1416,4 +1412,8 @@ button.close:focus {
 
 .sideword> a:hover {
 	color: #63b7e6;
+}
+
+.personal-page-tab .nav-tabs>li.active>a:focus {
+	border: 0px;
 }
