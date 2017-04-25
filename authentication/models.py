@@ -6,16 +6,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
-class UserWithCorpus(models.Model):
+class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	corpus_id = models.IntegerField(default=0)
-
-def create_user_corpus(sender, instance, created, update_fields,**kwargs):
-	if created:
-		profile = UserWithCorpus()
-		profile.user = instance
-		profile.save()
-	else:
-		instance.userwithcorpus.save()
+	@staticmethod
+	def create_user_corpus(sender, instance, created, update_fields,**kwargs):
+		if created:
+			profile = UserProfile()
+			profile.user = instance
+			profile.save()
+		else:
+			instance.userprofile.save()
 		 
-post_save.connect(create_user_corpus, sender=User)
+post_save.connect(UserProfile.create_user_corpus, sender=User)

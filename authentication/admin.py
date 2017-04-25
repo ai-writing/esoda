@@ -4,18 +4,18 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from models import UserWithCorpus
+from models import UserProfile
 
 # Define an inline admin descriptor for Employee model
 # which acts a bit like a singleton
-class UserWithCorpusInline(admin.StackedInline):
-    model = UserWithCorpus
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
     can_delete = False
-    verbose_name_plural = 'userwithcorpus'
+    verbose_name_plural = 'userprofile'
 
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):
-    inlines = (UserWithCorpusInline, )
+    inlines = (UserProfileInline, )
 
 # Re-register UserAdmin
 admin.site.unregister(User)

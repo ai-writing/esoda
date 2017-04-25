@@ -5,15 +5,18 @@ from forms import FieldSelectForm
 
 # Views for profile urls
 def domain_view(request):
+    print request.user
+    if not request.user.is_authenticated():
+        return render(request, "profile/domain_select.html", {'profileTab': 'domain'})
     user = User.objects.get(id=request.user.id)
-    corpus_id = user.userwithcorpus.corpus_id
+    corpus_id = user.userprofile.corpus_id
     saved = False
     if request.method == 'POST':
         form = FieldSelectForm(request.POST)
         if form.is_valid():
             cid = form.cleaned_data['choice']
             if corpus_id != cid: # need to update fid & cids
-                user.userwithcorpus.corpus_id = cid
+                user.userprofile.corpus_id = cid
                 user.save();
             saved = True    # saved successfully
             # return redirect(reverse('field_select'))
