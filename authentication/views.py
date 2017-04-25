@@ -1,13 +1,26 @@
 from django.shortcuts import render
-
+from django.contrib.auth.models import User
+from forms import FieldSelectForm
 # Create your views here.
 
 # Views for profile urls
 def domain_view(request):
-    info = {
-        'profileTab': 'domain'
-    }
-    return render(request, 'profile/domain_select.html', info)
+    user = User.objects.get(id=request.user.id)
+    corpus_id = user.userwithcorpus.corpus_id
+    saved = False
+    if request.method == 'POST':
+        form = FieldSelectForm(request.POST)
+        if form.is_valid():
+            cid = form.cleaned_data['choice']
+            if corpus_id != cid: # need to update fid & cids
+                user.userwithcorpus.corpus_id = cid
+                user.save();
+            saved = True    # saved successfully
+            # return redirect(reverse('field_select'))
+    else:
+        form = FieldSelectForm(initial={'choice': corpus_id})
+    return render(request, "profile/domain_select.html", {'form': form, 'menu_index': 1, 'saved': saved,'profileTab': 'domain'})
+
 def personal_view(request):
     info = {
         'profileTab': 'personal'
