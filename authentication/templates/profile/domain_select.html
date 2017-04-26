@@ -7,15 +7,12 @@
 	<p class="personal-title">学术领域选择</p>
 	<hr class="personal-line"/>
 	<p class="personal-describe">通过选择学术领域缩小文章范围</p>
-	{%if form%}
 	<form style="margin-top:10px;width:360px;" action="{% url 'domain' %}" method="post">
 		{% csrf_token %}
-		<script>alert(form);</script>
 		<div class='form-group fixed-form'>
 			{{ form.as_p }}
 		</div>
 		<button type="submit" class="btn btn-sm btn-success" style="margin-top: 20px;">{% trans 'Save' %}</button>
 	</form>
-	{%endif%}
 </div>
 {% endblock %}

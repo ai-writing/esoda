@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from forms import FieldSelectForm
+from django.contrib.auth.decorators import login_required  
 # Create your views here.
 
 # Views for profile urls
+@login_required
 def domain_view(request):
-    print request.user
-    if not request.user.is_authenticated():
-        return render(request, "profile/domain_select.html", {'profileTab': 'domain'})
     user = User.objects.get(id=request.user.id)
     corpus_id = user.userprofile.corpus_id
     saved = False
