@@ -25,7 +25,6 @@ $(function () {
       if (loading == 1 || loaded == 1) return;
 
       var total = $("#ExampleNumber").html();
-      console.log(total);
       loading = 1;
       $("#Loading").show();
       setTimeout(function() {

@@ -5,7 +5,15 @@ from django.http import JsonResponse
 import xml.sax
 import json
 import requests
+import time
 
+from .utils import *
+from .lemmatizer import lemmatize
+from elastic_search import elastic_group, elastic_search2
+from elasticsearch import Elasticsearch
+
+
+es = Elasticsearch('166.111.139.15')
 
 # Create your views here.
 def esoda_view(request):
@@ -29,25 +37,17 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
+    q = translate_cn(q)
     usageList = []
     for i in range(1, 28):
         usageList.append({
-            'content': 'improve...quality',
+            'content': 'improve ... quality',
             'count': 609
         })
+
     r = {
         'domain': u'人机交互',
         'count': 222,
-        'synonymous': [
-          'trait',
-          'characteristic',
-          'feature',
-          'attribute',
-          'property',
-          'ability',
-          'talent',
-          'capability'
-        ],
         'phrase': [
             'improve quality',
             'standard quality',
@@ -81,6 +81,13 @@ def esoda_view(request):
             }
         ]
     }
+
+    qt = q.split()
+    if len(qt) == 1:
+        syn = list(synonymous(q))
+        if len(syn) > 10:
+            syn = syn[0:10]
+        r['synonymous'] = syn
 
     suggestion = {
         'relatedList': [
@@ -120,37 +127,14 @@ def esoda_view(request):
     return render(request, 'esoda/result.html', info)
 
 def sentence_view(request):
-    # Empty q - load the initial exampleList
-    if not request.GET:
-        exampleList = []
-        for i in range(1, 51):
-            exampleList.append({
-                'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
-                'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
-                'heart_number': 129,
-            })
-
-        info = {
-            'example_number': 1209,
-            'search_time': 0.1,
-            'exampleList': exampleList
-        }
-    # With collocation category q - load the specific exampleList
-    else:
-        q = request.GET.keys()[0]
-        exampleList = []
-        for i in range(1, 34):
-            exampleList.append({
-                'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
-                'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
-                'heart_number': 222,
-            })
-
-        info = {
-            'example_number': 33,
-            'search_time': 0.5,
-            'exampleList': exampleList
-        }
+    q = request.GET.get('q', '')
+    dtype = request.GET.get('dtype', '')
+    sr = sentence_query(q, dtype)
+    info = {
+        'example_number': sr['total'],
+        'search_time': sr['time'],
+        'exampleList': sr['sentence']
+    }
     return render(request, 'esoda/sentence_result.html', info)
 
 class DictHandler( xml.sax.ContentHandler ):
@@ -202,4 +186,31 @@ def guide_view(request):
     info = {
     }
     return render(request, 'esoda/guide.html', info)
-    
+
+def sentence_query(q, dtype):
+    if dtype != '0': # Search specific tag
+        q = gen_qt(q)
+        ref = q.split()
+        ll = lemmatize(q)
+        d = [{'dt': dtype, 'i1': 0, 'i2': 1}]
+    else: # Search user input
+        q = translate_cn(q)
+        ref = q.split()
+        ll = lemmatize(q)
+        d = []
+
+    time1 = time.time()
+    res = elastic_search2(es, ll, d, ref)
+    time2 = time.time()
+
+    sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
+    rlen = len(res['hits'])
+    for i in xrange(rlen):
+        if i > 50:
+            break
+        sentence = res['hits'][i]
+        sr['sentence'].append({
+            'content': sentence['fields']['sentence'][0],
+            'source': sentence['_source']['p'] + ' ' + sentence['_source']['c'],
+            'heart_number': 129})
+    return sr
