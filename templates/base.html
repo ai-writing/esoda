@@ -24,6 +24,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">    
     {% block head %}{% endblock %}
   </head>
 
@@ -152,6 +153,7 @@
       $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
     });
     </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     {% block script %}{% endblock %}
 
   </body>

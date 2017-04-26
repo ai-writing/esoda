@@ -1196,6 +1196,11 @@ button.close:focus {
 	margin-left: 50px;
 }
 
+.fieldWrapper label{
+	/*font-size: 100px;
+	color :#63b7e6;
+*/}
+
 .personal-page-main {
 	padding-top: 45px;
 	padding-bottom: 390px;
