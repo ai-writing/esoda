@@ -9,11 +9,9 @@ import time
 
 from .utils import *
 from .lemmatizer import lemmatize
-from elastic_search import elastic_group, elastic_search2
-from elasticsearch import Elasticsearch
+from elastic_singleton import EsAdaptor
 
-
-es = Elasticsearch('166.111.139.15')
+es = EsAdaptor('166.111.139.15', 'test', 'sentences')
 
 # Create your views here.
 def esoda_view(request):
@@ -200,7 +198,7 @@ def sentence_query(q, dtype):
         d = []
 
     time1 = time.time()
-    res = elastic_search2(es, ll, d, ref)
+    res = es.search(ll, d, ref)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
