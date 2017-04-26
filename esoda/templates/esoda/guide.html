@@ -7,14 +7,178 @@
   {% include "esoda/navbar.html" %}
 {% endwith %}
 {% endblock %}
+
 {% block content %}
+<div class="container container-usage">
+  
+</div>
 <div class="result-page">
   <div class="container">
-    <dic class="row">
-      <div class="guide-title1">搜哒教程</div>
-        {% include "esoda/guide_content.html" %}
+    <div class="row guide-block">
+      <div class="guide-title1">关于易搜搭</div>
+    </div>
+    <div class="row guide-intro">
+      <p>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;易搜搭ESODA是清华PCG工作室出品的免费英文论文写作助手，让你像母语使用者一样进行英文写作。易搜搭在开发中，融合了写作字典ESLwriter的设计经验，通过收集了数十个专业英文论文语料库，划分出了十余种学术领域。现在已支持了中文查找英文表达，同义词查询，词组搜索等革新功能，希望能让您的英文论文写作更加舒心。
+      </p>
+    </div>
+    <div class="row guide-block">
+      <div class="guide-title1">点击预览易搜搭的神奇搜索</div>
+      <div class="hr hidden-xs">
+        <span class="hr-inner">
+          <a href="#guide0"><span class="hr-inner-circle" id="circle0"></span></a>
+          <a href="#guide1"><span class="hr-inner-circle hr-inner-circle-2" id="circle1"></span></a>
+          <a href="#guide2"><span class="hr-inner-circle hr-inner-circle-3" id="circle2"></span></a>
+          <a href="#guide3"><span class="hr-inner-circle hr-inner-circle-4" id="circle3"></span></a>
+        </span>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-sm-3 col-guide">
+          <div class="thumbnail thumbnail-guide guide-thumbnail">
+            <a href="#guide0" id="guide0_index">
+              <img src="{% static 'img/usage_1.png' %}" alt="...">
+            </a>
+            <div class="caption caption-usage">
+              <h4>搜同义</h4>
+              <p>论文里感到单词词汇用的不地道，找找看母语论文里别人怎么说</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-guide">
+          <div class="thumbnail thumbnail-guide guide-thumbnail">
+            <a href="#guide1" id="guide1_index">
+              <img src="{% static 'img/usage_2.png' %}" alt="...">
+            </a>
+            <div class="caption caption-usage">
+              <h4>找搭配</h4>
+              <p>感到搭配用的不够漂亮，想换种说法，看看别人怎么搭配</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-guide">
+          <div class="thumbnail thumbnail-guide guide-thumbnail">          
+            <a href="#guide2" id="guide2_index">
+              <img src="{% static 'img/usage_3.png' %}" alt="...">
+            </a>
+            <div class="caption caption-usage">
+              <h4>中文查找</h4>
+              <p>满腹经纶难以用英文讲述？中文查找功能帮助你更好表达自我</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-guide">
+          <div class="thumbnail thumbnail-guide guide-thumbnail">
+            <a href="#guide3" id="guide3_index">
+              <img src="{% static 'img/usage_4.png' %}" alt="...">
+            </a>
+            <div class="caption caption-usage">
+              <h4>词组搜搭</h4>
+              <p>先进算法让你不但能够查找单词连词组的搭配也能搜搭的得心应手</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <dic class="row guide-block">
+      <div class="guide-title1">进阶搜哒</div>
+        <div id="guide0" class="row guide-group">
+          <div class="col-md-10">
+            <div class="guide-title2">搜同义：</div>
+            <div class="guide-content1">使用？作为词缀，例如，查询circumstance的近义词，搜索 circumstance? </div>
+            <div class="guide-content2">The &lt;word&gt;? finds synonyms of &lt;word&gt;. </div>
+          </div>
+          <div class="col-md-2">
+            <button class="btn guide-btn">点击查看案例</button>
+          </div>
+        </div>
+        <div id="guide1" class="row guide-group">
+          <div class="col-md-10">
+            <div class="guide-title2">找搭配：</div>
+            <div class="guide-content1">使用*(修饰)方式修饰词，ESODA支持(主谓)/(动宾)/(介词)/(修饰)，或直接搜索单词于下一页筛选。 </div>
+            <div class="guide-content2">(修饰) is one of the collocation indicators and * is a wildcard<br/>ESLWriter also support (主谓)/(动宾)/(介词). You may also try to enter the keywords directly and use our filter.</div>
+          </div>
+          <div class="col-md-2">
+            <button class="btn guide-btn">点击查看案例</button>
+          </div>
+        </div>
+        <div id="guide2" class="row guide-group">
+          <div class="col-md-10">
+            <div class="guide-title2">搜中文：</div>
+            <div class="guide-content1">直接搜索中文 </div>
+            <div class="guide-content2">Enter a Chinese keyword or phrase to find example</div>
+          </div>
+          <div class="col-md-2">
+            <button class="btn guide-btn">点击查看案例</button>
+          </div>
+        </div>
+        <div id="guide3" class="row guide-group">
+          <div class="col-md-10">
+            <div class="guide-title2">词组搜搭：</div>
+            <div class="guide-content1">直接搜索单词或词组寻找合理搭配 </div>
+            <div class="guide-content2">Enter a keyword or phrase to find example sentences.</div>
+          </div>
+          <div class="col-md-2">
+            <button class="btn guide-btn">点击查看案例</button>
+          </div>
+        </div>
       </div>
     </dic>
   </div>
 </div>
 {% endblock content %}
+{% block script %}
+<script>  
+  $(function(){       
+    $("[href*='#']").click(function() {
+      if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+        var $target = $(this.hash);
+        $target = $target.length && $target || $('[name=' + this.hash.slice(1) + ']');
+        if ($target.length) {
+          var targetOffset = $target.offset().top;
+          $('html,body').animate({
+            scrollTop: targetOffset
+          },
+          1000);
+          return false;
+        }
+      }
+    });
+    $("#guide0_index").hover(function(){ 
+      $("#circle0").css({
+        'background-color':'#63B7E6'
+      }); 
+    },function(){  
+      $("#circle0").css({
+        'background-color':'#d8d8d8'
+      }); 
+    })  
+    $("#guide1_index").hover(function(){ 
+      $("#circle1").css({
+        'background-color':'#63B7E6'
+      }); 
+    },function(){  
+      $("#circle1").css({
+        'background-color':'#d8d8d8'
+      }); 
+    })
+    $("#guide2_index").hover(function(){ 
+      $("#circle2").css({
+        'background-color':'#63B7E6'
+      }); 
+    },function(){  
+      $("#circle2").css({
+        'background-color':'#d8d8d8'
+      }); 
+    })
+    $("#guide3_index").hover(function(){ 
+      $("#circle3").css({
+        'background-color':'#63B7E6'
+      }); 
+    },function(){  
+      $("#circle3").css({
+        'background-color':'#d8d8d8'
+      }); 
+    })
+  })
+</script>  
+{% endblock script %}

@@ -700,6 +700,10 @@ button.close:focus {
 	width: 128px;
 }
 
+.thumbnail-guide > a > img {
+	width: 128px;
+}
+
 .caption-usage > h4 {
 	font-size: 19px;
 }
@@ -1268,14 +1272,32 @@ button.close:focus {
 	height: 45px;
 }
 .guide-group {
-	margin-top: 25px;
-	margin-bottom: 25px;
+	padding-top: 25px;
+	padding-bottom: 300px;
+}
+.guide-thumbnail {
+	background-color: #f5f5f9;
+}
+.guide-intro {
+	padding-top:20px;
+}
+.guide-intro>p {
+	text-align: justify; 
+	font-family: .PingFangSC;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 1.67;
+	color: #4a4a4a;
+}
+.guide-block {
+	margin-top: 60px
 }
 .guide-title1 {
 	font-family: .PingFangSC;
-	font-size: 24px;
-	font-weight: 600;
-	color: #4a4a4a;
+	margin-bottom: 30px;
+	text-align: center;
+	font-size: 20px;
+	color: #63b7e6;
 }
 .guide-title2 {
 	font-family: .PingFangSC;
@@ -1294,6 +1316,8 @@ button.close:focus {
   	font-size: 20px;
   	color: #9b9b9b;
 }
+.guide-btn:focus,
+.guide-btn:hover,
 .guide-btn {
 	font-family: .PingFangSC;
 	font-size: 18px;
