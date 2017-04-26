@@ -14,7 +14,7 @@
     <form class="form-horizonal" role="register" method="post" action="">
       {% csrf_token %}
       <div class='form-group'>
-        <label>{{ form.email.label }}</label> 
+        <label>{{ form.email.label }}</label>
         {{ form.email }}
         {% if form.email.errors %}
         <p class="validation-summary-errors"><small>{{form.email.errors.as_text}}</small></p>

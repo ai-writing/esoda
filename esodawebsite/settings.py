@@ -67,6 +67,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -173,4 +174,5 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
 DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
 
-#AUTH_USER_MODEL = 'authentication.UserWithCorpus'
+# Esoda esearch configuration
+ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default=None)
