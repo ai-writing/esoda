@@ -174,5 +174,6 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
 DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
 
+
 # Esoda esearch configuration
 ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default=None)
