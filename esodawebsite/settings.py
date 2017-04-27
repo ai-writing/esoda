@@ -177,14 +177,14 @@ DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
 
 
 # Esoda esearch configuration
-ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default='166.111.139.15')
+ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default=None)
 ELASTICSEARCH_INDEX = config('ELASTIC_INDEX', default='test')
 ELASTICSEARCH_DOCTYPE = config('ELASTIC_DOCTYPE', default='sentences')
 
 
 # Mongodb configuration
-MONGODB = MongoClient('166.111.139.42')
+MONGODB = MongoClient(config('MONGODB_HOST', default=None))
 try:
     MONGODB.database_names()
 except:
-    MONGODB.admin.authenticate('root', 'root')
+    MONGODB.admin.authenticate(config('MONGODB_USER', default=None), config('MONGODB_PASSWORD', default=None))
