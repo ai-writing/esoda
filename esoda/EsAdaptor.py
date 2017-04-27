@@ -1,21 +1,10 @@
 from elasticsearch import Elasticsearch
 from django.conf import settings
 
-'''
-class Singleton(type):
-    def __init__(cls, name, bases, dict):
-        super(Singleton, cls).__init__(name, bases, dict)
-        cls._instance = None
-
-    def __call__(cls, *args, **kw):
-        if cls._instance is None:
-            cls._instance = super(Singleton, cls).__call__(*args, **kw)
-        return cls._instance
-'''
+defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
 
 
 class EsAdaptor():
-    # __metaclass__ = Singleton
     es = Elasticsearch(settings.ELASTICSEARCH_HOST)
     index = settings.ELASTICSEARCH_INDEX
     doctype = settings.ELASTICSEARCH_DOCTYPE
@@ -52,14 +41,18 @@ class EsAdaptor():
             EsAdaptor.es.indices.put_mapping(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=mappings)
 
     @staticmethod
-    def search(t, d, ref, sp=0):
+    def search(t, d, ref, cids=defaultCids, sp=0):
         action = {
             "_source": ["p", "c"],
             "query": {
                 "function_score": {
                     "query": {
                         "bool": {
-                            "must": []
+                            "must": [{
+                                "terms": {
+                                    "c": cids
+                                }
+                            }]
                         }
                     },
                     "script_score": {
@@ -127,12 +120,19 @@ class EsAdaptor():
         return res['hits']
 
     @staticmethod
-    def collocation(t, sp=0):
+    def collocation(t, cids=defaultCids, sp=0):
         if not t or len(t) > 2:
             return {}
         action = {
             "_source": False,
             "query": {
+                "bool": {
+                    "must": [{
+                        "terms": {
+                            "c": cids
+                        }
+                    }]
+                }
             },
             "aggs": {
                 "d": {
@@ -168,7 +168,7 @@ class EsAdaptor():
                     }
                 }
             }
-            action['query'] = dq
+            action['query']['bool']['must'].append(dq)
             df = {
                 'bool': {
                     'must': ddq
@@ -203,14 +203,18 @@ class EsAdaptor():
         return ret
 
     @staticmethod
-    def group(t, d, sp=0):
+    def group(t, d, cids=defaultCids, sp=0):
         if not d or len(d) > 1:
             return {}
         action = {
             "_source": False,
             "query": {
                 "bool": {
-                    "must": []
+                    "must": [{
+                        "terms": {
+                            "c": cids
+                        }
+                    }]
                 }
             },
             "aggs": {

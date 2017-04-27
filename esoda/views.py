@@ -10,7 +10,7 @@ import time
 from .utils import translate_cn, gen_qt
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
-from .EsAdaptor import EsAdaptor
+from .EsAdaptor import EsAdaptor, defaultCids
 
 # Create your views here.
 def esoda_view(request):
@@ -197,7 +197,7 @@ def sentence_query(q, dtype):
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(ll, d, ref, 50)
+    res = EsAdaptor.search(ll, d, ref, defaultCids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
