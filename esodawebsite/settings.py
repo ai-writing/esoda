@@ -14,6 +14,7 @@ import os
 from decouple import config, Csv
 import dj_database_url
 from django.utils.translation import ugettext_lazy as _
+from pymongo import MongoClient
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -176,4 +177,14 @@ DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
 
 
 # Esoda esearch configuration
-ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default=None)
+ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default='166.111.139.15')
+ELASTICSEARCH_INDEX = config('ELASTIC_INDEX', default='test')
+ELASTICSEARCH_DOCTYPE = config('ELASTIC_DOCTYPE', default='sentences')
+
+
+# Mongodb configuration
+MONGODB = MongoClient('166.111.139.42')
+try:
+    MONGODB.database_names()
+except:
+    MONGODB.admin.authenticate('root', 'root')

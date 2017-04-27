@@ -7,11 +7,10 @@ import json
 import requests
 import time
 
-from .utils import *
+from .utils import translate_cn, gen_qt
+from .thesaurus import synonyms
 from .lemmatizer import lemmatize
-from elastic_singleton import EsAdaptor
-
-es = EsAdaptor('166.111.139.15', 'test', 'sentences')
+from .EsAdaptor import EsAdaptor
 
 # Create your views here.
 def esoda_view(request):
@@ -82,7 +81,7 @@ def esoda_view(request):
 
     qt = q.split()
     if len(qt) == 1:
-        syn = list(synonymous(q))
+        syn = list(synonyms(q))
         if len(syn) > 10:
             syn = syn[0:10]
         r['synonymous'] = syn
@@ -198,11 +197,11 @@ def sentence_query(q, dtype):
         d = []
 
     time1 = time.time()
-    res = es.search(ll, d, ref)
+    res = EsAdaptor.search(ll, d, ref, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
-    rlen = len(res['hits'])
+    rlen = len(res['hits']) if 'hits' in res else 0
     for i in xrange(rlen):
         if i > 50:
             break

@@ -1,6 +1,7 @@
 from elasticsearch import Elasticsearch
+from django.conf import settings
 
-
+'''
 class Singleton(type):
     def __init__(cls, name, bases, dict):
         super(Singleton, cls).__init__(name, bases, dict)
@@ -10,21 +11,21 @@ class Singleton(type):
         if cls._instance is None:
             cls._instance = super(Singleton, cls).__call__(*args, **kw)
         return cls._instance
+'''
 
 
-class EsAdaptor(object):
-    __metaclass__ = Singleton
+class EsAdaptor():
+    # __metaclass__ = Singleton
+    es = Elasticsearch(settings.ELASTICSEARCH_HOST)
+    index = settings.ELASTICSEARCH_INDEX
+    doctype = settings.ELASTICSEARCH_DOCTYPE
 
-    def __init__(self, host='localhost', index='test', doctype='sentences'):
-        self.es = Elasticsearch(host)
-        self.index = index
-        self.doctype = doctype
-
-    def build(self):
-        if not self.es.indices.exists(index=self.index):
-            self.es.indices.create(index=self.index)
+    @staticmethod
+    def build():
+        if not EsAdaptor.es.indices.exists(index=EsAdaptor.index):
+            EsAdaptor.es.indices.create(index=EsAdaptor.index)
             mappings = {
-                self.doctype: {
+                EsAdaptor.doctype: {
                     "properties": {
                         "p": {"type": "integer"},
                         "c": {"type": "text", "index": "not_analyzed"},
@@ -48,9 +49,10 @@ class EsAdaptor(object):
                     }
                 }
             }
-            self.es.indices.put_mapping(index=self.index, doc_type=self.doctype, body=mappings)
+            EsAdaptor.es.indices.put_mapping(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=mappings)
 
-    def search(self, t, d, ref, sp=0):
+    @staticmethod
+    def search(t, d, ref, sp=0):
         action = {
             "_source": ["p", "c"],
             "query": {
@@ -120,11 +122,12 @@ class EsAdaptor(object):
             if 'i2' in dd:
                 dq['nested']['query']['bool']['must'].append({'match': {'d.l2': t[dd['i2']]}})
             action['query']['function_score']['query']['bool']['must'].append(dq)
-        res = self.es.search(index=self.index, doc_type=self.doctype, body=action, filter_path=[
+        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=action, filter_path=[
             'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
         return res['hits']
 
-    def collocation(self, t, sp=0):
+    @staticmethod
+    def collocation(t, sp=0):
         if not t or len(t) > 2:
             return {}
         action = {
@@ -172,7 +175,7 @@ class EsAdaptor(object):
                 }
             }
             action['aggs']['d']['aggs']['d']['filter'] = df
-            ret = self.__checkResult(action)
+            ret = EsAdaptor.__checkResult(action)
         else:
             ret = []
             for ps in ['d.l1', 'd.l2']:
@@ -185,12 +188,13 @@ class EsAdaptor(object):
                 }
                 action['query'] = dq
                 action['aggs']['d']['aggs']['d']['filter'] = ddq
-                ret += self.__checkResult(action)
+                ret += EsAdaptor.__checkResult(action)
 
         return ret
 
-    def __checkResult(self, action):
-        res = self.es.search(index=self.index, doc_type=self.doctype, body=action, filter_path=[
+    @staticmethod
+    def __checkResult(action):
+        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=action, filter_path=[
             'hits.total', 'aggregations'])
         ret = [False] * 4
         for agg in res['aggregations']['d']['d']['d']['buckets']:
@@ -198,7 +202,8 @@ class EsAdaptor(object):
             # ord('0') = 48
         return ret
 
-    def group(self, t, d, sp=0):
+    @staticmethod
+    def group(t, d, sp=0):
         if not d or len(d) > 1:
             return {}
         action = {
@@ -284,6 +289,6 @@ class EsAdaptor(object):
 
         action['aggs']['d']['aggs']['d']['aggs']['d']['terms']['field'] = st
 
-        res = self.es.search(index=self.index, doc_type=self.doctype, body=action, filter_path=[
+        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=action, filter_path=[
             'hits.total', 'aggregations'])
         return res
