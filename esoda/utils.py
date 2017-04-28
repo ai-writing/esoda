@@ -1,5 +1,6 @@
 from nltk.corpus import wordnet as WN
-from EsAdaptor import defaultCids, EsAdaptor
+from .EsAdaptor import defaultCids, EsAdaptor
+from .paper import mongo_get_object, mongo_get_object_or_404, DblpPaper, DblpVenue, UploadRecord
 import requests
 
 
@@ -79,3 +80,35 @@ def getUsageList(dt, cids=defaultCids):
         return ret
     except:
         return []
+
+
+def paper_source_str(pid):
+    s = {}
+    p = mongo_get_object(DblpPaper, pk=pid)
+    if not p:
+        p = mongo_get_object_or_404(UploadRecord, pk=pid)
+        s['source'] = 'Uploaded file: ' + p['title']
+        return s
+    # TODO: precompute source string and save to $common.uploads
+    year = p['info'].get('year')
+    title = p['info'].get('title', {}).get('text')
+    authList = p['info'].get('authors', {}).get('author', [])
+
+    source = ''
+    v = mongo_get_object(DblpVenue, pk=p['venue'])
+    if v:
+        conference = v.get('shortName', v['fullName'])
+        if year and len(year) == 4:
+            conference += "'" + year[2:4]
+        source += conference + '. '
+
+        if authList:
+            nameList = authList[0].split()  # split first author's name
+            authorShort = nameList[0][0].upper() + '. ' +nameList[len(nameList) - 1]
+            if len(authList) > 1:
+                authorShort += ' et. al.'
+            else:
+                authorShort += '.'
+            source += authorShort
+        source += title
+    return {'source': source, 'url': p['url']}

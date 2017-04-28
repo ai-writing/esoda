@@ -7,7 +7,7 @@ import json
 import requests
 import time
 
-from .utils import translate_cn, gen_qt, getUsageList
+from .utils import translate_cn, gen_qt, getUsageList, paper_source_str
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor, defaultCids
@@ -214,6 +214,6 @@ def sentence_query(q, dtype):
         sentence = res['hits'][i]
         sr['sentence'].append({
             'content': sentence['fields']['sentence'][0],
-            'source': sentence['_source']['p'] + ' ' + sentence['_source']['c'],
+            'source': paper_source_str(sentence['_source']['p']),
             'heart_number': 129})
     return sr
