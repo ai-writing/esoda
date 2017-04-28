@@ -66,7 +66,7 @@ def notstar(p, q):
     return p if p != '*' else q
 
 
-def getUsageList(dt, cids=defaultCids):
+def get_usage_list(dt, cids=defaultCids):
     lst = EsAdaptor.group([], dt, cids)
     try:
         ret = []

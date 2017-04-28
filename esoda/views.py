@@ -7,7 +7,7 @@ import json
 import requests
 import time
 
-from .utils import translate_cn, gen_qt, getUsageList, paper_source_str
+from .utils import translate_cn, gen_qt, get_usage_list, paper_source_str
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor, defaultCids
@@ -74,8 +74,8 @@ def esoda_view(request):
         myTerm['usageList'] = []
         for j in (('*', mqt[1]), (mqt[0], '*')):
             if j[0] != '*' or j[1] != '*':
-                dt = [{'dt': i % 4, 'l1': j[0], 'l2': j[1]}]
-                myTerm['usageList'] += getUsageList(dt)
+                dt = [{'dt': i % 4 + 1, 'l1': j[0], 'l2': j[1]}]
+                myTerm['usageList'] += get_usage_list(dt)
 
         if myTerm['usageList']:
             r['collocationList'].append(myTerm)
