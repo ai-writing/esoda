@@ -3,6 +3,7 @@
 {% load i18n %}
 
 {% block profile_content %}
+
 <div id="field">
 	<p class="personal-title">学术领域选择</p>
 	<hr class="personal-line"/>
@@ -10,9 +11,21 @@
 	<form style="margin-top:10px;width:360px;" action="{% url 'domain' %}" method="post">
 		{% csrf_token %}
 		<div class='form-group fixed-form'>
-			{{ form.as_p }}
+			{% for field in form %}
+	      <div class="fieldWrapper">
+	        {{ field.label_tag }}:{{ field }} 
+	        {{ field.errors }}
+	      <div>
+	    {% endfor %}
 		</div>
 		<button type="submit" class="btn btn-sm btn-success" style="margin-top: 20px;">{% trans 'Save' %}</button>
 	</form>
 </div>
+{% endblock %}
+{% block script %}
+  {% if messages %}
+    {% for message in messages %} 	
+			<script>toastr.success('{{ message }}');</script>
+    {% endfor %}
+  {% endif %}
 {% endblock %}

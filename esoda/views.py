@@ -5,9 +5,16 @@ from django.http import JsonResponse
 import xml.sax
 import json
 import requests
+import time
+
+from .utils import translate_cn, get_usage_list, paper_source_str
+from .thesaurus import synonyms
+from .lemmatizer import lemmatize
+from .EsAdaptor import EsAdaptor, defaultCids
+
+deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 
 
-# Create your views here.
 def esoda_view(request):
     q = request.GET.get('q', '').strip()
 
@@ -29,25 +36,11 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
-    usageList = []
-    for i in range(1, 28):
-        usageList.append({
-            'content': 'improve...quality',
-            'count': 609
-        })
+    q = translate_cn(q)
+
     r = {
         'domain': u'人机交互',
         'count': 222,
-        'synonymous': [
-          'trait',
-          'characteristic',
-          'feature',
-          'attribute',
-          'property',
-          'ability',
-          'talent',
-          'capability'
-        ],
         'phrase': [
             'improve quality',
             'standard quality',
@@ -59,28 +52,39 @@ def esoda_view(request):
             u'quality (介词)*'
         ],
         'collocationList': [
-            {
-                'type': u'quality (主谓)*',
-                'label': 'Colloc1',
-                'usageList': usageList,
-            },
-            {
-                'type': u'quality (修饰)*',
-                'label': 'Colloc2',
-                'usageList': usageList,
-            },
-            {
-                'type': u'quality (介词)*',
-                'label': 'Colloc3',
-                'usageList': usageList
-            },
-            {
-                'type': u'*(修饰) quality',
-                'label': 'Colloc4',
-                'usageList': usageList
-            }
         ]
     }
+
+    qt = q.split()
+    mqt = list(qt)
+    resList = EsAdaptor.collocation(mqt)
+    if len(mqt) == 1:
+        mqt.append('*')
+    for i, p in enumerate(resList):
+        if i == 4:
+            mqt[0], mqt[1] = mqt[1], mqt[0]
+        if not p:
+            continue
+        myTerm = {
+            'type': u'',
+            'label': 'Colloc%d' % (len(r['collocationList']) + 1),
+            'usageList': [],
+        }
+        myTerm['type'] = u'%s %s %s' % (mqt[0], deps[i % 4], mqt[1])
+        myTerm['usageList'] = []
+        for j in (('*', mqt[1]), (mqt[0], '*')):
+            if j[0] != '*' or j[1] != '*':
+                dt = [{'dt': i % 4 + 1, 'l1': j[0], 'l2': j[1]}]
+                myTerm['usageList'] += get_usage_list(dt)
+
+        if myTerm['usageList']:
+            r['collocationList'].append(myTerm)
+
+    if len(qt) == 1:
+        syn = list(synonyms(q))
+        if len(syn) > 10:
+            syn = syn[0:10]
+        r['synonymous'] = syn
 
     suggestion = {
         'relatedList': [
@@ -106,11 +110,11 @@ def esoda_view(request):
     jsonString = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).text
     jsonObj = json.loads(jsonString.encode('utf-8'))
 
-    if jsonObj.has_key('simple') and jsonObj.has_key('ec'):
+    if 'simple' in jsonObj and 'ec' in jsonObj:
         dictionary = {
             'word': q,
-            'english': jsonObj['simple']['word'][0].get('ukphone',''),
-            'american': jsonObj['simple']['word'][0].get('usphone',''),
+            'english': jsonObj['simple']['word'][0].get('ukphone', ''),
+            'american': jsonObj['simple']['word'][0].get('usphone', ''),
             'explanationList': []
         }
         for explain in jsonObj['ec']['word'][0]['trs']:
@@ -119,41 +123,20 @@ def esoda_view(request):
 
     return render(request, 'esoda/result.html', info)
 
+
 def sentence_view(request):
-    # Empty q - load the initial exampleList
-    if not request.GET:
-        exampleList = []
-        for i in range(1, 51):
-            exampleList.append({
-                'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
-                'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
-                'heart_number': 129,
-            })
-
-        info = {
-            'example_number': 1209,
-            'search_time': 0.1,
-            'exampleList': exampleList
-        }
-    # With collocation category q - load the specific exampleList
-    else:
-        q = request.GET.keys()[0]
-        exampleList = []
-        for i in range(1, 34):
-            exampleList.append({
-                'content': 'The crucial <strong>quality</strong> of this active assimilation was that it guaranteed a certain depth in the individual meteorologist\'s interpretation of the information.',
-                'source': 'UIST\'07. M. Morris et. al.SearchTogether: an interface for collaborative web search.',
-                'heart_number': 222,
-            })
-
-        info = {
-            'example_number': 33,
-            'search_time': 0.5,
-            'exampleList': exampleList
-        }
+    q = request.GET.get('q', '')
+    dtype = request.GET.get('dtype', '0')
+    sr = sentence_query(q, dtype)
+    info = {
+        'example_number': sr['total'],
+        'search_time': sr['time'],
+        'exampleList': sr['sentence']
+    }
     return render(request, 'esoda/sentence_result.html', info)
 
-class DictHandler( xml.sax.ContentHandler ):
+
+class DictHandler(xml.sax.ContentHandler):
     def __init__(self):
         self.suggest = []
         self.CurNum = 0
@@ -183,6 +166,8 @@ class DictHandler( xml.sax.ContentHandler ):
             self.suggest[self.CurNum]['desc'] = content
 
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
+
+
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {}
@@ -198,8 +183,34 @@ def dict_suggest_view(request):
         print repr(e)
     return JsonResponse(r)
 
+
 def guide_view(request):
     info = {
     }
     return render(request, 'esoda/guide.html', info)
-    
+
+
+def sentence_query(q, dtype):
+    if dtype != '0':  # Search specific tag
+        ll = ref = q.split()
+        d = [{'dt': dtype, 'i1': 0, 'i2': 1}]
+    else:  # Search user input
+        q = translate_cn(q)
+        ll, ref = lemmatize(q)
+        d = []
+
+    time1 = time.time()
+    res = EsAdaptor.search(ll, d, ref, defaultCids, 50)
+    time2 = time.time()
+
+    sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
+    rlen = len(res['hits']) if 'hits' in res else 0
+    for i in xrange(rlen):
+        if i > 50:
+            break
+        sentence = res['hits'][i]
+        sr['sentence'].append({
+            'content': sentence['fields']['sentence'][0],
+            'source': paper_source_str(sentence['_source']['p']),
+            'heart_number': 129})
+    return sr
