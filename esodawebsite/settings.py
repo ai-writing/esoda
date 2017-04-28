@@ -107,6 +107,23 @@ DATABASES = {
 }
 
 
+# Logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
@@ -188,3 +205,6 @@ try:
     MONGODB.database_names()
 except:
     MONGODB.admin.authenticate(config('MONGODB_USER', default=None), config('MONGODB_PASSWORD', default=None))
+# import logging
+# logging.info('Connected to MongoDB:', MONGODB)
+print 'Connected to MongoDB:', MONGODB

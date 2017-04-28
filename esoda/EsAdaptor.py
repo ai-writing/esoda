@@ -3,9 +3,10 @@ from django.conf import settings
 
 defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
 
-
 class EsAdaptor():
-    es = Elasticsearch(settings.ELASTICSEARCH_HOST)
+    es = Elasticsearch(settings.ELASTICSEARCH_HOST, timeout=10)
+    es.info()
+    print 'Connected to Elasticsearch:', es
     index = settings.ELASTICSEARCH_INDEX
     doctype = settings.ELASTICSEARCH_DOCTYPE
 

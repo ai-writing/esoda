@@ -46,6 +46,5 @@ def antonyms(word, score = 0, pos = None, exp = None, max_count = None):
             return l
         else:
             return l[:max_count]
-
     else:
         return []

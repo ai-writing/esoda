@@ -11,9 +11,12 @@ def lemmatize(s):
 
     try:
         conll = requests.post(LEMMATIZER_URL, s, timeout=10).text
-        ll = [line.split('\t')[2].lower() for line in conll.split('\n') if line]
+        tokens = [line.split('\t') for line in conll.split('\n') if line]
+        ll = [t[2].lower() for t in tokens]
+        ref = [t[1] for t in tokens]
     except Exception as e:
         print repr(e)
-        ll = s.split()
+        ll = ref = s.split()
+        ll = [l.lower() for l in ll]
 
-    return ll
+    return ll, ref

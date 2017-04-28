@@ -57,11 +57,6 @@ def translate_cn(q):
     return st.join(qtt)
 
 
-def gen_qt(q):
-    tokens = q.split()
-    return tokens[0] + ' ' + tokens[2]
-
-
 def notstar(p, q):
     return p if p != '*' else q
 

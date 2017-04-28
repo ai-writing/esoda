@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="HeadingDict">
+    <div class="panel-title-wrapper">
+      <div class="panel-title display-inline">
+        词典
+        <span class="panel-subtitle">Dictionary</span>
+      </div>
+      <a role="button" data-toggle="collapse" href="#CollapseDict" aria-expanded="true" aria-controls="CollapseDict" onclick="$.clickChevron(event);">
+        <span class="glyphicon glyphicon-chevron-up right-float"></span>
+      </a>
+    </div>
+  </div>
+  <div id="CollapseDict" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingDict">
+    <div class="dictionary-container">
+      <div class="dictionary-left">
+        <div class="dictionary-hint">
+          搜索内容：英文
+        </div>
+        <p id="ResultItem">{{ dictionary.word }}</p>
+        <div class="row display-none">
+          <div class="col-sm-6 col-md-4">
+            <span class="glyphicon glyphicon-volume-up"></span>
+            <span>英</span>
+            <span id="EnglishPronounce">{{ dictionary.english }}</span>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <span class="glyphicon glyphicon-volume-up"></span>
+            <span>美</span>
+            <span id="AmericanPronounce">{{ dictionary.american }}</span>
+          </div>
+        </div>
+        <div class="dictionary-edit">
+          <a href="">编辑&nbsp;<span class="glyphicon glyphicon-pencil"></span></a>
+        </div>
+      </div>
+      <div class="dictionary-middle">
+        <div class="dictionary-middle-line"></div>
+        <a href=""><span class="glyphicon glyphicon-refresh"></span></a>
+        <div class="dictionary-middle-line"></div>
+      </div>
+      <div class="dictionary-right">
+        <span class="dictionary-hint">中文翻译</span>
+        <div id="WordExplanation">
+          {% for explanation in dictionary.explanationList %}
+          <p>{{ explanation }}</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div> <!-- dictionary panel -->

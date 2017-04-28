@@ -7,7 +7,7 @@ import json
 import requests
 import time
 
-from .utils import translate_cn, gen_qt, get_usage_list, paper_source_str
+from .utils import translate_cn, get_usage_list, paper_source_str
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor, defaultCids
@@ -126,7 +126,7 @@ def esoda_view(request):
 
 def sentence_view(request):
     q = request.GET.get('q', '')
-    dtype = request.GET.get('dtype', '')
+    dtype = request.GET.get('dtype', '0')
     sr = sentence_query(q, dtype)
     info = {
         'example_number': sr['total'],
@@ -192,14 +192,11 @@ def guide_view(request):
 
 def sentence_query(q, dtype):
     if dtype != '0':  # Search specific tag
-        q = gen_qt(q)
-        ref = q.split()
-        ll = lemmatize(q)
+        ll = ref = q.split()
         d = [{'dt': dtype, 'i1': 0, 'i2': 1}]
     else:  # Search user input
         q = translate_cn(q)
-        ref = q.split()
-        ll = lemmatize(q)
+        ll, ref = lemmatize(q)
         d = []
 
     time1 = time.time()
