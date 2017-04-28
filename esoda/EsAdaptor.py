@@ -157,28 +157,30 @@ class EsAdaptor():
         }
 
         if len(t) > 1:
-            ddq = [{'match': {'d.l1': t[0]}}, {'match': {'d.l2': t[1]}}]
-            dq = {
-                "nested": {
-                    "path": "d",
-                    "query": {
-                        "bool": {
-                            "must": ddq
+            ret = []
+            for ps in (('d.l1', 'd.l2'), ('d.l2', 'd.l1')):
+                ddq = [{'match': {ps[0]: t[0]}}, {'match': {ps[1]: t[1]}}]
+                dq = {
+                    "nested": {
+                        "path": "d",
+                        "query": {
+                            "bool": {
+                                "must": ddq
+                            }
                         }
                     }
                 }
-            }
-            action['query']['bool']['must'].append(dq)
-            df = {
-                'bool': {
-                    'must': ddq
+                action['query']['bool']['must'].append(dq)
+                df = {
+                    'bool': {
+                        'must': ddq
+                    }
                 }
-            }
-            action['aggs']['d']['aggs']['d']['filter'] = df
-            ret = EsAdaptor.__checkResult(action)
+                action['aggs']['d']['aggs']['d']['filter'] = df
+                ret += EsAdaptor.__checkResult(action)
         else:
             ret = []
-            for ps in ['d.l1', 'd.l2']:
+            for ps in ('d.l1', 'd.l2'):
                 ddq = {'match': {ps: t[0]}}
                 dq = {
                     "nested": {
@@ -266,29 +268,23 @@ class EsAdaptor():
         }]
         dd = d[0]
         ddq = []
+        cover = 0
         if 'dt' in dd:
             ddq.append({'match': {'d.dt': str(dd['dt'])}})
-        if 'l1' in dd:
+            cover |= 1
+        if 'l1' in dd and dd['l1'] != '*':
             ddq.append({'match': {'d.l1': dd['l1']}})
-        if 'l2' in dd:
+            cover |= 2
+        if 'l2' in dd and dd['l2'] != '*':
             ddq.append({'match': {'d.l2': dd['l2']}})
+            cover |= 4
         dq[0]['nested']['query']['bool']['must'] += ddq
 
         action['query']['bool']['must'] += dq
         action['aggs']['d']['aggs']['d']['filter']['bool']['must'] += ddq
 
-        cnt = 0
-        st = ''
-        if 'dt' not in dd:
-            st = 'd.dt'
-            cnt += 1
-        if 'l1' not in dd:
-            st = 'd.l1'
-            cnt += 1
-        if 'l2' not in dd:
-            st = 'd.l2'
-            cnt += 1
-        if cnt != 1:
+        st = 'd.dt' if cover == 6 else 'd.l1' if cover == 5 else 'd.l2'
+        if cover not in (3, 5, 6):
             return {}
 
         action['aggs']['d']['aggs']['d']['aggs']['d']['terms']['field'] = st

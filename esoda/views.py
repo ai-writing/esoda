@@ -7,12 +7,14 @@ import json
 import requests
 import time
 
-from .utils import translate_cn, gen_qt
+from .utils import translate_cn, gen_qt, getUsageList
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor, defaultCids
 
-# Create your views here.
+deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
+
+
 def esoda_view(request):
     q = request.GET.get('q', '').strip()
 
@@ -35,12 +37,6 @@ def esoda_view(request):
 
     # With query - render result.html
     q = translate_cn(q)
-    usageList = []
-    for i in range(1, 28):
-        usageList.append({
-            'content': 'improve ... quality',
-            'count': 609
-        })
 
     r = {
         'domain': u'人机交互',
@@ -56,30 +52,34 @@ def esoda_view(request):
             u'quality (介词)*'
         ],
         'collocationList': [
-            {
-                'type': u'quality (主谓)*',
-                'label': 'Colloc1',
-                'usageList': usageList,
-            },
-            {
-                'type': u'quality (修饰)*',
-                'label': 'Colloc2',
-                'usageList': usageList,
-            },
-            {
-                'type': u'quality (介词)*',
-                'label': 'Colloc3',
-                'usageList': usageList
-            },
-            {
-                'type': u'*(修饰) quality',
-                'label': 'Colloc4',
-                'usageList': usageList
-            }
         ]
     }
 
     qt = q.split()
+    mqt = list(qt)
+    resList = EsAdaptor.collocation(mqt)
+    if len(mqt) == 1:
+        mqt.append('*')
+    for i, p in enumerate(resList):
+        if i == 4:
+            mqt[0], mqt[1] = mqt[1], mqt[0]
+        if not p:
+            continue
+        myTerm = {
+            'type': u'',
+            'label': 'Colloc%d' % (len(r['collocationList']) + 1),
+            'usageList': [],
+        }
+        myTerm['type'] = u'%s %s %s' % (mqt[0], deps[i % 4], mqt[1])
+        myTerm['usageList'] = []
+        for j in (('*', mqt[1]), (mqt[0], '*')):
+            if j[0] != '*' or j[1] != '*':
+                dt = [{'dt': i % 4, 'l1': j[0], 'l2': j[1]}]
+                myTerm['usageList'] += getUsageList(dt)
+
+        if myTerm['usageList']:
+            r['collocationList'].append(myTerm)
+
     if len(qt) == 1:
         syn = list(synonyms(q))
         if len(syn) > 10:
@@ -110,11 +110,11 @@ def esoda_view(request):
     jsonString = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).text
     jsonObj = json.loads(jsonString.encode('utf-8'))
 
-    if jsonObj.has_key('simple') and jsonObj.has_key('ec'):
+    if 'simple' in jsonObj and 'ec' in jsonObj:
         dictionary = {
             'word': q,
-            'english': jsonObj['simple']['word'][0].get('ukphone',''),
-            'american': jsonObj['simple']['word'][0].get('usphone',''),
+            'english': jsonObj['simple']['word'][0].get('ukphone', ''),
+            'american': jsonObj['simple']['word'][0].get('usphone', ''),
             'explanationList': []
         }
         for explain in jsonObj['ec']['word'][0]['trs']:
@@ -122,6 +122,7 @@ def esoda_view(request):
         info['dictionary'] = dictionary
 
     return render(request, 'esoda/result.html', info)
+
 
 def sentence_view(request):
     q = request.GET.get('q', '')
@@ -134,7 +135,8 @@ def sentence_view(request):
     }
     return render(request, 'esoda/sentence_result.html', info)
 
-class DictHandler( xml.sax.ContentHandler ):
+
+class DictHandler(xml.sax.ContentHandler):
     def __init__(self):
         self.suggest = []
         self.CurNum = 0
@@ -164,6 +166,8 @@ class DictHandler( xml.sax.ContentHandler ):
             self.suggest[self.CurNum]['desc'] = content
 
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
+
+
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {}
@@ -179,18 +183,20 @@ def dict_suggest_view(request):
         print repr(e)
     return JsonResponse(r)
 
+
 def guide_view(request):
     info = {
     }
     return render(request, 'esoda/guide.html', info)
 
+
 def sentence_query(q, dtype):
-    if dtype != '0': # Search specific tag
+    if dtype != '0':  # Search specific tag
         q = gen_qt(q)
         ref = q.split()
         ll = lemmatize(q)
         d = [{'dt': dtype, 'i1': 0, 'i2': 1}]
-    else: # Search user input
+    else:  # Search user input
         q = translate_cn(q)
         ref = q.split()
         ll = lemmatize(q)

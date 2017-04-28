@@ -1,4 +1,7 @@
 from nltk.corpus import wordnet as WN
+from EsAdaptor import defaultCids, EsAdaptor
+import requests
+
 
 def synonymous(w):
     r = set()
@@ -14,11 +17,14 @@ def synonymous(w):
     # w is the first in results
     return tuple(r)
 
+
 def is_cn_char(c):
     return 0x4e00 <= ord(c) < 0x9fa6
 
+
 def is_cn(s):
-    return reduce(lambda x,y: x and y, [is_cn_char(c) for c in s], True)
+    return reduce(lambda x, y: x and y, [is_cn_char(c) for c in s], True)
+
 
 def translate(cn):
     url = u'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key=205873295&type=data&doctype=json&version=1.2&only=dict&q=' + cn
@@ -29,10 +35,11 @@ def translate(cn):
             o = r.json()
             if o['errorCode'] == 0 and 'basic' in o and 'explains' in o['basic']:
                 s = o['basic']['explains'][0]
-                l = s[s.find(']')+1:].strip()
+                l = s[s.find(']') + 1:].strip()
     except Exception as e:
         print e
     return l
+
 
 def translate_cn(q):
     tokens = q.split()
@@ -43,11 +50,32 @@ def translate_cn(q):
         if is_cn(t):
             t = translate(t.strip('?'))
             # if not t:
-                # no translation for Chinese keyword
+            #     no translation for Chinese keyword
         qtt.append(t)
     st = ' '
     return st.join(qtt)
 
+
 def gen_qt(q):
     tokens = q.split()
     return tokens[0] + ' ' + tokens[2]
+
+
+def notstar(p, q):
+    return p if p != '*' else q
+
+
+def getUsageList(dt, cids=defaultCids):
+    lst = EsAdaptor.group([], dt, cids)
+    try:
+        ret = []
+        for i in lst['aggregations']['d']['d']['d']['buckets']:
+            l1 = notstar(dt[0]['l1'], i['key'])
+            l2 = notstar(dt[0]['l2'], i['key'])
+            ret.append({
+                'content': '%s...%s' % (l1, l2),
+                'count': i['doc_count']
+            })
+        return ret
+    except:
+        return []
