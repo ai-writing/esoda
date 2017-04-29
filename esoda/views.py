@@ -67,7 +67,7 @@ def esoda_view(request):
             continue
         myTerm = {
             'type': u'',
-            'label': 'Colloc%d' % (len(r['collocationList']) + 1),
+            'label': 'Colloc%d' % (i + 1),
             'usageList': [],
         }
         myTerm['type'] = u'%s %s %s' % (mqt[0], deps[i % 4], mqt[1])

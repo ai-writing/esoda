@@ -15,7 +15,7 @@
       </div>
       <div class="panel-footer example-list-source">
         {% if example.source %}
-        <a style="text-overflow: ellipsis;white-space: nowrap;word-wrap: normal;" href="{{ p.url|default:'javascript:void(0)' }}" target="_blank"{% if example.source.url %} title="Link to source"{% endif %}>{{ example.source.source|safe }}</a>
+        <a style="text-overflow: ellipsis;white-space: nowrap;word-wrap: normal;" href="{{ example.source.url|default:'javascript:void(0)' }}" target="_blank"{% if example.source.url %} title="Link to source"{% endif %}>{{ example.source.source|safe }}</a>
         {% comment %}<img src="{% static 'common/img/link.png' %}"></img>{% endcomment %}
         {% endif %}
       </div>

@@ -214,8 +214,9 @@
         loadCount = 1;
         loading = 0;
         loaded = 0;
+        var dt = (Number(dtype) - 1) % 4 + 1;
 
-        console.log(collocQ + ' ' + dtype);
+        console.log(collocQ + ' ' + dt);
         $.get("{% url 'sentences' %}", {q: collocQ, dtype: dtype}, function(data) {
           $("#SentenceResult").html(data);
         });
