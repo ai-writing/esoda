@@ -62,6 +62,18 @@ def mongo_get_object(type_object, projection=None, **kwargs):
     return o
 
 
+def mongo_get_objects(type_object, projection=None, **kwargs):
+    if 'pks' in kwargs:
+        kwargs[type_object.Meta.pk] = {'$in': kwargs['pks']}
+        del kwargs['pks']
+    database_name, collection_name = type_object.Meta.db
+    o = settings.MONGODB[database_name][collection_name].find(kwargs, projection)
+    res = {}
+    for i in o:
+        res[i[type_object.Meta.pk]] = i
+    return res
+
+
 def mongo_get_object_or_404(type_object, projection=None, **kwargs):
     o = mongo_get_object(type_object, projection, **kwargs)
     if not o:

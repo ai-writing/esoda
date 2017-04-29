@@ -7,7 +7,7 @@ import json
 import requests
 import time
 
-from .utils import translate_cn, get_usage_list, paper_source_str
+from .utils import translate_cn, get_usage_list, papers_source_str, paper_source_str
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor, defaultCids
@@ -204,13 +204,16 @@ def sentence_query(q, dtype):
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
-    rlen = len(res['hits']) if 'hits' in res else 0
+    rlen = min(50, len(res['hits']) if 'hits' in res else 0)
+
+    papers = set()
     for i in xrange(rlen):
-        if i > 50:
-            break
+        papers.add(res['hits'][i]['_source']['p'])
+    sources = papers_source_str(list(papers))
+    for i in xrange(rlen):
         sentence = res['hits'][i]
         sr['sentence'].append({
             'content': sentence['fields']['sentence'][0],
-            'source': paper_source_str(sentence['_source']['p']),
+            'source': sources.get(sentence['_source']['p'], {}), # paper_source_str(sentence['_source']['p'])
             'heart_number': 129})
     return sr
