@@ -108,7 +108,7 @@
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
                   <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
                     <li role="presentation" class="active">
-                      <a href="#CollocAll" role="tab" data-toggle="tab">不限制</a>
+                        <a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a>
                     </li>
                     {% for collocation in r.collocationList %}
                     <li role="presentation">
@@ -217,7 +217,22 @@
         var dt = (Number(dtype) - 1) % 4 + 1;
 
         console.log(collocQ + ' ' + dt);
-        $.get("{% url 'sentences' %}", {q: collocQ, dtype: dtype}, function(data) {
+        $.get("{% url 'sentences' %}", {q: collocQ, dtype: dt}, function(data) {
+          $("#SentenceResult").html(data);
+        });
+      });
+      $('#CollapseColloc').on('click', '.not-limited', function (e) {
+        e.preventDefault();
+        $("#ExampleEnd").hide();
+        $("#SentenceResult").html("<h3>Loading...</h3>");
+
+        var collocQ = $(this).text();
+        loadCount = 1;
+        loading = 0;
+        loaded = 0;
+
+        console.log(collocQ);
+        $.get("{% url 'sentences' %}", {q: collocQ, dtype: 0}, function(data) {
           $("#SentenceResult").html(data);
         });
       });
