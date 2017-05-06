@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 import xml.sax
 import json
 import requests
 import time
 
-from .utils import translate_cn, get_usage_list, papers_source_str, paper_source_str
+from .utils import translate_cn, get_usage_list, papers_source_str, corpus_id2cids, debug_object
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor, defaultCids
@@ -37,6 +38,11 @@ def esoda_view(request):
 
     # With query - render result.html
     q = translate_cn(q)
+    cids = defaultCids
+    if request.user.id:
+        user = User.objects.get(id=request.user.id)
+        corpus_id = user.userprofile.corpus_id
+        cids = corpus_id2cids(corpus_id)
 
     r = {
         'domain': u'人机交互',
@@ -57,7 +63,7 @@ def esoda_view(request):
 
     qt = q.split()
     mqt = list(qt)
-    resList = EsAdaptor.collocation(mqt)
+    resList = EsAdaptor.collocation(mqt, cids)
     if len(mqt) == 1:
         mqt.append('*')
     for i, p in enumerate(resList):
@@ -127,7 +133,12 @@ def esoda_view(request):
 def sentence_view(request):
     q = request.GET.get('q', '')
     dtype = request.GET.get('dtype', '0')
-    sr = sentence_query(q, dtype)
+    cids = defaultCids
+    if request.user.id:
+        user = User.objects.get(id=request.user.id)
+        corpus_id = user.userprofile.corpus_id
+        cids = corpus_id2cids(corpus_id)
+    sr = sentence_query(q, dtype, cids)
     info = {
         'example_number': sr['total'],
         'search_time': sr['time'],
@@ -190,7 +201,7 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
-def sentence_query(q, dtype):
+def sentence_query(q, dtype, cids=defaultCids):
     if dtype != '0':  # Search specific tag
         ll = ref = q.split()
         d = [{'dt': dtype, 'i1': 0, 'i2': 1}]
@@ -200,7 +211,7 @@ def sentence_query(q, dtype):
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(ll, d, ref, defaultCids, 50)
+    res = EsAdaptor.search(ll, d, ref, cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
@@ -214,6 +225,6 @@ def sentence_query(q, dtype):
         sentence = res['hits'][i]
         sr['sentence'].append({
             'content': sentence['fields']['sentence'][0],
-            'source': sources.get(sentence['_source']['p'], {}), # paper_source_str(sentence['_source']['p'])
+            'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
             'heart_number': 129})
     return sr

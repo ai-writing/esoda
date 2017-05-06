@@ -1,7 +1,14 @@
+from django.conf import settings
 from nltk.corpus import wordnet as WN
 from .EsAdaptor import defaultCids, EsAdaptor
 from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, DblpVenue, UploadRecord
 import requests
+
+
+def debug_object(o):
+    print '<---- object -----'
+    print '\n'.join(["%s:%s" % item for item in o.__dict__.items()])
+    print '----- object ---->'
 
 
 def synonymous(w):
@@ -40,6 +47,10 @@ def translate(cn):
     except Exception as e:
         print e
     return l
+
+
+def corpus_id2cids(corpus_id):
+    return [c['_id'] for c in settings.MONGODB['common']['corpora'].find({'field': corpus_id, 'status': 2})]
 
 
 def translate_cn(q):
