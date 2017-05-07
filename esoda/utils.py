@@ -1,6 +1,5 @@
 from django.conf import settings
 from nltk.corpus import wordnet as WN
-from .EsAdaptor import defaultCids, EsAdaptor
 from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, DblpVenue, UploadRecord
 import requests
 
@@ -70,22 +69,6 @@ def translate_cn(q):
 
 def notstar(p, q):
     return p if p != '*' else q
-
-
-def get_usage_list(dt, cids=defaultCids):
-    lst = EsAdaptor.group([], dt, cids)
-    try:
-        ret = []
-        for i in lst['aggregations']['d']['d']['d']['buckets']:
-            l1 = notstar(dt[0]['l1'], i['key'])
-            l2 = notstar(dt[0]['l2'], i['key'])
-            ret.append({
-                'content': '%s...%s' % (l1, l2),
-                'count': i['doc_count']
-            })
-        return ret
-    except:
-        return []
 
 
 def gen_source_url(p, v):

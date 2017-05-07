@@ -1,7 +1,6 @@
 from elasticsearch import Elasticsearch
 from django.conf import settings
 
-defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
 
 class EsAdaptor():
     es = Elasticsearch(settings.ELASTICSEARCH_HOST, timeout=10)
@@ -42,7 +41,7 @@ class EsAdaptor():
             EsAdaptor.es.indices.put_mapping(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=mappings)
 
     @staticmethod
-    def search(t, d, ref, cids=defaultCids, sp=0):
+    def search(t, d, ref, cids, sp=0):
         action = {
             "_source": ["p", "c"],
             "query": {
@@ -87,52 +86,47 @@ class EsAdaptor():
             action['size'] = sp
 
         for tt in t:
-            tq = {
+            action['query']['function_score']['query']['bool']['must'].append({
                 "nested": {
                     "path": "t",
                     "query": {
-                        "match": {}
+                        "match": {'t.l': tt}
                     }
                 }
-            }
-            tq['nested']['query']['match'] = {'t.l': tt}
-            action['query']['function_score']['query']['bool']['must'].append(tq)
+            })
 
         for dd in d:
-            dq = {
+            lst = []
+            if 'dt' in dd:
+                lst.append({'match': {'d.dt': dd['dt']}})
+            if 'i1' in dd:
+                lst.append({'match': {'d.l1': t[dd['i1']]}})
+            if 'i2' in dd:
+                lst.append({'match': {'d.l2': t[dd['i2']]}})
+            action['query']['function_score']['query']['bool']['must'].append({
                 "nested": {
                     "path": "d",
                     "query": {
                         "bool": {
-                            "must": []
+                            "must": lst
                         }
                     }
                 }
-            }
-            if 'dt' in dd:
-                dq['nested']['query']['bool']['must'].append({'match': {'d.dt': dd['dt']}})
-            if 'i1' in dd:
-                dq['nested']['query']['bool']['must'].append({'match': {'d.l1': t[dd['i1']]}})
-            if 'i2' in dd:
-                dq['nested']['query']['bool']['must'].append({'match': {'d.l2': t[dd['i2']]}})
-            action['query']['function_score']['query']['bool']['must'].append(dq)
+            })
         res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=action, filter_path=[
             'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
         return res['hits']
 
     @staticmethod
-    def collocation(t, cids=defaultCids, sp=0):
-        if not t or len(t) > 2:
+    def collocation(t, d, cids, sp=0):
+        d = [i for i in d if i != '*']
+        if not d or len(d) > 2:
             return {}
         action = {
             "_source": False,
             "query": {
                 "bool": {
-                    "must": [{
-                        "terms": {
-                            "c": cids
-                        }
-                    }]
+                    "must": None
                 }
             },
             "aggs": {
@@ -157,11 +151,28 @@ class EsAdaptor():
             }
         }
 
-        if len(t) > 1:
+        mst = [{
+            "terms": {
+                "c": cids
+            }
+        }]
+
+        for tt in t:
+            mst.append({
+                "nested": {
+                    "path": "t",
+                    "query": {
+                        "match": {'t.l': tt}
+                    }
+                }
+            })
+
+        if len(d) > 1:
             ret = []
             for ps in (('d.l1', 'd.l2'), ('d.l2', 'd.l1')):
-                ddq = [{'match': {ps[0]: t[0]}}, {'match': {ps[1]: t[1]}}]
-                dq = {
+                action['query']['bool']['must'] = list(mst)
+                ddq = [{'match': {ps[0]: d[0]}}, {'match': {ps[1]: d[1]}}]
+                action['query']['bool']['must'].append({
                     "nested": {
                         "path": "d",
                         "query": {
@@ -170,26 +181,23 @@ class EsAdaptor():
                             }
                         }
                     }
-                }
-                action['query']['bool']['must'].append(dq)
-                df = {
+                })
+                action['aggs']['d']['aggs']['d']['filter'] = {
                     'bool': {
                         'must': ddq
                     }
                 }
-                action['aggs']['d']['aggs']['d']['filter'] = df
                 ret += EsAdaptor.__checkResult(action)
         else:
             ret = []
             for ps in ('d.l1', 'd.l2'):
-                ddq = {'match': {ps: t[0]}}
-                dq = {
+                ddq = {'match': {ps: d[0]}}
+                action['query'] = {
                     "nested": {
                         "path": "d",
                         "query": ddq
                     }
                 }
-                action['query'] = dq
                 action['aggs']['d']['aggs']['d']['filter'] = ddq
                 ret += EsAdaptor.__checkResult(action)
 
@@ -206,7 +214,7 @@ class EsAdaptor():
         return ret
 
     @staticmethod
-    def group(t, d, cids=defaultCids, sp=0):
+    def group(t, d, cids, sp=0):
         if not d or len(d) > 1:
             return {}
         action = {
@@ -246,16 +254,14 @@ class EsAdaptor():
         }
 
         for i, tt in enumerate(t):
-            tq = {
+            action['query']['bool']['must'].append({
                 "nested": {
                     "path": "t",
                     "query": {
-                        "match": {}
+                        "match": {'t.l': tt}
                     },
                 }
-            }
-            tq['nested']['query']['match'] = {'t.l': tt}
-            action['query']['bool']['must'].append(tq)
+            })
 
         dq = [{
             "nested": {

@@ -17,7 +17,7 @@
           <div>
 
             <div class="result-warning">
-              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage">{{ r.count }}</span>句例句，在其他<a href="#">个人领域</a>中搜索
+              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage">{{ r.count }}</span>句例句，在其他<a href="domain/">个人领域</a>中搜索
             </div>
 
             <div class="panel-group" role="tablist" aria-multiselectable="true">
@@ -209,15 +209,14 @@
         $("#ExampleEnd").hide();
         $("#SentenceResult").html("<h3>Loading...</h3>");
 
-        var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-        var dtype = $(this).parents('.tab-pane').attr('id').replace('Colloc', '');
+        // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
+        var dtype = $(this).parents('.tab-pane').attr('id').split('_')[1];
         loadCount = 1;
         loading = 0;
         loaded = 0;
-        var dt = (Number(dtype) - 1) % 4 + 1;
 
-        console.log(collocQ + ' ' + dt);
-        $.get("{% url 'sentences' %}", {q: collocQ, dtype: dt}, function(data) {
+        // console.log(collocQ + ' ' + dtype);
+        $.get("{% url 'sentences' %}", {q: $(this).text(), dtype: dtype}, function(data) {
           $("#SentenceResult").html(data);
         });
       });
@@ -231,7 +230,7 @@
         loading = 0;
         loaded = 0;
 
-        console.log(collocQ);
+        // console.log(collocQ);
         $.get("{% url 'sentences' %}", {q: collocQ, dtype: 0}, function(data) {
           $("#SentenceResult").html(data);
         });

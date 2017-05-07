@@ -8,12 +8,14 @@ import json
 import requests
 import time
 
-from .utils import translate_cn, get_usage_list, papers_source_str, corpus_id2cids, debug_object
+from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids, debug_object
+from authentication.forms import FIELDS
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
-from .EsAdaptor import EsAdaptor, defaultCids
+from .EsAdaptor import EsAdaptor
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
+defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
 
 
 def esoda_view(request):
@@ -38,11 +40,6 @@ def esoda_view(request):
 
     # With query - render result.html
     q = translate_cn(q)
-    cids = defaultCids
-    if request.user.id:
-        user = User.objects.get(id=request.user.id)
-        corpus_id = user.userprofile.corpus_id
-        cids = corpus_id2cids(corpus_id)
 
     r = {
         'domain': u'人机交互',
@@ -61,30 +58,16 @@ def esoda_view(request):
         ]
     }
 
+    cids = defaultCids
+    if request.user.id:
+        user = User.objects.get(id=request.user.id)
+        corpus_id = user.userprofile.corpus_id
+        cids = corpus_id2cids(corpus_id)
+        r['domain'] = FIELDS[corpus_id-1][1]
+
     qt = q.split()
     mqt = list(qt)
-    resList = EsAdaptor.collocation(mqt, cids)
-    if len(mqt) == 1:
-        mqt.append('*')
-    for i, p in enumerate(resList):
-        if i == 4:
-            mqt[0], mqt[1] = mqt[1], mqt[0]
-        if not p:
-            continue
-        myTerm = {
-            'type': u'',
-            'label': 'Colloc%d' % (i + 1),
-            'usageList': [],
-        }
-        myTerm['type'] = u'%s %s %s' % (mqt[0], deps[i % 4], mqt[1])
-        myTerm['usageList'] = []
-        for j in (('*', mqt[1]), (mqt[0], '*')):
-            if j[0] != '*' or j[1] != '*':
-                dt = [{'dt': i % 4 + 1, 'l1': j[0], 'l2': j[1]}]
-                myTerm['usageList'] += get_usage_list(dt)
-
-        if myTerm['usageList']:
-            r['collocationList'].append(myTerm)
+    r['collocationList'] = collocation_list(mqt, cids)
 
     if len(qt) == 1:
         syn = list(synonyms(q))
@@ -201,10 +184,99 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
+def get_usage_list(t, dt, cids, pat='%s...%s'):
+    lst = EsAdaptor.group(t, dt, cids)
+    try:
+        ret = []
+        for i in lst['aggregations']['d']['d']['d']['buckets']:
+            l1 = notstar(dt[0]['l1'], i['key'])
+            l2 = notstar(dt[0]['l2'], i['key'])
+            ret.append({
+                'content': pat % (l1, l2),
+                'count': i['doc_count']
+            })
+        return ret
+    except:
+        return []
+
+'''
+def collocation_list_simple(mqt, cids):
+    clist = []
+    resList = EsAdaptor.collocation([], mqt, cids)
+    if len(mqt) == 1:
+        mqt.append('*')
+    for i, p in enumerate(resList):
+        if i == 4:
+            mqt[0], mqt[1] = mqt[1], mqt[0]
+        if not p:
+            continue
+        myTerm = {
+            'type': u'%s %s %s' % (mqt[0], deps[i % 4], mqt[1]),
+            'label': 'Colloc_%d' % (i + 1),
+            'usageList': [],
+        }
+        for j in (('*', mqt[1]), (mqt[0], '*')):
+            if j[0] != '*' or j[1] != '*':
+                dt = [{'dt': i % 4 + 1, 'l1': j[0], 'l2': j[1]}]
+                myTerm['usageList'] += get_usage_list((), dt, cids)
+        if myTerm['usageList']:
+            clist.append(myTerm)
+
+    return clist
+'''
+
+def get_collocation(clist, qt, i, cids):
+    t, d = list(qt), (qt[i], qt[i + 1])
+    del t[i]
+    del t[i]
+    resList = EsAdaptor.collocation(t, d, cids)
+    tx = list(t)
+    tx.insert(i, '%s %s %s')
+    pat1 = ' '.join(tx)
+    tx[i] = '%s...%s'
+    pat2 = ' '.join(tx)
+    for j, p in enumerate(resList):
+        if j == 4:
+            qt[i], qt[i + 1] = qt[i + 1], qt[i]
+        if not p:
+            continue
+        myTerm = {
+            'type': pat1 % (qt[i], deps[j % 4], qt[i + 1]),
+            'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
+            'usageList': [],
+        }
+        for k in (('*', qt[i + 1]), (qt[i], '*')):
+            if k[0] != '*' or k[1] != '*':
+                dt = [{'dt': j % 4 + 1, 'l1': k[0], 'l2': k[1]}]
+                myTerm['usageList'] += get_usage_list(t, dt, cids, pat2)
+
+        if myTerm['usageList']:
+            clist.append(myTerm)
+
+
+def collocation_list(mqt, cids):
+    clist = []
+    for i in range(len(mqt) - 1):
+        get_collocation(clist, list(mqt), i, cids)
+    for i in range(len(mqt)):
+        qt = list(mqt)
+        qt.insert(i, '*')
+        get_collocation(clist, qt, i, cids)
+    return clist
+
+
 def sentence_query(q, dtype, cids=defaultCids):
     if dtype != '0':  # Search specific tag
-        ll = ref = q.split()
-        d = [{'dt': dtype, 'i1': 0, 'i2': 1}]
+        tq = q.split()[:-1]
+        d = []
+        for i in range(len(tq)):
+            if '...' in tq[i]:
+                ck = tq[i].split('...')
+                tq[i] = ck[0]
+                tq.insert(i+1, ck[1])
+                d.append({'dt': dtype, 'i1': i, 'i2': i+1})
+                break
+        ll = ref = tq
     else:  # Search user input
         q = translate_cn(q)
         ll, ref = lemmatize(q)
