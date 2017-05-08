@@ -136,7 +136,6 @@ $(function () {
         .appendTo( ul );
     },
     _resizeMenu: function() {
-      console.log($(".ui-autocomplete-input").outerWidth());
       this.menu.element.outerWidth( $(".ui-autocomplete-input").outerWidth() );
     }
   });
