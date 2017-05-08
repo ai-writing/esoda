@@ -17,7 +17,7 @@
           <div>
 
             <div class="result-warning">
-              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage">{{ r.count }}</span>句例句，在其他<a href="domain/">个人领域</a>中搜索
+              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage">{{ r.count }}</span>句例句，在其他<a href="{% url 'domain' %}">个人领域</a>中搜索
             </div>
 
             <div class="panel-group" role="tablist" aria-multiselectable="true">
@@ -112,7 +112,7 @@
                     </li>
                     {% for collocation in r.collocationList %}
                     <li role="presentation">
-                      <a href="#{{ collocation.label }}" role="tab" data-toggle="tab">{{ collocation.type }}</a>
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
                     </li>
                     {% endfor %}
                   </ul>
@@ -120,13 +120,6 @@
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
                     {% for collocation in r.collocationList %}
                     <div role="tabpanel" class="tab-pane fade" id="{{ collocation.label }}">
-                      <div class="row colloc-result">
-                        {% for usage in collocation.usageList %}
-                        <div class="col-sm-4">
-                          <p><a href="#" class="colloc-usage" id="CollocationUsage{{ forloop.counter }}">{{ usage.content }} ({{ usage.count }})</a></p>
-                        </div>
-                        {% endfor %}
-                      </div>
                     </div>
                     {% endfor %}
                   </div>
@@ -220,6 +213,7 @@
           $("#SentenceResult").html(data);
         });
       });
+
       $('#CollapseColloc').on('click', '.not-limited', function (e) {
         e.preventDefault();
         $("#ExampleEnd").hide();
@@ -242,6 +236,20 @@
       $.get("{% url 'sentences' %}", {q: $("#SearchBox").val(), dtype: "0"}, function(data) {
         $("#SentenceResult").html(data);
       });
+
+      $('.colloc-sub-btn').click(function(e) {
+        var id = $(this).attr('href');
+        var type = $(this).html();
+        var type0 = type.replace(/ \(.*\) /g , ' ');
+        var i;
+        for (i = 0; i < type.split(' ').length; i++) {
+          if (type.split(' ')[i] != type0.split(' ')[i]) break;
+        }
+        if (i == 0) i = 1;
+        $.get("{% url 'collocation' %}", {t: type0, i: i - 1, dt: id.replace('#', '').split('_')[1]}, function(data) {
+          $(id).html(data);
+        });
+      })
     } );
   </script>
 {% endblock %}

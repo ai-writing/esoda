@@ -63,7 +63,7 @@ def esoda_view(request):
         user = User.objects.get(id=request.user.id)
         corpus_id = user.userprofile.corpus_id
         cids = corpus_id2cids(corpus_id)
-        r['domain'] = FIELDS[corpus_id-1][1]
+        r['domain'] = FIELDS[corpus_id-1][1] # TODO: translation
 
     qt = q.split()
     mqt = list(qt)
@@ -80,7 +80,6 @@ def esoda_view(request):
             'high quality',
             'improve quality',
             'ensure quality',
-            '*(修饰) quality'
         ],
         'hotList': [
             'interaction',
@@ -252,7 +251,6 @@ def get_collocation(clist, qt, i, cids):
 
         if myTerm['usageList']:
             clist.append(myTerm)
-
 
 def collocation_list(mqt, cids):
     clist = []
