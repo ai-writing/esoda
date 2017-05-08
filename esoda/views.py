@@ -54,7 +54,6 @@ def esoda_view(request):
 
     r = {
         'domain': u'人机交互',
-        'count': 222,
         'phrase': [
             'improve quality',
             'standard quality',
