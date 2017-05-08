@@ -18,6 +18,17 @@ deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
 
 
+def get_cids(rid, **kwargs):
+    cids = defaultCids
+    if rid:
+        user = User.objects.get(id=rid)
+        corpus_id = user.userprofile.corpus_id
+        cids = corpus_id2cids(corpus_id)
+        if 'r' in kwargs:
+            kwargs['r']['domain'] = FIELDS[corpus_id-1][1]
+    return cids
+
+
 def esoda_view(request):
     q = request.GET.get('q', '').strip()
 
@@ -58,12 +69,7 @@ def esoda_view(request):
         ]
     }
 
-    cids = defaultCids
-    if request.user.id:
-        user = User.objects.get(id=request.user.id)
-        corpus_id = user.userprofile.corpus_id
-        cids = corpus_id2cids(corpus_id)
-        r['domain'] = FIELDS[corpus_id-1][1]
+    cids = get_cids(request.user.id, r=r)
 
     qt = q.split()
     mqt = list(qt)
@@ -80,7 +86,6 @@ def esoda_view(request):
             'high quality',
             'improve quality',
             'ensure quality',
-            '*(修饰) quality'
         ],
         'hotList': [
             'interaction',
@@ -116,11 +121,7 @@ def esoda_view(request):
 def sentence_view(request):
     q = request.GET.get('q', '')
     dtype = request.GET.get('dtype', '0')
-    cids = defaultCids
-    if request.user.id:
-        user = User.objects.get(id=request.user.id)
-        corpus_id = user.userprofile.corpus_id
-        cids = corpus_id2cids(corpus_id)
+    cids = get_cids(request.user.id)
     sr = sentence_query(q, dtype, cids)
     info = {
         'example_number': sr['total'],
@@ -128,6 +129,15 @@ def sentence_view(request):
         'exampleList': sr['sentence']
     }
     return render(request, 'esoda/sentence_result.html', info)
+
+
+def usagelist_view(request):
+    t = request.GET.get('t', '').split(' ')
+    i = int(request.GET.get('i', '0'))
+    dt = request.GET.get('dtype', '0')
+    cids = get_cids(request.user.id)
+    r = {'usageList': get_usage_list(t, i, dt, cids)}
+    return render(request, 'esoda/collocation_result.html', r)
 
 
 class DictHandler(xml.sax.ContentHandler):
@@ -184,84 +194,60 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
-def get_usage_list(t, dt, cids, pat='%s...%s'):
-    lst = EsAdaptor.group(t, dt, cids)
-    try:
-        ret = []
-        for i in lst['aggregations']['d']['d']['d']['buckets']:
-            l1 = notstar(dt[0]['l1'], i['key'])
-            l2 = notstar(dt[0]['l2'], i['key'])
-            ret.append({
-                'content': pat % (l1, l2),
-                'count': i['doc_count']
-            })
-        return ret
-    except:
-        return []
+def get_usage_list(t, i, dt, cids):
+    usageList = []
+    for k in (('*', t[i + 1]), (t[i], '*')):
+        if k[0] != '*' or k[1] != '*':
+            d = {'dt': dt, 'l1': k[0], 'l2': k[1]}
 
-'''
-def collocation_list_simple(mqt, cids):
-    clist = []
-    resList = EsAdaptor.collocation([], mqt, cids)
-    if len(mqt) == 1:
-        mqt.append('*')
-    for i, p in enumerate(resList):
-        if i == 4:
-            mqt[0], mqt[1] = mqt[1], mqt[0]
-        if not p:
-            continue
-        myTerm = {
-            'type': u'%s %s %s' % (mqt[0], deps[i % 4], mqt[1]),
-            'label': 'Colloc_%d' % (i + 1),
-            'usageList': [],
-        }
-        for j in (('*', mqt[1]), (mqt[0], '*')):
-            if j[0] != '*' or j[1] != '*':
-                dt = [{'dt': i % 4 + 1, 'l1': j[0], 'l2': j[1]}]
-                myTerm['usageList'] += get_usage_list((), dt, cids)
-        if myTerm['usageList']:
-            clist.append(myTerm)
+            lst = EsAdaptor.group(t, (d), cids)
+            try:
+                ret = []
+                for i in lst['aggregations']['d']['d']['d']['buckets']:
+                    l1 = notstar(d['l1'], i['key'])
+                    l2 = notstar(d['l2'], i['key'])
+                    ret.append({
+                        'content': '%s...%s' % (l1, l2),
+                        'count': i['doc_count']
+                    })
+                usageList += ret
+            except:
+                None
+    return usageList
 
-    return clist
-'''
 
-def get_collocation(clist, qt, i, cids):
+def get_collocations(clist, qt, i, cids):
     t, d = list(qt), (qt[i], qt[i + 1])
     del t[i]
     del t[i]
     resList = EsAdaptor.collocation(t, d, cids)
-    tx = list(t)
-    tx.insert(i, '%s %s %s')
-    pat1 = ' '.join(tx)
-    tx[i] = '%s...%s'
-    pat2 = ' '.join(tx)
+    t = list(t)
+    t.insert(i, '%s %s %s')
+    pat = ' '.join(t)
     for j, p in enumerate(resList):
         if j == 4:
             qt[i], qt[i + 1] = qt[i + 1], qt[i]
         if not p:
             continue
-        myTerm = {
-            'type': pat1 % (qt[i], deps[j % 4], qt[i + 1]),
+        clist.append({
+            'type': pat % (qt[i], deps[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-            'usageList': [],
-        }
-        for k in (('*', qt[i + 1]), (qt[i], '*')):
-            if k[0] != '*' or k[1] != '*':
-                dt = [{'dt': j % 4 + 1, 'l1': k[0], 'l2': k[1]}]
-                myTerm['usageList'] += get_usage_list(t, dt, cids, pat2)
-
-        if myTerm['usageList']:
-            clist.append(myTerm)
+            # 'usageList': [],
+        })
 
 
 def collocation_list(mqt, cids):
     clist = []
+    if len(mqt) == 1:
+        mqt.append('*')
     for i in range(len(mqt) - 1):
-        get_collocation(clist, list(mqt), i, cids)
+        get_collocations(clist, list(mqt), i, cids)
+    '''
     for i in range(len(mqt)):
         qt = list(mqt)
         qt.insert(i, '*')
         get_collocation(clist, qt, i, cids)
+    '''
     return clist
 
 
