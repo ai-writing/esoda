@@ -242,7 +242,7 @@ def get_collocations(clist, qt, i, cids):
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
             # 'usageList': [],
         })
-
+    
 def collocation_list(mqt, cids):
     clist = []
     if len(mqt) == 1:
