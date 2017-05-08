@@ -268,7 +268,6 @@ def sentence_query(t, i, dt, cids):
         d = []
 
     time1 = time.time()
-    print ll, d, ref, cids
     res = EsAdaptor.search(ll, d, ref, cids, 50)
     time2 = time.time()
 

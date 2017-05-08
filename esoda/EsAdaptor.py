@@ -7,52 +7,77 @@ class EsAdaptor():
     es.info()
     print 'Connected to Elasticsearch:', es
     index = settings.ELASTICSEARCH_INDEX
-    doctype = settings.ELASTICSEARCH_DOCTYPE
+    # doctype = settings.ELASTICSEARCH_DOCTYPE
 
     @staticmethod
     def build():
         if not EsAdaptor.es.indices.exists(index=EsAdaptor.index):
             EsAdaptor.es.indices.create(index=EsAdaptor.index)
             mappings = {
-                EsAdaptor.doctype: {
+                '_default_': {
                     "properties": {
                         "p": {"type": "integer"},
-                        "c": {"type": "text", "index": "not_analyzed"},
+                        "c": {"type": "keyword"},
                         "t": {
                             "type": "nested",
                             "properties": {
-                                "t": {"type": "text", "index": "not_analyzed"},
-                                "l": {"type": "text", "fielddata": True, "index": "not_analyzed"}
+                                "t": {"type": "keyword"},
+                                "l": {"type": "keyword"}
                             }
                         },
                         "d": {
                             "type": "nested",
                             "properties": {
-                                "dt": {"type": "text", "fielddata": True, "index": "not_analyzed"},
-                                "l1": {"type": "text", "fielddata": True, "index": "not_analyzed"},
-                                "l2": {"type": "text", "fielddata": True, "index": "not_analyzed"},
-                                "i1": {"type": "text", "index": "not_analyzed"},
-                                "i2": {"type": "text", "index": "not_analyzed"}
+                                "dt": {"type": "keyword"},
+                                "l1": {"type": "keyword"},
+                                "l2": {"type": "keyword"},
+                                "i1": {"type": "keyword"},
+                                "i2": {"type": "keyword"}
                             }
                         }
                     }
                 }
             }
-            EsAdaptor.es.indices.put_mapping(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=mappings)
+            EsAdaptor.es.indices.put_mapping(index=EsAdaptor.index, body=mappings)
 
     @staticmethod
-    def search(t, d, ref, cids, sp=0):
+    def search(t, d, ref, cids, sp=10):
+        mst = []
+        for tt in t:
+            mst.append({
+                "nested": {
+                    "path": "t",
+                    "query": {
+                        "match": {'t.l': tt}
+                    }
+                }
+            })
+        for dd in d:
+            lst = []
+            if 'dt' in dd:
+                lst.append({'match': {'d.dt': dd['dt']}})
+            if 'i1' in dd:
+                lst.append({'match': {'d.l1': t[dd['i1']]}})
+            if 'i2' in dd:
+                lst.append({'match': {'d.l2': t[dd['i2']]}})
+            mst.append({
+                "nested": {
+                    "path": "d",
+                    "query": {
+                        "bool": {
+                            "must": lst
+                        }
+                    }
+                }
+            })
         action = {
             "_source": ["p", "c"],
+            "size": sp,
             "query": {
                 "function_score": {
                     "query": {
                         "bool": {
-                            "must": [{
-                                "terms": {
-                                    "c": cids
-                                }
-                            }]
+                            "must": mst
                         }
                     },
                     "script_score": {
@@ -82,38 +107,7 @@ class EsAdaptor():
                 }
             }
         }
-        if sp:
-            action['size'] = sp
-
-        for tt in t:
-            action['query']['function_score']['query']['bool']['must'].append({
-                "nested": {
-                    "path": "t",
-                    "query": {
-                        "match": {'t.l': tt}
-                    }
-                }
-            })
-
-        for dd in d:
-            lst = []
-            if 'dt' in dd:
-                lst.append({'match': {'d.dt': dd['dt']}})
-            if 'i1' in dd:
-                lst.append({'match': {'d.l1': t[dd['i1']]}})
-            if 'i2' in dd:
-                lst.append({'match': {'d.l2': t[dd['i2']]}})
-            action['query']['function_score']['query']['bool']['must'].append({
-                "nested": {
-                    "path": "d",
-                    "query": {
-                        "bool": {
-                            "must": lst
-                        }
-                    }
-                }
-            })
-        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=action, filter_path=[
+        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
             'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
         return res['hits']
 
@@ -151,12 +145,7 @@ class EsAdaptor():
             }
         }
 
-        mst = [{
-            "terms": {
-                "c": cids
-            }
-        }]
-
+        mst = []
         for tt in t:
             mst.append({
                 "nested": {
@@ -187,7 +176,7 @@ class EsAdaptor():
                         'must': ddq
                     }
                 }
-                ret += EsAdaptor.__checkResult(action)
+                ret += EsAdaptor.__checkResult(action, cids)
         else:
             ret = []
             for ps in ('d.l1', 'd.l2'):
@@ -199,80 +188,24 @@ class EsAdaptor():
                     }
                 }
                 action['aggs']['d']['aggs']['d']['filter'] = ddq
-                ret += EsAdaptor.__checkResult(action)
+                ret += EsAdaptor.__checkResult(action, cids)
 
         return ret
 
     @staticmethod
-    def __checkResult(action):
-        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=action, filter_path=[
+    def __checkResult(action, cids):
+        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
         ret = [False] * 4
         for agg in res['aggregations']['d']['d']['d']['buckets']:
-            ret[ord(agg['key']) - 49] = True
-            # ord('0') = 48
+            ret[ord(agg['key']) - 49] = True  # ord('0') = 48
         return ret
 
     @staticmethod
-    def group(t, d, cids, sp=0):
+    def group(t, d, cids, sp=10):
         if not d or len(d) > 1:
             return {}
-        action = {
-            "_source": False,
-            "query": {
-                "bool": {
-                    "must": [{
-                        "terms": {
-                            "c": cids
-                        }
-                    }]
-                }
-            },
-            "aggs": {
-                "d": {
-                    "nested": {
-                        "path": "d"
-                    },
-                    "aggs": {
-                        "d": {
-                            "aggs": {
-                                "d": {
-                                    "terms": {
-                                        "size": sp if sp else 10
-                                    }
-                                }
-                            },
-                            "filter": {
-                                "bool": {
-                                    "must": []
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
-        for tt in t:
-            action['query']['bool']['must'].append({
-                "nested": {
-                    "path": "t",
-                    "query": {
-                        "match": {'t.l': tt}
-                    },
-                }
-            })
-
-        dq = [{
-            "nested": {
-                "path": "d",
-                "query": {
-                    "bool": {
-                        "must": []
-                    }
-                }
-            }
-        }]
         dd = d[0]
         ddq = []
         cover = 0
@@ -285,20 +218,67 @@ class EsAdaptor():
         if 'l2' in dd and dd['l2'] != '*':
             ddq.append({'match': {'d.l2': dd['l2']}})
             cover |= 4
-        dq[0]['nested']['query']['bool']['must'] += ddq
-
-        action['query']['bool']['must'] += dq
-        action['aggs']['d']['aggs']['d']['filter']['bool']['must'] += ddq
-
-        st = 'd.dt' if cover == 6 else 'd.l1' if cover == 5 else 'd.l2'
         if cover not in (3, 5, 6):
             return {}
+        st = 'd.dt' if cover == 6 else 'd.l1' if cover == 5 else 'd.l2'
 
-        action['aggs']['d']['aggs']['d']['aggs']['d']['terms']['field'] = st
+        mst = []
+        for tt in t:
+            mst.append({
+                "nested": {
+                    "path": "t",
+                    "query": {
+                        "match": {'t.l': tt}
+                    },
+                }
+            })
+        mst.append({
+            "nested": {
+                "path": "d",
+                "query": {
+                    "bool": {
+                        "must": ddq
+                    }
+                }
+            }
+        })
+
+        action = {
+            "_source": False,
+            "query": {
+                "bool": {
+                    "must": mst
+                }
+            },
+            "aggs": {
+                "d": {
+                    "nested": {
+                        "path": "d"
+                    },
+                    "aggs": {
+                        "d": {
+                            "aggs": {
+                                "d": {
+                                    "terms": {
+                                        "size": sp,
+                                        "field": st
+                                    }
+                                }
+                            },
+                            "filter": {
+                                "bool": {
+                                    "must": ddq
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         # import json
         # print json.dumps(action, indent=2)
 
-        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=action, filter_path=[
+        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
         return res
