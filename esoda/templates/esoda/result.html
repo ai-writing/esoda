@@ -47,6 +47,7 @@
                       <a href="#SynContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;同义表达</a>
                     </li>
                     {% endif %}
+                    {% comment %}
                     {% if r.phrase %}
                     <li role="presentation">
                       <a href="#PhraseContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;常用短语</a>
@@ -57,6 +58,7 @@
                       <a href="#ColContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;常用搭配</a>
                     </li>
                     {% endif %}
+                    {% endcomment %}
                   </ul>
                   <div id="UsageContent" class="tab-content">
                     {% if r.synonymous %}
@@ -203,13 +205,14 @@
         $("#SentenceResult").html("<h3>Loading...</h3>");
 
         // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-        var dtype = $(this).parents('.tab-pane').attr('id').split('_')[1];
+        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
+        var type = $(this).text().replace(/ \(.*\)/, '');
+        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
         loadCount = 1;
         loading = 0;
         loaded = 0;
 
-        // console.log(collocQ + ' ' + dtype);
-        $.get("{% url 'sentences' %}", {q: $(this).text(), dtype: dtype}, function(data) {
+        $.get("{% url 'sentences' %}", {t: type.replace('...', ' '), i: i, dt: dt}, function(data) {
           $("#SentenceResult").html(data);
         });
       });
@@ -225,7 +228,7 @@
         loaded = 0;
 
         // console.log(collocQ);
-        $.get("{% url 'sentences' %}", {q: collocQ, dtype: 0}, function(data) {
+        $.get("{% url 'sentences' %}", {t: collocQ, dt: 0}, function(data) {
           $("#SentenceResult").html(data);
         });
       });
@@ -233,7 +236,7 @@
       loadCount = 1;
       loading = 0;
       loaded = 0;
-      $.get("{% url 'sentences' %}", {q: $("#SearchBox").val(), dtype: "0"}, function(data) {
+      $.get("{% url 'sentences' %}", {t: $("#SearchBox").val(), dt: 0}, function(data) {
         $("#SentenceResult").html(data);
       });
 
@@ -241,14 +244,20 @@
         var id = $(this).attr('href');
         var type = $(this).html();
         var type0 = type.replace(/ \(.*\) /g , ' ');
-        var i;
+        var i, dt;
         for (i = 0; i < type.split(' ').length; i++) {
           if (type.split(' ')[i] != type0.split(' ')[i]) break;
         }
         if (i == 0) i = 1;
-        $.get("{% url 'collocation' %}", {t: type0, i: i - 1, dt: id.replace('#', '').split('_')[1]}, function(data) {
+        dt = id.replace('#', '').split('_')[1];
+        $.get("{% url 'collocation' %}", {t: type0, i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
         });
+        if (type.indexOf('*') == -1) {
+          $.get("{% url 'sentences' %}", {t: type0, i: i - 1, dt: dt}, function(data) {
+            $("#SentenceResult").html(data);
+          })
+        }
       })
     } );
   </script>
