@@ -25,7 +25,7 @@ def get_cids(rid, **kwargs):
         corpus_id = user.userprofile.corpus_id
         cids = corpus_id2cids(corpus_id)
         if 'r' in kwargs:
-            kwargs['r']['domain'] = FIELDS[corpus_id-1][1]
+            kwargs['r']['domain'] = FIELDS[corpus_id-1][1]  # TODO: translation
     return cids
 
 
@@ -134,7 +134,7 @@ def sentence_view(request):
 def usagelist_view(request):
     t = request.GET.get('t', '').split(' ')
     i = int(request.GET.get('i', '0'))
-    dt = request.GET.get('dtype', '0')
+    dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
     r = {'usageList': get_usage_list(t, i, dt, cids)}
     return render(request, 'esoda/collocation_result.html', r)
@@ -196,20 +196,27 @@ def guide_view(request):
 
 def get_usage_list(t, i, dt, cids):
     usageList = []
+    nt = list(t)
+    del nt[i]
+    del nt[i]
+    nnt = list(nt)
+    nnt.insert(i, '%s...%s')
+    pat = ' '.join(nnt)
     for k in (('*', t[i + 1]), (t[i], '*')):
         if k[0] != '*' or k[1] != '*':
-            d = {'dt': dt, 'l1': k[0], 'l2': k[1]}
+            d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
 
-            lst = EsAdaptor.group(t, (d), cids)
+            lst = EsAdaptor.group(nt, d, cids)
             try:
                 ret = []
                 for i in lst['aggregations']['d']['d']['d']['buckets']:
-                    l1 = notstar(d['l1'], i['key'])
-                    l2 = notstar(d['l2'], i['key'])
+                    l1 = notstar(d[0]['l1'], i['key'])
+                    l2 = notstar(d[0]['l2'], i['key'])
                     ret.append({
-                        'content': '%s...%s' % (l1, l2),
+                        'content': pat % (l1, l2),
                         'count': i['doc_count']
                     })
+                    print i, ret[-1]
                 usageList += ret
             except:
                 None
@@ -234,7 +241,6 @@ def get_collocations(clist, qt, i, cids):
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
             # 'usageList': [],
         })
-
 
 def collocation_list(mqt, cids):
     clist = []

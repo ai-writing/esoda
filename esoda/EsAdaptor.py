@@ -253,7 +253,7 @@ class EsAdaptor():
             }
         }
 
-        for i, tt in enumerate(t):
+        for tt in t:
             action['query']['bool']['must'].append({
                 "nested": {
                     "path": "t",
@@ -295,6 +295,9 @@ class EsAdaptor():
             return {}
 
         action['aggs']['d']['aggs']['d']['aggs']['d']['terms']['field'] = st
+
+        # import json
+        # print json.dumps(action, indent=2)
 
         res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=EsAdaptor.doctype, body=action, filter_path=[
             'hits.total', 'aggregations'])
