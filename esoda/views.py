@@ -119,7 +119,7 @@ def esoda_view(request):
 
 
 def sentence_view(request):
-    t = request.GET.get('t', '')
+    t = request.GET.get('t', '').split(' ')
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
@@ -217,7 +217,6 @@ def get_usage_list(t, i, dt, cids):
                         'content': pat % (l1, l2),
                         'count': i['doc_count']
                     })
-                    print i, ret[-1]
                 usageList += ret
             except:
                 None
@@ -242,7 +241,7 @@ def get_collocations(clist, qt, i, cids):
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
             # 'usageList': [],
         })
-    
+
 def collocation_list(mqt, cids):
     clist = []
     if len(mqt) == 1:
@@ -258,16 +257,18 @@ def collocation_list(mqt, cids):
     return clist
 
 
-def sentence_query(t, i, dt, cids=defaultCids):
+def sentence_query(t, i, dt, cids):
     if dt != '0':  # Search specific tag
         d = [{'dt': dt, 'i1': i, 'i2': i+1}]
         ll = ref = t
     else:  # Search user input
+        t = ' '.join(t)
         t = translate_cn(t)
         ll, ref = lemmatize(t)
         d = []
 
     time1 = time.time()
+    print ll, d, ref, cids
     res = EsAdaptor.search(ll, d, ref, cids, 50)
     time2 = time.time()
 
