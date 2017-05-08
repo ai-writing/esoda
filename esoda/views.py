@@ -119,10 +119,11 @@ def esoda_view(request):
 
 
 def sentence_view(request):
-    q = request.GET.get('q', '')
-    dtype = request.GET.get('dtype', '0')
+    t = request.GET.get('t', '')
+    i = int(request.GET.get('i', '0'))
+    dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
-    sr = sentence_query(q, dtype, cids)
+    sr = sentence_query(t, i, dt, cids)
     info = {
         'example_number': sr['total'],
         'search_time': sr['time'],
@@ -257,21 +258,13 @@ def collocation_list(mqt, cids):
     return clist
 
 
-def sentence_query(q, dtype, cids=defaultCids):
-    if dtype != '0':  # Search specific tag
-        tq = q.split()[:-1]
-        d = []
-        for i in range(len(tq)):
-            if '...' in tq[i]:
-                ck = tq[i].split('...')
-                tq[i] = ck[0]
-                tq.insert(i+1, ck[1])
-                d.append({'dt': dtype, 'i1': i, 'i2': i+1})
-                break
-        ll = ref = tq
+def sentence_query(t, i, dt, cids=defaultCids):
+    if dt != '0':  # Search specific tag
+        d = [{'dt': dt, 'i1': i, 'i2': i+1}]
+        ll = ref = t
     else:  # Search user input
-        q = translate_cn(q)
-        ll, ref = lemmatize(q)
+        t = translate_cn(t)
+        ll, ref = lemmatize(t)
         d = []
 
     time1 = time.time()
