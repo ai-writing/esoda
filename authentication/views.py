@@ -18,7 +18,7 @@ def domain_view(request):
             cid = form.cleaned_data['choice']
             if corpus_id != cid:  # need to update fid & cids
                 user.userprofile.corpus_id = cid
-                user.save()
+                user.userprofile.save()
             messages.success(request, _('Corpus update successfully'))
             # return redirect(reverse('field_select'))
     else:
