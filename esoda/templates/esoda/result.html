@@ -24,7 +24,8 @@
             {% if dictionary %}
               {% include "esoda/dictionary_result.html" %}
             {% endif %}
-
+            
+              {% if r.synonymous %}
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="HeadingUsage">
                   <div class="panel-title-wrapper">
@@ -93,6 +94,7 @@
                   </div>
                 </div>
               </div> <!-- usage panel -->
+              {% endif %}
 
               {% if r.collocationList %}
               <div class="panel panel-default">

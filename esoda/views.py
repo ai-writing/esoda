@@ -9,7 +9,7 @@ import requests
 import time
 
 from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids, debug_object
-from authentication.forms import FIELDS
+from authentication.forms import FIELD_NAME
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
@@ -25,7 +25,7 @@ def get_cids(rid, **kwargs):
         corpus_id = user.userprofile.corpus_id
         cids = corpus_id2cids(corpus_id)
         if 'r' in kwargs:
-            kwargs['r']['domain'] = FIELDS[corpus_id-1][1]  # TODO: translation
+            kwargs['r']['domain'] = FIELD_NAME[corpus_id-1][1]  # TODO: translation
     return cids
 
 
@@ -203,12 +203,13 @@ def get_usage_list(t, i, dt, cids):
     nnt.insert(i, '%s...%s')
     pat = ' '.join(nnt)
 
-    d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-    cnt = EsAdaptor.count(nt, d, cids)
-    usageList.append({
-        'content': pat % (t[i], t[i + 1]),
-        'count': cnt['hits']['total']
-    })
+    if '*' not in t:
+        d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
+        cnt = EsAdaptor.count(nt, d, cids)
+        usageList.append({
+            'content': pat % (t[i], t[i + 1]),
+            'count': cnt['hits']['total']
+        })
     for k in (('*', t[i + 1]), (t[i], '*')):
         if k[0] != '*' or k[1] != '*':
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
