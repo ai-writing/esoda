@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from forms import FieldSelectForm
-from django.contrib.auth.decorators import login_required  
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 # Create your views here.
+
 
 # Views for profile urls
 @login_required
@@ -15,20 +16,23 @@ def domain_view(request):
         form = FieldSelectForm(request.POST)
         if form.is_valid():
             cid = form.cleaned_data['choice']
-            if corpus_id != cid: # need to update fid & cids
+            if corpus_id != cid:  # need to update fid & cids
                 user.userprofile.corpus_id = cid
-                user.save();   
+                user.save()
             messages.success(request, _('Corpus update successfully'))
             # return redirect(reverse('field_select'))
     else:
         form = FieldSelectForm(initial={'choice': corpus_id})
     return render(request, "profile/domain_select.html", {'form': form, 'menu_index': 1, 'profileTab': 'domain'})
 
+
 def personal_view(request):
     info = {
         'profileTab': 'personal'
     }
     return render(request, 'profile/personal.html', info)
+
+
 def favorites_view(request):
     exampleList = []
     for i in range(1, 51):
@@ -45,4 +49,3 @@ def favorites_view(request):
         'profileTab': 'favorites'
     }
     return render(request, 'profile/favorites.html', info)
-

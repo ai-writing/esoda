@@ -14,6 +14,7 @@ class UserProfile(models.Model):
         if created:
             UserProfile(user=instance).save()
         else:
+            instance.userprofile.corpus_id = 9
             instance.userprofile.save()
 
 post_save.connect(UserProfile.create_user_profile, sender=User)

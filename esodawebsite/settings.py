@@ -195,8 +195,8 @@ DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
 
 # Esoda esearch configuration
 ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default=None)
-ELASTICSEARCH_INDEX = config('ELASTIC_INDEX', default='test')
-ELASTICSEARCH_DOCTYPE = config('ELASTIC_DOCTYPE', default='sentences')
+ELASTICSEARCH_INDEX = config('ELASTIC_INDEX', default='dblp')
+# ELASTICSEARCH_DOCTYPE = config('ELASTIC_DOCTYPE', default='sentences')
 
 
 # Mongodb configuration

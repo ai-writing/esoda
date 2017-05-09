@@ -1,18 +1,32 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 import xml.sax
 import json
 import requests
 import time
 
-from .utils import translate_cn, get_usage_list, paper_source_str
+from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids, debug_object
+from authentication.forms import FIELDS
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
-from .EsAdaptor import EsAdaptor, defaultCids
+from .EsAdaptor import EsAdaptor
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
+defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
+
+
+def get_cids(rid, **kwargs):
+    cids = defaultCids
+    if rid:
+        user = User.objects.get(id=rid)
+        corpus_id = user.userprofile.corpus_id
+        cids = corpus_id2cids(corpus_id)
+        if 'r' in kwargs:
+            kwargs['r']['domain'] = FIELDS[corpus_id-1][1]  # TODO: translation
+    return cids
 
 
 def esoda_view(request):
@@ -40,7 +54,6 @@ def esoda_view(request):
 
     r = {
         'domain': u'人机交互',
-        'count': 222,
         'phrase': [
             'improve quality',
             'standard quality',
@@ -55,30 +68,11 @@ def esoda_view(request):
         ]
     }
 
+    cids = get_cids(request.user.id, r=r)
+
     qt = q.split()
     mqt = list(qt)
-    resList = EsAdaptor.collocation(mqt)
-    if len(mqt) == 1:
-        mqt.append('*')
-    for i, p in enumerate(resList):
-        if i == 4:
-            mqt[0], mqt[1] = mqt[1], mqt[0]
-        if not p:
-            continue
-        myTerm = {
-            'type': u'',
-            'label': 'Colloc%d' % (len(r['collocationList']) + 1),
-            'usageList': [],
-        }
-        myTerm['type'] = u'%s %s %s' % (mqt[0], deps[i % 4], mqt[1])
-        myTerm['usageList'] = []
-        for j in (('*', mqt[1]), (mqt[0], '*')):
-            if j[0] != '*' or j[1] != '*':
-                dt = [{'dt': i % 4 + 1, 'l1': j[0], 'l2': j[1]}]
-                myTerm['usageList'] += get_usage_list(dt)
-
-        if myTerm['usageList']:
-            r['collocationList'].append(myTerm)
+    r['collocationList'] = collocation_list(mqt, cids)
 
     if len(qt) == 1:
         syn = list(synonyms(q))
@@ -91,7 +85,6 @@ def esoda_view(request):
             'high quality',
             'improve quality',
             'ensure quality',
-            '*(修饰) quality'
         ],
         'hotList': [
             'interaction',
@@ -125,15 +118,26 @@ def esoda_view(request):
 
 
 def sentence_view(request):
-    q = request.GET.get('q', '')
-    dtype = request.GET.get('dtype', '0')
-    sr = sentence_query(q, dtype)
+    t = request.GET.get('t', '').split(' ')
+    i = int(request.GET.get('i', '0'))
+    dt = request.GET.get('dt', '0')
+    cids = get_cids(request.user.id)
+    sr = sentence_query(t, i, dt, cids)
     info = {
         'example_number': sr['total'],
         'search_time': sr['time'],
         'exampleList': sr['sentence']
     }
     return render(request, 'esoda/sentence_result.html', info)
+
+
+def usagelist_view(request):
+    t = request.GET.get('t', '').split(' ')
+    i = int(request.GET.get('i', '0'))
+    dt = request.GET.get('dt', '0')
+    cids = get_cids(request.user.id)
+    r = {'usageList': get_usage_list(t, i, dt, cids)}
+    return render(request, 'esoda/collocation_result.html', r)
 
 
 class DictHandler(xml.sax.ContentHandler):
@@ -190,27 +194,93 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
-def sentence_query(q, dtype):
-    if dtype != '0':  # Search specific tag
-        ll = ref = q.split()
-        d = [{'dt': dtype, 'i1': 0, 'i2': 1}]
+def get_usage_list(t, i, dt, cids):
+    usageList = []
+    nt = list(t)
+    del nt[i]
+    del nt[i]
+    nnt = list(nt)
+    nnt.insert(i, '%s...%s')
+    pat = ' '.join(nnt)
+    for k in (('*', t[i + 1]), (t[i], '*')):
+        if k[0] != '*' or k[1] != '*':
+            d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
+
+            lst = EsAdaptor.group(nt, d, cids)
+            try:
+                ret = []
+                for i in lst['aggregations']['d']['d']['d']['buckets']:
+                    l1 = notstar(d[0]['l1'], i['key'])
+                    l2 = notstar(d[0]['l2'], i['key'])
+                    ret.append({
+                        'content': pat % (l1, l2),
+                        'count': i['doc_count']
+                    })
+                usageList += ret
+            except:
+                None
+    return usageList
+
+
+def get_collocations(clist, qt, i, cids):
+    t, d = list(qt), (qt[i], qt[i + 1])
+    del t[i]
+    del t[i]
+    resList = EsAdaptor.collocation(t, d, cids)
+    t = list(t)
+    t.insert(i, '%s %s %s')
+    pat = ' '.join(t)
+    for j, p in enumerate(resList):
+        if j == 4:
+            qt[i], qt[i + 1] = qt[i + 1], qt[i]
+        if not p:
+            continue
+        clist.append({
+            'type': pat % (qt[i], deps[j % 4], qt[i + 1]),
+            'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
+            # 'usageList': [],
+        })
+
+def collocation_list(mqt, cids):
+    clist = []
+    if len(mqt) == 1:
+        mqt.append('*')
+    for i in range(len(mqt) - 1):
+        get_collocations(clist, list(mqt), i, cids)
+    '''
+    for i in range(len(mqt)):
+        qt = list(mqt)
+        qt.insert(i, '*')
+        get_collocation(clist, qt, i, cids)
+    '''
+    return clist
+
+
+def sentence_query(t, i, dt, cids):
+    if dt != '0':  # Search specific tag
+        d = [{'dt': dt, 'i1': i, 'i2': i+1}]
+        ll = ref = t
     else:  # Search user input
-        q = translate_cn(q)
-        ll, ref = lemmatize(q)
+        t = ' '.join(t)
+        t = translate_cn(t)
+        ll, ref = lemmatize(t)
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(ll, d, ref, defaultCids, 50)
+    res = EsAdaptor.search(ll, d, ref, cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
-    rlen = len(res['hits']) if 'hits' in res else 0
+    rlen = min(50, len(res['hits']) if 'hits' in res else 0)
+
+    papers = set()
     for i in xrange(rlen):
-        if i > 50:
-            break
+        papers.add(res['hits'][i]['_source']['p'])
+    sources = papers_source_str(list(papers))
+    for i in xrange(rlen):
         sentence = res['hits'][i]
         sr['sentence'].append({
             'content': sentence['fields']['sentence'][0],
-            'source': paper_source_str(sentence['_source']['p']),
+            'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
             'heart_number': 129})
     return sr

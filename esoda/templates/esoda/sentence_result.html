@@ -1,6 +1,6 @@
 <div id="ExampleList" class="panel-group">
   <div class="example-hint">
-    找到{{ example_number }}句例句，为您提供前<span id="ExampleNumber">{% if example_number > 50 %}50{% else %}{{example_number}}{% endif %}</span>个，排序根据点赞和相关度自动生成，耗时{{ search_time }}秒
+    找到<span id="ExampleNumber">{{ example_number }}</span>句例句，为您提供前{% if example_number > 50 %}50{% else %}{{example_number}}{% endif %}个，排序根据点赞和相关度自动生成，耗时{{ search_time }}秒
   </div>
   {% for example in exampleList %}
   <div class="panel panel-default result-example row {% if forloop.counter > 10 %}display-none{% endif %}" id="Example{{ forloop.counter }}">
@@ -15,12 +15,12 @@
       </div>
       <div class="panel-footer example-list-source">
         {% if example.source %}
-        <a style="text-overflow: ellipsis;white-space: nowrap;word-wrap: normal;" href="{{ p.url|default:'javascript:void(0)' }}" target="_blank"{% if example.source.url %} title="Link to source"{% endif %}>{{ example.source.source|safe }}</a>
+        <a href="{{ example.source.url|default:'javascript:void(0)' }}" target="_blank"{% if example.source.url %} title="Link to source"{% endif %}>{{ example.source.source|safe }}</a>
         {% comment %}<img src="{% static 'common/img/link.png' %}"></img>{% endcomment %}
         {% endif %}
       </div>
     </div>
-    <div class="col-xs-1">
+    <div class="col-xs-1 display-none">
       <div class="panel-heading panel-heart">
         <a href="" onclick="$.clickHeart(event);"><span class="glyphicon glyphicon-heart-empty"></span></a>
         <span>{{ example.heart_number }}&nbsp;&nbsp;</span>

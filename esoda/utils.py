@@ -1,7 +1,13 @@
+from django.conf import settings
 from nltk.corpus import wordnet as WN
-from .EsAdaptor import defaultCids, EsAdaptor
-from .paper import mongo_get_object, mongo_get_object_or_404, DblpPaper, DblpVenue, UploadRecord
+from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, DblpVenue, UploadRecord
 import requests
+
+
+def debug_object(o):
+    print '<---- object -----'
+    print '\n'.join(["%s:%s" % item for item in o.__dict__.items()])
+    print '----- object ---->'
 
 
 def synonymous(w):
@@ -42,6 +48,10 @@ def translate(cn):
     return l
 
 
+def corpus_id2cids(corpus_id):
+    return [c['_id'] for c in settings.MONGODB['common']['corpora'].find({'field': corpus_id, 'status': 2})]
+
+
 def translate_cn(q):
     tokens = q.split()
     lent = len(tokens)
@@ -61,36 +71,11 @@ def notstar(p, q):
     return p if p != '*' else q
 
 
-def get_usage_list(dt, cids=defaultCids):
-    lst = EsAdaptor.group([], dt, cids)
-    try:
-        ret = []
-        for i in lst['aggregations']['d']['d']['d']['buckets']:
-            l1 = notstar(dt[0]['l1'], i['key'])
-            l2 = notstar(dt[0]['l2'], i['key'])
-            ret.append({
-                'content': '%s...%s' % (l1, l2),
-                'count': i['doc_count']
-            })
-        return ret
-    except:
-        return []
-
-
-def paper_source_str(pid):
-    s = {}
-    p = mongo_get_object(DblpPaper, pk=pid)
-    if not p:
-        p = mongo_get_object_or_404(UploadRecord, pk=pid)
-        s['source'] = 'Uploaded file: ' + p['title']
-        return s
-    # TODO: precompute source string and save to $common.uploads
+def gen_source_url(p, v):
     year = p['info'].get('year')
     title = p['info'].get('title', {}).get('text')
     authList = p['info'].get('authors', {}).get('author', [])
-
     source = ''
-    v = mongo_get_object(DblpVenue, pk=p['venue'])
     if v:
         conference = v.get('shortName', v['fullName'])
         if year and len(year) == 4:
@@ -107,3 +92,29 @@ def paper_source_str(pid):
             source += authorShort
         source += title
     return {'source': source, 'url': p['url']}
+
+
+def paper_source_str(pid):
+    s = {}
+    p = mongo_get_object(DblpPaper, pk=pid)
+    if not p:
+        p = mongo_get_object_or_404(UploadRecord, pk=pid)
+        s['source'] = 'Uploaded file: ' + p['title']
+        return s
+    # TODO: precompute source string and save to $common.uploads
+    v = mongo_get_object(DblpVenue, pk=p['venue'])
+    return gen_source_url(p, v)
+
+
+def papers_source_str(pids):
+    p = mongo_get_objects(DblpPaper, pks=pids)
+    if not p:
+        return {}
+    # TODO: precompute source string and save to $common.uploads
+    venues = [i['venue'] for i in p.values()]
+    v = mongo_get_objects(DblpVenue, pks=venues)
+
+    res = {}
+    for i in pids:
+        res[i] = gen_source_url(p[i], v[p[i]['venue']])
+    return res

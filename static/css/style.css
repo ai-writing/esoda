@@ -56,6 +56,7 @@ body {
 	margin-top: 32px;
 }
 
+
 #SearchBox{
 	width: 496px;
 	height: 60px;
@@ -116,7 +117,11 @@ body {
 }
 
 .navbar-search {
-	width: 60%;
+	width: 55%;
+}
+
+#ResultSearchBar > #SearchBox {
+	width: 440px;
 }
 
 .container-navbar {
@@ -1143,7 +1148,10 @@ button.close:focus {
 }
 
 .example-list-source {
-	color: #999;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal;
 }
 
 .affix-bottom {

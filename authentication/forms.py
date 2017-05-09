@@ -6,6 +6,13 @@ from registration.forms import RegistrationFormUniqueEmail
 
 from django import forms
 
+
+FIELDS = [(1, 'High Performance Computing'), (2, 'Computer Network'), (3, 'Net and Information Security'),
+          (4, 'Software Engineering'), (5, 'Database and Data Mining'), (6, 'Theoretical Computer Science'),
+          (7, 'Computer Graphics and Multimedia'), (8, 'Artificial Intelligence and Pattern Recognition'),
+          (9, 'Human-Computer Interaction and Pervasive Computing')]
+
+
 class RegistrationFormEmailAsUsername(RegistrationFormUniqueEmail):
     """
     Subclass of ``RegistrationFormUniqueEmail`` which enforces uniqueness of
@@ -21,17 +28,17 @@ class RegistrationFormEmailAsUsername(RegistrationFormUniqueEmail):
         super(RegistrationFormUniqueEmail, self).__init__(*args, **kwargs)
         self.fields['email'].widget.attrs.update({'autofocus': True})
 
+
 class FieldSelectForm(forms.Form):
-    choice = forms.ChoiceField(widget=forms.RadioSelect, 
+    choice = forms.ChoiceField(widget=forms.RadioSelect,
                                label=_('Choose target corpus:'),
-                               error_messages={'required': _("You must choose one field from the list"), 
+                               error_messages={'required': _("You must choose one field from the list"),
                                                'invalid_choice': _("You must choose one field from the list")})
 
     def __init__(self, *args, **kwargs):
         super(FieldSelectForm, self).__init__(*args, **kwargs)
-        _pipeline = [{'$group': {'_id': '$domain', 'fields': {'$push': {'i': '$_id', 'name': '$name'}}}}]
-        choices = [(1,'HCI'),(2,'AI'),(3,'DM')]
-        self.fields['choice'].choices = choices
+        # _pipeline = [{'$group': {'_id': '$domain', 'fields': {'$push': {'i': '$_id', 'name': '$name'}}}}]
+        self.fields['choice'].choices = FIELDS
 
     def clean_choice(self):
         c = self.cleaned_data['choice']
