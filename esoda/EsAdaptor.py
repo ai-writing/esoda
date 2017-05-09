@@ -112,7 +112,7 @@ class EsAdaptor():
         return res['hits']
 
     @staticmethod
-    def collocation(t, d, cids, sp=0):
+    def collocation(t, d, cids, sp=10):
         d = [i for i in d if i != '*']
         if not d or len(d) > 2:
             return {}
@@ -133,7 +133,8 @@ class EsAdaptor():
                             "aggs": {
                                 "d": {
                                     "terms": {
-                                        "field": "d.dt"
+                                        "field": "d.dt",
+                                        "size": sp
                                     }
                                 }
                             },
@@ -275,10 +276,52 @@ class EsAdaptor():
                 }
             }
         }
-
         # import json
         # print json.dumps(action, indent=2)
-
         res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
+        return res
+
+    @staticmethod
+    def count(t, d, cids):
+        mst = []
+        for tt in t:
+            mst.append({
+                "nested": {
+                    "path": "t",
+                    "query": {
+                        "match": {'t.l': tt}
+                    },
+                }
+            })
+        for dd in d:
+            lst = []
+            if 'dt' in dd:
+                lst.append({'match': {'d.dt': dd['dt']}})
+            if 'l1' in dd:
+                lst.append({'match': {'d.l1': dd['l1']}})
+            if 'l2' in dd:
+                lst.append({'match': {'d.l2': dd['l2']}})
+            mst.append({
+                "nested": {
+                    "path": "d",
+                    "query": {
+                        "bool": {
+                            "must": lst
+                        }
+                    }
+                }
+            })
+        action = {
+            "_source": False,
+            "query": {
+                "bool": {
+                    "must": mst
+                }
+            }
+        }
+        # import json
+        # print json.dumps(action, indent=2)
+        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
+            'hits.total'])
         return res
