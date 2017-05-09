@@ -202,6 +202,13 @@ def get_usage_list(t, i, dt, cids):
     nnt = list(nt)
     nnt.insert(i, '%s...%s')
     pat = ' '.join(nnt)
+
+    d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
+    cnt = EsAdaptor.count(nt, d, cids)
+    usageList.append({
+        'content': pat % (t[i], t[i + 1]),
+        'count': cnt['hits']['total']
+    })
     for k in (('*', t[i + 1]), (t[i], '*')):
         if k[0] != '*' or k[1] != '*':
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
@@ -209,16 +216,17 @@ def get_usage_list(t, i, dt, cids):
             lst = EsAdaptor.group(nt, d, cids)
             try:
                 ret = []
-                for i in lst['aggregations']['d']['d']['d']['buckets']:
-                    l1 = notstar(d[0]['l1'], i['key'])
-                    l2 = notstar(d[0]['l2'], i['key'])
-                    ret.append({
-                        'content': pat % (l1, l2),
-                        'count': i['doc_count']
-                    })
+                for j in lst['aggregations']['d']['d']['d']['buckets']:
+                    l1 = notstar(d[0]['l1'], j['key'])
+                    l2 = notstar(d[0]['l2'], j['key'])
+                    if (l1, l2) != (t[i], t[i+1]):
+                        ret.append({
+                            'content': pat % (l1, l2),
+                            'count': j['doc_count']
+                        })
                 usageList += ret
-            except:
-                None
+            except Exception as e:
+                print repr(e)
     return usageList
 
 
