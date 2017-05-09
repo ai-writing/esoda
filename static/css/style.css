@@ -122,6 +122,8 @@ body {
 
 #ResultSearchBar > #SearchBox {
 	width: 440px;
+	padding-bottom: 0px;
+	height: 48px;
 }
 
 .container-navbar {
@@ -423,6 +425,7 @@ button.close:focus {
 
 #ResultSearchBar {
 	margin-left: 10px;
+	margin-top: 12px;
 	border-bottom: 1px solid #63B7E6;
 }
 
@@ -659,7 +662,7 @@ button.close:focus {
 	border-top-color: #979797;
     position: absolute;
     height: 1.6px;
-    left: 13%;
+    left: 11%;
     top: 50%;
     width: 74%;
     margin-top: -1px;
@@ -787,9 +790,8 @@ button.close:focus {
 #FeedbackTab {
 	position: absolute;
 	left: 50%;
-	margin-left: -120px;
+	margin-left: -150px;
 	margin-bottom: 40px;
-	left: 700px;
 }
 
 #UserFeedback {
@@ -875,7 +877,7 @@ button.close:focus {
 	font-size: 20px;
 	width: 100%;
 	padding-bottom: 9px;
-    margin-top: 18px;
+    margin-top: 8px;
     padding-left: 17px;
 }
 
@@ -939,8 +941,13 @@ button.close:focus {
 .panel-body {
 	padding-left: 0px;
 	padding-top: 0px;
-	padding-bottom: 30px;
+	padding-bottom: 20px;
 	padding-right: 20px;
+}
+
+.example-list-source > a {
+	padding-left: 24px;
+	color: #9b9b9b;
 }
 
 .dictionary-container {
@@ -1003,6 +1010,10 @@ button.close:focus {
 	border-bottom-color: transparent;
 }
 
+#UsageTab >li >a {
+	padding-bottom: 6px;
+}
+
 .nav-tabs-usage>li>a {
 	border-bottom: 2px solid #999;
 }
@@ -1041,6 +1052,11 @@ button.close:focus {
 
 .usage-panel-content {
 	padding: 10px;
+}
+
+.usage-panel-content >a {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .result-warning {
@@ -1389,7 +1405,7 @@ button.close:focus {
 }
 
 .result-search {
-	font-size: 17px;
+	font-size: 20px;
     padding-top: 8px;
     padding-left: 30px;
     width: 542px;
