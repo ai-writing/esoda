@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^sentences/$', views.sentence_view, name='sentences'),
     url(r'^collocation/$', views.usagelist_view, name='collocation'),
     url(r'^guide/$', views.guide_view, name='guide'),
+    url(r'^message/$', views.message_view, name='message')
 ]

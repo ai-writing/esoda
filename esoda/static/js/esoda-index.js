@@ -40,4 +40,24 @@ $(function () {
 
   $( "#SearchBox" ).val("");
 
+  var curDisplay = 0;
+  $(".pager li .glyphicon-chevron-right").click(function (e) {
+    e.preventDefault();
+    $('#UserFeedback div:eq(' + (curDisplay * 2) + ')').hide();
+    $('#UserFeedback div:eq(' + (curDisplay * 2 + 1) + ')').hide();
+    curDisplay += 1;
+    if (curDisplay > 4) curDisplay = 0;
+    $("#UserFeedback div:eq(" + (curDisplay * 2) + ')').show();
+    $("#UserFeedback div:eq(" + (curDisplay * 2 + 1) + ')').show();
+  });
+
+  $(".pager li .glyphicon-chevron-left").click(function(e){
+    e.preventDefault();
+    $('#UserFeedback div:eq(' + (curDisplay * 2) + ')').hide();
+    $('#UserFeedback div:eq(' + (curDisplay * 2 + 1) + ')').hide();
+    curDisplay -= 1;
+    if (curDisplay < 0) curDisplay = 4;
+    $("#UserFeedback div:eq(" + (curDisplay * 2) + ")").show();
+    $("#UserFeedback div:eq(" + (curDisplay * 2 + 1) + ")").show();
+  });
 });

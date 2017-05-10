@@ -180,18 +180,20 @@
         </div>
         <div id="Users" role="tabpanel" class="tab-pane fade">
           <h4 class="feedback-title">用户这样评价易搜搭</h4>
-          <div id="UserFeedback">
-            <div class="user-feedback">
+          <div>
+            <div id="UserFeedback" class="user-feedback">
               {% for feedback in feedbackList %}
-              <p>"{{ feedback.content }}"</p>
-              <h5>{{ feedback.user_name }}</h5>
+              <div {% if forloop.counter > 2 %} class="display-none" {% endif %}>
+                <p>"{{ feedback.content }}"</p>
+                <h5 class="display-none">{{ feedback.user_name }}</h5>
+              </div>
               {% endfor %}
             </div>
           </div>
           <nav aria-label="...">
             <ul class="pager">
-              <li><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+              <li><span class="glyphicon glyphicon-chevron-left"></span></li>
+              <li><span class="glyphicon glyphicon-chevron-right"></span></li>
             </ul>
           </nav>
         </div>
@@ -212,17 +214,16 @@
         </div>
       </div>
       <div class="message-title xs-font-size-18">留言帮助我们改进易搜搭</div>
-      <div class="row message-content">
+      <form id="MsgForm" class="row message-content" method="post" action="{% url 'message' %}">
         <div class="col-sm-2 hidden-xs">
           <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
         </div>
+        {% csrf_token %}
         <div class="col-sm-10">
-          <textarea class="message-box"></textarea>
+          <textarea form="MsgForm" name="message" class="message-box" id="UsrMsgBox"></textarea>
         </div>
-      </div>
-      <div class="col-message-right col-btn">
-        <div id="MessageBtn" class="btn btn-message">留言</div>
-      </div>
+        <button type="submit" id="MessageBtn" class="btn btn-message col-btn">留言</button>
+      </form>
     </div>
   </div>
 {% endblock content %}
@@ -230,6 +231,5 @@
 {% block script %}
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
-
   <script src="{% static 'js/esoda-index.js' %}"></script>
 {% endblock script %}
