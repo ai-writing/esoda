@@ -82,6 +82,7 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
+    q0 = q
     q = translate_cn(q)
 
     r = {
@@ -107,7 +108,7 @@ def esoda_view(request):
     r['collocationList'] = collocation_list(mqt, cids)
 
     if len(qt) == 1:
-        syn = list(synonyms(q))
+        syn = list(synonyms(qt[0]))
         if len(syn) > 10:
             syn = syn[0:10]
         r['synonymous'] = syn
@@ -125,10 +126,13 @@ def esoda_view(request):
         ]
     }
 
+    qt = ' '.join(qt)
+    ref = ' '.join(ref)
     info = {
         'r': r,
-        'q': q,
-        'qc': ' '.join(qt),
+        'q': qt,
+        'q0': q0,
+        'ref': ref,
         'suggestion': suggestion,
     }
 
@@ -249,7 +253,7 @@ def get_usage_list(t, ref, i, dt, cids):
         d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
         cnt = EsAdaptor.count(nt, d, cids)
         usageList.append({
-            'ref': ref,
+            'ref': ' '.join(ref),
             'content': pat % (t[i], t[i + 1]),
             'count': cnt['hits']['total']
         })
@@ -270,7 +274,7 @@ def get_usage_list(t, ref, i, dt, cids):
                         else:
                             nref[i+1] = l2
                         ret.append({
-                            'ref': nref,
+                            'ref': ' '.join(nref),
                             'content': pat % (l1, l2),
                             'count': j['doc_count']
                         })

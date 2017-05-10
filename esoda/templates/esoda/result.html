@@ -17,7 +17,7 @@
           <div>
 
             <div class="result-warning">
-              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q }}</span>"结果共<span id="CountUsage"></span>句例句，在其他<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'domain' %}" {% endif %}>个人领域</a>中搜索
+              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q0 }}</span>"结果共<span id="CountUsage"></span>句例句，在其他<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'domain' %}" {% endif %}>个人领域</a>中搜索
             </div>
 
             <div class="panel-group" role="tablist" aria-multiselectable="true">
@@ -203,6 +203,7 @@
     $( function() {
 
       var curSelectedUsage;
+      var REF = '{{ ref }}';
 
       $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
         if ($(this).attr('state') == 'selected') return;
@@ -212,8 +213,10 @@
 
         $(this).attr('state', 'selected');
         $(this).removeAttr('href');
-        curSelectedUsage.attr('state', '');
-        curSelectedUsage.attr('href', '#');
+        if (curSelectedUsage) {
+          curSelectedUsage.attr('state', '');
+          curSelectedUsage.attr('href', '#');
+        }
         curSelectedUsage = $(this);
 
         // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
@@ -224,7 +227,7 @@
         loading = 0;
         loaded = 0;
 
-        $.get("{% url 'sentences' %}", {t: type.replace('...', ' '), i: i, dt: dt}, function(data) {
+        $.get("{% url 'sentences' %}", {t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt}, function(data) {
           $("#SentenceResult").html(data);
         });
       });
@@ -240,49 +243,36 @@
         loaded = 0;
 
         // console.log(collocQ);
-        $.get("{% url 'sentences' %}", {t: collocQ, dt: 0}, function(data) {
+        $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
           $("#SentenceResult").html(data);
+          $('#CountUsage').html($('#ExampleNumber').html());
         });
       });
 
-      loadCount = 1;
-      loading = 0;
-      loaded = 0;
-      $.get("{% url 'sentences' %}", {t: $("#SearchBox").val(), dt: 0}, function(data) {
-        $("#SentenceResult").html(data);
-        $('#CountUsage').html($('#ExampleNumber').html());
-      });
-
+      $('.not-limited').click();
 
       $('.colloc-sub-btn').click(function(e) {
         var id = $(this).attr('href');
         var type = $(this).html();
         var type0 = type.replace(/ \(.*\) /g , ' ');
         var i, dt;
+        var ref = [];
         for (i = 0; i < type.split(' ').length; i++) {
           if (type.split(' ')[i] != type0.split(' ')[i]) break;
         }
+        for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
+          if (type0.split(' ')[j] == '*') ref[j] = '*';
+          else {
+            ref[j] = REF.split(' ')[k];
+            k = k + 1;
+          }
+        }
         if (i == 0) i = 1;
         dt = id.replace('#', '').split('_')[1];
-        $.get("{% url 'collocation' %}", {t: type0, i: i - 1, dt: dt}, function(data) {
+
+        $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
-
-          $("#ExampleEnd").hide();
-          $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
-
-          curSelectedUsage = $(id + ' div div:first p a');
-          curSelectedUsage.attr('state', 'selected');
-          curSelectedUsage.removeAttr('href');
-
-          type = curSelectedUsage.text().replace(/ \(.*\)/, '');
-          i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
-          loadCount = 1;
-          loading = 0;
-          loaded = 0;
-
-          $.get("{% url 'sentences' %}", {t: type.replace('...', ' '), i: i, dt: dt}, function(data) {
-            $("#SentenceResult").html(data);
-          });
+          $(id + ' .colloc-usage:eq(0)').click();
         });
         
       })
