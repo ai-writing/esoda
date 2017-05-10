@@ -224,11 +224,16 @@
         var type = $(this).text().replace(/ \(.*\)/, '');
         var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
         loadCount = 1;
-        loading = 0;
+        loading = 1;
         loaded = 0;
 
         $.get("{% url 'sentences' %}", {t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt}, function(data) {
           $("#SentenceResult").html(data);
+          if ($('#ExampleNumber').html() <= 10) {
+            $('#ExampleEnd').show();
+            loaded = 1;
+          }
+          loading = 0;
         });
       });
 
@@ -239,13 +244,18 @@
 
         var collocQ = $(this).text();
         loadCount = 1;
-        loading = 0;
+        loading = 1;
         loaded = 0;
 
         // console.log(collocQ);
         $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
           $("#SentenceResult").html(data);
           $('#CountUsage').html($('#ExampleNumber').html());
+          if ($('#ExampleNumber').html() <= 10) {
+            $('#ExampleEnd').show();
+            loaded = 1;
+          }
+          loading = 0;
         });
       });
 
