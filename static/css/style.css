@@ -1220,11 +1220,64 @@ button.close:focus {
 	margin-left: 50px;
 }
 
-.fieldWrapper label{
-	/*font-size: 100px;
-	color :#63b7e6;
-*/}
+.fieldWrapper ul{
+	/*font-size: 100px;*/
+	list-style-type:none;
+}
 
+.fieldWrapper label{
+	font-size: 14px;
+}
+
+.fieldWrapper ul,li{
+	padding:0;
+	margin:0;
+}
+.fieldWrapper input {
+  -webkit-appearance: none; 
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  background-color: hsla(0,0%,0%,.1);
+  background-image: -webkit-radial-gradient( hsla(200,100%,90%,1) 0%, hsla(200,100%,70%,1) 15%, hsla(200,100%,60%,.3) 28%, hsla(200,100%,30%,0) 70% );
+  background-repeat: no-repeat;
+}
+.fieldWrapper input:checked {
+  -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
+    -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
+  border-radius: 6px;
+}
+.fieldWrapper input:active {
+  -webkit-transform: scale(1.5);
+  -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
+  border-radius: 6px;
+}
+
+.fieldWrapper input,
+.fieldWrapper input:active {
+  background-position: 0 14px;
+}
+.fieldWrapper input:checked {
+  background-position: 0 0;
+}
+.fieldWrapper input:checked ~ .fieldWrapper input,
+.fieldWrapper input:checked ~ .fieldWrapper input:active {
+  background-position: 0 14px;
+}
+.field-select-btn:focus,
+.field-select-btn:hover,
+.field-select-btn {
+	font-family: .PingFangSC;
+	font-size: 14px;
+	text-align: center;
+	padding-top:5px;
+	color: #ffffff; 
+	width: 100px;
+	height: 30px;
+	border-radius: 3px;
+	background-color: #63b7e6;
+}
 .personal-page-main {
 	padding-top: 45px;
 	padding-bottom: 390px;
