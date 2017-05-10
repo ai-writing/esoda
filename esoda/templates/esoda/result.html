@@ -233,7 +233,6 @@
         e.preventDefault();
         $("#ExampleEnd").hide();
         $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
-        // $("#SentenceResult").html("<h3>Loading...</h3>");
 
         var collocQ = $(this).text();
         loadCount = 1;
@@ -269,13 +268,14 @@
           $(id).html(data);
             
           $("#ExampleEnd").hide();
-          $("#SentenceResult").html("<h3>Loading...</h3>");
+          $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
 
           curSelectedUsage = $(id + ' div div:first p a');
           curSelectedUsage.attr('state', 'selected');
           curSelectedUsage.removeAttr('href');
 
-          type = $(curSelectedUsage).text().replace(/ \(.*\)/, '');
+          type = $('.not-limited').text().replace(/ \(.*\)/, '');
+          console.log(type);
           i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
           loadCount = 1;
           loading = 0;

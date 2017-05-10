@@ -70,7 +70,7 @@ def esoda_view(request):
 
     cids = get_cids(request.user.id, r=r)
 
-    qt = q.split()
+    qt, ref = lemmatize(q)
     mqt = list(qt)
     r['collocationList'] = collocation_list(mqt, cids)
 
@@ -96,6 +96,7 @@ def esoda_view(request):
     info = {
         'r': r,
         'q': q,
+        'qc': ' '.join(qt),
         'suggestion': suggestion,
     }
 
@@ -118,11 +119,14 @@ def esoda_view(request):
 
 
 def sentence_view(request):
-    t = request.GET.get('t', '').split(' ')
+    t = request.GET.get('t', '').split()
+    ref = request.GET.get('ref', '').split()
+    if not ref:
+        ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
-    sr = sentence_query(t, i, dt, cids)
+    sr = sentence_query(t, ref, i, dt, cids)
     info = {
         'example_number': sr['total'],
         'search_time': sr['time'],
@@ -132,7 +136,7 @@ def sentence_view(request):
 
 
 def usagelist_view(request):
-    t = request.GET.get('t', '').split(' ')
+    t = request.GET.get('t', '').split()
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
@@ -265,18 +269,16 @@ def collocation_list(mqt, cids):
     return clist
 
 
-def sentence_query(t, i, dt, cids):
+def sentence_query(t, ref, i, dt, cids):
     if dt != '0':  # Search specific tag
         d = [{'dt': dt, 'i1': i, 'i2': i+1}]
-        ll = ref = t
     else:  # Search user input
         t = ' '.join(t)
-        t = translate_cn(t)
-        ll, ref = lemmatize(t)
+        t, ref = lemmatize(t)
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(ll, d, ref, cids, 50)
+    res = EsAdaptor.search(t, d, ref, cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
