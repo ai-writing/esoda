@@ -267,7 +267,7 @@
         dt = id.replace('#', '').split('_')[1];
         $.get("{% url 'collocation' %}", {t: type0, i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
-            
+
           $("#ExampleEnd").hide();
           $("#SentenceResult").html("<h3>Loading...</h3>");
 
@@ -275,7 +275,7 @@
           curSelectedUsage.attr('state', 'selected');
           curSelectedUsage.removeAttr('href');
 
-          type = $(curSelectedUsage).text().replace(/ \(.*\)/, '');
+          type = curSelectedUsage.text().replace(/ \(.*\)/, '');
           i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
           loadCount = 1;
           loading = 0;
