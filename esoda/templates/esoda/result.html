@@ -274,7 +274,7 @@
           curSelectedUsage.attr('state', 'selected');
           curSelectedUsage.removeAttr('href');
 
-          type = $('.not-limited').text().replace(/ \(.*\)/, '');
+          type = curSelectedUsage.text().replace(/ \(.*\)/, '');
           i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
           loadCount = 1;
           loading = 0;
