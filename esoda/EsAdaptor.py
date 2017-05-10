@@ -48,18 +48,18 @@ class EsAdaptor():
                 "nested": {
                     "path": "t",
                     "query": {
-                        "match": {'t.l': tt}
+                        "term": {'t.l': tt}
                     }
                 }
             })
         for dd in d:
             lst = []
             if 'dt' in dd:
-                lst.append({'match': {'d.dt': dd['dt']}})
+                lst.append({'term': {'d.dt': dd['dt']}})
             if 'i1' in dd:
-                lst.append({'match': {'d.l1': t[dd['i1']]}})
+                lst.append({'term': {'d.l1': t[dd['i1']]}})
             if 'i2' in dd:
-                lst.append({'match': {'d.l2': t[dd['i2']]}})
+                lst.append({'term': {'d.l2': t[dd['i2']]}})
             mst.append({
                 "nested": {
                     "path": "d",
@@ -152,7 +152,7 @@ class EsAdaptor():
                 "nested": {
                     "path": "t",
                     "query": {
-                        "match": {'t.l': tt}
+                        "term": {'t.l': tt}
                     }
                 }
             })
@@ -161,7 +161,7 @@ class EsAdaptor():
             ret = []
             for ps in (('d.l1', 'd.l2'), ('d.l2', 'd.l1')):
                 action['query']['bool']['must'] = list(mst)
-                ddq = [{'match': {ps[0]: d[0]}}, {'match': {ps[1]: d[1]}}]
+                ddq = [{'term': {ps[0]: d[0]}}, {'term': {ps[1]: d[1]}}]
                 action['query']['bool']['must'].append({
                     "nested": {
                         "path": "d",
@@ -181,7 +181,7 @@ class EsAdaptor():
         else:
             ret = []
             for ps in ('d.l1', 'd.l2'):
-                ddq = {'match': {ps: d[0]}}
+                ddq = {'term': {ps: d[0]}}
                 action['query'] = {
                     "nested": {
                         "path": "d",
@@ -211,13 +211,13 @@ class EsAdaptor():
         ddq = []
         cover = 0
         if 'dt' in dd:
-            ddq.append({'match': {'d.dt': str(dd['dt'])}})
+            ddq.append({'term': {'d.dt': str(dd['dt'])}})
             cover |= 1
         if 'l1' in dd and dd['l1'] != '*':
-            ddq.append({'match': {'d.l1': dd['l1']}})
+            ddq.append({'term': {'d.l1': dd['l1']}})
             cover |= 2
         if 'l2' in dd and dd['l2'] != '*':
-            ddq.append({'match': {'d.l2': dd['l2']}})
+            ddq.append({'term': {'d.l2': dd['l2']}})
             cover |= 4
         if cover not in (3, 5, 6):
             return {}
@@ -229,7 +229,7 @@ class EsAdaptor():
                 "nested": {
                     "path": "t",
                     "query": {
-                        "match": {'t.l': tt}
+                        "term": {'t.l': tt}
                     },
                 }
             })
@@ -290,18 +290,18 @@ class EsAdaptor():
                 "nested": {
                     "path": "t",
                     "query": {
-                        "match": {'t.l': tt}
+                        "term": {'t.l': tt}
                     },
                 }
             })
         for dd in d:
             lst = []
             if 'dt' in dd:
-                lst.append({'match': {'d.dt': dd['dt']}})
+                lst.append({'term': {'d.dt': dd['dt']}})
             if 'l1' in dd:
-                lst.append({'match': {'d.l1': dd['l1']}})
+                lst.append({'term': {'d.l1': dd['l1']}})
             if 'l2' in dd:
-                lst.append({'match': {'d.l2': dd['l2']}})
+                lst.append({'term': {'d.l2': dd['l2']}})
             mst.append({
                 "nested": {
                     "path": "d",

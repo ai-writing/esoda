@@ -10,21 +10,6 @@ def debug_object(o):
     print '----- object ---->'
 
 
-def synonymous(w):
-    r = set()
-    ss = WN.synsets(w)
-    for s in ss:
-        for l in s.lemmas():
-            if '_' not in l.name():
-                r.add(l.name())
-    if w in r:
-        r.remove(w)
-    r = list(r)
-    r.insert(0, w)
-    # w is the first in results
-    return tuple(r)
-
-
 def is_cn_char(c):
     return 0x4e00 <= ord(c) < 0x9fa6
 

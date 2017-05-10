@@ -37,11 +37,43 @@ def esoda_view(request):
         info = {
             'feedbackList': [
                 {
-                    'content': u'无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'content': u'1无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
                     'user_name': u'潘星宇'
                 },
                 {
-                    'content': u'无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'content': u'2无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'3无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'4无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'5无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'6无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'7无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'8无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'9无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
+                    'user_name': u'潘星宇'
+                },
+                {
+                    'content': u'10无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
                     'user_name': u'潘星宇'
                 }
             ],
@@ -50,6 +82,7 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
+    q0 = q
     q = translate_cn(q)
 
     r = {
@@ -70,12 +103,12 @@ def esoda_view(request):
 
     cids = get_cids(request.user.id, r=r)
 
-    qt = q.split()
+    qt, ref = lemmatize(q)
     mqt = list(qt)
     r['collocationList'] = collocation_list(mqt, cids)
 
     if len(qt) == 1:
-        syn = list(synonyms(q))
+        syn = list(synonyms(qt[0]))
         if len(syn) > 10:
             syn = syn[0:10]
         r['synonymous'] = syn
@@ -93,9 +126,13 @@ def esoda_view(request):
         ]
     }
 
+    qt = ' '.join(qt)
+    ref = ' '.join(ref)
     info = {
         'r': r,
-        'q': q,
+        'q': qt,
+        'q0': q0,
+        'ref': ref,
         'suggestion': suggestion,
     }
 
@@ -116,13 +153,19 @@ def esoda_view(request):
 
     return render(request, 'esoda/result.html', info)
 
+def message_view(request):
+    message = request.POST.get('message','')
+    return
 
 def sentence_view(request):
-    t = request.GET.get('t', '').split(' ')
+    t = request.GET.get('t', '').split()
+    ref = request.GET.get('ref', '').split()
+    if not ref:
+        ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
-    sr = sentence_query(t, i, dt, cids)
+    sr = sentence_query(t, ref, i, dt, cids)
     info = {
         'example_number': sr['total'],
         'search_time': sr['time'],
@@ -132,11 +175,14 @@ def sentence_view(request):
 
 
 def usagelist_view(request):
-    t = request.GET.get('t', '').split(' ')
+    t = request.GET.get('t', '').split()
+    ref = request.GET.get('ref', '').split()
+    if not ref:
+        ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
-    r = {'usageList': get_usage_list(t, i, dt, cids)}
+    r = {'usageList': get_usage_list(t, ref, i, dt, cids)}
     return render(request, 'esoda/collocation_result.html', r)
 
 
@@ -194,7 +240,7 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
-def get_usage_list(t, i, dt, cids):
+def get_usage_list(t, ref, i, dt, cids):
     usageList = []
     nt = list(t)
     del nt[i]
@@ -207,6 +253,7 @@ def get_usage_list(t, i, dt, cids):
         d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
         cnt = EsAdaptor.count(nt, d, cids)
         usageList.append({
+            'ref': ' '.join(ref),
             'content': pat % (t[i], t[i + 1]),
             'count': cnt['hits']['total']
         })
@@ -221,7 +268,13 @@ def get_usage_list(t, i, dt, cids):
                     l1 = notstar(d[0]['l1'], j['key'])
                     l2 = notstar(d[0]['l2'], j['key'])
                     if (l1, l2) != (t[i], t[i+1]):
+                        nref = list(ref)
+                        if l1 != t[i]:
+                            nref[i] = l1
+                        else:
+                            nref[i+1] = l2
                         ret.append({
+                            'ref': ' '.join(nref),
                             'content': pat % (l1, l2),
                             'count': j['doc_count']
                         })
@@ -265,18 +318,16 @@ def collocation_list(mqt, cids):
     return clist
 
 
-def sentence_query(t, i, dt, cids):
+def sentence_query(t, ref, i, dt, cids):
     if dt != '0':  # Search specific tag
         d = [{'dt': dt, 'i1': i, 'i2': i+1}]
-        ll = ref = t
     else:  # Search user input
         t = ' '.join(t)
-        t = translate_cn(t)
-        ll, ref = lemmatize(t)
+        t, ref = lemmatize(t)
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(ll, d, ref, cids, 50)
+    res = EsAdaptor.search(t, d, ref, cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
