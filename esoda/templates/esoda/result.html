@@ -201,10 +201,20 @@
   <script src="{% static 'js/esoda-result.js' %}"></script>
   <script>
     $( function() {
+
+      var curSelectedUsage;
+
       $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
+        if ($(this).attr('state') == 'selected') return;
         e.preventDefault();
         $("#ExampleEnd").hide();
         $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+
+        $(this).attr('state', 'selected');
+        $(this).removeAttr('href');
+        curSelectedUsage.attr('state', '');
+        curSelectedUsage.attr('href', '#');
+        curSelectedUsage = $(this);
 
         // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
         var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
@@ -244,6 +254,7 @@
         $('#CountUsage').html($('#ExampleNumber').html());
       });
 
+
       $('.colloc-sub-btn').click(function(e) {
         var id = $(this).attr('href');
         var type = $(this).html();
@@ -256,12 +267,25 @@
         dt = id.replace('#', '').split('_')[1];
         $.get("{% url 'collocation' %}", {t: type0, i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
-        });
-        if (type.indexOf('*') == -1) {
-          $.get("{% url 'sentences' %}", {t: type0, i: i - 1, dt: dt}, function(data) {
+            
+          $("#ExampleEnd").hide();
+          $("#SentenceResult").html("<h3>Loading...</h3>");
+
+          curSelectedUsage = $(id + ' div div:first p a');
+          curSelectedUsage.attr('state', 'selected');
+          curSelectedUsage.removeAttr('href');
+
+          type = $(curSelectedUsage).text().replace(/ \(.*\)/, '');
+          i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+          loadCount = 1;
+          loading = 0;
+          loaded = 0;
+
+          $.get("{% url 'sentences' %}", {t: type.replace('...', ' '), i: i, dt: dt}, function(data) {
             $("#SentenceResult").html(data);
-          })
-        }
+          });
+        });
+        
       })
     } );
   </script>
