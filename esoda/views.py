@@ -172,10 +172,13 @@ def sentence_view(request):
 
 def usagelist_view(request):
     t = request.GET.get('t', '').split()
+    ref = request.GET.get('ref', '').split()
+    if not ref:
+        ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
-    r = {'usageList': get_usage_list(t, i, dt, cids)}
+    r = {'usageList': get_usage_list(t, ref, i, dt, cids)}
     return render(request, 'esoda/collocation_result.html', r)
 
 
@@ -233,7 +236,7 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
-def get_usage_list(t, i, dt, cids):
+def get_usage_list(t, ref, i, dt, cids):
     usageList = []
     nt = list(t)
     del nt[i]
@@ -246,6 +249,7 @@ def get_usage_list(t, i, dt, cids):
         d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
         cnt = EsAdaptor.count(nt, d, cids)
         usageList.append({
+            'ref': ref,
             'content': pat % (t[i], t[i + 1]),
             'count': cnt['hits']['total']
         })
@@ -260,7 +264,13 @@ def get_usage_list(t, i, dt, cids):
                     l1 = notstar(d[0]['l1'], j['key'])
                     l2 = notstar(d[0]['l2'], j['key'])
                     if (l1, l2) != (t[i], t[i+1]):
+                        nref = list(ref)
+                        if l1 != t[i]:
+                            nref[i] = l1
+                        else:
+                            nref[i+1] = l2
                         ret.append({
+                            'ref': nref,
                             'content': pat % (l1, l2),
                             'count': j['doc_count']
                         })
