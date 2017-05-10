@@ -204,7 +204,7 @@
       $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
         e.preventDefault();
         $("#ExampleEnd").hide();
-        $("#SentenceResult").html("<h3>Loading...</h3>");
+        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
 
         // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
         var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
@@ -222,7 +222,8 @@
       $('#CollapseColloc').on('click', '.not-limited', function (e) {
         e.preventDefault();
         $("#ExampleEnd").hide();
-        $("#SentenceResult").html("<h3>Loading...</h3>");
+        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+        // $("#SentenceResult").html("<h3>Loading...</h3>");
 
         var collocQ = $(this).text();
         loadCount = 1;
