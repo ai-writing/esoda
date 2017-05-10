@@ -1088,12 +1088,12 @@ button.close:focus {
 	padding: 0px 10px;
 }
 
-#CollocContent {
-	padding-bottom: 20px;
+#CollocContent > .tab-pane.usage-pane{
+	padding-bottom: 10px;
 }
 
 .colloc-result {
-	margin: 20px 30px 10px 100px;
+	margin: 10px 30px 0px 30px;
 	padding: 10px 10px;
 	border-left: 1px solid #979797;
 	border-right: 1px solid #979797;
