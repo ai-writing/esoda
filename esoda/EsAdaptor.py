@@ -262,6 +262,7 @@ class EsAdaptor():
                                 "d": {
                                     "terms": {
                                         "size": sp,
+                                        "shard_size": int(sp * 2 + 10),
                                         "field": st
                                     }
                                 }
