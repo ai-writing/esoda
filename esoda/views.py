@@ -53,6 +53,11 @@ def esoda_view(request):
 
     # No query - render index.html
     if not q:
+        msg = request.POST.get('message', '').strip()
+        if msg and request.user.id: # User post a message
+            user = User.objects.get(id=request.user.id)
+            c = Comment(text=msg, user=user, display=True, date=datetime.now())
+            c.save()
         info = get_feedback()
         return render(request, 'esoda/index.html', info)
 
@@ -127,15 +132,6 @@ def esoda_view(request):
         info['dictionary'] = dictionary
 
     return render(request, 'esoda/result.html', info)
-
-def message_view(request):
-    message = request.POST.get('message','')
-    if request.user.id:
-        user = User.objects.get(id=request.user.id)
-        c = Comment(text=message, user=user, display=True, date=datetime.now())
-        c.save()
-    info = get_feedback()
-    return render(request, 'esoda/index.html', info)
 
 def sentence_view(request):
     t = request.GET.get('t', '').split()
