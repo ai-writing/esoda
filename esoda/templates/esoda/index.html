@@ -185,7 +185,7 @@
               {% for feedback in feedbackList %}
               <div {% if forloop.counter > 2 %} class="display-none" {% endif %}>
                 <p>"{{ feedback.content }}"</p>
-                <h5 class="display-none">{{ feedback.user_name }}</h5>
+                <h5 class="display-non">{{ feedback.user_name }}</h5>
               </div>
               {% endfor %}
             </div>

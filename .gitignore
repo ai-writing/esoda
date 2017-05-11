@@ -93,3 +93,6 @@ staticfiles/
 
 # Sqlite databases
 *.sqlite3
+
+# tmp
+*.swp

@@ -2,6 +2,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from common.models import Comment
+from datetime import datetime
 
 import xml.sax
 import json
@@ -29,56 +31,29 @@ def get_cids(rid, **kwargs):
     return cids
 
 
+def get_feedback():
+    info = {
+        'feedbackList': [
+        ],
+        'count_of_favorite': 12049,
+    }
+    for i in Comment.objects.all():
+        if i.display:
+            info['feedbackList'].append({
+                'content': i.text,
+                'user_name': i.user
+            })
+        if len(info['feedbackList']) == 10:
+            break
+    return info
+
+
 def esoda_view(request):
     q = request.GET.get('q', '').strip()
 
     # No query - render index.html
     if not q:
-        info = {
-            'feedbackList': [
-                {
-                    'content': u'1无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'2无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'3无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'4无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'5无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'6无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'7无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'8无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'9无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'10无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                }
-            ],
-            'count_of_favorite': 12049,
-        }
+        info = get_feedback()
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
@@ -155,7 +130,12 @@ def esoda_view(request):
 
 def message_view(request):
     message = request.POST.get('message','')
-    return
+    if request.user.id:
+        user = User.objects.get(id=request.user.id)
+        c = Comment(text=message, user=user, display=True, date=datetime.now())
+        c.save()
+    info = get_feedback()
+    return render(request, 'esoda/index.html', info)
 
 def sentence_view(request):
     t = request.GET.get('t', '').split()
