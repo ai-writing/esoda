@@ -1,12 +1,11 @@
-from django.conf import settings
+from common.mongodb import MONGODB
 
-mongo = settings.MONGODB
 
 def entry(word):
-    return mongo.common.thesaurus.find_one({'_id': word})
+    return MONGODB.common.thesaurus.find_one({'_id': word})
 
 def meanings(word):
-    entry = mongo.common.thesaurus.find_one({'_id': word})
+    entry = MONGODB.common.thesaurus.find_one({'_id': word})
     if entry:
         l = [(meaning['pos'], meaning['exp']) for meaning in entry['meaning']]
         return l
@@ -14,7 +13,7 @@ def meanings(word):
         return []
 
 def synonyms(word, score = 0, pos = None, exp = None, max_count = None):
-    entry = mongo.common.thesaurus.find_one({'_id': word})
+    entry = MONGODB.common.thesaurus.find_one({'_id': word})
     if entry:
         l = []
         for m in entry['meaning']:
@@ -34,7 +33,7 @@ def synonyms(word, score = 0, pos = None, exp = None, max_count = None):
         return []
 
 def antonyms(word, score = 0, pos = None, exp = None, max_count = None):
-    entry = mongo.common.thesaurus.find_one({'_id': word})
+    entry = MONGODB.common.thesaurus.find_one({'_id': word})
     if entry:
         l = []
         for m in entry['meaning']:

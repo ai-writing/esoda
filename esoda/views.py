@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from common.models import Comment
 from datetime import datetime
+import logging
 
 import xml.sax
 import json
@@ -18,6 +19,8 @@ from .EsAdaptor import EsAdaptor
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
+
+logger = logging.getLogger(__name__)
 
 
 def get_cids(rid, **kwargs):
@@ -206,7 +209,7 @@ def dict_suggest_view(request):
         xml.sax.parseString(xmlstring.encode('utf-8'), Handler)
         r['suggest'] = Handler.suggest
     except Exception as e:
-        print repr(e)
+        logger.exception('Failed to parse Youdao suggest')
     return JsonResponse(r)
 
 
@@ -256,7 +259,7 @@ def get_usage_list(t, ref, i, dt, cids):
                         })
                 usageList += ret
             except Exception as e:
-                print repr(e)
+                logger.exception('In get_usage_list')
     return usageList
 
 
