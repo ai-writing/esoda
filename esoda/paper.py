@@ -1,5 +1,5 @@
-from django.conf import settings
 from django.http import Http404
+from common.mongodb import MONGODB
 
 
 class Corpus:
@@ -56,7 +56,7 @@ def mongo_get_object(type_object, projection=None, **kwargs):
         kwargs[type_object.Meta.pk] = kwargs['pk']
         del kwargs['pk']
     database_name, collection_name = type_object.Meta.db
-    o = settings.MONGODB[database_name][collection_name].find_one(kwargs, projection)
+    o = MONGODB[database_name][collection_name].find_one(kwargs, projection)
     if o:
         o['pk'] = o[type_object.Meta.pk]
     return o
@@ -67,7 +67,7 @@ def mongo_get_objects(type_object, projection=None, **kwargs):
         kwargs[type_object.Meta.pk] = {'$in': kwargs['pks']}
         del kwargs['pks']
     database_name, collection_name = type_object.Meta.db
-    o = settings.MONGODB[database_name][collection_name].find(kwargs, projection)
+    o = MONGODB[database_name][collection_name].find(kwargs, projection)
     res = {}
     for i in o:
         res[i[type_object.Meta.pk]] = i

@@ -185,7 +185,7 @@
               {% for feedback in feedbackList %}
               <div {% if forloop.counter > 2 %} class="display-none" {% endif %}>
                 <p>"{{ feedback.content }}"</p>
-                <h5 class="display-none">{{ feedback.user_name }}</h5>
+                <h5 class="display-non">{{ feedback.user_name }}</h5>
               </div>
               {% endfor %}
             </div>
@@ -214,7 +214,7 @@
         </div>
       </div>
       <div class="message-title xs-font-size-18">留言帮助我们改进易搜搭</div>
-      <form id="MsgForm" class="row message-content" method="post" action="{% url 'message' %}">
+      <form id="MsgForm" class="row message-content" method="post" action="{% url 'esoda' %}">
         <div class="col-sm-2 hidden-xs">
           <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
         </div>

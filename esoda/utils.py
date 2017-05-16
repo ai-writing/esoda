@@ -1,4 +1,4 @@
-from django.conf import settings
+from common.mongodb import MONGODB
 from nltk.corpus import wordnet as WN
 from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, DblpVenue, UploadRecord
 import requests
@@ -34,7 +34,7 @@ def translate(cn):
 
 
 def corpus_id2cids(corpus_id):
-    return [c['_id'] for c in settings.MONGODB['common']['corpora'].find({'field': corpus_id, 'status': 2})]
+    return [c['_id'] for c in MONGODB['common']['corpora'].find({'field': corpus_id, 'status': 2})]
 
 
 def translate_cn(q):

@@ -1,11 +1,13 @@
 from elasticsearch import Elasticsearch
 from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class EsAdaptor():
-    es = Elasticsearch(settings.ELASTICSEARCH_HOST, timeout=10)
-    es.info()
-    print 'Connected to Elasticsearch:', es
+    es = Elasticsearch(settings.ELASTICSEARCH_HOST, timeout=15)
+    logger.info('Connected to Elasticsearch: %s', es.info())
     index = settings.ELASTICSEARCH_INDEX
     # doctype = settings.ELASTICSEARCH_DOCTYPE
 
@@ -262,6 +264,7 @@ class EsAdaptor():
                                 "d": {
                                     "terms": {
                                         "size": sp,
+                                        "shard_size": int(sp * 2 + 10),
                                         "field": st
                                     }
                                 }

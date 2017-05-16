@@ -14,7 +14,7 @@ import os
 from decouple import config, Csv
 import dj_database_url
 from django.utils.translation import ugettext_lazy as _
-from pymongo import MongoClient
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,7 +31,6 @@ REGISTRATION_FORM = 'authentication.forms.RegistrationFormEmailAsUsername'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -108,18 +107,45 @@ DATABASES = {
 
 
 # Logging
+# Will be merged with django's DEFAULT_LOGGING settings
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[%(levelname)s] %(asctime)s %(name)s %(process)d %(thread)d - %(message)s'
+        },
+        'simple': {
+            'format': '[%(levelname)s] %(asctime)s %(name)s - %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
     'handlers': {
         'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(config('LOGGING_DIR', default='.'), 'runtime.log'),
+            'formatter': 'verbose',
         },
     },
     'root': {
-        'handlers': ['console'],
         'level': 'INFO',
+        'handlers': ['console', 'file'],
     },
 }
 
@@ -194,17 +220,14 @@ DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
 
 
 # Esoda esearch configuration
+
 ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default=None)
 ELASTICSEARCH_INDEX = config('ELASTIC_INDEX', default='dblp')
 # ELASTICSEARCH_DOCTYPE = config('ELASTIC_DOCTYPE', default='sentences')
 
 
 # Mongodb configuration
-MONGODB = MongoClient(config('MONGODB_HOST', default=None))
-try:
-    MONGODB.database_names()
-except:
-    MONGODB.admin.authenticate(config('MONGODB_USER', default=None), config('MONGODB_PASSWORD', default=None))
-# import logging
-# logging.info('Connected to MongoDB:', MONGODB)
-print 'Connected to MongoDB:', MONGODB
+
+MONGODB_HOST = config('MONGODB_HOST', default=None)
+MONGODB_USER = config('MONGODB_USER', default=None)
+MONGODB_PASSWORD = config('MONGODB_PASSWORD', default=None)

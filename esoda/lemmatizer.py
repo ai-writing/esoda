@@ -1,4 +1,4 @@
-import requests
+import requests, logging
 
 STANFORD_CORENLP_SERVER = 'http://166.111.139.15:8004/'
 LEMMATIZER_URL = STANFORD_CORENLP_SERVER + '?properties={"outputFormat":"conll"}'
@@ -15,7 +15,7 @@ def lemmatize(s):
         ll = [t[2].lower() for t in tokens]
         ref = [t[1] for t in tokens]
     except Exception as e:
-        print repr(e)
+        logging.exception('Failed to lemmatize')
         ll = ref = s.split()
         ll = [l.lower() for l in ll]
 

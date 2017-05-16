@@ -2,6 +2,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from common.models import Comment
+from datetime import datetime
+import logging
 
 import xml.sax
 import json
@@ -17,6 +20,8 @@ from .EsAdaptor import EsAdaptor
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
 
+logger = logging.getLogger(__name__)
+
 
 def get_cids(rid, **kwargs):
     cids = defaultCids
@@ -29,56 +34,34 @@ def get_cids(rid, **kwargs):
     return cids
 
 
+def get_feedback():
+    info = {
+        'feedbackList': [
+        ],
+        'count_of_favorite': 12049,
+    }
+    for i in Comment.objects.all():
+        if i.display:
+            info['feedbackList'].append({
+                'content': i.text,
+                'user_name': i.user
+            })
+        if len(info['feedbackList']) == 10:
+            break
+    return info
+
+
 def esoda_view(request):
     q = request.GET.get('q', '').strip()
 
     # No query - render index.html
     if not q:
-        info = {
-            'feedbackList': [
-                {
-                    'content': u'1无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'2无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'3无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'4无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'5无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'6无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'7无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'8无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'9无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                },
-                {
-                    'content': u'10无产阶级政党的党章是以马克思主义党的学说为指导，结合党的建设的实践而制定的党的生活准则和行为规范。',
-                    'user_name': u'潘星宇'
-                }
-            ],
-            'count_of_favorite': 12049,
-        }
+        msg = request.POST.get('message', '').strip()
+        if msg and request.user.id: # User post a message
+            user = User.objects.get(id=request.user.id)
+            c = Comment(text=msg, user=user, display=True, date=datetime.now())
+            c.save()
+        info = get_feedback()
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
@@ -153,10 +136,6 @@ def esoda_view(request):
 
     return render(request, 'esoda/result.html', info)
 
-def message_view(request):
-    message = request.POST.get('message','')
-    return
-
 def sentence_view(request):
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
@@ -230,7 +209,7 @@ def dict_suggest_view(request):
         xml.sax.parseString(xmlstring.encode('utf-8'), Handler)
         r['suggest'] = Handler.suggest
     except Exception as e:
-        print repr(e)
+        logger.exception('Failed to parse Youdao suggest')
     return JsonResponse(r)
 
 
@@ -280,7 +259,7 @@ def get_usage_list(t, ref, i, dt, cids):
                         })
                 usageList += ret
             except Exception as e:
-                print repr(e)
+                logger.exception('In get_usage_list')
     return usageList
 
 
@@ -322,8 +301,6 @@ def sentence_query(t, ref, i, dt, cids):
     if dt != '0':  # Search specific tag
         d = [{'dt': dt, 'i1': i, 'i2': i+1}]
     else:  # Search user input
-        t = ' '.join(t)
-        t, ref = lemmatize(t)
         d = []
 
     time1 = time.time()
