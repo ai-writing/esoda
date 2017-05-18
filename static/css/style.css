@@ -145,6 +145,7 @@ body {
 
 .btn {
 	background-color: #63B7E6;
+	color: white;
 }
 
 .btn-info {
@@ -247,7 +248,9 @@ body {
 }
 
 .modal-login-content {
-	border-radius: 3px;
+	border-radius: 5px;
+	width: 445px;
+    height: 416px;
 }
 
 .modal-logo {
@@ -277,9 +280,8 @@ body {
 
 .modal-login-footer {
 	font-size: 12px;
-	padding: 5px 35px;
-	padding-bottom: 15px;
 	border-top: none;
+	width: 384px;
 }
 
 .modal-register-header {
@@ -338,9 +340,11 @@ button.close:focus {
 
 .form-login, .form-register {
 	margin: 10px auto;
-	font-size: 16px;
+	font-size: 18px;
 	text-align: center;
-	height: 40px;
+	height: 50px;
+	width: 354px;
+	color: #242424;
 }
 
 .form-login .form-control {
@@ -348,9 +352,9 @@ button.close:focus {
 }
 
 .form-login>.btn {
-	font-size: 16px;
+	font-size: 20px;
 	padding: 10px 12px;
-	color: #fff;
+	width: 354px;
 }
 
 .form-register>.btn {
@@ -364,6 +368,14 @@ button.close:focus {
     letter-spacing: 3px;
 }
 
+.form-registration {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 10px;
+    width: 330px;
+    height: 32px;
+}
+
 #RegisterForm {
 	padding-bottom: 20px;
 }
@@ -374,8 +386,6 @@ button.close:focus {
 }
 
 .input-group-lg>.input-group-btn>.btn {
-	border-bottom-left-radius: 0px;
-	border-top-left-radius: 0px;
 	width: 144px;
 	height: 60px;
 	padding-top: 8px;
@@ -392,7 +402,6 @@ button.close:focus {
 
 .btn-login {
 	margin: 5px 0px;
-	width: 100%;
 }
 
 .btn-register {
@@ -440,9 +449,7 @@ button.close:focus {
 }
 
 .container-footer {
-	margin-top: 19px;
-	border-top: 1px solid #979797;
-	padding-top: 20px;
+	margin-top: 40px;
 	padding-bottom: 35px;
 	color: #9b9b9b;
 	width: 65.3%;
@@ -747,8 +754,7 @@ button.close:focus {
 
 .footer-link {
 	color: #9b9b9b;
-	font-family: PingFangSC, Microsoft Yahei;
-	font-weight: 500;
+	font-family: PingFangSC-Light, Microsoft Yahei;
 }
 
 .footer-shares {
@@ -851,8 +857,9 @@ button.close:focus {
 }
 
 .result-page {
-	margin-bottom: 0;
 	background-color: #f5f5f9;
+	min-height: 350px;
+	padding-bottom: 30px;
 }
 
 .result-sidebar {
@@ -1063,11 +1070,10 @@ button.close:focus {
 }
 
 .result-warning {
-	margin: 0px 20px;
 	padding: 10px 25px;
 	text-align: center;
 	color: #4a4a4a;
-	font-family: PingFangSC, Microsoft Yahei;
+	font-family: PingFangSC-Light, Microsoft Yahei;
 	font-weight: 200;
 }
 
@@ -1272,18 +1278,14 @@ button.close:focus {
 .field-select-btn:hover,
 .field-select-btn {
 	font-family: .PingFangSC;
-	font-size: 14px;
-	text-align: center;
 	padding-top:5px;
-	color: #ffffff; 
 	width: 100px;
 	height: 30px;
 	border-radius: 3px;
-	background-color: #63b7e6;
 }
+
 .personal-page-main {
 	padding-top: 45px;
-	padding-bottom: 390px;
 }
 
 .personal-page-main .nav-pills a {
@@ -1294,7 +1296,7 @@ button.close:focus {
   	font-weight: 500;
   	color: #9b9b9b;
   	border-radius: 0px;
-  	border: 1px solid grey;
+  	border: 1px solid #d7dcde;
   	background: white;
 }
 
@@ -1328,7 +1330,6 @@ button.close:focus {
 }
 .personal-changepassword {
 	padding-top:10px;
-	margin-bottom:40px;
 }
 .personal-passwordinput {
 	width: 220px;
@@ -1525,4 +1526,17 @@ button.close:focus {
 
 .personal-page-tab .nav-tabs>li.active>a:focus {
 	border: 0px;
+}
+
+.mydomain {
+	top: 3px;
+}
+
+.form-group label {
+    display: block;
+}
+
+.signup-page h4 {
+	padding-top: 30px;
+	color: #63b7e6;
 }
