@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load widget_tweaks %}
 
 {% block title %}ESODA | register{% endblock %}
 {% block header %}
@@ -9,33 +10,33 @@
 
 {% block content %}
 <div class="result-page">
-  <div class="container">
-    <h3>加入易搜搭，享受更多个性化服务</h3>
+  <div class="container signup-page">
+    <h4>加入易搜搭，享受更多个性化服务</h4>
     <form class="form-horizonal" role="register" method="post" action="">
       {% csrf_token %}
       <div class='form-group'>
         <label>{{ form.email.label }}</label>
-        {{ form.email }}
+        {% render_field form.email class="form-registration" %}
         {% if form.email.errors %}
         <p class="validation-summary-errors"><small>{{form.email.errors.as_text}}</small></p>
         {% endif %}
       </div>
       <div class='form-group'>
         <label>{{ form.password1.label }}</label> 
-        {{ form.password1 }}
+        {% render_field form.password1 class="form-registration" %}
         {% if form.password1.errors %}
         <p class="validation-summary-errors"><small>{{form.password1.errors.as_text}}</small></p>
         {% endif %}
       </div>
       <div class='form-group'>
         <label>{{ form.password2.label }}</label>
-        {{ form.password2 }}
+        {% render_field form.password2 class="form-registration" %}
         {% if form.password2.errors %}
         <p class="validation-summary-errors"><small>{{form.password2.errors.as_text}}</small></p>
         {% endif %}
       </div>
-      <h5>By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></h5>
-      <input type="submit" style="margin-top: 20px;" class="btn btn-default" value="开始搜搭" />
+      <p>By clicking "开始搜搭", I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></p>
+      <input type="submit" style="margin-top: 20px; width: 331px;" class="btn btn-default" value="开始搜搭" />
     </form>
   </div>
 </div>

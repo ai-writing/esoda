@@ -6,7 +6,7 @@
   <div class="modal-content modal-login-content">
     <div class="modal-header modal-login-header">
       <img src="{% static 'img/logo.png' %}" class="modal-logo">
-      <p>登陆易搜搭，开启英文写作新体验</p>
+      <h4>登陆易搜搭，开启英文写作新体验</h4>
     </div>
     <div class="modal-body modal-login-body">
       <form id="LoginForm" class="form-horizonal" role="login" method="post" action="">
@@ -40,12 +40,12 @@
         {% endif %}
 
         <input type="hidden" name="next" value="{{ next }}" />
-        <span class="form-login">
+        <span class="form-login center-block">
           <button type="submit" class="btn btn-login">登入易搜搭</button>
         </span>
       </form>
     </div>
-    <div class="modal-footer modal-login-footer">
+    <div class="modal-footer modal-login-footer center-block">
       <div class="modal-forgot-password">
         <p><a href="{% url 'auth_password_reset' %}">忘记密码？</a></p>
       </div>
