@@ -2,8 +2,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from common.models import Comment
-from datetime import datetime
 import logging
 
 import xml.sax
@@ -11,8 +9,9 @@ import json
 import requests
 import time
 
-from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids, debug_object
+from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids
 from authentication.forms import FIELD_NAME
+from common.feedbacks import get_feedbacks, save_message
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
@@ -30,24 +29,15 @@ def get_cids(rid, **kwargs):
         corpus_id = user.userprofile.corpus_id
         cids = corpus_id2cids(corpus_id)
         if 'r' in kwargs:
-            kwargs['r']['domain'] = FIELD_NAME[corpus_id-1][1]  # TODO: translation
+            kwargs['r']['domain'] = FIELD_NAME[corpus_id - 1][1]  # TODO: translation
     return cids
 
 
 def get_feedback():
     info = {
-        'feedbackList': [
-        ],
+        'feedbackList': get_feedbacks(),
         'count_of_favorite': 12049,
     }
-    for i in Comment.objects.all():
-        if i.display:
-            info['feedbackList'].append({
-                'content': i.text,
-                'user_name': i.user
-            })
-        if len(info['feedbackList']) == 10:
-            break
     return info
 
 
@@ -56,11 +46,7 @@ def esoda_view(request):
 
     # No query - render index.html
     if not q:
-        msg = request.POST.get('message', '').strip()
-        if msg and request.user.id: # User post a message
-            user = User.objects.get(id=request.user.id)
-            c = Comment(text=msg, user=user, display=True, date=datetime.now())
-            c.save()
+        save_message(request)
         info = get_feedback()
         return render(request, 'esoda/index.html', info)
 
@@ -136,6 +122,7 @@ def esoda_view(request):
 
     return render(request, 'esoda/result.html', info)
 
+
 def sentence_view(request):
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
@@ -208,7 +195,7 @@ def dict_suggest_view(request):
         Handler = DictHandler()
         xml.sax.parseString(xmlstring.encode('utf-8'), Handler)
         r['suggest'] = Handler.suggest
-    except Exception as e:
+    except Exception:
         logger.exception('Failed to parse Youdao suggest')
     return JsonResponse(r)
 
@@ -246,19 +233,19 @@ def get_usage_list(t, ref, i, dt, cids):
                 for j in lst['aggregations']['d']['d']['d']['buckets']:
                     l1 = notstar(d[0]['l1'], j['key'])
                     l2 = notstar(d[0]['l2'], j['key'])
-                    if (l1, l2) != (t[i], t[i+1]):
+                    if (l1, l2) != (t[i], t[i + 1]):
                         nref = list(ref)
                         if l1 != t[i]:
                             nref[i] = l1
                         else:
-                            nref[i+1] = l2
+                            nref[i + 1] = l2
                         ret.append({
                             'ref': ' '.join(nref),
                             'content': pat % (l1, l2),
                             'count': j['doc_count']
                         })
                 usageList += ret
-            except Exception as e:
+            except Exception:
                 logger.exception('In get_usage_list')
     return usageList
 
@@ -282,6 +269,7 @@ def get_collocations(clist, qt, i, cids):
             # 'usageList': [],
         })
 
+
 def collocation_list(mqt, cids):
     clist = []
     if len(mqt) == 1:
@@ -299,7 +287,7 @@ def collocation_list(mqt, cids):
 
 def sentence_query(t, ref, i, dt, cids):
     if dt != '0':  # Search specific tag
-        d = [{'dt': dt, 'i1': i, 'i2': i+1}]
+        d = [{'dt': dt, 'i1': i, 'i2': i + 1}]
     else:  # Search user input
         d = []
 

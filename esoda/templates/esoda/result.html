@@ -96,7 +96,6 @@
               </div> <!-- usage panel -->
               {% endif %}
 
-              {% if r.collocationList %}
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="HeadingColloc">
                   <div class="panel-title-wrapper">
@@ -109,6 +108,7 @@
                     </a>
                   </div>
                 </div>
+                {% if r.collocationList %}
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
                   <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
                     <li role="presentation" class="active">
@@ -128,8 +128,8 @@
                     {% endfor %}
                   </div>
                 </div>
+                {% endif %}
               </div> <!-- collocation panel -->
-              {% endif %}
 
             </div> <!-- panel-group -->
 

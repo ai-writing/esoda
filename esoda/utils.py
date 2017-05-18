@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 from common.mongodb import MONGODB
-from nltk.corpus import wordnet as WN
-from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, DblpVenue, UploadRecord
+from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, UploadRecord
 import requests
 
 
@@ -56,26 +56,32 @@ def notstar(p, q):
     return p if p != '*' else q
 
 
-def gen_source_url(p, v):
-    year = p['info'].get('year')
-    title = p['info'].get('title', {}).get('text')
-    authList = p['info'].get('authors', {}).get('author', [])
+def gen_source_url(p):
+    year = p.get('year')
+    title = p.get('title', '')
+    authList = p.get('authors', '').split(';')
+    conference = p.get('venue', '/').split('/')[-1]
     source = ''
+    '''
     if v:
         conference = v.get('shortName', v['fullName'])
         if year and len(year) == 4:
             conference += "'" + year[2:4]
         source += conference + '. '
+    '''
+    if year and len(year) == 4:
+        conference += "'" + year[2:4]
+    source += conference + '. '
 
-        if authList:
-            nameList = authList[0].split()  # split first author's name
-            authorShort = nameList[0][0].upper() + '. ' +nameList[len(nameList) - 1]
-            if len(authList) > 1:
-                authorShort += ' et. al.'
-            else:
-                authorShort += '.'
-            source += authorShort
-        source += title
+    if authList:
+        nameList = authList[0].split()  # split first author's name
+        authorShort = nameList[0][0].upper() + '. ' +nameList[len(nameList) - 1]
+        if len(authList) > 1:
+            authorShort += ' et. al.'
+        else:
+            authorShort += '.'
+        source += authorShort
+    source += title
     return {'source': source, 'url': p['url']}
 
 
@@ -87,8 +93,8 @@ def paper_source_str(pid):
         s['source'] = 'Uploaded file: ' + p['title']
         return s
     # TODO: precompute source string and save to $common.uploads
-    v = mongo_get_object(DblpVenue, pk=p['venue'])
-    return gen_source_url(p, v)
+    # v = mongo_get_object(DblpVenue, pk=p['venue'])
+    return gen_source_url(p)
 
 
 def papers_source_str(pids):
@@ -96,10 +102,10 @@ def papers_source_str(pids):
     if not p:
         return {}
     # TODO: precompute source string and save to $common.uploads
-    venues = [i['venue'] for i in p.values()]
-    v = mongo_get_objects(DblpVenue, pks=venues)
+    # venues = [i['venue'] for i in p.values()]
+    # v = mongo_get_objects(DblpVenue, pks=venues)
 
     res = {}
     for i in pids:
-        res[i] = gen_source_url(p[i], v[p[i]['venue']])
+        res[i] = gen_source_url(p[i])
     return res
