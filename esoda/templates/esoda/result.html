@@ -108,27 +108,29 @@
                     </a>
                   </div>
                 </div>
-                {% if r.collocationList %}
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
                   <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
                     <li role="presentation" class="active">
                         <a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a>
                     </li>
+                    {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
                     <li role="presentation">
                       <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
                     </li>
                     {% endfor %}
+                    {% endif %}
                   </ul>
                   <div id="CollocContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
+                    {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
                     <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}">
                     </div>
                     {% endfor %}
+                    {% endif %}
                   </div>
                 </div>
-                {% endif %}
               </div> <!-- collocation panel -->
 
             </div> <!-- panel-group -->
