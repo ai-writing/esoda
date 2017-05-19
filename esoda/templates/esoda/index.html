@@ -182,10 +182,10 @@
           <h4 class="feedback-title">用户这样评价易搜搭</h4>
           <div>
             <div id="UserFeedback" class="user-feedback">
-              {% for feedback in feedbackList %}
+              {% for comment in comments %}
               <div {% if forloop.counter > 2 %} class="display-none" {% endif %}>
-                <p>"{{ feedback.content }}"</p>
-                <h5 class="display-non">{{ feedback.user_name }}</h5>
+                <p>"{{ comment.text }}"</p>
+                <h5 class="display-non">{{ comment.user.username|default:'匿名用户' }}</h5>
               </div>
               {% endfor %}
             </div>
@@ -214,7 +214,7 @@
         </div>
       </div>
       <div class="message-title xs-font-size-18">留言帮助我们改进易搜搭</div>
-      <form id="MsgForm" class="row message-content" method="post" action="{% url 'esoda' %}">
+      <form id="MsgForm" class="row message-content" method="post" action="{% url 'comment' %}">
         <div class="col-sm-2 hidden-xs">
           <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
         </div>

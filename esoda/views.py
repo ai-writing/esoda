@@ -10,11 +10,12 @@ import requests
 import time
 
 from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids
-from authentication.forms import FIELD_NAME
-from common.feedbacks import get_feedbacks, save_message
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
+from authentication.forms import FIELD_NAME
+from common.models import Comment
+
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
@@ -35,7 +36,7 @@ def get_cids(rid, **kwargs):
 
 def get_feedback():
     info = {
-        'feedbackList': get_feedbacks(),
+        'comments': Comment.get_latest_comments(10),
         'count_of_favorite': 12049,
     }
     return info
@@ -46,7 +47,6 @@ def esoda_view(request):
 
     # No query - render index.html
     if not q:
-        save_message(request)
         info = get_feedback()
         return render(request, 'esoda/index.html', info)
 

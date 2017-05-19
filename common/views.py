@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
-# Create your views here.
+from .models import Comment
+
+
+def comment_view(request):
+    msg = request.POST.get('message', '').strip()
+    if msg:
+        request.session.save()
+        comment = Comment(text=msg, session = request.session.session_key)
+        if request.user.is_authenticated:
+            comment.user = request.user
+        comment.save()
+    return JsonResponse({'success': True})
