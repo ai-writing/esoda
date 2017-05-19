@@ -32,4 +32,21 @@ $(function () {
     $("#UserFeedback div:eq(" + curDisplay + ")").show();
     $("#UserFeedback div:eq(" + (curDisplay + 1) + ")").show();
   });
+
+  $('#MsgForm').submit(function (e) {
+    e.preventDefault();
+    var textarea = $(this).find('[name="message"]');
+    var msg = textarea.val().trim();
+    if (msg) {
+      $.post($(this).attr('action'), $(this).serialize(), function (r) {
+        toastr.remove();
+        toastr.info('留言成功');
+        textarea.val('');
+      });
+    } else {
+      toastr.remove();
+      toastr.warning('请输入留言内容');
+    }
+    textarea.focus();
+  });
 });
