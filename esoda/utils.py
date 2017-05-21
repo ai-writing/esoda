@@ -82,7 +82,7 @@ def gen_source_url(p):
             authorShort += '.'
         source += authorShort
     source += title
-    return {'source': source, 'url': p['url']}
+    return {'source': source, 'url': p['ee']}
 
 
 def paper_source_str(pid):
