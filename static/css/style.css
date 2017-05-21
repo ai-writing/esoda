@@ -146,6 +146,8 @@ body {
 .btn {
 	background-color: #63B7E6;
 	color: white;
+	width: 210px;
+	border-radius: 3px;
 }
 
 .btn-info {
@@ -368,7 +370,7 @@ button.close:focus {
     letter-spacing: 3px;
 }
 
-.form-registration {
+.form-normal {
     display: inline-block;
     vertical-align: middle;
     padding-left: 10px;
@@ -452,7 +454,6 @@ button.close:focus {
 	margin-top: 40px;
 	padding-bottom: 35px;
 	color: #9b9b9b;
-	width: 65.3%;
 	font-size: 18px;
 }
 
@@ -779,10 +780,6 @@ button.close:focus {
 	margin-right: 31px;
 }
 
-.col-icon {
-	padding-right: 0px;
-}
-
 .message-notepad {
 	padding-left: 30%;
 }
@@ -859,7 +856,7 @@ button.close:focus {
 .result-page {
 	background-color: #f5f5f9;
 	min-height: 350px;
-	padding-bottom: 30px;
+	padding-bottom: 40px;
 }
 
 .result-sidebar {
@@ -873,6 +870,7 @@ button.close:focus {
 }
 .result-sidebar>.panel-group>.panel>.panel-heading {
 	margin-bottom: 0px;
+	color: #63b7e6;
 }
 
 .result-sidebar>.panel-group>.panel>.panel-collapse {
@@ -1070,8 +1068,7 @@ button.close:focus {
 }
 
 .result-warning {
-	padding: 10px 25px;
-	text-align: center;
+	padding: 10px 0px;
 	color: #4a4a4a;
 	font-family: PingFangSC-Light, Microsoft Yahei;
 	font-weight: 200;
@@ -1184,7 +1181,7 @@ button.close:focus {
 }
 
 .back-to-top-cell {
-	left: 80%;
+	left: 83%;
 	position: relative;
 }
 
@@ -1201,6 +1198,8 @@ button.close:focus {
 	background-color: #fff;
 	border: solid 1px #ddd;
 	opacity: 0.5;
+	color: #787878;
+	width: 82px;
 }
 
 
@@ -1277,11 +1276,7 @@ button.close:focus {
 .field-select-btn:focus,
 .field-select-btn:hover,
 .field-select-btn {
-	font-family: .PingFangSC;
 	padding-top:5px;
-	width: 100px;
-	height: 30px;
-	border-radius: 3px;
 }
 
 .personal-page-main {
@@ -1320,23 +1315,15 @@ button.close:focus {
 	border: solid 0.5px #4a4a4a;
 	margin: 0px;
 }
-.personal-describe {
-	padding-top:0px;
+.form-text {
 	font-size:12px;
-	font-family: PingFangSC;
 	color: #4a4a4a;
-  	font-weight: 600;
 	margin-top:5px;
 }
 .personal-changepassword {
 	padding-top:10px;
 }
-.personal-passwordinput {
-	width: 220px;
-	height: 25px;
-	background-color: #ffffff;
-	border: solid 1px #d7dcde;
-}
+
 #submit-changepassword {
 	width: 180px;
 	height: 30px;
@@ -1472,7 +1459,6 @@ button.close:focus {
 	margin-top: 20px;
 }
 
-
 .registration-title {
 	text-align: center;
 	margin-top: 50px;
@@ -1508,16 +1494,8 @@ button.close:focus {
     margin-top: 9px;
 }
 
-.hotword > p > a {
-	color: black;
-}
-
 .hotword > p > a:hover {
 	color: #63B7E6;;
-}
-
-.sideword> a {
-	color: black;
 }
 
 .sideword> a:hover {
