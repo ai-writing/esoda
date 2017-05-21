@@ -1,0 +1,91 @@
+int matchCost(def tSrc, def m, def ref)
+{
+    int posCost = 0;
+    int len = m.length;
+    for (int i = 0; i < len-1; ++i)
+    {
+        int delta = m[i+1] - m[i];
+        if (delta <= 0)
+            posCost += 4-delta;
+        else
+            posCost += delta-1;
+    }
+    int queryCost = 0;
+    for (int i = 0; i < len; ++i)
+        if (tSrc[m[i]]['t'] != ref[i])
+            queryCost += 2;
+    int formCost = 0;
+    for (int i = 0; i < len; ++i)
+        if (tSrc[m[i]]['t'] != tSrc[m[i]]['l'])
+            formCost += 1;
+    return posCost + queryCost + formCost;
+}
+
+def ts = params.tList;
+def ds = params.dList;
+def ref = params.rList;
+def pos = new ArrayList();
+int len = ts.length;
+
+for (int i = 0; i < len; ++i)
+    pos.add(new ArrayList());
+
+for (int i = 0; i < ds.length; ++i)
+{
+    def dt = ds[i].dt;
+    def l1 = ts[ds[i].i1];
+    def l2 = ts[ds[i].i2];
+    for (int j = 0; j < params._source.d.length; ++j)
+    {
+        def d = params._source.d[j];
+        if (dt.equals(d.dt) && l1.equals(d.l1) && l2.equals(d.l2))
+        {
+            pos[ds[i].i1].add(Integer.parseInt(d.i1));
+            pos[ds[i].i2].add(Integer.parseInt(d.i2));
+            break;
+        }
+    }
+}
+for (int i = 0; i < len; ++i)
+{
+    if (pos[i].size() == 0)
+    {
+        for (int j = 0; j < params._source.t.length; ++j)
+            if (ts[i].equals(params._source.t[j].l))
+                pos[i].add(j);
+    }
+}
+
+def m = new ArrayList();
+def match = new ArrayList();
+int bestCost = 2147483647;
+for (int i = 0; i < len; ++i)
+{
+    m.add(0);
+    if (pos[i].size() == 0)
+        return -bestCost;
+    match.add(pos[i][0]);
+}
+
+while (true)
+{
+    int cost = matchCost(params._source.t, match, ref);
+    if (cost < bestCost)
+        bestCost = cost;
+
+    m[len-1] += 1;
+    def i = len-1;
+    while (m[i] == pos[i].size())
+    {
+        m[i] = 0;
+        match[i] = pos[i][0];
+        i -= 1;
+        if (i < 0)
+            break;
+        m[i] += 1;
+    }
+    if (i < 0)
+        break;
+    match[i] = pos[i][m[i]];
+}
+return -bestCost;
