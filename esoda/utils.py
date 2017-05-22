@@ -57,7 +57,7 @@ def notstar(p, q):
 
 
 def gen_source_url(p):
-    year = str(p.get('year', ''))
+    year = p.get('year')
     title = p.get('title', '')
     authList = p.get('authors', '').split(';')
     conference = p.get('venue', '/').split('/')[-1].upper()
@@ -73,6 +73,7 @@ def gen_source_url(p):
         if len(year) == 4:
             conference += "'" + year[2:4]
     elif isinstance(year, int):
+        # assert: should always be this case
         conference += "'" + str(year % 100)
     source += conference + '. '
 
@@ -84,7 +85,7 @@ def gen_source_url(p):
         else:
             authorShort += '.'
         source += authorShort
-    source += title
+    source += ' ' + title
     return {'source': source, 'url': p['ee']}
 
 

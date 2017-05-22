@@ -181,7 +181,7 @@
           <div>
             <div id="UserFeedback" class="user-feedback">
               {% for comment in comments %}
-              <div {% if forloop.counter > 2 %} class="hidden" {% endif %}>
+              <div {% if forloop.counter > 2 %}class="collapse"{% endif %}>
                 <p>"{{ comment.text }}"</p>
                 <h5>{{ comment.user.username|default:'匿名用户' }}</h5>
               </div>
