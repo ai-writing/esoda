@@ -30,7 +30,7 @@
 
   <body>
     {% if debug %}
-      <div style="padding-left: 1%; background: cornsilk; position: absolute; z-index: 100;">NOTE: You are running in DEBUG mode.</div>
+      <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">NOTE: You are running in DEBUG mode.</div>
     {% endif %}
     {% block header %}
       <nav class="navbar navbar-default navbar-static-top">
@@ -42,7 +42,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"  class="navbar-logo" ></a>
+            <a class="navbar-brand" href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"></a>
           </div>
           <div id="navbar" class="navbar-index navbar-collapse collapse result-index">
             <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search" action="{% url 'esoda' %}">
@@ -99,7 +99,7 @@
             <img src="{% static 'img/logo.png' %}" class="footer-logo">
             <p>专业英文写作助手</p>
           </div>
-          <div class="col-sm-6 right-align xs-left-align xs-margin-bottom col-icon">
+          <div class="col-sm-6 right-align xs-left-align xs-margin-bottom">
             <a href="#"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
             <a href="#"><img class="shares" src="{% static 'img/wechat_F.svg' %}"></a>
             <a href="#"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
@@ -129,9 +129,15 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
-  {% if not DEBUG %}
+
     <!--Baidu statistics-->
+  {% if debug %}
+    <script type="text/javascript">console.log('Won\'t load Baidu statistics in debug mode');</script>
+  {% else %}
+    {# TODO #}
   {% endif %}
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{% static 'js/jquery-ui-modified.js' %}"></script>
     <script src="{% static 'js/esoda-main.js' %}"></script>
     <script type="text/javascript">
@@ -153,7 +159,6 @@
       $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
     });
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     {% block script %}{% endblock %}
 
   </body>

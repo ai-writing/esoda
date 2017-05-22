@@ -9,10 +9,8 @@
 {% endblock %}
 
 {% block content %}
-
-
   <!-- Main jumbotron for a primary marketing message or call to action -->
-  <div class="jumbotron">
+  <div class="jumbotron section-blue">
     <div class="container">
       <div class="row">
         <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4 title">
@@ -87,7 +85,7 @@
   </div>
 
   <!--TODO: fix the displaying problem in small screens-->
-  <div class="back-introduction">
+  <div class="back-introduction section-blue">
     <div class="container container-usage">
       <div class="row hidden-xs">
         <div class="col-xs-6 col-sm-3 col-introduction">
@@ -183,9 +181,9 @@
           <div>
             <div id="UserFeedback" class="user-feedback">
               {% for comment in comments %}
-              <div {% if forloop.counter > 2 %} class="display-none" {% endif %}>
+              <div {% if forloop.counter > 2 %}class="collapse"{% endif %}>
                 <p>"{{ comment.text }}"</p>
-                <h5 class="display-non">{{ comment.user.username|default:'匿名用户' }}</h5>
+                <h5>{{ comment.user.username|default:'匿名用户' }}</h5>
               </div>
               {% endfor %}
             </div>
@@ -201,13 +199,13 @@
     </div>
   </div>
 
-  <div class="back-message">
+  <div class="back-message section-blue">
     <div class="container container-message">
       <div class="row">
         <div class="col-xs-6 xs-font-size-18">
           为我们的工作点赞
         </div>
-        <div class="col-xs-6 col-message-right display-none">
+        <div class="col-xs-6 col-message-right hidden">
           <span id="CountOfFavorite">{{ count_of_favorite }}</span>
           &nbsp;&nbsp;
           <a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>

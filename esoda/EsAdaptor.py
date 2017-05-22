@@ -75,6 +75,7 @@ class EsAdaptor():
         action = {
             "_source": ["p", "c"],
             "size": sp,
+            "terminate_after": 10000,
             "query": {
                 "function_score": {
                     "query": {
@@ -119,7 +120,7 @@ class EsAdaptor():
         if not d or len(d) > 2:
             return {}
         action = {
-            "_source": False,
+            "size": 0,
             "query": {
                 "bool": {
                     "must": None
@@ -247,7 +248,7 @@ class EsAdaptor():
         })
 
         action = {
-            "_source": False,
+            "size": 0,
             "query": {
                 "bool": {
                     "must": mst

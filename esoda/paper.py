@@ -33,14 +33,14 @@ class UserProfile:
 class DblpPaper:
     class Meta:
         pk = '_id'
-        db = ('crawl', 'papers')
+        db = ('dblp', 'papers')
     # TODO
 
 
 class DblpVenue:
     class Meta:
         pk = '_id'
-        db = ('crawl', 'venues')
+        db = ('dblp', 'venues')
     # TODO
 
 

@@ -29,18 +29,18 @@ $(function () {
       $("#Loading").show();
       setTimeout(function() {
         $("#Loading").hide();
-        loading = 0;
         var i;
         for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
           $("#Example" + i).show();
         }
-        if (i > total) {
+        loadCount++;
+        loading = 0;
+        if (i > total || loadCount >= 5) {
           loaded = 1;
           $("#ExampleEnd").show();
           return;
         }
-        loadCount++;
-      }, 2000);
+      }, 1000);
     }
   });
 
