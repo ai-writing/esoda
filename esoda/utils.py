@@ -69,8 +69,11 @@ def gen_source_url(p):
             conference += "'" + year[2:4]
         source += conference + '. '
     '''
-    if year and len(year) == 4:
-        conference += "'" + year[2:4]
+    if isinstance(year, str):
+        if len(year) == 4:
+            conference += "'" + year[2:4]
+    elif isinstance(year, int):
+        conference += "'" + str(year % 100)
     source += conference + '. '
 
     if authList:
