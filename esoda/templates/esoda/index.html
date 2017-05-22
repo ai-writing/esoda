@@ -185,7 +185,7 @@
               {% for comment in comments %}
               <div {% if forloop.counter > 2 %} class="display-none" {% endif %}>
                 <p>"{{ comment.text }}"</p>
-                <h5 class="display-none">{{ comment.user.username|default:'匿名用户' }}</h5>
+                <h5 class="display-non">{{ comment.user.username|default:'匿名用户' }}</h5>
               </div>
               {% endfor %}
             </div>
@@ -214,16 +214,16 @@
         </div>
       </div>
       <div class="message-title xs-font-size-18">留言帮助我们改进易搜搭</div>
-      <div class="row message-content" >
+      <form id="MsgForm" class="row message-content" method="post" action="{% url 'comment' %}">
         <div class="col-sm-2 hidden-xs">
           <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
         </div>
-        <div id="csrf"> {% csrf_token %}</div>
+        {% csrf_token %}
         <div class="col-sm-10">
-          <textarea class="message-box" id="UsrMsgBox"></textarea>
+          <textarea form="MsgForm" name="message" class="message-box" id="UsrMsgBox"></textarea>
         </div>
-        <button id="MessageBtn" class="btn btn-message col-btn">留言</button>
-      </div>
+        <button type="submit" id="MessageBtn" class="btn btn-message col-btn">留言</button>
+      </form>
     </div>
   </div>
 {% endblock content %}
@@ -232,16 +232,4 @@
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
   <script src="{% static 'js/esoda-index.js' %}"></script>
-  <script>
-  $( function () {
-    $('#MessageBtn').click(function(e) {
-      $.post("{% url 'comment' %}", {message: $('#UsrMsgBox').val(), csrfmiddlewaretoken: $('#csrf input').val()}, function(data) {
-        if (data.success) {
-          toastr.success('提交成功！');
-          $('#UsrMsgBox').val('');
-        }
-      });
-    })
-  } )
-  </script>
 {% endblock script %}

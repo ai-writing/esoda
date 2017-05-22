@@ -8,9 +8,8 @@ def comment_view(request):
     msg = request.POST.get('message', '').strip()
     if msg:
         request.session.save()
-        comment = Comment(text=msg, session = request.session.session_key, display = True)
+        comment = Comment(text=msg, session = request.session.session_key)
         if request.user.is_authenticated:
             comment.user = request.user
         comment.save()
-    	return JsonResponse({'success': True})
-    return JsonResponse({})
+    return JsonResponse({'success': True})
