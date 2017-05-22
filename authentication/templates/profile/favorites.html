@@ -18,7 +18,7 @@
     </form>
   </div>
 	{% for example in exampleList %}
-  <div class="panel panel-default result-example row {% if forloop.counter > 10 %}display-none{% endif %}" id="Example{{ forloop.counter }}">
+  <div class="panel panel-default result-example row {% if forloop.counter > 10 %}hidden{% endif %}" id="Example{{ forloop.counter }}">
     <div class="col-xs-11">
       <div class="panel-body">
         <div class="display-inline example-list-label">
