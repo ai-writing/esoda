@@ -183,7 +183,7 @@
               {% for comment in comments %}
               <div {% if forloop.counter > 2 %} class="hidden" {% endif %}>
                 <p>"{{ comment.text }}"</p>
-                <h5 class="display-non">{{ comment.user.username|default:'匿名用户' }}</h5>
+                <h5>{{ comment.user.username|default:'匿名用户' }}</h5>
               </div>
               {% endfor %}
             </div>

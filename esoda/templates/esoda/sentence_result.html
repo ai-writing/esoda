@@ -3,7 +3,7 @@
     找到<span id="ExampleNumber">{{ example_number }}</span>句例句，为您提供前{% if example_number > 50 %}50{% else %}{{example_number}}{% endif %}个，排序根据点赞和相关度自动生成，耗时{{ search_time }}秒
   </div>
   {% for example in exampleList %}
-  <div class="panel panel-default result-example row {% if forloop.counter > 10 %}hidden{% endif %}" id="Example{{ forloop.counter }}">
+  <div class="panel panel-default result-example row" {% if forloop.counter > 10 %} style="display:none" {% endif %} id="Example{{ forloop.counter }}">
     <div class="col-xs-11">
       <div class="panel-body">
         <div class="display-inline example-list-label">
