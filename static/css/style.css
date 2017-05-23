@@ -163,6 +163,7 @@ a {
 	color: white;
 	width: 210px;
 	border-radius: 3px;
+    border: none;
 }
 
 .btn-info {
@@ -255,19 +256,8 @@ a {
 }
 
 .modal-login-sm {
-    width: 400px;
-    margin: 200px auto;
-}
-
-.modal-register-sm {
-    width: 400px;
-    margin: 150px auto;
-}
-
-.modal-login-content {
-    border-radius: 5px;
     width: 445px;
-    height: 416px;
+    margin: 200px auto;
 }
 
 .modal-logo {
@@ -291,14 +281,13 @@ a {
     padding: 0px 20px;
 }
 
-.modal-body>.form-horizonal {
+.modal-body .form-horizonal {
     padding: 0px 15px;
 }
 
 .modal-login-footer {
     font-size: 12px;
     border-top: none;
-    width: 384px;
 }
 
 .modal-register-header {
@@ -331,13 +320,14 @@ button.close:focus {
 }
 
 .alert-danger {
+    margin-top: 15px;
+    margin-bottom: 0;
+    padding: 2px 3px;
     background-color: #f2dede;
     border: solid 0.5px #eed3d7;
     border-radius: 0px;
     color: #b94a48;
     font-size: 12px;
-    padding: 2px 3px;
-    margin-bottom: 15px;
 }
 
 .alert-success {
@@ -355,26 +345,24 @@ button.close:focus {
     color: #9b9b9b;
 }
 
-.form-login, .form-register {
-    margin: 10px auto;
+#LoginForm .form-control,
+#RegisterFrom .form-control {
+    margin-top: 15px;
+    padding: 10px 12px;
     font-size: 18px;
     text-align: center;
     height: 50px;
-    width: 354px;
     color: #242424;
 }
 
-.form-login .form-control {
-    padding: 10px 12px;
-}
-
-.form-login>.btn {
+#LoginForm .btn-primary {
+    margin-top: 15px;
     font-size: 20px;
     padding: 10px 12px;
-    width: 354px;
+    width: 100%;
 }
 
-.form-register>.btn {
+#RegisterFrom .btn-primary {
     font-size: 16px;
     padding: 10px 12px;
     color: #fff;

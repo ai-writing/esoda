@@ -40,7 +40,7 @@ $(function () {
     if (msg) {
       $.post($(this).attr('action'), $(this).serialize(), function (r) {
         toastr.remove();
-        toastr.info('留言成功');
+        toastr.success('留言成功');
         textarea.val('');
       });
     } else {
