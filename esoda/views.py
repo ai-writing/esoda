@@ -4,12 +4,10 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 
-import xml.sax
-import json
-import requests
 import time
 
 from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids
+from .youdao_query import youdao_suggest, youdao_search
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
@@ -104,20 +102,8 @@ def esoda_view(request):
         'ref': ref,
         'suggestion': suggestion,
     }
-
-    YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
-    jsonString = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).text
-    jsonObj = json.loads(jsonString.encode('utf-8'))
-
-    if 'simple' in jsonObj and 'ec' in jsonObj:
-        dictionary = {
-            'word': q,
-            'english': jsonObj['simple']['word'][0].get('ukphone', ''),
-            'american': jsonObj['simple']['word'][0].get('usphone', ''),
-            'explanationList': []
-        }
-        for explain in jsonObj['ec']['word'][0]['trs']:
-            dictionary['explanationList'].append(explain['tr'][0]['l']['i'][0])
+    dictionary = youdao_search(q)
+    if dictionary:
         info['dictionary'] = dictionary
 
     return render(request, 'esoda/result.html', info)
@@ -152,53 +138,14 @@ def usagelist_view(request):
     return render(request, 'esoda/collocation_result.html', r)
 
 
-class DictHandler(xml.sax.ContentHandler):
-    def __init__(self):
-        self.suggest = []
-        self.CurNum = 0
-        self.CurTag = ''
-        self.category = ''
-
-    def startElement(self, tag, attributes):
-        self.CurTag = tag
-        if tag == 'item':
-            self.suggest.append({})
-
-    def endElement(self, tag):
-        if tag == 'item':
-            self.suggest[self.CurNum]['category'] = self.category
-            self.category = ''
-            self.CurNum += 1
-        self.CurTag = ''
-
-    def characters(self, content):
-        if self.CurTag == 'title':
-            self.suggest[self.CurNum]['label'] = content
-            if content.find(' ') < 0:
-                self.category = 'Words'
-            else:
-                self.category = 'Expressions'
-        elif self.CurTag == 'explain':
-            self.suggest[self.CurNum]['desc'] = content
-
-YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
-
-
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {}
     try:
-        xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=10).text
-        parser = xml.sax.make_parser()
-        parser.setFeature(xml.sax.handler.feature_namespaces, 0)
-
-        Handler = DictHandler()
-        xml.sax.parseString(xmlstring.encode('utf-8'), Handler)
-        r['suggest'] = Handler.suggest
+        r = youdao_suggest(q)
     except Exception:
         logger.exception('Failed to parse Youdao suggest')
     return JsonResponse(r)
-
 
 def guide_view(request):
     info = {
