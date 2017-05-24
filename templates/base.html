@@ -100,10 +100,10 @@
             <p>专业英文写作助手</p>
           </div>
           <div class="col-sm-6 right-align xs-left-align xs-margin-bottom">
-            <a href="#"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
-            <a href="#"><img class="shares" src="{% static 'img/wechat_F.svg' %}"></a>
-            <a href="#"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
-            <a href="#"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
+            <a href="#" class="share-a"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
+            <a href="#" class="share-a"><img class="shares wechat-share" data-toggle="popover" data-placement="bottom" title="微信扫一扫：" data-content="<div class='wechat-qr'></div>" data-html="true" data-trigger="hover focus" src="{% static 'img/wechat_F.svg' %}"></a>
+            <a href="#" class="share-a"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
+            <a href="#" class="share-a"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
           </div>
         </div>
         <p class="copyright">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
@@ -129,6 +129,7 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+    <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
 
     <!--Baidu statistics-->
   {% if debug %}
