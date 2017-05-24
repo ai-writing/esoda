@@ -11,24 +11,24 @@
 
 {% block content %}
 <div class="result-page">
-    <div class="container">
-        <div class="row personal-page-main">
-      <div class="col-md-3">
-        <ul id="myTab" class="nav nav-pills nav-stacked personal-page-tab text-center">
-            <li class="mydomain {% if profileTab == 'domain' %}active{% endif %}"><a href="{% url 'domain' %}">领域选择</a></li>
-            {% comment %}
-            <li {% if profileTab == "personal" %}class="active"{% endif %}><a href="{% url 'personal' %}">个人信息</a></li>
-            {% endcomment %}
-            <li class="{% if profileTab != 'domain' and profileTab != 'personal' and profileTab != 'favorites' %}active{% endif %}"><a {% if user.is_authenticated %} href="{% url 'auth_password_change' %}"{% else %} href="#" data-toggle="modal" data-target="#ModalLogin" {% endif %}>安全与隐私</a></li>
-            {% comment %}
-            <li {% if profileTab == "favorites" %}class="active"{% endif %}><a href="{% url 'favorites' %}">收藏夹</a></li>
-            {% endcomment %}
-            </ul>
-      </div>
-      <div class="col-md-9">
-        {% block profile_content %}{% endblock %}
-      </div>
+  <div class="container">
+    <div class="row personal-page-main">
+    <div class="col-md-3">
+      <ul id="myTab" class="nav nav-pills nav-stacked personal-page-tab text-center h4">
+        <li class="mydomain {% if profileTab == 'domain' %}active{% endif %}"><a href="{% url 'domain' %}">领域选择</a></li>
+        {% comment %}
+        <li {% if profileTab == "personal" %}class="active"{% endif %}><a href="{% url 'personal' %}">个人信息</a></li>
+        {% endcomment %}
+        <li class="{% if profileTab != 'domain' and profileTab != 'personal' and profileTab != 'favorites' %}active{% endif %}"><a {% if user.is_authenticated %} href="{% url 'auth_password_change' %}"{% else %} href="#" data-toggle="modal" data-target="#ModalLogin" {% endif %}>安全与隐私</a></li>
+        {% comment %}
+        <li {% if profileTab == "favorites" %}class="active"{% endif %}><a href="{% url 'favorites' %}">收藏夹</a></li>
+        {% endcomment %}
+        </ul>
     </div>
+    <div class="col-md-9">
+      {% block profile_content %}{% endblock %}
     </div>
+  </div>
+  </div>
 </div>
 {% endblock %}

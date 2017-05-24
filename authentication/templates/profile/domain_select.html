@@ -5,22 +5,22 @@
 {% block profile_content %}
 
 <div id="field">
-    <p class="personal-title">学术领域选择</p>
-    <hr class="personal-line"/>
-    <p class="personal-describe">通过选择学术领域缩小文章范围</p>
-    <form style="margin-top:10px;width:500px;" action="{% url 'domain' %}" method="post">
-        {% csrf_token %}
-        <div class='form-group fixed-form'>
-            {% for field in form %}
-          <div class="fieldWrapper">
-            {{ field.label_tag }}{{ field }} 
-            {{ field.errors }}
-          </div>
-        {% endfor %}
-        </div>
-        <button type="submit" class="btn field-select-btn" style="margin-top: 20px;">{% trans 'Save' %}</button>
-    </form>
+  <h4 class="personal-title"><strong>学术领域选择</strong></h4>
+  <hr class="personal-line"/>
+  <h5><strong>通过选择学术领域缩小文章范围</strong><h5>
+  <form style="margin-top:10px;width:500px;" action="{% url 'domain' %}" method="post">
+    {% csrf_token %}
+    <div class='form-group fixed-form'>
+        {% for field in form %}
+      <div class="fieldWrapper">
+        {{ field.label_tag }}{{ field }}
+        {{ field.errors }}
+      </div>
+    {% endfor %}
     </div>
+    <button type="submit" class="btn field-select-btn">{% trans 'Save' %}</button>
+  </form>
+  </div>
 </div>
 {% endblock %}
 {% block script %}

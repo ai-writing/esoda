@@ -454,10 +454,10 @@ button.close:focus {
 }
 
 .container-footer {
-	margin-top: 40px;
-	padding-bottom: 35px;
-	color: #9b9b9b;
-	font-size: 18px;
+    margin-top: 40px;
+    padding-bottom: 35px;
+    color: #9b9b9b;
+    font-size: 18px;
 }
 
 .container-message {
@@ -850,8 +850,8 @@ button.close:focus {
 }
 
 .result-page {
-	background-color: #f5f5f9;
-	padding-bottom: 40px;
+    background-color: #f5f5f9;
+    padding-bottom: 40px;
 }
 
 .result-sidebar {
@@ -864,8 +864,8 @@ button.close:focus {
     margin-top: 15px;
 }
 .result-sidebar>.panel-group>.panel>.panel-heading {
-	margin-bottom: 0px;
-	color: #63b7e6;
+    margin-bottom: 0px;
+    color: #63b7e6;
 }
 
 .result-sidebar>.panel-group>.panel>.panel-collapse {
@@ -1062,10 +1062,10 @@ button.close:focus {
 }
 
 .result-warning {
-	padding: 10px 0px;
-	color: #4a4a4a;
-	font-family: PingFangSC-Light, Microsoft Yahei;
-	font-weight: 200;
+    padding: 10px 0px;
+    color: #4a4a4a;
+    font-family: PingFangSC-Light, Microsoft Yahei;
+    font-weight: 200;
 }
 
 .result-table-cell {
@@ -1175,8 +1175,8 @@ button.close:focus {
 }
 
 .back-to-top-cell {
-	left: 83%;
-	position: relative;
+    left: 83%;
+    position: relative;
 }
 
 .back-to-top-affix.affix {
@@ -1189,11 +1189,11 @@ button.close:focus {
 }
 
 .back-to-top {
-	background-color: #fff;
-	border: solid 1px #ddd;
-	opacity: 0.5;
-	color: #787878;
-	width: 82px;
+    background-color: #fff;
+    border: solid 1px #ddd;
+    opacity: 0.5;
+    color: #787878;
+    width: 82px;
 }
 
 
@@ -1223,20 +1223,14 @@ button.close:focus {
 }
 
 .fieldWrapper ul{
-    /*font-size: 100px;*/
     list-style-type:none;
 }
-
-.fieldWrapper label{
-    font-size: 14px;
-}
-
 .fieldWrapper ul,li{
     padding:0;
-    margin:0;
 }
+
 .fieldWrapper input {
-  -webkit-appearance: none; 
+  -webkit-appearance: none;
   width: 14px;
   height: 14px;
   cursor: pointer;
@@ -1249,70 +1243,51 @@ button.close:focus {
   -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
     -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
   border-radius: 6px;
+  background-position: 0 0;
 }
 .fieldWrapper input:active {
   -webkit-transform: scale(1.5);
   -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
   border-radius: 6px;
 }
-
 .fieldWrapper input,
 .fieldWrapper input:active {
   background-position: 0 14px;
 }
-.fieldWrapper input:checked {
-  background-position: 0 0;
-}
-.fieldWrapper input:checked ~ .fieldWrapper input,
-.fieldWrapper input:checked ~ .fieldWrapper input:active {
-  background-position: 0 14px;
-}
-.field-select-btn:focus,
-.field-select-btn:hover,
+
 .field-select-btn {
-	padding-top:5px;
+    margin-top: 20px;
 }
 
 .personal-page-main {
     padding-top: 45px;
 }
-
 .personal-page-main .nav-pills a {
-    padding-top: 2px;
+    padding-top: 4px;
     height: 30px;
     width: 140px;
-    font-size: 18px;
-    font-weight: 500;
     color: #9b9b9b;
     border-radius: 0px;
     border: 1px solid #d7dcde;
     background: white;
 }
 
-.personal-page-tab>li.active>a,
-.personal-page-tab>li.active>a:focus,
-.personal-page-tab>li.active>a:hover {
+.personal-page-tab li.active a,
+.personal-page-tab li.active a:focus,
+.personal-page-tab li.active a:hover {
     color:  #63b7e6;
     background-color: white;
 }
-
-.personal-title {
-    font-size:18px;
-    font-family: PingFangSC;
-    color: #4a4a4a;
-    font-weight: 600;
-    margin-bottom:1px;
-}
 .personal-line {
-    width: 700px;
-    height: 0px;
     border: solid 0.5px #4a4a4a;
-    margin: 0px;
+    margin-top: -5px;
+    margin-bottom:-5px;
 }
+
 .form-text {
-	font-size:12px;
-	color: #4a4a4a;
-	margin-top:5px;
+    font-size:12px;
+    color: #4a4a4a;
+    margin-top:5px;
 }
 .personal-changepassword {
     padding-top:10px;
@@ -1338,6 +1313,11 @@ button.close:focus {
     width: 560px;
     height: 45px;
 }
+.guide-page {
+    background-color: #f5f5f9;
+    padding-bottom: 40px;
+    font-size: 20px;
+}
 .guide-group {
     padding-top: 25px;
     padding-bottom: 300px;
@@ -1346,50 +1326,34 @@ button.close:focus {
     background-color: #f5f5f9;
 }
 .guide-intro {
-    padding-top:20px;
+    padding-top:10px;
 }
-.guide-intro>p {
-    text-align: justify; 
-    font-family: .PingFangSC;
-    font-size: 18px;
-    font-weight: 500;
+.guide-intro p {
+    text-align: justify;
     line-height: 1.67;
-    color: #4a4a4a;
 }
 .guide-block {
     margin-top: 60px
 }
 .guide-title1 {
-    font-family: .PingFangSC;
     margin-bottom: 30px;
     text-align: center;
-    font-size: 20px;
     color: #63b7e6;
 }
 .guide-title2 {
-    font-family: .PingFangSC;
-    font-size: 20px;
     font-weight: 600;
-    color: #4a4a4a;
     float:left;
 }
-.guide-content1 {
-    font-family: .PingFangSC;
-    font-size: 20px;
-    color: #4a4a4a;
-}
-.guide-content2 {
-    font-family: .PingFangSC;
-    font-size: 20px;
+.guide-content {
     color: #9b9b9b;
 }
 .guide-btn:focus,
 .guide-btn:hover,
 .guide-btn {
-    font-family: .PingFangSC;
     font-size: 18px;
     text-align: center;
-    color: #ffffff; width: 140px;
+    color: #ffffff;
+    width: 140px;
     height: 40px;
     border-radius: 3px;
     background-color: #63b7e6;
@@ -1496,9 +1460,6 @@ button.close:focus {
     color: #63b7e6;
 }
 
-.personal-page-tab .nav-tabs>li.active>a:focus {
-    border: 0px;
-}
 
 .mydomain {
     top: 3px;
