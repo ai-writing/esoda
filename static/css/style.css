@@ -82,7 +82,7 @@ a {
     z-index: 50;
 }
 
-.navbar-static-top>.container>.navbar-header>.navbar-toggle {
+.navbar-header>.navbar-toggle {
     margin-top: 50px;
 }
 
@@ -91,7 +91,7 @@ a {
     margin-right: 0px;
 }
 
-.navbar-static-top>.container>#navbar.navbar-collapse {
+#navbar.navbar-collapse {
     background-color: rgba(255, 255, 255, 0.9);
     padding-bottom: 10px;
 }
@@ -379,6 +379,9 @@ button.close:focus {
     padding-left: 10px;
     width: 330px;
     height: 32px;
+}
+.alert-normal {
+    width: 330px;
 }
 
 #RegisterForm {
@@ -863,12 +866,13 @@ button.close:focus {
 .result-sidebar>.panel-group>.panel {
     margin-top: 15px;
 }
-.result-sidebar>.panel-group>.panel>.panel-heading {
+
+#HeadingRelated, #HeadingHot {
     margin-bottom: 0px;
     color: #63b7e6;
 }
 
-.result-sidebar>.panel-group>.panel>.panel-collapse {
+#CollapseRelated, #CollapseHot {
     padding-top: 8px;
     padding-bottom: 15px;
 }
