@@ -26,7 +26,10 @@
 {% block script %}
   {% if messages %}
     {% for message in messages %}   
-        <script>toastr.success('{{ message }}');</script>
+      <script>
+        toastr.options = { timeOut: "200"};
+        toastr.success('{{ message }}');
+      </script>
     {% endfor %}
   {% endif %}
 {% endblock %}

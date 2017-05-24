@@ -1225,9 +1225,6 @@ button.close:focus {
 .fieldWrapper ul{
     list-style-type:none;
 }
-.fieldWrapper ul,li{
-    padding:0;
-}
 
 .fieldWrapper input {
   -webkit-appearance: none;

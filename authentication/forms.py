@@ -36,14 +36,14 @@ class RegistrationFormEmailAsUsername(RegistrationFormUniqueEmail):
 
 class FieldSelectForm(forms.Form):
     choice = forms.ChoiceField(widget=forms.RadioSelect,
-                               label=_('Choose target corpus'),
+                               label=_(u'选择目标领域'),
                                error_messages={'required': _("You must choose one field from the list"),
                                                'invalid_choice': _("You must choose one field from the list")})
 
     def __init__(self, *args, **kwargs):
         super(FieldSelectForm, self).__init__(*args, **kwargs)
         # _pipeline = [{'$group': {'_id': '$domain', 'fields': {'$push': {'i': '$_id', 'name': '$name'}}}}]
-        self.fields['choice'].choices = FIELDS
+        self.fields['choice'].choices = FIELD_NAME
 
     def clean_choice(self):
         c = self.cleaned_data['choice']
