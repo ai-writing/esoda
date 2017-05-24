@@ -1256,6 +1256,10 @@ button.close:focus {
     margin-top: 20px;
 }
 
+.toast-success {
+    background-color: #63b7e6;
+}
+
 .personal-page-main {
     padding-top: 45px;
 }

@@ -36,7 +36,7 @@ class RegistrationFormEmailAsUsername(RegistrationFormUniqueEmail):
 
 class FieldSelectForm(forms.Form):
     choice = forms.ChoiceField(widget=forms.RadioSelect,
-                               label=_(u'选择目标领域'),
+                               label=u'选择目标领域',
                                error_messages={'required': _("You must choose one field from the list"),
                                                'invalid_choice': _("You must choose one field from the list")})
 
