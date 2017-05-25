@@ -16,18 +16,19 @@ from common.models import Comment
 
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
-defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
+defaultId = 9
 logger = logging.getLogger(__name__)
 
 
 def get_cids(rid, **kwargs):
-    cids = defaultCids
     if rid:
         user = User.objects.get(id=rid)
         corpus_id = user.userprofile.corpus_id
-        cids = corpus_id2cids(corpus_id)
-        if 'r' in kwargs:
-            kwargs['r']['domain'] = FIELD_NAME[corpus_id - 1][1]  # TODO: translation
+    else:
+        corpus_id = defaultId
+    cids = corpus_id2cids(corpus_id)
+    if 'r' in kwargs:
+        kwargs['r']['domain'] = [i[1] for i in FIELD_NAME if i[0] == corpus_id][0]
     return cids
 
 
