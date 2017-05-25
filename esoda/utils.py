@@ -2,6 +2,11 @@
 from common.mongodb import MONGODB
 from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, UploadRecord
 import requests
+import json
+
+d = {}
+with open('esoda/esconfig/corpus2id.json', 'r') as f:
+    d = json.loads(f.read())
 
 
 def debug_object(o):
@@ -34,6 +39,8 @@ def translate(cn):
 
 
 def corpus_id2cids(corpus_id):
+    if corpus_id in d:
+        return [c['i'].replace('/', '_') for c in d[corpus_id]]
     if corpus_id == 0:
         return ['bnc']
     return [c['_id'].replace('/', '_') for c in MONGODB['dblp']['venues'].find({'field': corpus_id})]
