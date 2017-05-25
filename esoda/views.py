@@ -17,7 +17,6 @@ from common.models import Comment
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
-
 logger = logging.getLogger(__name__)
 
 
@@ -147,6 +146,7 @@ def dict_suggest_view(request):
         logger.exception('Failed to parse Youdao suggest')
     return JsonResponse(r)
 
+
 def guide_view(request):
     info = {
     }
@@ -164,7 +164,7 @@ def get_usage_list(t, ref, i, dt, cids):
 
     if '*' not in t:
         d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-        cnt = EsAdaptor.count(nt, d, cids)
+        cnt = EsAdaptor.count(nt, d, '_all', cids)
         usageList.append({
             'ref': ' '.join(ref),
             'content': pat % (t[i], t[i + 1]),
@@ -174,7 +174,7 @@ def get_usage_list(t, ref, i, dt, cids):
         if k[0] != '*' or k[1] != '*':
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
 
-            lst = EsAdaptor.group(nt, d, cids)
+            lst = EsAdaptor.group(nt, d, '_all', cids)
             try:
                 ret = []
                 for j in lst['aggregations']['d']['d']['d']['buckets']:
@@ -201,7 +201,7 @@ def get_collocations(clist, qt, i, cids):
     t, d = list(qt), (qt[i], qt[i + 1])
     del t[i]
     del t[i]
-    resList = EsAdaptor.collocation(t, d, cids)
+    resList = EsAdaptor.collocation(t, d, '_all', cids)
     t = list(t)
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
@@ -239,7 +239,7 @@ def sentence_query(t, ref, i, dt, cids):
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(t, d, ref, cids, 50)
+    res = EsAdaptor.search(t, d, ref, '_all', cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}

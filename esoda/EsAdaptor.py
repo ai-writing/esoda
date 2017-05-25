@@ -8,42 +8,75 @@ logger = logging.getLogger(__name__)
 class EsAdaptor():
     es = Elasticsearch(settings.ELASTICSEARCH_HOST, timeout=15)
     logger.info('Connected to Elasticsearch: %s', es.info())
-    index = settings.ELASTICSEARCH_INDEX
+    # index = settings.ELASTICSEARCH_INDEX
     # doctype = settings.ELASTICSEARCH_DOCTYPE
 
     @staticmethod
-    def build():
-        if not EsAdaptor.es.indices.exists(index=EsAdaptor.index):
-            EsAdaptor.es.indices.create(index=EsAdaptor.index)
-            mappings = {
-                '_default_': {
+    def build(db):
+        if not EsAdaptor.es.indices.exists(index=db):
+            EsAdaptor.es.indices.create(index=db)
+        mappings = {
+            "mappings": {
+                "_default_": {
+                    "_all": {"enabled": False},
                     "properties": {
-                        "p": {"type": "integer"},
+                        "p": {"type": "keyword"},
                         "c": {"type": "keyword"},
+                        "a": {
+                            "type": "byte",
+                            "index": False
+                        },
+                        "v": {
+                            "type": "byte",
+                            "index": False
+                        },
+                        "y": {
+                            "type": "short",
+                            "index": False
+                        },
                         "t": {
                             "type": "nested",
                             "properties": {
-                                "t": {"type": "keyword"},
+                                "t": {
+                                    "type": "keyword",
+                                    "index": False
+                                },
                                 "l": {"type": "keyword"}
                             }
                         },
                         "d": {
                             "type": "nested",
                             "properties": {
-                                "dt": {"type": "keyword"},
-                                "l1": {"type": "keyword"},
-                                "l2": {"type": "keyword"},
-                                "i1": {"type": "keyword"},
-                                "i2": {"type": "keyword"}
+                                "dt": {
+                                    "type": "keyword",
+                                    "eager_global_ordinals": True
+                                },
+                                "l1": {
+                                    "type": "keyword",
+                                    "eager_global_ordinals": True
+                                },
+                                "l2": {
+                                    "type": "keyword",
+                                    "eager_global_ordinals": True
+                                },
+                                "i1": {
+                                    "type": "keyword",
+                                    "index": False
+                                },
+                                "i2": {
+                                    "type": "keyword",
+                                    "index": False
+                                }
                             }
                         }
                     }
                 }
             }
-            EsAdaptor.es.indices.put_mapping(index=EsAdaptor.index, body=mappings)
+        }
+        EsAdaptor.es.indices.put_mapping(index=db, body=mappings)
 
     @staticmethod
-    def search(t, d, ref, cids, sp=10):
+    def search(t, d, ref, dbs, cids, sp=10):
         mst = []
         for tt in t:
             mst.append({
@@ -110,12 +143,12 @@ class EsAdaptor():
                 }
             }
         }
-        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
         return res['hits']
 
     @staticmethod
-    def collocation(t, d, cids, sp=10):
+    def collocation(t, d, dbs, cids, sp=10):
         d = [i for i in d if i != '*']
         if not d or len(d) > 2:
             return {}
@@ -180,7 +213,7 @@ class EsAdaptor():
                         'must': ddq
                     }
                 }
-                ret += EsAdaptor.__checkResult(action, cids)
+                ret += EsAdaptor.__checkResult(action, dbs, cids)
         else:
             ret = []
             for ps in ('d.l1', 'd.l2'):
@@ -192,13 +225,13 @@ class EsAdaptor():
                     }
                 }
                 action['aggs']['d']['aggs']['d']['filter'] = ddq
-                ret += EsAdaptor.__checkResult(action, cids)
+                ret += EsAdaptor.__checkResult(action, dbs, cids)
 
         return ret
 
     @staticmethod
-    def __checkResult(action, cids):
-        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
+    def __checkResult(action, dbs, cids):
+        res = EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
         ret = [False] * 4
         for agg in res['aggregations']['d']['d']['d']['buckets']:
@@ -206,7 +239,7 @@ class EsAdaptor():
         return ret
 
     @staticmethod
-    def group(t, d, cids, sp=10):
+    def group(t, d, dbs, cids, sp=10):
         if not d or len(d) > 1:
             return {}
 
@@ -282,12 +315,12 @@ class EsAdaptor():
         }
         # import json
         # print json.dumps(action, indent=2)
-        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
         return res
 
     @staticmethod
-    def count(t, d, cids):
+    def count(t, d, dbs, cids):
         mst = []
         for tt in t:
             mst.append({
@@ -326,6 +359,6 @@ class EsAdaptor():
         }
         # import json
         # print json.dumps(action, indent=2)
-        res = EsAdaptor.es.search(index=EsAdaptor.index, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total'])
         return res
