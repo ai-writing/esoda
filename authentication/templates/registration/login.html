@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 <div class="modal-dialog modal-sm modal-login-sm">
-  <div class="modal-content modal-login-content">
+  <div class="modal-content">
     <div class="modal-header modal-login-header">
       <img src="{% static 'img/logo.png' %}" class="modal-logo">
       <h4>登陆易搜搭，开启英文写作新体验</h4>
@@ -23,7 +23,7 @@
         {% endif %}
 
         {% with debug|yesno:'testtest,,' as default_password %}
-          {% render_field form.password class="form-control form-login" placeholder="密码" value=default_password %}
+          {% render_field form.password class="form-control" placeholder="密码" value=default_password %}
         {% endwith %}
         {% if form.password.errors %}
           <div class="alert alert-danger alert-dismissible" role="alert">
@@ -40,17 +40,15 @@
         {% endif %}
 
         <input type="hidden" name="next" value="{{ next }}" />
-        <span class="form-login center-block">
-          <button type="submit" class="btn btn-login">登入易搜搭</button>
-        </span>
+        <input class="btn btn-primary" type="submit" value="登入易搜搭" />
       </form>
-    </div>
-    <div class="modal-footer modal-login-footer center-block">
-      <div class="modal-forgot-password">
-        <p><a href="{% url 'auth_password_reset' %}">忘记密码？</a></p>
-      </div>
-      <div class="modal-register">
-        <p><a href="{% url 'registration_register' %}">注册，加入易搜搭</a></p>
+      <div class="modal-footer modal-login-footer center-block">
+        <div class="modal-forgot-password">
+          <p><a href="{% url 'auth_password_reset' %}">忘记密码？</a></p>
+        </div>
+        <div class="modal-register">
+          <p><a href="{% url 'registration_register' %}">注册，加入易搜搭</a></p>
+        </div>
       </div>
     </div>
   </div>

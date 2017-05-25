@@ -1,3 +1,4 @@
+# This Python file uses the following encoding: utf-8
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from forms import FieldSelectForm
@@ -19,7 +20,7 @@ def domain_view(request):
             if corpus_id != cid:  # need to update fid & cids
                 user.userprofile.corpus_id = cid
                 user.userprofile.save()
-            messages.success(request, _('Corpus update successfully'))
+            messages.success(request, u'领域更新成功')
             # return redirect(reverse('field_select'))
     else:
         form = FieldSelectForm(initial={'choice': corpus_id})

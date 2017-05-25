@@ -202,8 +202,11 @@
   <div class="back-message section-blue">
     <div class="container container-message">
       <div class="row">
-        <div class="col-xs-6 xs-font-size-18">
-          为我们的工作点赞
+        <div class="col-sm-1 hidden-xs">
+          <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
+        </div>
+        <div class="col-xs-6">
+          为我们的工作点赞<br><br>留言帮助我们改进易搜搭
         </div>
         <div class="col-xs-6 col-message-right hidden">
           <span id="CountOfFavorite">{{ count_of_favorite }}</span>
@@ -211,13 +214,9 @@
           <a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>
         </div>
       </div>
-      <div class="message-title xs-font-size-18">留言帮助我们改进易搜搭</div>
-      <form id="MsgForm" class="row message-content" method="post" action="{% url 'comment' %}">
-        <div class="col-sm-2 hidden-xs">
-          <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
-        </div>
+      <form id="MsgForm" class="message-content" method="post" action="{% url 'comment' %}">
         {% csrf_token %}
-        <div class="col-sm-10">
+        <div>
           <textarea form="MsgForm" name="message" class="message-box" id="UsrMsgBox"></textarea>
         </div>
         <button type="submit" id="MessageBtn" class="btn btn-message col-btn">留言</button>

@@ -4,12 +4,10 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 
-import xml.sax
-import json
-import requests
 import time
 
 from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids
+from .youdao_query import youdao_suggest, youdao_search
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
@@ -18,19 +16,19 @@ from common.models import Comment
 
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
-defaultCids = ["ecscw", "uist", "chi", "its", "iui", "hci", "ubicomp", "cscw", "acm_trans_comput_hum_interact_tochi_", "user_model_user_adapt_interact_umuai_", "int_j_hum_comput_stud_ijmms_", "mobile_hci"]
-
+defaultId = 9
 logger = logging.getLogger(__name__)
 
 
 def get_cids(rid, **kwargs):
-    cids = defaultCids
     if rid:
         user = User.objects.get(id=rid)
         corpus_id = user.userprofile.corpus_id
-        cids = corpus_id2cids(corpus_id)
-        if 'r' in kwargs:
-            kwargs['r']['domain'] = FIELD_NAME[corpus_id - 1][1]  # TODO: translation
+    else:
+        corpus_id = defaultId
+    cids = corpus_id2cids(corpus_id)
+    if 'r' in kwargs:
+        kwargs['r']['domain'] = [i[1] for i in FIELD_NAME if i[0] == corpus_id][0]
     return cids
 
 
@@ -43,16 +41,15 @@ def get_feedback():
 
 
 def esoda_view(request):
-    q = request.GET.get('q', '').strip()
+    q0 = request.GET.get('q', '').strip()
 
     # No query - render index.html
-    if not q:
+    if not q0:
         info = get_feedback()
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
-    q0 = q
-    q = translate_cn(q)
+    q = translate_cn(q0)
 
     r = {
         'domain': u'人机交互',
@@ -73,11 +70,10 @@ def esoda_view(request):
     cids = get_cids(request.user.id, r=r)
 
     qt, ref = lemmatize(q)
-    mqt = list(qt)
-    r['collocationList'] = collocation_list(mqt, cids)
+    r['collocationList'] = collocation_list(qt, cids)
 
     if len(qt) == 1:
-        syn = list(synonyms(qt[0]))
+        syn = synonyms(qt[0])
         if len(syn) > 10:
             syn = syn[0:10]
         r['synonymous'] = syn
@@ -95,31 +91,17 @@ def esoda_view(request):
         ]
     }
 
-    qt = ' '.join(qt)
-    ref = ' '.join(ref)
     info = {
         'r': r,
-        'q': qt,
+        'q': ' '.join(qt),
         'q0': q0,
-        'ref': ref,
+        'ref': ' '.join(ref),
         'suggestion': suggestion,
+        'dictionary': youdao_search(q0, ' '.join(qt)),
+        'cids': cids,
     }
 
-    YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
-    jsonString = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).text
-    jsonObj = json.loads(jsonString.encode('utf-8'))
-
-    if 'simple' in jsonObj and 'ec' in jsonObj:
-        dictionary = {
-            'word': q,
-            'english': jsonObj['simple']['word'][0].get('ukphone', ''),
-            'american': jsonObj['simple']['word'][0].get('usphone', ''),
-            'explanationList': []
-        }
-        for explain in jsonObj['ec']['word'][0]['trs']:
-            dictionary['explanationList'].append(explain['tr'][0]['l']['i'][0])
-        info['dictionary'] = dictionary
-
+    logger.info('%s %s', request, info)
     return render(request, 'esoda/result.html', info)
 
 
@@ -152,49 +134,11 @@ def usagelist_view(request):
     return render(request, 'esoda/collocation_result.html', r)
 
 
-class DictHandler(xml.sax.ContentHandler):
-    def __init__(self):
-        self.suggest = []
-        self.CurNum = 0
-        self.CurTag = ''
-        self.category = ''
-
-    def startElement(self, tag, attributes):
-        self.CurTag = tag
-        if tag == 'item':
-            self.suggest.append({})
-
-    def endElement(self, tag):
-        if tag == 'item':
-            self.suggest[self.CurNum]['category'] = self.category
-            self.category = ''
-            self.CurNum += 1
-        self.CurTag = ''
-
-    def characters(self, content):
-        if self.CurTag == 'title':
-            self.suggest[self.CurNum]['label'] = content
-            if content.find(' ') < 0:
-                self.category = 'Words'
-            else:
-                self.category = 'Expressions'
-        elif self.CurTag == 'explain':
-            self.suggest[self.CurNum]['desc'] = content
-
-YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
-
-
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {}
     try:
-        xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=10).text
-        parser = xml.sax.make_parser()
-        parser.setFeature(xml.sax.handler.feature_namespaces, 0)
-
-        Handler = DictHandler()
-        xml.sax.parseString(xmlstring.encode('utf-8'), Handler)
-        r['suggest'] = Handler.suggest
+        r = youdao_suggest(q)
     except Exception:
         logger.exception('Failed to parse Youdao suggest')
     return JsonResponse(r)
@@ -217,7 +161,7 @@ def get_usage_list(t, ref, i, dt, cids):
 
     if '*' not in t:
         d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-        cnt = EsAdaptor.count(nt, d, cids)
+        cnt = EsAdaptor.count(nt, d, '_all', cids)
         usageList.append({
             'ref': ' '.join(ref),
             'content': pat % (t[i], t[i + 1]),
@@ -227,7 +171,7 @@ def get_usage_list(t, ref, i, dt, cids):
         if k[0] != '*' or k[1] != '*':
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
 
-            lst = EsAdaptor.group(nt, d, cids)
+            lst = EsAdaptor.group(nt, d, '_all', cids)
             try:
                 ret = []
                 for j in lst['aggregations']['d']['d']['d']['buckets']:
@@ -254,7 +198,7 @@ def get_collocations(clist, qt, i, cids):
     t, d = list(qt), (qt[i], qt[i + 1])
     del t[i]
     del t[i]
-    resList = EsAdaptor.collocation(t, d, cids)
+    resList = EsAdaptor.collocation(t, d, '_all', cids)
     t = list(t)
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
@@ -271,11 +215,12 @@ def get_collocations(clist, qt, i, cids):
 
 
 def collocation_list(mqt, cids):
+    mqt = list(mqt)
     clist = []
     if len(mqt) == 1:
         mqt.append('*')
     for i in range(len(mqt) - 1):
-        get_collocations(clist, list(mqt), i, cids)
+        get_collocations(clist, mqt, i, cids)
     '''
     for i in range(len(mqt)):
         qt = list(mqt)
@@ -292,7 +237,7 @@ def sentence_query(t, ref, i, dt, cids):
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(t, d, ref, cids, 50)
+    res = EsAdaptor.search(t, d, ref, '_all', cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}

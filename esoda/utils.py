@@ -2,6 +2,11 @@
 from common.mongodb import MONGODB
 from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, UploadRecord
 import requests
+import json
+
+d = {}
+with open('esoda/esconfig/corpus2id.json', 'r') as f:
+    d = json.loads(f.read())
 
 
 def debug_object(o):
@@ -16,6 +21,9 @@ def is_cn_char(c):
 
 def is_cn(s):
     return reduce(lambda x, y: x and y, [is_cn_char(c) for c in s], True)
+
+def has_cn(s):
+    return reduce(lambda x, y: x or y, [is_cn_char(c) for c in s], False)
 
 
 def translate(cn):
@@ -34,7 +42,11 @@ def translate(cn):
 
 
 def corpus_id2cids(corpus_id):
-    return [c['_id'] for c in MONGODB['common']['corpora'].find({'field': corpus_id, 'status': 2})]
+    if corpus_id in d:
+        return [c['i'].replace('/', '_') for c in d[corpus_id]]
+    if corpus_id == 0:
+        return ['bnc']
+    return [c['_id'].replace('/', '_') for c in MONGODB['dblp']['venues'].find({'field': corpus_id})]
 
 
 def translate_cn(q):
@@ -56,25 +68,10 @@ def notstar(p, q):
     return p if p != '*' else q
 
 
-def gen_source_url(p):
-    year = p.get('year')
-    title = p.get('title', '')
-    authList = p.get('authors', '').split(';')
-    conference = p.get('venue', '/').split('/')[-1].upper()
+def generate_source(year, title, authList, conference):
     source = ''
-    '''
-    if v:
-        conference = v.get('shortName', v['fullName'])
-        if year and len(year) == 4:
-            conference += "'" + year[2:4]
-        source += conference + '. '
-    '''
-    if isinstance(year, str):
-        if len(year) == 4:
-            conference += "'" + year[2:4]
-    elif isinstance(year, int):
-        # assert: should always be this case
-        conference += "'" + str(year % 100)
+    # assert: should always be this case
+    conference += "'" + str(year % 100)
     source += conference + '. '
 
     if authList:
@@ -86,6 +83,15 @@ def gen_source_url(p):
             authorShort += '.'
         source += authorShort
     source += ' ' + title
+    return source
+
+
+def gen_source_url(p):
+    year = int(p.get('year'))
+    title = p.get('title', '')
+    authList = p.get('authors', '').split(';')
+    conference = p.get('venue', '/').split('/')[-1].upper()
+    source = generate_source(year, title, authList, conference)
     return {'source': source, 'url': p['ee']}
 
 

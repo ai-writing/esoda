@@ -17,7 +17,7 @@
           <div>
 
             <div class="result-warning">
-              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q0 }}</span>"结果共<span id="CountUsage"></span>句例句，在其他<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'domain' %}" {% endif %}>个人领域</a>中搜索
+              当前个人领域为"<span id="SearchDomain">{{ r.domain|upper }}</span>"，结果共<span id="CountUsage"></span>句例句，在其他<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'domain' %}" {% endif %}>个人领域</a>中搜索
             </div>
 
             <div class="panel-group" role="tablist" aria-multiselectable="true">
@@ -109,10 +109,12 @@
                   </div>
                 </div>
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
+                  <ul class="nav nav-tabs nav-tabs-collocation left-float" id="CollocationTab0" role="tablist">
                     <li role="presentation" class="active">
                         <a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a>
                     </li>
+                  </ul>
+                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
                     {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
                     <li role="presentation">
@@ -212,6 +214,7 @@
       $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
         if ($(this).attr('state') == 'selected') return;
         e.preventDefault();
+        $("#CollocationTab0 li").removeClass('active');
         $("#ExampleEnd").hide();
         $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
 
@@ -243,6 +246,7 @@
 
       $('#CollapseColloc').on('click', '.not-limited', function (e) {
         e.preventDefault();
+        $("#CollocationTab li").removeClass('active');
         $("#ExampleEnd").hide();
         $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
 

@@ -6,7 +6,7 @@ html {
 body {
     font-family: PingFangSC-Regular, Microsoft Yahei;
     /* Margin bottom by footer height */
-    margin-bottom: 306px;
+    margin-bottom: 280px;
 }
 
 a {
@@ -18,11 +18,52 @@ a {
   .container {
     width: 980px;
   }
+    #SearchBox{
+        width: 496px;
+        height: 60px;
+    }
+    .input-group-lg>.input-group-btn>.btn {
+        width: 144px; 
+        height: 60px;
+        padding-top: 8px;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 990px) {
+    #SearchBox{
+        width: 496px;
+        height: 60px;
+    }
+    .input-group-lg>.input-group-btn>.btn {
+        width: 144px; 
+        height: 60px;
+        padding-top: 8px;
+    }
+}
+
+@media (max-width: 990px) and (min-width: 767px) {
+    #SearchBox{
+        width: 420px;
+        height: 60px;
+    }
+    .input-group-lg>.input-group-btn>.btn {
+        width: 120px; 
+        height: 60px;
+        padding-top: 8px;
+    }
 }
 
 @media (max-width: 767px) {
     .fix-right-xs {
         padding-left: 85%;
+    }
+    #SearchBox{
+        height: 60px;
+    }
+    .input-group-lg>.input-group-btn>.btn {
+        width: 100%;
+        height: 60px;
+        padding-top: 8px;
     }
 }
 
@@ -33,9 +74,19 @@ a {
 .footer {
     position: absolute;
     bottom: 0;
+    /*padding-bottom: 35px;*/
     width: 100%;
-    /*height: 260px;*/
+    /* Fixed height for body margin */
+    height: 280px;
     background: white;
+    color: #9b9b9b;
+    font-size: 18px;
+}
+
+.footer hr {
+    border: 1px solid #9b9b9b;
+    margin-top: 19px;
+    margin-bottom: 25px;
 }
 
 
@@ -69,20 +120,15 @@ a {
 
 .navbar-brand img {
     width: 137px;
-    margin-top: 32px;
+    margin-top: 16px;
 }
 
-
-#SearchBox{
-    width: 496px;
-    height: 60px;
-}
 
 .navbar-static-top {
     z-index: 50;
 }
 
-.navbar-static-top>.container>.navbar-header>.navbar-toggle {
+.navbar-header>.navbar-toggle {
     margin-top: 50px;
 }
 
@@ -91,7 +137,7 @@ a {
     margin-right: 0px;
 }
 
-.navbar-static-top>.container>#navbar.navbar-collapse {
+#navbar.navbar-collapse {
     background-color: rgba(255, 255, 255, 0.9);
     padding-bottom: 10px;
 }
@@ -163,6 +209,7 @@ a {
 	color: white;
 	width: 210px;
 	border-radius: 3px;
+    border: none;
 }
 
 .btn-info {
@@ -171,7 +218,9 @@ a {
 }
 
 .btn-info:hover, .btn-info:active,
-.btn-info:focus, .btn-info:active:focus {
+.btn-info:focus, .btn-info:active:focus,
+.btn-message:hover, .btn-message:active,
+.btn-message:focus, .btn-message:active:focus {
     background-color: #fff !important;
     border: none;
     border-left: 1px solid #63B7E6;
@@ -187,10 +236,10 @@ a {
 }
 
 .btn-message {
-    margin-top: 13px;
+    margin-top: 15px;
     border-radius: 5px;
-    border: 2px solid #fff;
-    font-size: 18px;
+    border: 1px solid #fff;
+    font-size: 14px;
 }
 
 .menu-search {
@@ -255,19 +304,8 @@ a {
 }
 
 .modal-login-sm {
-    width: 400px;
-    margin: 200px auto;
-}
-
-.modal-register-sm {
-    width: 400px;
-    margin: 150px auto;
-}
-
-.modal-login-content {
-    border-radius: 5px;
     width: 445px;
-    height: 416px;
+    margin: 200px auto;
 }
 
 .modal-logo {
@@ -291,14 +329,13 @@ a {
     padding: 0px 20px;
 }
 
-.modal-body>.form-horizonal {
+.modal-body .form-horizonal {
     padding: 0px 15px;
 }
 
 .modal-login-footer {
     font-size: 12px;
     border-top: none;
-    width: 384px;
 }
 
 .modal-register-header {
@@ -331,13 +368,14 @@ button.close:focus {
 }
 
 .alert-danger {
+    margin-top: 15px;
+    margin-bottom: 0;
+    padding: 2px 3px;
     background-color: #f2dede;
     border: solid 0.5px #eed3d7;
     border-radius: 0px;
     color: #b94a48;
     font-size: 12px;
-    padding: 2px 3px;
-    margin-bottom: 15px;
 }
 
 .alert-success {
@@ -355,26 +393,24 @@ button.close:focus {
     color: #9b9b9b;
 }
 
-.form-login, .form-register {
-    margin: 10px auto;
+#LoginForm .form-control,
+#RegisterFrom .form-control {
+    margin-top: 15px;
+    padding: 10px 12px;
     font-size: 18px;
     text-align: center;
     height: 50px;
-    width: 354px;
     color: #242424;
 }
 
-.form-login .form-control {
-    padding: 10px 12px;
-}
-
-.form-login>.btn {
+#LoginForm .btn-primary {
+    margin-top: 15px;
     font-size: 20px;
     padding: 10px 12px;
-    width: 354px;
+    width: 100%;
 }
 
-.form-register>.btn {
+#RegisterFrom .btn-primary {
     font-size: 16px;
     padding: 10px 12px;
     color: #fff;
@@ -392,6 +428,9 @@ button.close:focus {
     width: 330px;
     height: 32px;
 }
+.alert-normal {
+    width: 330px;
+}
 
 #RegisterForm {
     padding-bottom: 20px;
@@ -400,12 +439,6 @@ button.close:focus {
 .input-group-lg>.form-control,
 .input-group-lg>.input-group-btn>.btn {
     border-radius: 1.5px;
-}
-
-.input-group-lg>.input-group-btn>.btn {
-    width: 144px;
-    height: 60px;
-    padding-top: 8px;
 }
 
 .glyphicon-search {
@@ -465,17 +498,10 @@ button.close:focus {
     margin-bottom: 45px;
 }
 
-.container-footer {
-	margin-top: 40px;
-	padding-bottom: 35px;
-	color: #9b9b9b;
-	font-size: 18px;
-}
-
 .container-message {
     padding-top: 40px;
     padding-bottom: 30px;
-    font-size: 24px;
+    font-size: 16px;
     color: #fff;
 }
 
@@ -487,10 +513,6 @@ button.close:focus {
 .glyphicon-star-empty {
     vertical-align: sub;
 }
-.message-title {
-    margin-top: 15px;
-    margin-bottom: 34px;
-}
 
 .message-content {
     margin-top: 15px;
@@ -501,14 +523,13 @@ button.close:focus {
     height: 82px;
     text-align: left;
     color: #000;
-    width: 101.8%;
+    width: 100%;
     resize: none;
     overflow-y: scroll;
     border-color: white;
 }
 
 #MessageBtn {
-    margin-top: 8px;
     width: 84px;
     height: 37px;
     padding-top: 4px;
@@ -761,7 +782,7 @@ button.close:focus {
     font-size: 14px;
 }
 
-.footer-link {
+.footer a {
     color: #9b9b9b;
     font-family: PingFangSC-Light, Microsoft Yahei;
 }
@@ -789,7 +810,7 @@ button.close:focus {
 }
 
 .message-notepad {
-    padding-left: 30%;
+    height: 70px;
 }
 
 #FeedbackTab {
@@ -814,8 +835,7 @@ button.close:focus {
 
 #ResultItem {
     font-size: 18px;
-    font-family: PingFangSC, Microsoft Yahei;
-    font-weight: 700;
+    font-weight: bold;
     text-align: center;
 }
 
@@ -824,9 +844,8 @@ button.close:focus {
     padding-top: 10px;
 }
 
-#CountUsage {
-    font-family: PingFangSC, Microsoft Yahei;
-    font-weight: 700;
+#SearchDomain, #CountUsage {
+    font-weight: bold;
     color: #666;
 }
 
@@ -862,8 +881,8 @@ button.close:focus {
 }
 
 .result-page {
-	background-color: #f5f5f9;
-	padding-bottom: 40px;
+    background-color: #f5f5f9;
+    padding-bottom: 40px;
 }
 
 .result-sidebar {
@@ -875,12 +894,13 @@ button.close:focus {
 .result-sidebar>.panel-group>.panel {
     margin-top: 15px;
 }
-.result-sidebar>.panel-group>.panel>.panel-heading {
-	margin-bottom: 0px;
-	color: #63b7e6;
+
+#HeadingRelated, #HeadingHot {
+    margin-bottom: 0px;
+    color: #63b7e6;
 }
 
-.result-sidebar>.panel-group>.panel>.panel-collapse {
+#CollapseRelated, #CollapseHot {
     padding-top: 8px;
     padding-bottom: 15px;
 }
@@ -1074,10 +1094,10 @@ button.close:focus {
 }
 
 .result-warning {
-	padding: 10px 0px;
-	color: #4a4a4a;
-	font-family: PingFangSC-Light, Microsoft Yahei;
-	font-weight: 200;
+    padding: 10px 0px;
+    color: #4a4a4a;
+    font-family: PingFangSC-Light, Microsoft Yahei;
+    font-weight: 200;
 }
 
 .result-table-cell {
@@ -1187,8 +1207,8 @@ button.close:focus {
 }
 
 .back-to-top-cell {
-	left: 83%;
-	position: relative;
+    left: 83%;
+    position: relative;
 }
 
 .back-to-top-affix.affix {
@@ -1201,11 +1221,11 @@ button.close:focus {
 }
 
 .back-to-top {
-	background-color: #fff;
-	border: solid 1px #ddd;
-	opacity: 0.5;
-	color: #787878;
-	width: 82px;
+    background-color: #fff;
+    border: solid 1px #ddd;
+    opacity: 0.5;
+    color: #787878;
+    width: 82px;
 }
 
 
@@ -1235,20 +1255,11 @@ button.close:focus {
 }
 
 .fieldWrapper ul{
-    /*font-size: 100px;*/
     list-style-type:none;
 }
 
-.fieldWrapper label{
-    font-size: 14px;
-}
-
-.fieldWrapper ul,li{
-    padding:0;
-    margin:0;
-}
 .fieldWrapper input {
-  -webkit-appearance: none; 
+  -webkit-appearance: none;
   width: 14px;
   height: 14px;
   cursor: pointer;
@@ -1261,70 +1272,58 @@ button.close:focus {
   -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
     -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
   border-radius: 6px;
+  background-position: 0 0;
 }
 .fieldWrapper input:active {
   -webkit-transform: scale(1.5);
   -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
   border-radius: 6px;
 }
-
 .fieldWrapper input,
 .fieldWrapper input:active {
   background-position: 0 14px;
 }
-.fieldWrapper input:checked {
-  background-position: 0 0;
-}
-.fieldWrapper input:checked ~ .fieldWrapper input,
-.fieldWrapper input:checked ~ .fieldWrapper input:active {
-  background-position: 0 14px;
-}
-.field-select-btn:focus,
-.field-select-btn:hover,
+
 .field-select-btn {
-	padding-top:5px;
+    margin-top: 20px;
+}
+
+.toast-success {
+    background-color: #63b7e6;
+}
+.toast-success a {
+    text-decoration: underline;
 }
 
 .personal-page-main {
     padding-top: 45px;
 }
-
 .personal-page-main .nav-pills a {
-    padding-top: 2px;
+    padding-top: 4px;
     height: 30px;
     width: 140px;
-    font-size: 18px;
-    font-weight: 500;
     color: #9b9b9b;
     border-radius: 0px;
     border: 1px solid #d7dcde;
     background: white;
 }
 
-.personal-page-tab>li.active>a,
-.personal-page-tab>li.active>a:focus,
-.personal-page-tab>li.active>a:hover {
+.personal-page-tab li.active a,
+.personal-page-tab li.active a:focus,
+.personal-page-tab li.active a:hover {
     color:  #63b7e6;
     background-color: white;
 }
-
-.personal-title {
-    font-size:18px;
-    font-family: PingFangSC;
-    color: #4a4a4a;
-    font-weight: 600;
-    margin-bottom:1px;
-}
 .personal-line {
-    width: 700px;
-    height: 0px;
     border: solid 0.5px #4a4a4a;
-    margin: 0px;
+    margin-top: -5px;
+    margin-bottom:-5px;
 }
+
 .form-text {
-	font-size:12px;
-	color: #4a4a4a;
-	margin-top:5px;
+    font-size:12px;
+    color: #4a4a4a;
+    margin-top:5px;
 }
 .personal-changepassword {
     padding-top:10px;
@@ -1350,6 +1349,11 @@ button.close:focus {
     width: 560px;
     height: 45px;
 }
+.guide-page {
+    background-color: #f5f5f9;
+    padding-bottom: 40px;
+    font-size: 20px;
+}
 .guide-group {
     padding-top: 25px;
     padding-bottom: 300px;
@@ -1358,50 +1362,34 @@ button.close:focus {
     background-color: #f5f5f9;
 }
 .guide-intro {
-    padding-top:20px;
+    padding-top:10px;
 }
-.guide-intro>p {
-    text-align: justify; 
-    font-family: .PingFangSC;
-    font-size: 18px;
-    font-weight: 500;
+.guide-intro p {
+    text-align: justify;
     line-height: 1.67;
-    color: #4a4a4a;
 }
 .guide-block {
     margin-top: 60px
 }
 .guide-title1 {
-    font-family: .PingFangSC;
     margin-bottom: 30px;
     text-align: center;
-    font-size: 20px;
     color: #63b7e6;
 }
 .guide-title2 {
-    font-family: .PingFangSC;
-    font-size: 20px;
     font-weight: 600;
-    color: #4a4a4a;
     float:left;
 }
-.guide-content1 {
-    font-family: .PingFangSC;
-    font-size: 20px;
-    color: #4a4a4a;
-}
-.guide-content2 {
-    font-family: .PingFangSC;
-    font-size: 20px;
+.guide-content {
     color: #9b9b9b;
 }
 .guide-btn:focus,
 .guide-btn:hover,
 .guide-btn {
-    font-family: .PingFangSC;
     font-size: 18px;
     text-align: center;
-    color: #ffffff; width: 140px;
+    color: #ffffff;
+    width: 140px;
     height: 40px;
     border-radius: 3px;
     background-color: #63b7e6;
@@ -1437,10 +1425,6 @@ button.close:focus {
 
 
 @media (max-width: 768px) {
-  .xs-font-size-18 {
-    font-size: 18px;
-  }
-
   .xs-left-align {
     text-align: left;
   }
@@ -1470,10 +1454,6 @@ button.close:focus {
     margin-top: 50px;
     margin-bottom: 50px;
     font-size: 24px;
-}
-
-#SearchKeyWord {
-    color: #63b7e6;
 }
 
 .welback {
@@ -1508,9 +1488,6 @@ button.close:focus {
     color: #63b7e6;
 }
 
-.personal-page-tab .nav-tabs>li.active>a:focus {
-    border: 0px;
-}
 
 .mydomain {
     top: 3px;

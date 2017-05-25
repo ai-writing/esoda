@@ -1,8 +1,8 @@
-{% load static %}
-{% load i18n %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,8 +23,8 @@
     <link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">    
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     {% block head %}{% endblock %}
   </head>
 
@@ -55,17 +55,17 @@
                 <input type="text" id="SearchBox" class="navbar-search-box form-control result-search" placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}">
               </div>
             </form>
-            {% if not user.is_authenticated %}
+          {% if not user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right result-login">
               <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请登录</a></li>
             </ul>
-            {% else %}
+          {% else %}
             <ul class="nav navbar-nav navbar-right welback">
               <li><a href="{% url 'auth_password_change' %}"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
               <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
               <li><a href="{% url 'auth_logout' %}">登出</a></li>
             </ul>
-            {% endif %}
+          {% endif %}
           </div><!--/.navbar-collapse -->
         </div>
       </nav>
@@ -76,22 +76,30 @@
     {% block content %}{% endblock %}
 
     <footer class="footer">
-      <div class="container container-footer">
+      <div class="container">
+        <hr>
         <div class="row">
           <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">联系我们</a></p>
+            <p><a href="#">联系我们</a></p>
           </div>
           <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">PCG工作室</a></p>
+            <p><a href="#">PCG工作室</a></p>
           </div>
           <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">我们的团队</a></p>
+            <p><a href="#">我们的团队</a></p>
           </div>
           <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">版权声明</a></p>
+            <p><a href="#">版权声明</a></p>
           </div>
           <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#" class="footer-link">商业合作</a></p>
+            <p><a href="#">商业合作</a></p>
+          </div>
+          <div class="col-xs-4 col-sm-3 col-md-2">
+          {% if LANGUAGE_CODE == "zh-hans"%}
+            <p><a href="#">语言：简体中文</a></p>
+          {% elif LANGUAGE_CODE == "en-us" or LANGUAGE_CODE == "en" %}
+            <p><a href="#">Language: English</a></p>
+          {% endif %}
           </div>
         </div>
         <div class="row footer-shares">
@@ -100,10 +108,10 @@
             <p>专业英文写作助手</p>
           </div>
           <div class="col-sm-6 right-align xs-left-align xs-margin-bottom">
-            <a href="#"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
-            <a href="#"><img class="shares" src="{% static 'img/wechat_F.svg' %}"></a>
-            <a href="#"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
-            <a href="#"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
+            <a href="#" class="share-a"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
+            <a href="#" class="share-a"><img class="shares wechat-share" data-toggle="popover" data-placement="bottom" title="微信扫一扫：" data-content="<div class='wechat-qr'></div>" data-html="true" data-trigger="hover focus" src="{% static 'img/wechat_F.svg' %}"></a>
+            <a href="#" class="share-a"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
+            <a href="#" class="share-a"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
           </div>
         </div>
         <p class="copyright">Copyright &copy; 2017 ESODA.INC All rights reserved.</p>
@@ -138,10 +146,16 @@
   {% endif %}
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui-modified.js' %}"></script>
     <script src="{% static 'js/esoda-main.js' %}"></script>
     <script type="text/javascript">
     $(document).ready(function () {
+      toastr.options = {
+        "closeButton": true,
+        "positionClass": "toast-top-center"
+      };
+    {% if not user.is_authenticated %}
       function onLoginFormLoaded() {
         $('#LoginForm').submit(function (event) {
           $.post('{% url "auth_login" %}', $(this).serialize(), function (data, status, xhr) {
@@ -157,6 +171,7 @@
         });
       }
       $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
+    {% endif %}
     });
     </script>
     {% block script %}{% endblock %}

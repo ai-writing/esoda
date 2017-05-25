@@ -12,10 +12,11 @@ from django import forms
 FIELDS = [(1, 'High Performance Computing'), (2, 'Computer Network'), (3, 'Net and Information Security'),
           (4, 'Software Engineering'), (5, 'Database and Data Mining'), (6, 'Theoretical Computer Science'),
           (7, 'Computer Graphics and Multimedia'), (8, 'Artificial Intelligence and Pattern Recognition'),
-          (9, 'Human-Computer Interaction and Pervasive Computing')]
+          (9, 'Human-Computer Interaction and Pervasive Computing'), (10, 'New'), (0, 'bnc')]
 
 FIELD_NAME = [(1, u'高性能计算'), (2, u'计算机网络'), (3, u'网络安全'), (4, u'软件工程'), (5, u'数据挖掘'),
-              (6, u'计算机理论'), (7, u'计算机图形学'), (8, u'人工智能'), (9, u'人机交互')]
+              (6, u'计算机理论'), (7, u'计算机图形学'), (8, u'人工智能'), (9, u'人机交互'), (10, u'交叉综合'),
+              (0, u'bnc')]
 
 
 class RegistrationFormEmailAsUsername(RegistrationFormUniqueEmail):
@@ -36,14 +37,14 @@ class RegistrationFormEmailAsUsername(RegistrationFormUniqueEmail):
 
 class FieldSelectForm(forms.Form):
     choice = forms.ChoiceField(widget=forms.RadioSelect,
-                               label=_('Choose target corpus'),
+                               label=u'选择目标领域',
                                error_messages={'required': _("You must choose one field from the list"),
                                                'invalid_choice': _("You must choose one field from the list")})
 
     def __init__(self, *args, **kwargs):
         super(FieldSelectForm, self).__init__(*args, **kwargs)
         # _pipeline = [{'$group': {'_id': '$domain', 'fields': {'$push': {'i': '$_id', 'name': '$name'}}}}]
-        self.fields['choice'].choices = FIELDS
+        self.fields['choice'].choices = FIELD_NAME
 
     def clean_choice(self):
         c = self.cleaned_data['choice']

@@ -21,8 +21,8 @@ int matchCost(def src, def m, def ref)
         if (tSrc[m[i]]['t'] != tSrc[m[i]]['l'])
             formCost += 0;
     */
-    int paperCost = src.a + src.v;
-    return posCost * 30 + queryCost * 10 + formCost + paperCost;
+    int paperCost = (src.a ?: 0) + (src.v ?: 0) + (src.y ?: 0);
+    return posCost * 3000 + queryCost * 1000 + formCost + paperCost;
 }
 
 def ts = params.tList;
