@@ -22,6 +22,9 @@ def is_cn_char(c):
 def is_cn(s):
     return reduce(lambda x, y: x and y, [is_cn_char(c) for c in s], True)
 
+def has_cn(s):
+    return reduce(lambda x, y: x or y, [is_cn_char(c) for c in s], False)
+
 
 def translate(cn):
     url = u'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key=205873295&type=data&doctype=json&version=1.2&only=dict&q=' + cn

@@ -69,7 +69,7 @@ a {
 
 .navbar-brand img {
     width: 137px;
-    margin-top: 32px;
+    margin-top: 16px;
 }
 
 
@@ -805,8 +805,7 @@ button.close:focus {
 
 #ResultItem {
     font-size: 18px;
-    font-family: PingFangSC, Microsoft Yahei;
-    font-weight: 700;
+    font-weight: bold;
     text-align: center;
 }
 
@@ -815,9 +814,8 @@ button.close:focus {
     padding-top: 10px;
 }
 
-#CountUsage {
-    font-family: PingFangSC, Microsoft Yahei;
-    font-weight: 700;
+#SearchDomain, #CountUsage {
+    font-weight: bold;
     color: #666;
 }
 
@@ -1263,6 +1261,9 @@ button.close:focus {
 .toast-success {
     background-color: #63b7e6;
 }
+.toast-success a {
+    text-decoration: underline;
+}
 
 .personal-page-main {
     padding-top: 45px;
@@ -1427,10 +1428,6 @@ button.close:focus {
     margin-top: 50px;
     margin-bottom: 50px;
     font-size: 24px;
-}
-
-#SearchKeyWord {
-    color: #63b7e6;
 }
 
 .welback {

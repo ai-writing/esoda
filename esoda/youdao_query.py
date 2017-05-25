@@ -1,6 +1,7 @@
 import xml.dom.minidom
 import requests
 import json
+from .utils import has_cn
 
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
 
@@ -26,9 +27,12 @@ def youdao_suggest(q):
 
 YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
 
-def youdao_search(q):
+def youdao_search(q0, q):
     jsonString = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).text
     jsonObj = json.loads(jsonString.encode('utf-8'))
+    cn = has_cn(q0)
+    q = q0 if cn else q
+    dictionary = {}
 
     if 'simple' in jsonObj and 'ec' in jsonObj:
         dictionary = {
@@ -39,5 +43,5 @@ def youdao_search(q):
         }
         for explain in jsonObj['ec']['word'][0]['trs']:
             dictionary['explanationList'].append(explain['tr'][0]['l']['i'][0])
-        return dictionary
-    return {}
+    dictionary['cn'] = cn
+    return dictionary

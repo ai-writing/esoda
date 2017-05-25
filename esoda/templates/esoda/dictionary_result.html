@@ -14,7 +14,7 @@
     <div class="dictionary-container">
       <div class="dictionary-left">
         <div class="dictionary-hint">
-          搜索内容：英文
+          搜索内容：{{ dictionary.cn|yesno:'中文,英文' }}
         </div>
         <p id="ResultItem">{{ dictionary.word }}</p>
         <div class="row hidden">

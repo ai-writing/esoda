@@ -1,8 +1,8 @@
-{% load static %}
-{% load i18n %}
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -55,17 +55,17 @@
                 <input type="text" id="SearchBox" class="navbar-search-box form-control result-search" placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}">
               </div>
             </form>
-            {% if not user.is_authenticated %}
+          {% if not user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right result-login">
               <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请登录</a></li>
             </ul>
-            {% else %}
+          {% else %}
             <ul class="nav navbar-nav navbar-right welback">
               <li><a href="{% url 'auth_password_change' %}"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
               <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
               <li><a href="{% url 'auth_logout' %}">登出</a></li>
             </ul>
-            {% endif %}
+          {% endif %}
           </div><!--/.navbar-collapse -->
         </div>
       </nav>
@@ -129,7 +129,6 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
-    <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
 
     <!--Baidu statistics-->
   {% if debug %}
@@ -139,10 +138,16 @@
   {% endif %}
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui-modified.js' %}"></script>
     <script src="{% static 'js/esoda-main.js' %}"></script>
     <script type="text/javascript">
     $(document).ready(function () {
+      toastr.options = {
+        "closeButton": true,
+        "positionClass": "toast-top-center"
+      };
+    {% if not user.is_authenticated %}
       function onLoginFormLoaded() {
         $('#LoginForm').submit(function (event) {
           $.post('{% url "auth_login" %}', $(this).serialize(), function (data, status, xhr) {
@@ -158,6 +163,7 @@
         });
       }
       $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
+    {% endif %}
     });
     </script>
     {% block script %}{% endblock %}

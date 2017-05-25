@@ -17,7 +17,7 @@
           <div>
 
             <div class="result-warning">
-              当前个人领域为"<span id="SearchDomain">{{ r.domain }}</span>"，搜索"<span id="SearchKeyWord">{{ q0 }}</span>"结果共<span id="CountUsage"></span>句例句，在其他<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'domain' %}" {% endif %}>个人领域</a>中搜索
+              当前个人领域为"<span id="SearchDomain">{{ r.domain|upper }}</span>"，结果共<span id="CountUsage"></span>句例句，在其他<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'domain' %}" {% endif %}>个人领域</a>中搜索
             </div>
 
             <div class="panel-group" role="tablist" aria-multiselectable="true">

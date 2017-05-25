@@ -41,16 +41,15 @@ def get_feedback():
 
 
 def esoda_view(request):
-    q = request.GET.get('q', '').strip()
+    q0 = request.GET.get('q', '').strip()
 
     # No query - render index.html
-    if not q:
+    if not q0:
         info = get_feedback()
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
-    q0 = q
-    q = translate_cn(q)
+    q = translate_cn(q0)
 
     r = {
         'domain': u'人机交互',
@@ -71,11 +70,10 @@ def esoda_view(request):
     cids = get_cids(request.user.id, r=r)
 
     qt, ref = lemmatize(q)
-    mqt = list(qt)
-    r['collocationList'] = collocation_list(mqt, cids)
+    r['collocationList'] = collocation_list(qt, cids)
 
     if len(qt) == 1:
-        syn = list(synonyms(qt[0]))
+        syn = synonyms(qt[0])
         if len(syn) > 10:
             syn = syn[0:10]
         r['synonymous'] = syn
@@ -93,19 +91,17 @@ def esoda_view(request):
         ]
     }
 
-    qt = ' '.join(qt)
-    ref = ' '.join(ref)
     info = {
         'r': r,
-        'q': qt,
+        'q': ' '.join(qt),
         'q0': q0,
-        'ref': ref,
+        'ref': ' '.join(ref),
         'suggestion': suggestion,
+        'dictionary': youdao_search(q0, ' '.join(qt)),
+        'cids': cids,
     }
-    dictionary = youdao_search(q)
-    if dictionary:
-        info['dictionary'] = dictionary
 
+    logger.info('%s %s', request, info)
     return render(request, 'esoda/result.html', info)
 
 
@@ -219,11 +215,12 @@ def get_collocations(clist, qt, i, cids):
 
 
 def collocation_list(mqt, cids):
+    mqt = list(mqt)
     clist = []
     if len(mqt) == 1:
         mqt.append('*')
     for i in range(len(mqt) - 1):
-        get_collocations(clist, list(mqt), i, cids)
+        get_collocations(clist, mqt, i, cids)
     '''
     for i in range(len(mqt)):
         qt = list(mqt)
