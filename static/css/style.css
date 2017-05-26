@@ -554,6 +554,11 @@ button.close:focus {
     padding-top: 60px;
 }
 
+.wechat-qr {
+    width: 100px;
+    height: 100px;
+}
+
 .ui-menu-item {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -888,6 +893,10 @@ button.close:focus {
     text-align: center;
     width: 200px;
     margin-top: 40px;
+}
+
+.result-sidebar.affix {
+    margin-top: 0px;
 }
 
 .result-sidebar>.panel-group>.panel {

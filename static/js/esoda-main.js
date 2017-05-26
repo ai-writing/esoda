@@ -261,6 +261,6 @@ $(function () {
 
   $('.wechat-share').popover();
   $('.wechat-share').on('shown.bs.popover', function() {
-    $('.wechat-qr').qrcode({render: 'canvas', width: 90, height: 90, text: window.location.href});
+    $('.wechat-qr').qrcode({render: 'canvas', width: 100, height: 100, text: window.location.href});
   });
 });
