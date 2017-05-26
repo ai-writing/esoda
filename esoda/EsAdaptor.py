@@ -200,7 +200,6 @@ class EsAdaptor():
                 }
             })
 
-        print dbs, cids
         if len(d) > 1:
             ret = []
             for ps in (('d.l1', 'd.l2'), ('d.l2', 'd.l1')):

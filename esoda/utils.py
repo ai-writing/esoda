@@ -114,5 +114,6 @@ def papers_source_str(pids):
 
     res = {}
     for i in pids:
-        res[i] = gen_source_url(p[i])
+        if i in p:
+            res[i] = gen_source_url(p[i])
     return res
