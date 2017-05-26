@@ -74,10 +74,9 @@ a {
 .footer {
     position: absolute;
     bottom: 0;
-    /*padding-bottom: 35px;*/
     width: 100%;
     /* Fixed height for body margin */
-    height: 280px;
+    height: 300px;
     background: white;
     color: #9b9b9b;
     font-size: 18px;
@@ -788,7 +787,7 @@ button.close:focus {
 }
 
 .footer-shares {
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .footer-shares .col-sm-6  > p {

@@ -76,6 +76,13 @@ class EsAdaptor():
         EsAdaptor.es.indices.put_mapping(index=db, body=mappings)
 
     @staticmethod
+    def cidsearch(index, doc_type, body, filter_path):
+        if doc_type in ('_all', ['_all']):
+            return EsAdaptor.es.search(index=index, body=body, filter_path=filter_path)
+        else:
+            return EsAdaptor.es.search(index=index, doc_type=doc_type, body=body, filter_path=filter_path)
+
+    @staticmethod
     def search(t, d, ref, dbs, cids, sp=10):
         mst = []
         for tt in t:
@@ -143,7 +150,7 @@ class EsAdaptor():
                 }
             }
         }
-        res = EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
         return res['hits']
 
@@ -231,7 +238,7 @@ class EsAdaptor():
 
     @staticmethod
     def __checkResult(action, dbs, cids):
-        res = EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
         ret = [False] * 4
         for agg in res['aggregations']['d']['d']['d']['buckets']:
@@ -315,7 +322,7 @@ class EsAdaptor():
         }
         # import json
         # print json.dumps(action, indent=2)
-        res = EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
         return res
 
@@ -359,6 +366,6 @@ class EsAdaptor():
         }
         # import json
         # print json.dumps(action, indent=2)
-        res = EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total'])
         return res

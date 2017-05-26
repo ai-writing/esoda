@@ -16,7 +16,7 @@ FIELDS = [(1, 'High Performance Computing'), (2, 'Computer Network'), (3, 'Net a
 
 FIELD_NAME = [(1, u'高性能计算'), (2, u'计算机网络'), (3, u'网络安全'), (4, u'软件工程'), (5, u'数据挖掘'),
               (6, u'计算机理论'), (7, u'计算机图形学'), (8, u'人工智能'), (9, u'人机交互'), (10, u'交叉综合'),
-              (0, u'bnc')]
+              (0, u'BNC'), (11, u'全部')]
 
 
 class RegistrationFormEmailAsUsername(RegistrationFormUniqueEmail):

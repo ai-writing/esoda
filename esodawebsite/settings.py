@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Registration settings
 
-REGISTRATION_OPEN = True
+REGISTRATION_OPEN = config('REGISTRATION_OPEN', default=True, cast=bool)
 ACCOUNT_ACTIVATION_DAYS = 30
 INCLUDE_AUTH_URLS = True
 INCLUDE_REGISTER_URL = True

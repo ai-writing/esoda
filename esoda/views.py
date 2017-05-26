@@ -16,7 +16,8 @@ from common.models import Comment
 
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
-defaultId = 9
+defaultId = 11
+defaultDB = '_all'
 logger = logging.getLogger(__name__)
 
 
@@ -26,9 +27,10 @@ def get_cids(rid, **kwargs):
         corpus_id = user.userprofile.corpus_id
     else:
         corpus_id = defaultId
-    cids = corpus_id2cids(corpus_id)
+    cids = corpus_id2cids(str(corpus_id))
     if 'r' in kwargs:
-        kwargs['r']['domain'] = [i[1] for i in FIELD_NAME if i[0] == corpus_id][0]
+        p = [i[1] for i in FIELD_NAME if i[0] == corpus_id]
+        kwargs['r']['domain'] = p[0] if p else '其它'
     return cids
 
 
@@ -161,7 +163,7 @@ def get_usage_list(t, ref, i, dt, cids):
 
     if '*' not in t:
         d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-        cnt = EsAdaptor.count(nt, d, '_all', cids)
+        cnt = EsAdaptor.count(nt, d, defaultDB, cids)
         usageList.append({
             'ref': ' '.join(ref),
             'content': pat % (t[i], t[i + 1]),
@@ -171,7 +173,7 @@ def get_usage_list(t, ref, i, dt, cids):
         if k[0] != '*' or k[1] != '*':
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
 
-            lst = EsAdaptor.group(nt, d, '_all', cids)
+            lst = EsAdaptor.group(nt, d, defaultDB, cids)
             try:
                 ret = []
                 for j in lst['aggregations']['d']['d']['d']['buckets']:
@@ -198,7 +200,7 @@ def get_collocations(clist, qt, i, cids):
     t, d = list(qt), (qt[i], qt[i + 1])
     del t[i]
     del t[i]
-    resList = EsAdaptor.collocation(t, d, '_all', cids)
+    resList = EsAdaptor.collocation(t, d, defaultDB, cids)
     t = list(t)
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
@@ -237,7 +239,7 @@ def sentence_query(t, ref, i, dt, cids):
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(t, d, ref, '_all', cids, 50)
+    res = EsAdaptor.search(t, d, ref, defaultDB, cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
