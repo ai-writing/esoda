@@ -15,7 +15,7 @@ int matchCost(def src, def m, def ref)
     for (int i = 0; i < len; ++i)
         if (tSrc[m[i]]['t'] != ref[i])
             queryCost += 2;
-    int paperCost = (src.ac ?: 0) + (src.v ?: 0) + (2017 - src.y ?: 0);
+    int paperCost = (src.ac ?: 0) + (src.v ?: 0) + 2017 - (src.y ?: 0);
     return posCost * 3000 + queryCost * 1000 + paperCost;
 }
 

@@ -38,8 +38,8 @@
                     </a>
                   </div>
                 </div>-->
-                <div id="CollapseUsage" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
-                  <ul class="nav nav-tabs nav-tabs-usage" id="UsageTab" role="tablist">
+                <div id="CollapseUsages" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsages">
+                  <ul class="nav nav-tabs nav-tabs-usages" id="UsageTab" role="tablist">
                     <!--li role="presentation">
                       <a href="#{{ usage_label }}" role="tab" data-toggle="tab">{{ usage_title }}</a>
                     </li-->
@@ -61,10 +61,10 @@
                     {% endif %}
                     {% endcomment %}
                   </ul>
-                  <div id="UsageContent" class="tab-content">
+                  <div id="UsagesContent" class="tab-content">
                     {% if r.synonymous %}
                     <div role="tabpanel" class="tab-pane fade active in" id="SynContent">
-                      <div class="usage-panel-content">
+                      <div class="usages-panel-content">
                         {% for syn in r.synonymous %}
                         <a href="{% url 'esoda' %}?q={{ syn }}">{{ syn }}</a>&nbsp;&nbsp;
                         {% endfor %}
@@ -73,7 +73,7 @@
                     {% endif %}
                     {% if r.phrase %}
                     <div role="tabpanel" class="tab-pane fade" id="PhraseContent">
-                      <div class="usage-panel-content">
+                      <div class="usages-panel-content">
                         {% for phr in r.phrase %}
                         <a href="{% url 'esoda' %}?q={{ phr }}">{{ phr }}</a>
                         {% if not forloop.last %},{% endif %}&nbsp;
@@ -83,7 +83,7 @@
                     {% endif %}
                     {% if r.commonColloc %}
                     <div role="tabpanel" class="tab-pane fade" id="ColContent">
-                      <div class="usage-panel-content">
+                      <div class="usages-panel-content">
                         {% for ccol in r.commonColloc %}
                         <a href="{% url 'esoda' %}?q={{ ccol }}">{{ ccol }}</a>
                         {% if not forloop.last %},{% endif %}&nbsp;
@@ -95,6 +95,39 @@
                 </div>
               </div> <!-- usage panel -->
               {% endif %}
+
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="HeadingUsage">
+                  <div class="panel-title-wrapper">
+                    <div class="panel-title display-inline">
+                      用法
+                      <span class="panel-subtitle">Usage</span>
+                    </div>
+                    <a role="button" data-toggle="collapse" href="#CollapseUsage" aria-expanded="true" aria-controls="CollapseUsage" onclick="$.clickChevron(event);">
+                      <span class="glyphicon glyphicon-chevron-up right-float"></span>
+                    </a>
+                  </div>
+                </div>
+                <div id="CollapseUsage" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
+                  <ul class="nav nav-tabs nav-tabs-usage" id="UsageTab" role="tablist">
+                    {% if r.usageList %}
+                    {% for usage in r.usageList %}
+                    <li role="presentation">
+                      <a href="#{{ usage.label }}" class="usage-sub-btn" role="tab" data-toggle="tab">{{ usage.type }}</a>
+                    </li>
+                    {% endfor %}
+                    {% endif %}
+                  </ul>
+                  <div id="UsageContent" class="tab-content">
+                    {% if r.usageList %}
+                    {% for usage in r.usageList %}
+                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ usage.label }}">
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                  </div>
+                </div>
+              </div> <!-- true usage panel -->
 
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="HeadingColloc">
@@ -210,6 +243,46 @@
 
       var curSelectedUsage;
       var REF = '{{ ref }}';
+
+      $('#CollapseUsage').on('click', '.usage-usage', function (e) {
+        if ($(this).attr('state') == 'selected') return;
+        e.preventDefault();
+        $("#ExampleEnd").hide();
+        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+
+        $(this).attr('state', 'selected');
+        $(this).removeAttr('href');
+        if (curSelectedUsage) {
+          curSelectedUsage.attr('state', '');
+          curSelectedUsage.attr('href', '#');
+        }
+        curSelectedUsage = $(this);
+
+        var type = $(this).text().replace(/ \(.*\)/, '');
+        loadCount = 1;
+        loading = 1;
+        loaded = 0;
+
+        $.get("{% url 'usage_sentences' %}", {t: type}, function(data) {
+          $("#SentenceResult").html(data);
+          if ($('#ExampleNumber').html() <= 10) {
+            $('#ExampleEnd').show();
+            loaded = 1;
+          }
+          loading = 0;
+        });
+      });
+
+      $('.usage-sub-btn').click(function(e) {
+        var id = $(this).attr('href');
+        var type = $(this).text().replace(/ \(.*\) /g , '');
+
+        $.get("{% url 'usage' %}", {t: type}, function(data) {
+          $(id).html(data);
+          $(id + ' .usage-usage:eq(0)').click();
+        });
+        
+      })
 
       $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
         if ($(this).attr('state') == 'selected') return;

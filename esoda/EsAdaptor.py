@@ -83,6 +83,33 @@ class EsAdaptor():
             return EsAdaptor.es.search(index=index, doc_type=doc_type, body=body, filter_path=filter_path)
 
     @staticmethod
+    def search_tree(t, dbs, cids, sp=10000):
+        mst = []
+        for tt in t:
+            mst.append({
+                "nested": {
+                    "path": "d.w",
+                    "query": {
+                        "match": {
+                            "d.w.t": tt
+                        }
+                    }
+                }
+            })
+        action = {
+            "_source": ['t', 'd'],
+            "size": sp,
+            "query": {
+                "bool": {
+                    "must": mst
+                }
+            }
+        }
+        res= EsAdaptor.es.search(index=dbs, doc_type=cids, body=action, filter_path=[
+            'hits.total', 'hits.hits._id', 'hits.hits._source'])
+        return res['hits']
+
+    @staticmethod
     def search(t, d, ref, dbs, cids, sp=10):
         mst = []
         for tt in t:

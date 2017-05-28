@@ -8,5 +8,7 @@ urlpatterns = [
     url(r'^suggest/$', views.dict_suggest_view, name='dict_suggest'),
     url(r'^sentences/$', views.sentence_view, name='sentences'),
     url(r'^collocation/$', views.usagelist_view, name='collocation'),
+    url(r'^usage_sentences/$', views.usage_sentence_view, name='usage_sentences'),
+    url(r'^usage/$', views.usage_view, name='usage'),
     url(r'^guide/$', views.guide_view, name='guide')
 ]

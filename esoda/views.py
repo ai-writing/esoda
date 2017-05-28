@@ -7,6 +7,7 @@ import logging
 import time
 
 from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids
+from .usage import process_usage_list, process_sentence_list, process_usage_usage_list
 from .youdao_query import youdao_suggest, youdao_search
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
@@ -66,6 +67,8 @@ def esoda_view(request):
             u'quality (介词)*'
         ],
         'collocationList': [
+        ],
+        'usageList': [
         ]
     }
 
@@ -73,6 +76,7 @@ def esoda_view(request):
 
     qt, ref = lemmatize(q)
     r['collocationList'] = collocation_list(qt, cids)
+    r['usageList'] = process_usage_list(qt)
 
     if len(qt) == 1:
         syn = synonyms(qt[0])
@@ -107,6 +111,18 @@ def esoda_view(request):
     return render(request, 'esoda/result.html', info)
 
 
+def usage_sentence_view(request):
+    md = request.GET.get('t', '')
+    t = md.split()
+    sr = process_sentence_list(t, md)
+    info = {
+        'example_number': sr['total'],
+        'search_time': sr['time'],
+        'exampleList': sr['sentence']
+    }
+    return render(request, 'esoda/sentence_result.html', info)
+
+
 def sentence_view(request):
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
@@ -122,6 +138,13 @@ def sentence_view(request):
         'exampleList': sr['sentence']
     }
     return render(request, 'esoda/sentence_result.html', info)
+
+
+def usage_view(request):
+    md = request.GET.get('t', '')
+    t = md.split()
+    r = {'usageList': process_usage_usage_list(t, md)}
+    return render(request, 'esoda/usage_result.html', r)
 
 
 def usagelist_view(request):
