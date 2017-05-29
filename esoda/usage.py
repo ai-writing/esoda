@@ -2,12 +2,13 @@
 # encoding: utf-8
 from .EsAdaptor import EsAdaptor
 from .utils import cleaned_sentence
+import views
 import time
 esi = 'corpus_tree'
 esd = 'bnc_tree'
 VNJ = ('V', 'N', 'ADJ')
 NADV = ('V', 'N', 'ADJ', 'PRT')
-AITEM = {'V', 'N', 'ADJ', 'PRT', 'ADV'}
+AITEM = {'V', 'N', 'ADJ', 'PRT', 'ADV', '(modified)'}
 
 
 def process_phase1(res, t):  # from source to phrase
@@ -110,17 +111,24 @@ def process_phase1(res, t):  # from source to phrase
     return res1
 
 
-def process_phase2(res1, t):
+def process_phase2(res1, t, md, num):
     mps = {}
+    if md:
+        mps[md] = []
 
     def process_phase2_inner(ts, hs, ps, e, sp, nt):
         def append_res():
             if not nt:
                 swords = ' '.join(words)
-                if swords not in mps:
+                if not md and swords not in mps:
                     mps[swords] = []
-                mps[swords].append({'t': tokens, 'i': hls, 's': ht['t'], 'id': ht['id']})
-                # shls = ' '.join(hls)
+                if md and swords == md:
+                    if len(mps[swords]) >= num:
+                        mps[swords].append(0)
+                    else:
+                        mps[swords].append({'t': tokens, 'i': hls, 's': ht['t'], 'id': ht['id']})
+                if not md:
+                    mps[swords].append(0)
 
         def appending():
             hls.append(hs[i])
@@ -171,23 +179,23 @@ def process_phase2(res1, t):
     return mps
 
 
-def process_query(t):
+def process_query(t, md, num):
     res = EsAdaptor.search_tree(t, esi, esd)
     res1 = process_phase1(res, t)
-    res2 = process_phase2(res1, t)
+    res2 = process_phase2(res1, t, md, num)
     return res2
 
 
 def process_usage_list(t):
     t = [x for x in t if x not in AITEM]
-    res = process_query(t)
+    res = process_query(t, '', 0)
     t = sorted(res.items(), key=lambda x: -len(x[1]))[:10]
     return [{"type": x[0], "label": "usage%d" % i} for i, x in enumerate(t)]
 
 
 def process_usage_usage_list(t, md):
     t = [x for x in t if x not in AITEM]
-    res = process_query(t)
+    res = process_query(t, md, 2**20)
     ws = [{'content': md, 'count': len(res[md])}]
 
     mmd = md.split(' ')
@@ -199,8 +207,12 @@ def process_usage_usage_list(t, md):
                 if isinstance(wt['t'][i], list):
                     for j in wt['t'][i]:
                         mmd[i] = j
+                        if org == '(modified)':
+                            mmd.insert(i + 1, '(modified)')
                         key = ' '.join(mmd)
                         mps[key] = mps.get(key, 0) + 1
+                        if org == '(modified)':
+                            del mmd[i + 1]
                 else:
                     mmd[i] = wt['t'][i]
                     key = ' '.join(mmd)
@@ -213,12 +225,12 @@ def process_usage_usage_list(t, md):
 def process_sentence_list(t, md):
     t = [x for x in t if x not in AITEM]
     time1 = time.time()
-    res = process_query(t)
+    res = process_query(t, md, views.displayNum)
     time2 = time.time()
     sr = {'time': round(time2 - time1, 2), 'total': len(res[md]), 'sentence': None}
     sr['sentence'] = [{
         'content': cleaned_sentence(x['s'], x['i']),
         'heart_number': 129,
         'source': ''}
-        for x in res[md][:50]]
+        for x in res[md][:views.displayNum]]
     return sr

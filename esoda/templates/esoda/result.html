@@ -258,7 +258,9 @@
         }
         curSelectedUsage = $(this);
 
-        var type = $(this).text().replace(/ \(.*\)/, '');
+        console.log($(this).text())
+        var type = $(this).text().replace(/ \(\d*\)/, '');
+        console.log(type)
         loadCount = 1;
         loading = 1;
         loaded = 0;
@@ -275,7 +277,7 @@
 
       $('.usage-sub-btn').click(function(e) {
         var id = $(this).attr('href');
-        var type = $(this).text().replace(/ \(.*\) /g , '');
+        var type = $(this).text();
 
         $.get("{% url 'usage' %}", {t: type}, function(data) {
           $(id).html(data);

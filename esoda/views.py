@@ -18,7 +18,8 @@ from common.models import Comment
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultId = 11
-defaultDB = '_all'
+defaultDB = ['dblp', 'arxiv', 'doaj', 'bnc']
+displayNum = 50
 logger = logging.getLogger(__name__)
 
 
@@ -262,11 +263,11 @@ def sentence_query(t, ref, i, dt, cids):
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(t, d, ref, defaultDB, cids, 50)
+    res = EsAdaptor.search(t, d, ref, defaultDB, cids, displayNum)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
-    rlen = min(50, len(res['hits']) if 'hits' in res else 0)
+    rlen = min(displayNum, len(res['hits']) if 'hits' in res else 0)
 
     papers = set()
     for i in xrange(rlen):
