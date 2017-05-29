@@ -17,7 +17,7 @@ from common.models import Comment
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultId = 11
-defaultDB = '_all'
+defaultDB = ['dblp', 'doaj', 'bnc', 'arxiv']
 logger = logging.getLogger(__name__)
 
 
