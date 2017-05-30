@@ -6,7 +6,7 @@
         <span class="panel-subtitle">Dictionary</span>
       </div>
       <a role="button" data-toggle="collapse" href="#CollapseDict" aria-expanded="true" aria-controls="CollapseDict" onclick="$.clickChevron(event);">
-        <span class="glyphicon glyphicon-chevron-up right-float"></span>
+        <span class="glyphicon glyphicon-chevron-up pull-right"></span>
       </a>
     </div>
   </div>-->
@@ -39,7 +39,7 @@
         <div class="dictionary-middle-line"></div>
       </div>
       <div class="dictionary-right">
-        <span class="dictionary-hint">中文翻译</span>
+        <span class="dictionary-hint">{{ dictionary.cn|yesno:'英文,中文' }}翻译</span>
         <div id="WordExplanation">
           {% for explanation in dictionary.explanationList %}
           <p>{{ explanation }}</p>

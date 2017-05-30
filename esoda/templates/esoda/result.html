@@ -25,20 +25,9 @@
               {% include "esoda/dictionary_result.html" %}
             {% endif %}
             
-              {% if r.synonymous %}
+            {% if r.synonymous %}
               <div class="panel panel-default">
-                <!--<div class="panel-heading" role="tab" id="HeadingUsage">
-                  <div class="panel-title-wrapper">
-                    <div class="panel-title display-inline">
-                      用法
-                      <span class="panel-subtitle">Usage</span>
-                    </div>
-                    <a role="button" data-toggle="collapse" href="#CollapseUsage" aria-expanded="true" aria-controls="CollapseUsage" onclick="$.clickChevron(event);">
-                      <span class="glyphicon glyphicon-chevron-up right-float"></span>
-                    </a>
-                  </div>
-                </div>-->
-                <div id="CollapseUsage" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
+                <div class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
                   <ul class="nav nav-tabs nav-tabs-usage" id="UsageTab" role="tablist">
                     <!--li role="presentation">
                       <a href="#{{ usage_label }}" role="tab" data-toggle="tab">{{ usage_title }}</a>
@@ -94,43 +83,40 @@
                   </div>
                 </div>
               </div> <!-- usage panel -->
-              {% endif %}
+            {% endif %}
 
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="HeadingColloc">
                   <div class="panel-title-wrapper">
-                    <div class="panel-title display-inline">
-                      搭配
-                      <span class="panel-subtitle">Collocation</span>
-                    </div>
+                    搭配
+                    <span class="panel-subtitle">Collocation</span>
                     <a role="button" data-toggle="collapse" href="#CollapseColloc" aria-expanded="true" aria-controls="CollapseColloc" onclick="$.clickChevron(event);">
-                      <span class="glyphicon glyphicon-chevron-up right-float"></span>
+                      <span class="glyphicon glyphicon-chevron-up pull-right"></span>
                     </a>
                   </div>
                 </div>
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                  <ul class="nav nav-tabs nav-tabs-collocation left-float" id="CollocationTab0" role="tablist">
+                  <ul class="nav nav-tabs nav-tabs-collocation pull-left" id="CollocationTab0" role="tablist">
                     <li role="presentation" class="active">
                         <a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a>
                     </li>
                   </ul>
                   <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
-                    {% if r.collocationList %}
+                  {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
                     <li role="presentation">
                       <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
                     </li>
                     {% endfor %}
-                    {% endif %}
+                  {% endif %}
                   </ul>
                   <div id="CollocContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
-                    {% if r.collocationList %}
+                  {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
-                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}">
-                    </div>
+                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
                     {% endfor %}
-                    {% endif %}
+                  {% endif %}
                   </div>
                 </div>
               </div> <!-- collocation panel -->
@@ -152,40 +138,34 @@
 
         <div class="col-sm-3">
           <div class="hidden-xs">
-            <div id="SidebarAffix" class="affix result-sidebar" data-spy="affix">
-            <div class="panel-group">
-              <div class="panel panel-default sideword">
-                <div class="panel-heading" role="tab" id="HeadingRelated">
-                  <div class="result-sidebar-title">
+            <div id="SidebarAffix" class="affix" data-spy="affix">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
                     大家都在搜
                   </div>
-                </div>
-                <a role="button" data-toggle="collapse" href="#CollapseRelated" aria-expanded="true" aria-controls="CollapseRelated" onclick="$.clickChevron(event);">
-                  <span class="glyphicon glyphicon-chevron-up"></span>
-                </a>
-                <div id="CollapseRelated" class="hotword panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRelated">
+                  <ul class="list-group">
                   {% for related in suggestion.relatedList %}
-                  <p><a href="{% url 'esoda' %}?q={{ related }}">{{ related }}</a></p>
+                    <li class="list-group-item">
+                      <a href="{% url 'esoda' %}?q={{ related }}">{{ related }}</a>
+                    </li>
                   {% endfor %}
+                  </ul>
                 </div>
-              </div>
 
-              <div class="panel panel-default sideword">
-                <div class="panel-heading" role="tab" id="HeadingHot">
-                  <div class="result-sidebar-title">
-                      领域内热词
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    领域内热词
                   </div>
-                </div>
-                <a role="button" data-toggle="collapse" href="#CollapseHot" aria-expanded="true" aria-controls="CollapseHot" onclick="$.clickChevron(event);">
-                  <span class="glyphicon glyphicon-chevron-up"></span>
-                </a>
-                <div id="CollapseHot" class="panel-collapse collapse in hotword" role="tabpanel" aria-labelledby="HeadingHot">
+                  <ul class="list-group">
                   {% for hot in suggestion.hotList %}
-                  <p><a href="{% url 'esoda' %}?q={{ hot }}">{{ hot }}</a></p>
+                    <li class="list-group-item">
+                      <a href="{% url 'esoda' %}?q={{ hot }}">{{ hot }}</a>
+                    </li>
                   {% endfor %}
+                  </ul>
                 </div>
               </div>
-            </div>
             </div>
           </div>
           <div class="fix-right-xs">
