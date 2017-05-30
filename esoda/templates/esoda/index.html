@@ -39,59 +39,9 @@
 
   <div class="container container-usage">
     <div class="usage-title">点击预览易搜搭的神奇搜索</div>
-    <div class="hr hidden-xs">
-      <span class="hr-inner">
-        <a href="/?q=efficient"><span class="hr-inner-circle" id="circle0"></span></a>
-        <a href="/?q=wait"><span class="hr-inner-circle hr-inner-circle-2" id="circle1"></span></a>
-        <a href="/?q=减少+the+demand+of"><span class="hr-inner-circle hr-inner-circle-3" id="circle2"></span></a>
-        <a href="/?q=make+effort"><span class="hr-inner-circle hr-inner-circle-4" id="circle3"></span></a>
-      </span>
-    </div>
-    <div class="row">
-      <div class="col-xs-6 col-sm-3">
-        <div class="thumbnail thumbnail-guide">
-          <a href="/?q=efficient" id="guide0_index">
-              <img src="{% static 'img/usage_1.png' %}" alt="...">
-          </a>
-          <div class="caption caption-usage">
-            <h4>换说法</h4>
-            <p>论文里感到用词不地道，找找看母语论文里别人怎么说</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-sm-3">
-        <div class="thumbnail thumbnail-guide">
-          <a href="/?q=wait" id="guide1_index">
-              <img src="{% static 'img/usage_2.png' %}" alt="...">
-          </a>
-          <div class="caption caption-usage">
-            <h4>搜搭配</h4>
-            <p>感到搭配用的不够漂亮，想换种说法，看看别人怎么搭配</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-sm-3">
-        <div class="thumbnail thumbnail-guide">
-          <a href="/?q=减少+the+demand+of" id="guide2_index">
-              <img src="{% static 'img/usage_3.png' %}" alt="...">
-          </a>
-          <div class="caption caption-usage">
-            <h4>中英混搭</h4>
-            <p>输入中文或中英文混合，在海量例句中上下文获得更精准的翻译</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-sm-3">
-        <div class="thumbnail thumbnail-guide">
-          <a href="/?q=make+effort" id="guide3_index">
-              <img src="{% static 'img/usage_4.png' %}" alt="...">
-          </a>
-          <div class="caption caption-usage">
-            <h4>找短语</h4>
-            <p>遇到不熟悉的短语，了解它在论文中最地道的用法</p>
-          </div>
-        </div>
-      </div>
+    {% with tab="index" %}
+      {% include "esoda/guide_icon.html" %}
+    {% endwith %}
     </div>
   </div>
 
@@ -240,44 +190,6 @@
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
   <script src="{% static 'js/esoda-index.js' %}"></script>
-  <script>  
-    $(function(){           
-      $("#guide0_index").hover(function(){ 
-        $("#circle0").css({
-          'background-color':'#63B7E6'
-        }); 
-      },function(){  
-        $("#circle0").css({
-          'background-color':'#d8d8d8'
-        }); 
-      })  
-      $("#guide1_index").hover(function(){ 
-        $("#circle1").css({
-          'background-color':'#63B7E6'
-        }); 
-      },function(){  
-        $("#circle1").css({
-          'background-color':'#d8d8d8'
-        }); 
-      })
-      $("#guide2_index").hover(function(){ 
-        $("#circle2").css({
-          'background-color':'#63B7E6'
-        }); 
-      },function(){  
-        $("#circle2").css({
-          'background-color':'#d8d8d8'
-        }); 
-      })
-      $("#guide3_index").hover(function(){ 
-        $("#circle3").css({
-          'background-color':'#63B7E6'
-        }); 
-      },function(){  
-        $("#circle3").css({
-          'background-color':'#d8d8d8'
-        }); 
-      })
-    })
-  </script>  
+  <script src="{% static 'js/esoda-icon.js' %}"></script>
+
 {% endblock script %}
