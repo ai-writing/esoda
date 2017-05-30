@@ -233,6 +233,8 @@ def collocation_list(mqt, cids):
 
 
 def sentence_query(t, ref, i, dt, cids):
+    if not t:
+        return {'time': 0.00, 'total': 0, 'sentence': []}
     if dt != '0':  # Search specific tag
         d = [{'dt': dt, 'i1': i, 'i2': i + 1}]
     else:  # Search user input
