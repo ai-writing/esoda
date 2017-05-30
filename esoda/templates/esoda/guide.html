@@ -39,7 +39,7 @@
               <img src="{% static 'img/usage_1.png' %}" alt="...">
             </a>
             <div class="caption caption-usage">
-              <h4>搜同义</h4>
+              <h4>换说法</h4>
               <p>论文里感到单词词汇用的不地道，找找看母语论文里别人怎么说</p>
             </div>
           </div>
@@ -50,7 +50,7 @@
               <img src="{% static 'img/usage_2.png' %}" alt="...">
             </a>
             <div class="caption caption-usage">
-              <h4>找搭配</h4>
+              <h4>搜搭配</h4>
               <p>感到搭配用的不够漂亮，想换种说法，看看别人怎么搭配</p>
             </div>
           </div>
@@ -61,8 +61,8 @@
               <img src="{% static 'img/usage_3.png' %}" alt="...">
             </a>
             <div class="caption caption-usage">
-              <h4>中文查找</h4>
-              <p>满腹经纶难以用英文讲述？中文查找功能帮助你更好表达自我</p>
+              <h4>中英混搭</h4>
+              <p>输入中文或中英文混合，在海量例句中上下文获得更精准的翻译</p>
             </div>
           </div>
         </div>
@@ -72,8 +72,8 @@
               <img src="{% static 'img/usage_4.png' %}" alt="...">
             </a>
             <div class="caption caption-usage">
-              <h4>词组搜搭</h4>
-              <p>先进算法让你不但能够查找单词连词组的搭配也能搜搭的得心应手</p>
+              <h4>找短语</h4>
+              <p>遇到不熟悉的短语，了解它在论文中最地道的用法</p>
             </div>
           </div>
         </div>
@@ -83,43 +83,55 @@
       <div class="guide-title1">进阶搜哒</div>
         <div id="guide0" class="row guide-group">
           <div class="col-md-10">
-            <div class="guide-title2">搜同义：</div>
-            <div>使用？作为词缀，例如，查询circumstance的近义词，搜索 circumstance? </div>
-            <div class="guide-content">The &lt;word&gt;? finds synonyms of &lt;word&gt;. </div>
+            <div class="guide-title2">换说法：</div>
+            <div>查询单词，在结果页面的同义表达部分获取同义词。点击同义词跳转到相应查询。 </div>
+            <div class="guide-content">Query a word, synonymous will be in the synonymous expression part of the results page.</div>
           </div>
           <div class="col-md-2">
-            <button class="btn guide-btn">点击查看案例</button>
+            <a href="/?q=efficient"><button class="btn guide-btn">点击查看案例</button></a>
           </div>
+        </div>
+        <div class="row example-image">
+        	<img src="{% static 'img/example1.png' %}" alt="...">
         </div>
         <div id="guide1" class="row guide-group">
           <div class="col-md-10">
-            <div class="guide-title2">找搭配：</div>
-            <div>使用*(修饰)方式修饰词，ESODA支持(主谓)/(动宾)/(介词)/(修饰)，或直接搜索单词于下一页筛选。 </div>
-            <div class="guide-content">(修饰) is one of the collocation indicators and * is a wildcard<br/>ESLWriter also support (主谓)/(动宾)/(介词). You may also try to enter the keywords directly and use our filter.</div>
+            <div class="guide-title2">搜搭配：</div>
+            <div>查询单词，不同的搭配形式 (主谓)/(动宾)/(介词) 会出现在结果页面，每种搭配形式有多种词汇搭配可供选择。搜索搭配，得到相关的搭配。</div>
+            <div class="guide-content">Query a word, different collocation forms will appear in the results page, each with a variety of collocations. And you can query collocation to learn about the relevant ones.</div>
           </div>
           <div class="col-md-2">
-            <button class="btn guide-btn">点击查看案例</button>
+            <a href="/?q=wait"><button class="btn guide-btn">点击查看案例</button></a>
           </div>
+        </div>
+        <div class="row example-image">
+        	<img src="{% static 'img/example2.png' %}" alt="...">
         </div>
         <div id="guide2" class="row guide-group">
           <div class="col-md-10">
-            <div class="guide-title2">搜中文：</div>
-            <div>直接搜索中文 </div>
-            <div class="guide-content">Enter a Chinese keyword or phrase to find example</div>
+            <div class="guide-title2">中英混搭：</div>
+            <div>可以在搜索时使用中英文两种语言，并可以进行中英文混搭搜索。</div>
+            <div class="guide-content">Enter keyword or phrase in Chinese and English is both ok. A query can contain both Chinise and English </div>
           </div>
           <div class="col-md-2">
-            <button class="btn guide-btn">点击查看案例</button>
+            <a href="/?q=减少+the+demand+of"><button class="btn guide-btn">点击查看案例</button></a>
           </div>
+        </div>
+        <div class="row example-image">
+        	<img src="{% static 'img/example3.png' %}" alt="...">
         </div>
         <div id="guide3" class="row guide-group">
           <div class="col-md-10">
-            <div class="guide-title2">词组搜搭：</div>
-            <div>直接搜索单词或词组寻找合理搭配 </div>
+            <div class="guide-title2">找短语：</div>
+            <div>搜索英文短语，了解用法。</div>
             <div class="guide-content">Enter a keyword or phrase to find example sentences.</div>
           </div>
           <div class="col-md-2">
-            <button class="btn guide-btn">点击查看案例</button>
+            <a href="/?q=make+effort"><button class="btn guide-btn">点击查看案例</button></a>
           </div>
+        </div>
+        <div class="row example-image">
+        	<img src="{% static 'img/example4.png' %}" alt="...">
         </div>
       </div>
     </dic>

@@ -1347,8 +1347,8 @@ button.close:focus {
     font-size: 20px;
 }
 .guide-group {
-    padding-top: 25px;
-    padding-bottom: 300px;
+    padding-top: 30px;
+    padding-bottom: 20px;
 }
 .guide-thumbnail {
     background-color: #f5f5f9;
@@ -1385,6 +1385,13 @@ button.close:focus {
     height: 40px;
     border-radius: 3px;
     background-color: #63b7e6;
+}
+.example-image {
+    margin-left: 30px;
+    margin-bottom: 40px
+}
+.example-image img {
+    width: 900px;
 }
 #search-collection-btn>.btn{
     width: 80px;
