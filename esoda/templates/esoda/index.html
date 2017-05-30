@@ -13,19 +13,22 @@
   <div class="jumbotron section-blue">
     <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4 title">
+        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 esoda-brand">
           <img src="{% static 'img/logo_white.png' %}" class="esoda-brand-main">
           <hr class="esoda-brand-hr">
           <div class="esoda-brand-subtitle">
             <span>专业英文论文写作助手</span>
           </div>
         </div>
-        <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6">
+        <div id="SearchBar" class="col-xs-12 col-md-8 col-md-offset-2">
           <form id="SearchForm" class="form-horizontal" role="search" action="{% url 'esoda' %}">
             <div class="input-group input-group-lg">
               <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
               <span class="input-group-btn">
-                <button type="submit" class="btn btn-info">搜搭&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
+                <button type="submit" class="btn btn-info">
+                  <span class="hidden-xs">搜搭&nbsp;&nbsp;</span>
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
               </span>
             </div>
           </form>
@@ -38,46 +41,54 @@
     <div class="usage-title">点击预览易搜搭的神奇搜索</div>
     <div class="hr hidden-xs">
       <span class="hr-inner">
-        <a href="#"><span class="hr-inner-circle"></span></a>
-        <a href="#"><span class="hr-inner-circle hr-inner-circle-2"></span></a>
-        <a href="#"><span class="hr-inner-circle hr-inner-circle-3"></span></a>
-        <a href="#"><span class="hr-inner-circle hr-inner-circle-4"></span></a>
+        <a href="/?q=efficient"><span class="hr-inner-circle" id="circle0"></span></a>
+        <a href="/?q=wait"><span class="hr-inner-circle hr-inner-circle-2" id="circle1"></span></a>
+        <a href="/?q=减少+the+demand+of"><span class="hr-inner-circle hr-inner-circle-3" id="circle2"></span></a>
+        <a href="/?q=make+effort"><span class="hr-inner-circle hr-inner-circle-4" id="circle3"></span></a>
       </span>
     </div>
     <div class="row">
-      <div class="col-xs-6 col-sm-3 col-guide">
+      <div class="col-xs-6 col-sm-3">
         <div class="thumbnail thumbnail-guide">
-          <img src="{% static 'img/usage_1.png' %}" alt="...">
+          <a href="/?q=efficient" id="guide0_index">
+              <img src="{% static 'img/usage_1.png' %}" alt="...">
+          </a>
           <div class="caption caption-usage">
-            <h4>搜同义</h4>
-            <p>论文里感到单词词汇用的不地道，找找看母语论文里别人怎么说</p>
+            <h4>换说法</h4>
+            <p>论文里感到用词不地道，找找看母语论文里别人怎么说</p>
           </div>
         </div>
       </div>
-      <div class="col-xs-6 col-sm-3 col-guide">
+      <div class="col-xs-6 col-sm-3">
         <div class="thumbnail thumbnail-guide">
-          <img src="{% static 'img/usage_2.png' %}" alt="...">
+          <a href="/?q=wait" id="guide1_index">
+              <img src="{% static 'img/usage_2.png' %}" alt="...">
+          </a>
           <div class="caption caption-usage">
-            <h4>找搭配</h4>
+            <h4>搜搭配</h4>
             <p>感到搭配用的不够漂亮，想换种说法，看看别人怎么搭配</p>
           </div>
         </div>
       </div>
-      <div class="col-xs-6 col-sm-3 col-guide">
+      <div class="col-xs-6 col-sm-3">
         <div class="thumbnail thumbnail-guide">
-          <img src="{% static 'img/usage_3.png' %}" alt="...">
+          <a href="/?q=减少+the+demand+of" id="guide2_index">
+              <img src="{% static 'img/usage_3.png' %}" alt="...">
+          </a>
           <div class="caption caption-usage">
-            <h4>中文查找</h4>
-            <p>满腹经纶难以用英文讲述？中文查找功能帮助你更好表达自我</p>
+            <h4>中英混搭</h4>
+            <p>输入中文或中英文混合，在海量例句中上下文获得更精准的翻译</p>
           </div>
         </div>
       </div>
-      <div class="col-xs-6 col-sm-3 col-guide">
+      <div class="col-xs-6 col-sm-3">
         <div class="thumbnail thumbnail-guide">
-          <img src="{% static 'img/usage_4.png' %}" alt="...">
+          <a href="/?q=make+effort" id="guide3_index">
+              <img src="{% static 'img/usage_4.png' %}" alt="...">
+          </a>
           <div class="caption caption-usage">
-            <h4>词组搜搭</h4>
-            <p>先进算法让你不但能够查找单词连词组的搭配也能搜搭的得心应手</p>
+            <h4>找短语</h4>
+            <p>遇到不熟悉的短语，了解它在论文中最地道的用法</p>
           </div>
         </div>
       </div>
@@ -202,7 +213,7 @@
   <div class="back-message section-blue">
     <div class="container container-message">
       <div class="row">
-        <div class="col-sm-1 hidden-xs">
+        <div class="col-sm-1">
           <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
         </div>
         <div class="col-xs-6">
@@ -229,4 +240,44 @@
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
   <script src="{% static 'js/esoda-index.js' %}"></script>
+  <script>  
+    $(function(){           
+      $("#guide0_index").hover(function(){ 
+        $("#circle0").css({
+          'background-color':'#63B7E6'
+        }); 
+      },function(){  
+        $("#circle0").css({
+          'background-color':'#d8d8d8'
+        }); 
+      })  
+      $("#guide1_index").hover(function(){ 
+        $("#circle1").css({
+          'background-color':'#63B7E6'
+        }); 
+      },function(){  
+        $("#circle1").css({
+          'background-color':'#d8d8d8'
+        }); 
+      })
+      $("#guide2_index").hover(function(){ 
+        $("#circle2").css({
+          'background-color':'#63B7E6'
+        }); 
+      },function(){  
+        $("#circle2").css({
+          'background-color':'#d8d8d8'
+        }); 
+      })
+      $("#guide3_index").hover(function(){ 
+        $("#circle3").css({
+          'background-color':'#63B7E6'
+        }); 
+      },function(){  
+        $("#circle3").css({
+          'background-color':'#d8d8d8'
+        }); 
+      })
+    })
+  </script>  
 {% endblock script %}

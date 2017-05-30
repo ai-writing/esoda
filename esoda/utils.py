@@ -21,44 +21,15 @@ def is_cn_char(c):
 def is_cn(s):
     return reduce(lambda x, y: x and y, [is_cn_char(c) for c in s], True)
 
+
 def has_cn(s):
     return reduce(lambda x, y: x or y, [is_cn_char(c) for c in s], False)
-
-
-def translate(cn):
-    url = u'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key=205873295&type=data&doctype=json&version=1.2&only=dict&q=' + cn
-    l = ''
-    try:
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            o = r.json()
-            if o['errorCode'] == 0 and 'basic' in o and 'explains' in o['basic']:
-                s = o['basic']['explains'][0]
-                l = s[s.find(']') + 1:].strip()
-    except Exception as e:
-        print e
-    return l
 
 
 def corpus_id2cids(corpus_id):
     if corpus_id in CORPUS2ID:
         return [c['i'].replace('/', '_') for c in CORPUS2ID[corpus_id]]
     return [c['_id'].replace('/', '_') for c in MONGODB['dblp']['venues'].find({'field': corpus_id})]
-
-
-def translate_cn(q):
-    tokens = q.split()
-    lent = len(tokens)
-    qtt = []
-    for i in xrange(lent):
-        t = tokens[i]
-        if is_cn(t):
-            t = translate(t.strip('?'))
-            # if not t:
-            #     no translation for Chinese keyword
-        qtt.append(t)
-    st = ' '
-    return st.join(qtt)
 
 
 def notstar(p, q):

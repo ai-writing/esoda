@@ -6,8 +6,8 @@ import logging
 
 import time
 
-from .utils import translate_cn, notstar, papers_source_str, corpus_id2cids
-from .youdao_query import youdao_suggest, youdao_search
+from .utils import notstar, papers_source_str, corpus_id2cids
+from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
@@ -17,7 +17,7 @@ from common.models import Comment
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultId = 11
-defaultDB = '_all'
+defaultDB = ['dblp', 'doaj', 'bnc', 'arxiv']
 logger = logging.getLogger(__name__)
 
 
@@ -51,7 +51,9 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
-    q = translate_cn(q0)
+    trans = youdao_translate(q0)
+    q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
+    qt, ref = lemmatize(q)
 
     r = {
         'domain': u'人机交互',
@@ -71,14 +73,10 @@ def esoda_view(request):
 
     cids = get_cids(request.user.id, r=r)
 
-    qt, ref = lemmatize(q)
     r['collocationList'] = collocation_list(qt, cids)
 
     if len(qt) == 1:
-        syn = synonyms(qt[0])
-        if len(syn) > 10:
-            syn = syn[0:10]
-        r['synonymous'] = syn
+        r['synonymous'] = synonyms(qt[0])[:10]
 
     suggestion = {
         'relatedList': [
@@ -99,7 +97,7 @@ def esoda_view(request):
         'q0': q0,
         'ref': ' '.join(ref),
         'suggestion': suggestion,
-        'dictionary': youdao_search(q0, ' '.join(qt)),
+        'dictionary': trans,
         'cids': cids,
     }
 
@@ -233,6 +231,8 @@ def collocation_list(mqt, cids):
 
 
 def sentence_query(t, ref, i, dt, cids):
+    if not t:
+        return {'time': 0.00, 'total': 0, 'sentence': []}
     if dt != '0':  # Search specific tag
         d = [{'dt': dt, 'i1': i, 'i2': i + 1}]
     else:  # Search user input

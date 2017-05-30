@@ -1,6 +1,7 @@
 html {
     position: relative;
     min-height: 100%;
+    min-width: 360px;
 }
 
 body {
@@ -15,56 +16,46 @@ a {
 
 
 @media (min-width: 1200px) {
-  .container {
-    width: 980px;
-  }
+    .container {
+        width: 980px;
+    }
     #SearchBox{
-        width: 496px;
-        height: 60px;
+        /*width: 496px;*/
     }
     .input-group-lg>.input-group-btn>.btn {
         width: 144px; 
-        height: 60px;
-        padding-top: 8px;
     }
 }
 
-@media (max-width: 1200px) and (min-width: 990px) {
+@media (max-width: 1200px) and (min-width: 992px) {
     #SearchBox{
-        width: 496px;
-        height: 60px;
+        /*width: 496px;*/
     }
     .input-group-lg>.input-group-btn>.btn {
-        width: 144px; 
-        height: 60px;
-        padding-top: 8px;
+        width: 144px;
     }
 }
 
-@media (max-width: 990px) and (min-width: 767px) {
+@media (max-width: 992px) and (min-width: 768px) {
     #SearchBox{
-        width: 420px;
-        height: 60px;
+        /*width: 420px;*/
     }
     .input-group-lg>.input-group-btn>.btn {
-        width: 120px; 
-        height: 60px;
-        padding-top: 8px;
+        width: 120px;
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .fix-right-xs {
         padding-left: 85%;
     }
-    #SearchBox{
-        height: 60px;
-    }
     .input-group-lg>.input-group-btn>.btn {
         width: 100%;
-        height: 60px;
-        padding-top: 8px;
     }
+}
+
+#SearchBox{
+    height: 60px;
 }
 
 .section-blue {
@@ -103,16 +94,6 @@ a {
     text-align: right;
 }
 
-.right-float {
-    display: inline;
-    float: right;
-}
-
-.left-float {
-    display: inline;
-    float:left;
-}
-
 .inline {
     display: inline;
 }
@@ -141,23 +122,20 @@ a {
     padding-bottom: 10px;
 }
 
-
+.esoda-brand {
+    margin-bottom: 43px;
+    text-align: center;
+}
 .esoda-brand-main {
     width: 234px;
     padding-bottom: 10px;
 }
-
 .esoda-brand-hr {
+    max-width: 200px;
     border: 1px solid #fff;
-    margin: 8px;
-    margin-left: 46px;
-    width: 67%;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
-
-.esoda-brand-subtitle {
-    color: #fff;
-}
-
 .esoda-brand-subtitle {
     color: #fff;
     font-size: 20px;
@@ -182,7 +160,6 @@ a {
 }
 
 #ResultSearchBar > #SearchBox {
-    width: 440px;
     padding-bottom: 0px;
     height: 48px;
 }
@@ -190,12 +167,6 @@ a {
 .container-navbar {
     position: relative;
     margin: 0 auto;
-}
-
-.title {
-    margin-bottom: 43px;
-    text-align: center;
-    font-size: 18px;
 }
 
 .jumbotron {
@@ -440,9 +411,21 @@ button.close:focus {
     border-radius: 1.5px;
 }
 
+#SearchForm {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 623px;
+}
+#SearchForm .btn[type='submit'] {
+    height: 60px;
+    padding-top: 8px;
+}
+#SearchForm .btn[type='submit'] > span {
+    vertical-align: middle;
+}
+
 .glyphicon-search {
     font-size: 30px;
-    vertical-align: bottom;
 }
 
 .ui-widget.ui-widget-content {
@@ -554,6 +537,11 @@ button.close:focus {
     padding-top: 60px;
 }
 
+.wechat-qr {
+    width: 100px;
+    height: 100px;
+}
+
 .ui-menu-item {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -612,18 +600,12 @@ button.close:focus {
     color: #000;
 }
 
-.col-guide {
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
 .col-introduction {
     border: 1px solid #979797;
     background: #fff;
     text-align: center;
     padding-top: 19px;
     padding-bottom: 19px;
-    width: 24%;
 }
 
 .col-introduction > h3 {
@@ -644,6 +626,7 @@ button.close:focus {
 
 .col-feature-img > img {
     width: 135%;
+    max-width: 128px;
 }
 
 .col-feature-intro > h4 {
@@ -884,23 +867,25 @@ button.close:focus {
     padding-bottom: 40px;
 }
 
-.result-sidebar {
+#SidebarAffix {
     text-align: center;
-    width: 200px;
+    width: 160px;
     margin-top: 40px;
 }
-
-.result-sidebar>.panel-group>.panel {
+#SidebarAffix.affix {
+    margin-top: 0px;
+}
+#SidebarAffix .panel {
     margin-top: 15px;
 }
-
-#HeadingRelated, #HeadingHot {
-    margin-bottom: 0px;
+#SidebarAffix a:hover {
     color: #63b7e6;
 }
-
-#CollapseRelated, #CollapseHot {
-    padding-top: 8px;
+#SidebarAffix .list-group-item {
+    border-width: 0;
+    padding: 5px 0;
+}
+#SidebarAffix .list-group-item:last-child {
     padding-bottom: 15px;
 }
 
@@ -945,7 +930,6 @@ button.close:focus {
 
 .panel-default > .panel-heading {
     background-color: #fff;
-    margin-bottom: 6px;
     padding: 10px 7px;
 }
 
@@ -955,9 +939,6 @@ button.close:focus {
 
 .panel-title-wrapper {
     border-bottom: 1px solid #9b9b9b;
-}
-
-.panel-title {
     font-size: 17px;
 }
 
@@ -1354,8 +1335,8 @@ button.close:focus {
     font-size: 20px;
 }
 .guide-group {
-    padding-top: 25px;
-    padding-bottom: 300px;
+    padding-top: 30px;
+    padding-bottom: 20px;
 }
 .guide-thumbnail {
     background-color: #f5f5f9;
@@ -1392,6 +1373,13 @@ button.close:focus {
     height: 40px;
     border-radius: 3px;
     background-color: #63b7e6;
+}
+.example-image {
+    margin-left: 30px;
+    margin-bottom: 40px
+}
+.example-image img {
+    width: 900px;
 }
 #search-collection-btn>.btn{
     width: 80px;
@@ -1478,15 +1466,6 @@ button.close:focus {
     font-size: 10px;
     margin-top: 9px;
 }
-
-.hotword > p > a:hover {
-    color: #63B7E6;;
-}
-
-.sideword> a:hover {
-    color: #63b7e6;
-}
-
 
 .mydomain {
     top: 3px;

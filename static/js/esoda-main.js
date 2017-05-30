@@ -125,7 +125,7 @@ $(function () {
       });
       ul.append("<li class='ui-autocomplete-category ui-autocomplete-warnings'>" +
                   "<div class=\"inline\">按“回车”发起检索</div>" +
-                  "<div class=\"right-float\">" +
+                  "<div class=\"pull-right\">" +
                   "<a href=\"\" id=\"ClearHistory\" onclick=\"window.clearHistory()\">清除搜索历史" +
                   "<span class=\"glyphicon glyphicon-time\"></span></a></div></li>");
     },
@@ -261,6 +261,6 @@ $(function () {
 
   $('.wechat-share').popover();
   $('.wechat-share').on('shown.bs.popover', function() {
-    $('.wechat-qr').qrcode({render: 'canvas', width: 90, height: 90, text: window.location.href});
+    $('.wechat-qr').qrcode({render: 'canvas', width: 100, height: 100, text: window.location.href});
   });
 });
