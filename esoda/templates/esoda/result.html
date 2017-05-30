@@ -226,6 +226,9 @@
 
       $('#CollapseColloc').on('click', '.not-limited', function (e) {
         e.preventDefault();
+        // if ($(this).parent().hasClass('acitve')) {
+        //   return;
+        // }
         $("#CollocationTab li").removeClass('active');
         $("#ExampleEnd").hide();
         $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
@@ -250,6 +253,10 @@
       $('.not-limited').click();
 
       $('.colloc-sub-btn').click(function(e) {
+        e.preventDefault();
+        // if ($(this).parent().hasClass('active')) {
+        //   return;
+        // }
         var id = $(this).attr('href');
         var type = $(this).html();
         var type0 = type.replace(/ \(.*\) /g , ' ');

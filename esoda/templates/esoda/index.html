@@ -13,19 +13,22 @@
   <div class="jumbotron section-blue">
     <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4 title">
+        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 esoda-brand">
           <img src="{% static 'img/logo_white.png' %}" class="esoda-brand-main">
           <hr class="esoda-brand-hr">
           <div class="esoda-brand-subtitle">
             <span>专业英文论文写作助手</span>
           </div>
         </div>
-        <div id="SearchBar" class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6">
+        <div id="SearchBar" class="col-xs-12 col-md-8 col-md-offset-2">
           <form id="SearchForm" class="form-horizontal" role="search" action="{% url 'esoda' %}">
             <div class="input-group input-group-lg">
               <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
               <span class="input-group-btn">
-                <button type="submit" class="btn btn-info">搜搭&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
+                <button type="submit" class="btn btn-info">
+                  <span class="hidden-xs">搜搭&nbsp;&nbsp;</span>
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
               </span>
             </div>
           </form>
@@ -45,18 +48,18 @@
       </span>
     </div>
     <div class="row">
-      <div class="col-xs-6 col-sm-3 col-guide">
+      <div class="col-xs-6 col-sm-3">
         <div class="thumbnail thumbnail-guide">
           <a href="/?q=efficient" id="guide0_index">
               <img src="{% static 'img/usage_1.png' %}" alt="...">
           </a>
           <div class="caption caption-usage">
             <h4>换说法</h4>
-            <p>论文里感到单词词汇用的不地道，找找看母语论文里别人怎么说</p>
+            <p>论文里感到用词不地道，找找看母语论文里别人怎么说</p>
           </div>
         </div>
       </div>
-      <div class="col-xs-6 col-sm-3 col-guide">
+      <div class="col-xs-6 col-sm-3">
         <div class="thumbnail thumbnail-guide">
           <a href="/?q=wait" id="guide1_index">
               <img src="{% static 'img/usage_2.png' %}" alt="...">
@@ -67,7 +70,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-6 col-sm-3 col-guide">
+      <div class="col-xs-6 col-sm-3">
         <div class="thumbnail thumbnail-guide">
           <a href="/?q=减少+the+demand+of" id="guide2_index">
               <img src="{% static 'img/usage_3.png' %}" alt="...">
@@ -78,7 +81,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-6 col-sm-3 col-guide">
+      <div class="col-xs-6 col-sm-3">
         <div class="thumbnail thumbnail-guide">
           <a href="/?q=make+effort" id="guide3_index">
               <img src="{% static 'img/usage_4.png' %}" alt="...">
@@ -210,7 +213,7 @@
   <div class="back-message section-blue">
     <div class="container container-message">
       <div class="row">
-        <div class="col-sm-1 hidden-xs">
+        <div class="col-sm-1">
           <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
         </div>
         <div class="col-xs-6">
