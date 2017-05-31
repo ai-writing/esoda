@@ -6,9 +6,10 @@ import views
 import time
 esi = 'corpus_tree'
 esd = 'bnc_tree'
-VNJ = ('V', 'N', 'ADJ')
-NADV = ('V', 'N', 'ADJ', 'PRT')
-AITEM = {'V', 'N', 'ADJ', 'PRT', 'ADV', '(modified)'}
+VNJ = ('V', 'N', 'ADJ')  # V&N&ADJ
+NADV = ('V', 'N', 'ADJ', 'PRT')  # NON ADV
+AITEM = {'V', 'N', 'ADJ', 'PRT', 'ADV', '(modified)', '...'}  # ALL SPECIAL ITEM
+RITEM = {'V', 'N', 'ADJ', 'PRT', 'ADV', '...'}  # TO REPLACE
 
 
 def process_phase1(res, t):  # from source to phrase
@@ -24,13 +25,14 @@ def process_phase1(res, t):  # from source to phrase
     def join2lists(a, b, j):
         return a[:j] + b + a[j + 1:]
 
-    def modifiedN(ts, hls, ps, e, flag, lenFlag):
+    def modifiedN(ts, hls, ps, e, lenFlag):
+        modN = 0
         if e == 'N' and not [p for p in ps if p not in VNJ]:
-            flag = int(lenFlag)
+            modN = int(lenFlag)
             if ts[-1] in t and not lenFlag:  # graphical *user interface --> g i
                 its = filter_list(ts, list(t))
                 ts, hls, ps = select_thp(its, ts), select_thp(its, hls), select_thp(its, ps)
-        return ts, hls, ps, flag
+        return ts, hls, ps, modN
 
     def modifiedN2(ts, hls, ps, e):
         if e == 'N' and not [p for p in ps if p not in VNJ]:
@@ -75,17 +77,20 @@ def process_phase1(res, t):  # from source to phrase
             ni += 1
             ts, hls, ps = filter_thp('t', modes['w']), filter_thp('i', modes['w']), filter_thp('p', modes['w'])
             e, flag = modes['e'], int(bool([i for i in t if i not in ts]))
-            ts, hls, ps, flag = modifiedN(ts, hls, ps, e, flag, len(t) == 1)
+            ts, hls, ps, modN = modifiedN(ts, hls, ps, e, len(t) == 1)
             if flag == 0:
                 col.append(compond(ts, hls, ps, e, ''))
                 nt, lens = list(t), len(ts)
-                if not [i for i in range(lens) if ts[i] not in nt and ps[i] in NADV]:
+                if modN != 1 and not [i for i in range(lens) if ts[i] not in nt and ps[i] in NADV]:
                     flag = 2
 
             if flag:
                 # flag = 0 --> not in a phrase
                 if flag == 1 and [i for i in t if i in ts]:
                     if modes['p']:
+                        nts = filter_thp('t', src['d'][int(modes['p'].split('_')[0])]['w'])
+                        if not [i for i in t if i not in nts]:
+                            continue
                         ts, hls, ps, e = extend_fa_thp(ts, hls, ps, e)
                         if not [i for i in t if i not in ts]:
                             col.append(compond(ts, hls, ps, e, ''))
@@ -111,11 +116,7 @@ def process_phase1(res, t):  # from source to phrase
     return res1
 
 
-def process_phase2(res1, t, md, num):
-    mps = {}
-    if md:
-        mps[md] = []
-
+def process_phase2(res1, t, md, num, mps):
     def process_phase2_inner(ts, hs, ps, e, sp, nt):
         def append_res():
             if not nt:
@@ -144,12 +145,16 @@ def process_phase2(res1, t, md, num):
             if not [p for p in ps if p not in ('V', 'N', 'ADJ')]:
                 if ts[-1] in nt:
                     flag = (len(nt) == 1)
+                    if flag:
+                        words.append('...')
                     examples = []
                     for i in range(lens):
                         if ts[i] in nt or flag:
                             if not appending():
                                 examples.append(ts[i])
                     tokens.insert(-1, examples)
+                    if flag:
+                        tokens.insert(-1, '(modified)')
                 else:
                     for i in range(lens):
                         if ts[i] in nt or i == lens - 1:
@@ -180,9 +185,12 @@ def process_phase2(res1, t, md, num):
 
 
 def process_query(t, md, num):
-    res = EsAdaptor.search_tree(t, esi, esd)
+    mps = {}
+    if md:
+        mps[md] = []
+    res = EsAdaptor.search_tree(t, esi, esd, 0, 10000)
     res1 = process_phase1(res, t)
-    res2 = process_phase2(res1, t, md, num)
+    res2 = process_phase2(res1, t, md, num, mps)
     return res2
 
 
@@ -202,23 +210,22 @@ def process_usage_usage_list(t, md):
     mps = {}
     for wt in res[md]:
         for i in range(len(mmd)):
-            if mmd[i] in AITEM:
+            if mmd[i] in RITEM:
                 org = mmd[i]
                 if isinstance(wt['t'][i], list):
                     for j in wt['t'][i]:
                         mmd[i] = j
-                        if org == '(modified)':
-                            mmd.insert(i + 1, '(modified)')
                         key = ' '.join(mmd)
                         mps[key] = mps.get(key, 0) + 1
-                        if org == '(modified)':
-                            del mmd[i + 1]
                 else:
                     mmd[i] = wt['t'][i]
                     key = ' '.join(mmd)
                     mps[key] = mps.get(key, 0) + 1
                 mmd[i] = org
-    ws += [{'content': x[0], 'count': x[1]} for x in sorted(mps.items(), key=lambda x: -x[1])[:10]]
+    rs = sorted(mps.items(), key=lambda x: -x[1])
+    for i, j in enumerate(rs):
+        if i < 10 or j[1] > 20:
+            ws.append({'content': j[0], 'count': j[1]})
     return ws
 
 

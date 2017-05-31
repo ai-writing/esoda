@@ -18,7 +18,8 @@ from common.models import Comment
 
 deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 defaultId = 11
-defaultDB = ['dblp', 'arxiv', 'doaj', 'bnc']
+# defaultDB = ['dblp', 'arxiv', 'doaj', 'bnc']
+defaultDB = 'bnc'
 displayNum = 50
 logger = logging.getLogger(__name__)
 

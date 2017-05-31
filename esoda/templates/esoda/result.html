@@ -109,6 +109,11 @@
                   </div>
                 </div>
                 <div id="CollapseUsage" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
+                  <ul class="nav nav-tabs nav-tabs-collocation left-float" id="UsageTab0" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#UsageAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a>
+                    </li>
+                  </ul>
                   <ul class="nav nav-tabs nav-tabs-usage" id="UsageTab" role="tablist">
                     {% if r.usageList %}
                     {% for usage in r.usageList %}
@@ -129,6 +134,7 @@
                 </div>
               </div> <!-- true usage panel -->
 
+              <!--
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="HeadingColloc">
                   <div class="panel-title-wrapper">
@@ -166,7 +172,7 @@
                     {% endif %}
                   </div>
                 </div>
-              </div> <!-- collocation panel -->
+              </div> collocation panel -->
 
             </div> <!-- panel-group -->
 
@@ -285,6 +291,29 @@
         });
         
       })
+
+      $('#CollapseUsage').on('click', '.not-limited', function (e) {
+        e.preventDefault();
+        $("#UsageTab li").removeClass('active');
+        $("#ExampleEnd").hide();
+        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+
+        var collocQ = $(this).text();
+        loadCount = 1;
+        loading = 1;
+        loaded = 0;
+
+        // console.log(collocQ);
+        $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
+          $("#SentenceResult").html(data);
+          $('#CountUsage').html($('#ExampleNumber').html());
+          if ($('#ExampleNumber').html() <= 10) {
+            $('#ExampleEnd').show();
+            loaded = 1;
+          }
+          loading = 0;
+        });
+      });
 
       $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
         if ($(this).attr('state') == 'selected') return;

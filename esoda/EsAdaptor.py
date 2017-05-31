@@ -83,7 +83,7 @@ class EsAdaptor():
             return EsAdaptor.es.search(index=index, doc_type=doc_type, body=body, filter_path=filter_path)
 
     @staticmethod
-    def search_tree(t, dbs, cids, sp=10000):
+    def search_tree(t, dbs, cids, bg, sp):
         mst = []
         for tt in t:
             mst.append({
@@ -98,6 +98,7 @@ class EsAdaptor():
             })
         action = {
             "_source": ['t', 'd'],
+            "from": bg,
             "size": sp,
             "query": {
                 "bool": {
