@@ -21,7 +21,7 @@ $(function(){
     $("#circle0").css({
       'background-color':'#d8d8d8'
     }); 
-  })  
+  });
   $("#guide1_index").hover(function(){ 
     $("#circle1").css({
       'background-color':'#63B7E6'
@@ -30,7 +30,7 @@ $(function(){
     $("#circle1").css({
       'background-color':'#d8d8d8'
     }); 
-  })
+  });
   $("#guide2_index").hover(function(){ 
     $("#circle2").css({
       'background-color':'#63B7E6'
@@ -39,7 +39,7 @@ $(function(){
     $("#circle2").css({
       'background-color':'#d8d8d8'
     }); 
-  })
+  });
   $("#guide3_index").hover(function(){ 
     $("#circle3").css({
       'background-color':'#63B7E6'
@@ -48,5 +48,5 @@ $(function(){
     $("#circle3").css({
       'background-color':'#d8d8d8'
     }); 
-  })
-})
+  });
+});

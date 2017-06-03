@@ -5,7 +5,7 @@
 {% block title %}ESODA | search result{% endblock %}
 
 {% block head %}
-  <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -184,7 +184,7 @@
 {% endblock %}
 
 {% block script %}
-  <script src="{% static 'js/esoda-result.js' %}"></script>
+  <script src="{% static 'js/esoda-result.js' %}?v={% now 'Ymd' %}"></script>
   <script>
     $( function() {
 

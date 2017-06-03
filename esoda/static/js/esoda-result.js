@@ -71,7 +71,7 @@ $(function () {
     e.preventDefault();
     $(e.target).toggleClass("glyphicon-star-empty");
     $(e.target).toggleClass("glyphicon-star");
-  }
+  };
 
   $.clickChevron = function(e) {
     $(e.target).toggleClass("glyphicon-chevron-down");
@@ -83,6 +83,5 @@ $(function () {
     $('#SearchBox').select();
   });
 
-  $('#SearchBox').focus();
-  $('#SearchBox').select();
+  $('#ResultSearchBar').hover();
 });

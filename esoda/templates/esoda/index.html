@@ -163,7 +163,7 @@
   <div class="back-message section-blue">
     <div class="container container-message">
       <div class="row">
-        <div class="col-sm-1">
+        <div class="col-xs-2 col-sm-1">
           <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
         </div>
         <div class="col-xs-6">
@@ -189,7 +189,7 @@
 {% block script %}
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
-  <script src="{% static 'js/esoda-index.js' %}"></script>
-  <script src="{% static 'js/esoda-icon.js' %}"></script>
+  <script src="{% static 'js/esoda-index.js' %}?v={% now 'Ymd' %}"></script>
+  <script src="{% static 'js/esoda-icon.js' %}?v={% now 'Ymd' %}"></script>
 
 {% endblock script %}
