@@ -19,9 +19,8 @@ $(function () {
   });
 
 
-
   $( window ).scroll( function () {
-    if ($(document).height() <= $(window).scrollTop() + $(window).height() + 30) {
+    if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
       if (loading == 1 || loaded == 1) return;
 
       var total = $("#ExampleNumber").html();
@@ -72,10 +71,17 @@ $(function () {
     e.preventDefault();
     $(e.target).toggleClass("glyphicon-star-empty");
     $(e.target).toggleClass("glyphicon-star");
-  }
+  };
 
   $.clickChevron = function(e) {
     $(e.target).toggleClass("glyphicon-chevron-down");
     $(e.target).toggleClass("glyphicon-chevron-up");
   }
+
+  $('#ResultSearchBar').hover(function() {
+    $('#SearchBox').focus();
+    $('#SearchBox').select();
+  });
+
+  $('#ResultSearchBar').hover();
 });

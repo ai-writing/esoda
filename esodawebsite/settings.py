@@ -138,8 +138,11 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'filters': ['require_debug_false'],
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(config('LOGGING_DIR', default='.'), 'runtime.log'),
+            'maxBytes': 1024 * 500,
+            'backupCount': 20,
+            'encoding': 'utf-8',
             'formatter': 'verbose',
         },
     },
@@ -175,7 +178,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-CN'
 
 TIME_ZONE = 'Asia/Shanghai'
 

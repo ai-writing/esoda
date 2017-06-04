@@ -101,7 +101,8 @@ def esoda_view(request):
         'cids': cids,
     }
 
-    logger.info('%s %s', request, info)
+    request.session.save()
+    logger.info('%s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request, info, request.session.session_key, request.user)
     return render(request, 'esoda/result.html', info)
 
 

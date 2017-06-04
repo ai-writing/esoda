@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from common.mongodb import MONGODB
-from .paper import mongo_get_object, mongo_get_objects, mongo_get_object_or_404, DblpPaper, UploadRecord
+from .paper import mongo_get_objects, DblpPaper
 import requests
 import json
 
@@ -18,18 +17,12 @@ def is_cn_char(c):
     return 0x4e00 <= ord(c) < 0x9fa6
 
 
-def is_cn(s):
-    return reduce(lambda x, y: x and y, [is_cn_char(c) for c in s], True)
-
-
 def has_cn(s):
     return reduce(lambda x, y: x or y, [is_cn_char(c) for c in s], False)
 
 
 def corpus_id2cids(corpus_id):
-    if corpus_id in CORPUS2ID:
-        return [c['i'].replace('/', '_') for c in CORPUS2ID[corpus_id]]
-    return [c['_id'].replace('/', '_') for c in MONGODB['dblp']['venues'].find({'field': corpus_id})]
+    return [c['i'].replace('/', '_') for c in CORPUS2ID.get(corpus_id, [])]
 
 
 def notstar(p, q):
@@ -61,18 +54,6 @@ def gen_source_url(p):
     conference = p.get('venue', '/').split('/')[-1].upper()
     source = generate_source(year, title, authList, conference)
     return {'source': source, 'url': p['ee']}
-
-
-def paper_source_str(pid):
-    s = {}
-    p = mongo_get_object(DblpPaper, pk=pid)
-    if not p:
-        p = mongo_get_object_or_404(UploadRecord, pk=pid)
-        s['source'] = 'Uploaded file: ' + p['title']
-        return s
-    # TODO: precompute source string and save to $common.uploads
-    # v = mongo_get_object(DblpVenue, pk=p['venue'])
-    return gen_source_url(p)
 
 
 def papers_source_str(pids):

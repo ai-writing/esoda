@@ -15,7 +15,7 @@ def lemmatize(s):
         ll = [t[2].lower() for t in tokens]
         ref = [t[1] for t in tokens]
     except Exception as e:
-        logging.exception('Failed to lemmatize')
+        logging.exception('Failed to lemmatize "%s"', s)
         ll = ref = s.split()
         ll = [l.lower() for l in ll]
 
