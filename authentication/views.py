@@ -5,6 +5,8 @@ from forms import FieldSelectForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
+from models import Corpus,TreeNode
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -24,7 +26,7 @@ def domain_view(request):
             # return redirect(reverse('field_select'))
     else:
         form = FieldSelectForm(initial={'choice': corpus_id})
-    return render(request, "profile/domain_select.html", {'form': form, 'menu_index': 1, 'profileTab': 'domain'})
+    return render(request, "profile/domain_select.html", {'form': form, 'menu_index': 1, 'profileTab': 'domain','tree': tree})
 
 
 def personal_view(request):
@@ -50,3 +52,22 @@ def favorites_view(request):
         'profileTab': 'favorites'
     }
     return render(request, 'profile/favorites.html', info)
+
+
+def get_dept_tree(parents):
+    display_tree = []
+    for p in parents:
+        node = TreeNode()
+        node.id = p.id
+        node.text = p.name
+        children = p.children.all()
+        if len(children) > 0:
+            node.nodes = get_dept_tree(children)
+        display_tree.append(node.to_dict())
+    return display_tree
+
+def tree(request):
+    print 1
+    root = Corpus.objects.get(parent=None)
+    tree = get_dept_tree([root])
+    return JsonResponse(tree, safe=False)

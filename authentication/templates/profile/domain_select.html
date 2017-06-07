@@ -8,7 +8,7 @@
   <h4 class="personal-title"><strong>学术领域选择</strong></h4>
   <hr class="personal-line"/>
   <h5><strong>通过选择学术领域缩小文章范围</strong><h5>
-  <form style="margin-top:10px;width:500px;" action="{% url 'domain' %}" method="post">
+  <!-- <form style="margin-top:10px;width:500px;" action="{% url 'domain' %}" method="post">
     {% csrf_token %}
     <div class='form-group fixed-form'>
         {% for field in form %}
@@ -19,18 +19,41 @@
     {% endfor %}
     </div>
     <button type="submit" class="btn field-select-btn">{% trans 'Save' %}</button>
-  </form>
-  </div>
+  </form> -->
+  <div id="tree"></div>
+  <div id="result">sss</div>
 </div>
 {% endblock %}
 {% block script %}
-  {% if messages %}
-    <script>
-    $(document).ready(function () {
-    {% for message in messages %}
-      toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
-    {% endfor %}
+<script src="{% static 'js/bootstrap-treeview.min.js' %}"></script>
+<script>
+ $(function () {
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
     });
-    </script>
-  {% endif %}
+    var tree = $.getJSON("{% url 'dept_tree' %}", '', function (data) {
+        alert("124");
+        $('#tree').treeview({
+            data: data,
+            level: 2,
+            showTags: true,
+            onNodeSelected: function (event, node) {
+                $.post("../people/"+node.id, {}, function(data){
+                    console.log(data);
+                    $("#result").html(data);
+                })
+            }
+        });
+    });
+});
+</script>
+{% if messages %}
+  <script>
+  $(document).ready(function () {
+  {% for message in messages %}
+    toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
+  {% endfor %}
+  });
+  </script>
+{% endif %}
 {% endblock %}
