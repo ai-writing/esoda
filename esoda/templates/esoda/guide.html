@@ -9,26 +9,23 @@
 {% endblock %}
 
 {% block content %}
-<div class="container container-usage">
-  
-</div>
 <div class="guide-page">
   <div class="container">
     <div class="row guide-block">
       <div class="guide-title1">关于易搜搭</div>
     </div>
     <div class="row guide-intro">
-    	<div class="col-md-12 col-sm-6">
-	      <p class="h4">
-	      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;易搜搭ESODA是清华PCG工作室出品的免费英文论文写作助手，让你像母语使用者一样进行英文写作。易搜搭在开发中，融合了写作字典ESLwriter的设计经验，通过收集了数十个专业英文论文语料库，划分出了十余种学术领域。现在已支持了中文查找英文表达，同义词查询，词组搜索等革新功能，希望能让您的英文论文写作更加舒心。
-	      </p>
-	    </div>
+      <div class="col-md-12">
+        <p class="h4">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;易搜搭ESODA是清华PCG工作室出品的免费英文论文写作助手，让你像母语使用者一样进行英文写作。易搜搭在开发中，融合了写作字典ESLwriter的设计经验，通过收集了数十个专业英文论文语料库，划分出了十余种学术领域。现在已支持了中文查找英文表达，同义词查询，词组搜索等革新功能，希望能让您的英文论文写作更加舒心。
+        </p>
+      </div>
     </div>
     <div class="row guide-block">
       <div class="guide-title1">点击预览易搜搭的神奇搜索</div>
       {% with tab="guide" %}
-	      {% include "esoda/guide_icon.html" %}
-	    {% endwith %}
+        {% include "esoda/guide_icon.html" %}
+      {% endwith %}
     </div>
     <dic class="row guide-block">
       <div class="guide-title1">进阶搜哒</div>
@@ -43,7 +40,7 @@
           </div>
         </div>
         <div class="row example-image">
-        	<img src="{% static 'img/example1.png' %}" alt="...">
+          <img src="{% static 'img/example1.png' %}" alt="...">
         </div>
         <div id="guide1" class="row guide-group">
           <div class="col-md-10">
@@ -56,7 +53,7 @@
           </div>
         </div>
         <div class="row example-image">
-        	<img src="{% static 'img/example2.png' %}" alt="...">
+          <img src="{% static 'img/example2.png' %}" alt="...">
         </div>
         <div id="guide2" class="row guide-group">
           <div class="col-md-10">
@@ -69,7 +66,7 @@
           </div>
         </div>
         <div class="row example-image">
-        	<img src="{% static 'img/example3.png' %}" alt="...">
+          <img src="{% static 'img/example3.png' %}" alt="...">
         </div>
         <div id="guide3" class="row guide-group">
           <div class="col-md-10">
@@ -82,7 +79,7 @@
           </div>
         </div>
         <div class="row example-image">
-        	<img src="{% static 'img/example4.png' %}" alt="...">
+          <img src="{% static 'img/example4.png' %}" alt="...">
         </div>
       </div>
     </dic>
@@ -92,6 +89,6 @@
 
 {% block script %}
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="{% static 'js/esoda-icon.js' %}"></script>
+  <script src="{% static 'js/esoda-icon.js' %}?v={% now 'Ymd' %}"></script>
 
 {% endblock script %}

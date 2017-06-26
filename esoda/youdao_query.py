@@ -64,6 +64,6 @@ def youdao_translate(q):
         logger.exception('Failed in Youdao translate')
     return {
         'query': r.get('query', q),
-        'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation'),
+        'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
         'cn': has_cn(q)
     }

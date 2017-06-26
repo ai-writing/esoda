@@ -1,0 +1,7 @@
+user-agent: *
+Allow: /$
+Allow: /sitemap.xml$
+Allow: /guide
+Disallow: /
+
+Sitemap: http://www.esoda.org/sitemap.xml
