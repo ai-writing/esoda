@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from models import Corpus,TreeNode
 from django.http import JsonResponse
+import json
 # Create your views here.
 
 
@@ -14,20 +15,34 @@ from django.http import JsonResponse
 @login_required
 def domain_view(request):
     user = User.objects.get(id=request.user.id)
-    corpus_id = user.userprofile.corpus_id
+    corpus_id = user.userprofile.getid()
     if request.method == 'POST':
-        form = FieldSelectForm(request.POST)
-        if form.is_valid():
-            cid = form.cleaned_data['choice']
-            if corpus_id != cid:  # need to update fid & cids
-                user.userprofile.corpus_id = cid
-                user.userprofile.save()
-            messages.success(request, u'领域更新成功')
+        cid = int(request.POST['id'])
+        corpus=Corpus.objects.get(c_id=cid)
+        result=1-corpus_id[cid] # need to update fid & cids
+        children=get_children(corpus)
+        for i in children:
+            corpus_id[i]=result
+        user.userprofile.setid(corpus_id) 
+        user.userprofile.save()
+        # messages.success(request, u'领域更新成功')
             # return redirect(reverse('field_select'))
-    else:
-        form = FieldSelectForm(initial={'choice': corpus_id})
-    return render(request, "profile/domain_select.html", {'form': form, 'menu_index': 1, 'profileTab': 'domain','tree': tree})
+    return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','tree': tree})
 
+def get_children(corpus):
+    result=[]
+    result+=[corpus.c_id]  
+    children = corpus.children.all()
+    for ch in children:
+        result+=get_children(ch)
+    return result
+
+def changed_child(request):
+    cid = int(request.GET['id'])
+    corpus=Corpus.objects.get(c_id=cid)
+    children=get_children(corpus)
+    children=children[1:len(children)]
+    return JsonResponse(children, safe=False)
 
 def personal_view(request):
     info = {
@@ -54,20 +69,21 @@ def favorites_view(request):
     return render(request, 'profile/favorites.html', info)
 
 
-def get_dept_tree(parents):
+def get_dept_tree(parents,corpus_id):
     display_tree = []
     for p in parents:
         node = TreeNode()
-        node.id = p.id
+        node.id = p.c_id
         node.text = p.name
         children = p.children.all()
         if len(children) > 0:
-            node.nodes = get_dept_tree(children)
-        display_tree.append(node.to_dict())
+            node.nodes = get_dept_tree(children,corpus_id)
+        display_tree.append(node.to_dict(corpus_id[node.id]))
     return display_tree
 
 def tree(request):
-    print 1
     root = Corpus.objects.get(parent=None)
-    tree = get_dept_tree([root])
+    user = User.objects.get(id=request.user.id)
+    corpus_id = user.userprofile.getid()
+    tree = get_dept_tree([root],corpus_id)
     return JsonResponse(tree, safe=False)

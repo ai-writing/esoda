@@ -20,8 +20,12 @@
     </div>
     <button type="submit" class="btn field-select-btn">{% trans 'Save' %}</button>
   </form> -->
+  <div class="form-group">
+    <label for="input-search" class="sr-only">Search Tree:</label>
+    <input type="input" class="form-control" id="input-search" placeholder="Type to search..." value="">
+  </div>
+  <button type="button" class="btn" id="btn-search">Search</button>
   <div id="tree"></div>
-  <div id="result">sss</div>
 </div>
 {% endblock %}
 {% block script %}
@@ -32,19 +36,46 @@
         data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
     });
     var tree = $.getJSON("{% url 'dept_tree' %}", '', function (data) {
-        alert("124");
         $('#tree').treeview({
             data: data,
             level: 2,
-            showTags: true,
-            onNodeSelected: function (event, node) {
-                $.post("../people/"+node.id, {}, function(data){
-                    console.log(data);
-                    $("#result").html(data);
-                })
+            showCheckbox: true,
+            showIcon: false,
+            onNodeChecked: function (event, node) {
+                $.post("../domain/", {'id':node.id }, function(data){
+                  console.log(node.id);
+                })               
+                $.getJSON("{% url 'changed_child' %}", {'id':node.id }, function(data){
+                  for(var i=0;i<data.length;i++){
+                    $('#tree').treeview('checkNode', [ data[i], { silent: true } ]);
+                  } 
+                }); 
             }
         });
+        $('#tree').on('nodeUnchecked', function(event, node) {
+          $.post("../domain/", {'id':node.id }, function(data){
+            console.log(node.id);
+          })              
+          $.getJSON("{% url 'changed_child' %}", {'id':node.id }, function(data){
+            for(var i=0;i<data.length;i++){
+              $('#tree').treeview('uncheckNode', [ data[i], { silent: true } ]);
+            } 
+          });
+        });
     });
+    var search = function(e) {
+      var pattern = $('#input-search').val();
+      var options = {
+        ignoreCase: true,     // case insensitive
+        exactMatch: false,    // like or equals
+        revealResults: true,  // reveal matching nodes
+      }
+      var results = $('#tree').treeview('search', [ pattern, options ]);
+    }
+
+    $('#btn-search').on('click', search);
+    $('#input-search').on('keyup', search);
+
 });
 </script>
 {% if messages %}
