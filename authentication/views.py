@@ -39,7 +39,6 @@ def changed_child(request):
     try:
         index=tree_first.index(cid)
         children=tree_second[index]
-        print children
     except:
         children=[]
     return JsonResponse(children, safe=False)
