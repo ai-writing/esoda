@@ -22,9 +22,11 @@
   </form> -->
   <div class="form-group">
     <label for="input-search" class="sr-only">Search Tree:</label>
-    <input type="input" class="form-control" id="input-search" placeholder="Type to search..." value="">
+    <div class="search bar1" id="search-bar">
+      <input type="text" id="input-search" placeholder="Type to search...">
+      <button type="button" id="btn-search"><span class="glyphicon glyphicon-search"></span></button>
+    </div>
   </div>
-  <button type="button" class="btn" id="btn-search">Search</button>
   <div id="tree"></div>
 </div>
 {% endblock %}
@@ -74,6 +76,9 @@
     }
 
     $('#btn-search').on('click', search);
+    $('#input-search').bind('keypress',function(event){
+        if(event.keyCode == "13") search();
+    });
     // $('#input-search').on('keyup', search);
 
 });
