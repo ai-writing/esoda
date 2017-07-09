@@ -676,7 +676,7 @@ button.close:focus {
     height: 1.6px;
     left: 11%;
     top: 50%;
-    width: 74%;
+    width: 78%;
     margin-top: -1px;
     border-top-width: 1px;
     border-top-style: solid;
@@ -1012,7 +1012,7 @@ button.close:focus {
 .dictionary-middle-line {
     border-right: 1px solid #9b9b9b;
     width: 50%;
-    height: 40px;
+    height: 100px;
 }
 
 .dictionary-hint {

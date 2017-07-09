@@ -78,10 +78,15 @@ $(function () {
     $(e.target).toggleClass("glyphicon-chevron-up");
   }
 
-  $('#ResultSearchBar').hover(function() {
+  $('#SearchBox').hover(function() {
+    if ($('#SearchBox').is(':focus')) {
+      return false;
+    }
     $('#SearchBox').focus();
     $('#SearchBox').select();
+  }, function() {
+    return false;
   });
 
-  $('#ResultSearchBar').hover();
+  $('#SearchBox').trigger('mouseover');
 });
