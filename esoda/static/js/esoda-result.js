@@ -22,6 +22,7 @@ $(function () {
   $( window ).scroll( function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
       if (loading == 1 || loaded == 1) return;
+      if ($('#Loading').is(':visible')) return;
 
       var total = $("#ExampleNumber").html();
       loading = 1;

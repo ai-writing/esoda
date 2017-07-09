@@ -198,7 +198,8 @@
         if ($(this).attr('state') == 'selected') return;
         e.preventDefault();
         $("#ExampleEnd").hide();
-        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+        $('#SentenceResult').empty();
+        $('#Loading').show();
 
         $(this).attr('state', 'selected');
         $(this).removeAttr('href');
@@ -217,6 +218,7 @@
         loaded = 0;
 
         $.get("{% url 'sentences' %}", {t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt}, function(data) {
+          $('#Loading').hide();
           $("#SentenceResult").html(data);
           if ($('#ExampleNumber').html() <= 10) {
             $('#ExampleEnd').show();
@@ -235,7 +237,8 @@
         $("#CollocationTab li").removeClass('disabled');
         $("#CollocationTab li").removeClass('active');
         $("#ExampleEnd").hide();
-        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+        $('#SentenceResult').empty();
+        $('#Loading').show();
 
         var collocQ = $(this).text();
         loadCount = 1;
@@ -244,6 +247,7 @@
 
         // console.log(collocQ);
         $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
+          $('#Loading').hide();
           $("#SentenceResult").html(data);
           $('#CountUsage').html($('#ExampleNumber').html());
           if ($('#ExampleNumber').html() <= 10) {
@@ -283,7 +287,8 @@
         if (i == 0) i = 1;
         dt = id.replace('#', '').split('_')[1];
 
-        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+        $('#SentenceResult').empty();
+        $('#Loading').show();
         $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
           $(id + ' .colloc-result').mCustomScrollbar({

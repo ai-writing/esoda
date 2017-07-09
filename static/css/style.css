@@ -5,7 +5,7 @@ html {
 }
 
 body {
-    font-family: PingFangSC-Regular, Microsoft Yahei;
+    font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
     margin-bottom: 280px;
 }
@@ -408,7 +408,8 @@ button.close:focus {
 
 .input-group-lg>.form-control,
 .input-group-lg>.input-group-btn>.btn {
-    border-radius: 1.5px;
+    border-top-right-radius: 1.5px;
+    border-bottom-right-radius: 1.5px;
     outline: 0;
 }
 
@@ -553,7 +554,7 @@ button.close:focus {
 }
 
 .ui-autocomplete-category {
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 18px;
     padding: .2em .4em;
@@ -562,12 +563,12 @@ button.close:focus {
 }
 
 .ui-autocomplete-label {
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
 }
 
 .ui-autocomplete-label > strong {
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     color: #999;
 }
@@ -617,7 +618,7 @@ button.close:focus {
 .col-introduction > p {
     color: #9b9b9b;
     font-size: 17px;
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
 }
 
@@ -638,7 +639,7 @@ button.close:focus {
 .col-feature-intro > p {
     margin: 0 0;
     color: #9b9b9b;
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 200;
     margin-top: 30px;
 }
@@ -760,14 +761,14 @@ button.close:focus {
 
 .copyright {
     text-align: center;
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 14px;
 }
 
 .footer a {
     color: #9b9b9b;
-    font-family: PingFangSC-Light, Microsoft Yahei;
+    font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
 }
 
 .footer-shares {
@@ -1077,7 +1078,7 @@ button.close:focus {
 .result-warning {
     padding: 10px 0px;
     color: #4a4a4a;
-    font-family: PingFangSC-Light, Microsoft Yahei;
+    font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
     font-weight: 200;
 }
 
@@ -1106,7 +1107,6 @@ button.close:focus {
     margin: 10px 30px 0px 30px;
     padding: 10px 10px;
     max-height: 200px;
-    overflow-y: scroll;
 }
 
 .pagination > li > a {
@@ -1313,7 +1313,7 @@ button.close:focus {
     height: 30px;
     border-radius: 3px;
     background-color: #63b7e6;
-    font-family: PingFangSC;
+    font-family: PingFangSC, HeitiSC;
     font-size: 12px;
     font-weight: 600;
     text-align: center;
