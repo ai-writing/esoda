@@ -6,6 +6,7 @@
 
 {% block head %}
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="{% static 'css/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -185,6 +186,8 @@
 
 {% block script %}
   <script src="{% static 'js/esoda-result.js' %}?v={% now 'Ymd' %}"></script>
+  <script src="{% static 'js/jquery.mousewheel.min.js' %}"></script>
+  <script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
   <script>
     $( function() {
 
@@ -255,8 +258,6 @@
 
       $('.colloc-sub-btn').click(function(e) {
         e.preventDefault();
-        console.log($(this).parent());
-        console.log($('CollocationTab0 li'));
         if ($(this).parent().hasClass('disabled')) {
           return;
         }
@@ -285,6 +286,9 @@
         $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
         $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
+          $(id + ' .colloc-result').mCustomScrollbar({
+            theme: 'dark'
+          })
           $(id + ' .colloc-usage:eq(0)').click();
         });
         
