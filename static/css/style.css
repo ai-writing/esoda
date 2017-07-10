@@ -406,7 +406,12 @@ button.close:focus {
     padding-bottom: 20px;
 }
 
-.input-group-lg>.form-control,
+.input-group-lg>.form-control {
+    border-top-left-radius: 1.5px;
+    border-bottom-left-radius: 1.5px;
+    outline: 0;
+}
+
 .input-group-lg>.input-group-btn>.btn {
     border-top-right-radius: 1.5px;
     border-bottom-right-radius: 1.5px;
