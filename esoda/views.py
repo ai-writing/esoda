@@ -4,20 +4,18 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 
-import time
-
-from .utils import notstar, papers_source_str, corpus_id2cids
+from .utils import corpus_id2cids
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
+from .collocation import collocation_list, collocation3_list
+from .word import get_usage_list, get_usage3_list
+from .sentence import sentence_query, sentence3_query
+from .constant import defaultId
 from authentication.forms import FIELD_NAME
 from common.models import Comment
 
-
-deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
-defaultId = 11
-defaultDB = ['dblp', 'doaj', 'bnc', 'arxiv']
 logger = logging.getLogger(__name__)
 
 
@@ -73,7 +71,7 @@ def esoda_view(request):
 
     cids = get_cids(request.user.id, r=r)
 
-    r['collocationList'] = collocation_list(qt, cids)
+    r['collocationList'] = collocation3_list(qt, cids)
 
     if len(qt) == 1:
         r['synonymous'] = synonyms(qt[0])[:10]
@@ -114,7 +112,7 @@ def sentence_view(request):
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
-    sr = sentence_query(t, ref, i, dt, cids)
+    sr = sentence3_query(t, ref, i, dt, cids)
     info = {
         'example_number': sr['total'],
         'search_time': sr['time'],
@@ -131,7 +129,7 @@ def usagelist_view(request):
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
-    r = {'usageList': get_usage_list(t, ref, i, dt, cids)}
+    r = {'usageList': get_usage3_list(t, ref, i, dt, cids)}
     return render(request, 'esoda/collocation_result.html', r)
 
 
@@ -151,109 +149,3 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
-def get_usage_list(t, ref, i, dt, cids):
-    usageList = []
-    nt = list(t)
-    del nt[i]
-    del nt[i]
-    nnt = list(nt)
-    nnt.insert(i, '%s...%s')
-    pat = ' '.join(nnt)
-
-    if '*' not in t:
-        d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-        cnt = EsAdaptor.count(nt, d, defaultDB, cids)
-        usageList.append({
-            'ref': ' '.join(ref),
-            'content': pat % (t[i], t[i + 1]),
-            'count': cnt['hits']['total']
-        })
-    for k in (('*', t[i + 1]), (t[i], '*')):
-        if k[0] != '*' or k[1] != '*':
-            d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
-
-            lst = EsAdaptor.group(nt, d, defaultDB, cids)
-            try:
-                ret = []
-                for j in lst['aggregations']['d']['d']['d']['buckets']:
-                    l1 = notstar(d[0]['l1'], j['key'])
-                    l2 = notstar(d[0]['l2'], j['key'])
-                    if (l1, l2) != (t[i], t[i + 1]):
-                        nref = list(ref)
-                        if l1 != t[i]:
-                            nref[i] = l1
-                        else:
-                            nref[i + 1] = l2
-                        ret.append({
-                            'ref': ' '.join(nref),
-                            'content': pat % (l1, l2),
-                            'count': j['doc_count']
-                        })
-                usageList += ret
-            except Exception:
-                logger.exception('In get_usage_list')
-    return usageList
-
-
-def get_collocations(clist, qt, i, cids):
-    t, d = list(qt), (qt[i], qt[i + 1])
-    del t[i]
-    del t[i]
-    resList = EsAdaptor.collocation(t, d, defaultDB, cids)
-    t = list(t)
-    t.insert(i, '%s %s %s')
-    pat = ' '.join(t)
-    for j, p in enumerate(resList):
-        if j == 4:
-            qt[i], qt[i + 1] = qt[i + 1], qt[i]
-        if not p:
-            continue
-        clist.append({
-            'type': pat % (qt[i], deps[j % 4], qt[i + 1]),
-            'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-            # 'usageList': [],
-        })
-
-
-def collocation_list(mqt, cids):
-    mqt = list(mqt)
-    clist = []
-    if len(mqt) == 1:
-        mqt.append('*')
-    for i in range(len(mqt) - 1):
-        get_collocations(clist, mqt, i, cids)
-    '''
-    for i in range(len(mqt)):
-        qt = list(mqt)
-        qt.insert(i, '*')
-        get_collocation(clist, qt, i, cids)
-    '''
-    return clist
-
-
-def sentence_query(t, ref, i, dt, cids):
-    if not t:
-        return {'time': 0.00, 'total': 0, 'sentence': []}
-    if dt != '0':  # Search specific tag
-        d = [{'dt': dt, 'i1': i, 'i2': i + 1}]
-    else:  # Search user input
-        d = []
-
-    time1 = time.time()
-    res = EsAdaptor.search(t, d, ref, defaultDB, cids, 50)
-    time2 = time.time()
-
-    sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
-    rlen = min(50, len(res['hits']) if 'hits' in res else 0)
-
-    papers = set()
-    for i in xrange(rlen):
-        papers.add(res['hits'][i]['_source']['p'])
-    sources = papers_source_str(list(papers))
-    for i in xrange(rlen):
-        sentence = res['hits'][i]
-        sr['sentence'].append({
-            'content': sentence['fields']['sentence'][0],
-            'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
-            'heart_number': 129})
-    return sr

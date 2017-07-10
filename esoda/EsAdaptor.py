@@ -77,6 +77,8 @@ class EsAdaptor():
 
     @staticmethod
     def cidsearch(index, doc_type, body, filter_path):
+        # import json
+        # print json.dumps(body, indent=2)
         if doc_type in ('_all', ['_all']):
             return EsAdaptor.es.search(index=index, body=body, filter_path=filter_path)
         else:
@@ -155,7 +157,79 @@ class EsAdaptor():
         return res['hits']
 
     @staticmethod
-    def collocation(t, d, dbs, cids, sp=10):
+    def search3(t, d, ref, dbs, cids, type, sp=10):
+        mst = []
+        for tt in t:
+            mst.append({
+                "nested": {
+                    "path": "t",
+                    "query": {
+                        "term": {'t.l': tt}
+                    }
+                }
+            })
+        for dd in d:
+            lst = []
+            if 'dt' in dd:
+                lst.append({'term': {'d.dt': dd['dt']}})
+            if 'i1' in dd:
+                lst.append({'term': {'d.l1': t[dd['i1']]}})
+            if 'i2' in dd:
+                lst.append({'term': {'d.l2': t[dd['i2']]}})
+            mst.append({
+                "nested": {
+                    "path": "d",
+                    "query": {
+                        "bool": {
+                            "must": lst
+                        }
+                    }
+                }
+            })
+        action = {
+            "_source": ["p", "c"],
+            "size": sp,
+            "terminate_after": 10000,
+            "query": {
+                "function_score": {
+                    "query": {
+                        "bool": {
+                            "must": mst
+                        }
+                    },
+                    "script_score": {
+                        "script": {
+                            "lang": "painless",
+                            "file": "calculate-cost",
+                            "params": {
+                                "tList": t,
+                                "dList": d,
+                                "rList": ref
+                            }
+                        }
+                    }
+                }
+            },
+            "script_fields": {
+                "sentence": {
+                    "script": {
+                        "lang": "painless",
+                        "file": "highlight-sentence",
+                        "params": {
+                            "tList": t,
+                            "dList": d,
+                            "rList": ref
+                        }
+                    }
+                }
+            }
+        }
+        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
+            'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
+        return res['hits']
+        
+    @staticmethod
+    def collocation(t, d, dbs, cids, sp=0):
         d = [i for i in d if i != '*']
         if not d or len(d) > 2:
             return {}
@@ -176,8 +250,7 @@ class EsAdaptor():
                             "aggs": {
                                 "d": {
                                     "terms": {
-                                        "field": "d.dt",
-                                        "size": sp
+                                        "field": "d.dt"
                                     }
                                 }
                             },
@@ -221,6 +294,8 @@ class EsAdaptor():
                     }
                 }
                 ret += EsAdaptor.__checkResult(action, dbs, cids)
+                if sp:
+                    break
         else:
             ret = []
             for ps in ('d.l1', 'd.l2'):
@@ -244,7 +319,102 @@ class EsAdaptor():
         for agg in res['aggregations']['d']['d']['d']['buckets']:
             ret[ord(agg['key']) - 49] = True  # ord('0') = 48
         return ret
-
+    
+    @staticmethod
+    def collocation3(t, dt, dbs, cids, type=0):
+        mst = []
+        for i in (0, 1):
+            lst = []
+            lst.append({'term': {'d.dt': str(dt[i])}})
+            if t[i] != '*':
+                lst.append({'term': {'d.l1': t[i]}})
+            if type == 0:
+                if t[i+1] != '*':
+                    lst.append({'term': {'d.l2': t[i+1]}})
+            elif type == 1:
+                lst.append({'term': {'d.l2': t[2]}})
+            mst.append({
+                "nested": {
+                    "path": "d",
+                    "query": lst
+                }
+            })
+            
+        action = {
+            "_source": False,
+            "query": {
+                "bool": {
+                    "must": mst
+                }
+            }
+        }
+        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
+            'hits.total'])
+        return res
+    
+    @staticmethod
+    def group3(t, dt, dbs, cids, type=0, sp=10):
+        mst = []
+        st = ''
+        for i in (0, 1):
+            lst = []
+            lst.append({'term': {'d.dt': str(dt[i])}})
+            if t[i] != '*':
+                lst.append({'term': {'d.l1': t[i]}})
+            else:
+                st = 'd.l1'
+            if type == 0:
+                if t[i+1] != '*':
+                    lst.append({'term': {'d.l2': t[i+1]}})
+                else:
+                    st = 'd.l2'
+            elif type == 1:
+                lst.append({'term': {'d.l2': t[2]}})
+            if t[i] == '*' or type == 0 and t[i+1] == '*':
+                ddq = lst
+            mst.append({
+                "nested": {
+                    "path": "d",
+                    "query": lst
+                }
+            })
+        action = {
+            "_source": False,
+            "query": {
+                "bool": {
+                    "must": mst
+                }
+            },
+            "aggs": {
+                "d": {
+                    "nested": {
+                        "path": "d"
+                    },
+                    "aggs": {
+                        "d": {
+                            "aggs": {
+                                "d": {
+                                    "terms": {
+                                        "size": sp,
+                                        "shard_size": int(sp * 2 + 10),
+                                        "field": st
+                                    }
+                                }
+                            },
+                            "filter": {
+                                "bool": {
+                                    "must": ddq
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
+            'hits.total', 'aggregations'])
+        return res
+        
     @staticmethod
     def group(t, d, dbs, cids, sp=10):
         if not d or len(d) > 1:
@@ -288,7 +458,7 @@ class EsAdaptor():
         })
 
         action = {
-            "size": 0,
+            "_source": False,
             "query": {
                 "bool": {
                     "must": mst
@@ -320,8 +490,6 @@ class EsAdaptor():
                 }
             }
         }
-        # import json
-        # print json.dumps(action, indent=2)
         res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
         return res
