@@ -336,12 +336,17 @@ class EsAdaptor():
             mst.append({
                 "nested": {
                     "path": "d",
-                    "query": lst
+                    "query": {
+						"bool": {
+							"must": lst
+						}
+					}
                 }
             })
             
         action = {
             "_source": False,
+			"size": 0,
             "query": {
                 "bool": {
                     "must": mst
@@ -375,11 +380,16 @@ class EsAdaptor():
             mst.append({
                 "nested": {
                     "path": "d",
-                    "query": lst
+                    "query": {
+						"bool": {
+							"must": lst
+						}
+					}
                 }
             })
         action = {
             "_source": False,
+			"size": 0,
             "query": {
                 "bool": {
                     "must": mst

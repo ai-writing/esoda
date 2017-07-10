@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .paper import mongo_get_objects, DblpPaper
+from .constant import CORPUS2ID
 import requests
 import json
 

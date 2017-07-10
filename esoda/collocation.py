@@ -25,19 +25,21 @@ def get_collocations(clist, qt, i, cids):
 
 
 colloc3 = [(0, 1), (0, 3), (1, 3), (2, 0), (2, 1), (2, 3), (3, 3)]
-colloc33 = [(2, 0), (2, 1), (2, 2), (2, 3)]
+colloc33 = [(0, 2), (1, 2), (2, 2), (3, 2)]
 def get_collocations3(clist, qt, cids):
     for t in permutations(qt):
         if t[1] != '*':
             for i in colloc3:
-                if EsAdaptor.collocation3(t, i, defaultDB, cids, 0):
+                dt = (i[0] + 1, i[1] + 1)
+                if EsAdaptor.collocation3(t, dt, defaultDB, cids, 0)['hits']['total']:
                     clist.append({
                         'type': '%s %s %s %s %s' % (t[0], deps[i[0]], t[1], deps[i[1]], t[2]),
                         'label': 'Colloc%d' % len(clist),
                     })
         if t[2] != '*':
             for i in colloc33:
-                if EsAdaptor.collocation3(t, i, defaultDB, cids, 1):
+                dt = (i[0] + 1, i[1] + 1)
+                if EsAdaptor.collocation3(t, dt, defaultDB, cids, 1)['hits']['total']:
                     clist.append({
                         'type': '%s %s %s %s %s' % (t[0], t[1], deps[i[0]], deps[i[1]], t[2]),
                         'label': 'Colloc%d' % len(clist),

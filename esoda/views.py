@@ -12,10 +12,10 @@ from .EsAdaptor import EsAdaptor
 from .collocation import collocation_list, collocation3_list
 from .word import get_usage_list, get_usage3_list
 from .sentence import sentence_query, sentence3_query
-from .constant import defaultId
 from authentication.forms import FIELD_NAME
 from common.models import Comment
 
+defaultId = 11
 logger = logging.getLogger(__name__)
 
 
@@ -72,6 +72,7 @@ def esoda_view(request):
     cids = get_cids(request.user.id, r=r)
 
     r['collocationList'] = collocation3_list(qt, cids)
+    print r['collocationList']
 
     if len(qt) == 1:
         r['synonymous'] = synonyms(qt[0])[:10]
