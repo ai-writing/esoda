@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
 import json
-from esoda.utils import CORPUS2ID
+from esoda.utils import CORPUS
 # Create your views here.
 
 FIELD_NAME = [u'BNC',u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
@@ -80,7 +80,7 @@ def get_dept_tree(corpus_id):
         node.text = FIELD_NAME[i]
         tree_first.append(c_id)
         c_id+=1
-        children = CORPUS2ID[str(i)]
+        children = CORPUS[str(i)]
         tree_second_lef=[]
         for i in children:
             node1 = TreeNode()
@@ -104,24 +104,20 @@ class TreeNode():
     def __init__(self):
         self.id = 0
         self.text = "Node 1"
-        self.href = "#node-1"
-        self.selectable = True
         self.state = {
              'checked': False,
         }
-        self.tags = ['available']
         self.nodes = []
     def to_dict(self,checked):
         if checked==0:
             check=False
         else:
             check=True
-        icon = (len(self.nodes) > 0) and 'glyphicon glyphicon-list-alt' or 'glyphicon glyphicon-user'
-        return {
+        temp={
             'id': self.id,
             'text': self.text,
-            'icon': icon,
-            'tags': ['1'],
-            'nodes': self.nodes,
-            'state': {'checked': check, 'expanded':False}
+            'state': {'checked': checked, 'expanded': False}
         }
+        if not len(self.nodes)==0:
+            temp['nodes']=self.nodes
+        return temp

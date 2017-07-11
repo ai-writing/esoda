@@ -27,7 +27,8 @@
       <button type="button" id="btn-search"><span class="glyphicon glyphicon-search"></span></button>
     </div>
   </div>
-  <div id="tree"></div>
+
+  <div id="tree" class="pre-scrollable" style="max-height: 800px"></div>
 </div>
 {% endblock %}
 {% block script %}
@@ -40,9 +41,11 @@
     var tree = $.getJSON("{% url 'dept_tree' %}", '', function (data) {
         $('#tree').treeview({
             data: data,
-            level: 2,
+            level: 1,
             showCheckbox: true,
             showIcon: false,
+            highlightSelected: false,
+            onhoverColor: '#ffffff',
             onNodeChecked: function (event, node) {
                 $.post("../domain/", {'id':node.id }, function(data){
                   console.log(node.id);
@@ -73,7 +76,14 @@
         revealResults: true,  // reveal matching nodes
       }
       var results = $('#tree').treeview('search', [ pattern, options ]);
+      if(results.length>0)
+      {
+        // $('html, body').animate({  
+        //     scrollTop: $("#results[0].id").offset().top  
+        // }, 2000);
+      }
     }
+
 
     $('#btn-search').on('click', search);
     $('#input-search').bind('keypress',function(event){
