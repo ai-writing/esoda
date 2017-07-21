@@ -1,7 +1,7 @@
 <div class="row colloc-result">
   {% for usage in usageList %}
   <div class="col-sm-4">
-    <p><a href="#" class="colloc-usage" ref="{{ usage.ref }}">{{ usage.content }} ({{ usage.count }})</a></p>
+    <p><a href="#" class="colloc-usage" ref="{{ usage.ref }}" colloc="{{ usage.colloc }}">{{ usage.content }} ({{ usage.count }})</a></p>
   </div>
   {% endfor %}
 </div>

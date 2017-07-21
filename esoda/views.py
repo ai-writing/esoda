@@ -108,10 +108,12 @@ def esoda_view(request):
 def sentence_view(request):
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
+	if len(t) == 6:
+		i = t[5]
+		dt = t[3:5]
+		t = t[:3]
     if not ref:
         ref = t
-    i = int(request.GET.get('i', '0'))
-    dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
     sr = sentence3_query(t, ref, i, dt, cids)
     info = {
@@ -123,12 +125,14 @@ def sentence_view(request):
 
 
 def usagelist_view(request):
-    t = request.GET.get('t', '').split()
+    t = request.GET.get('colloc', '').split()
     ref = request.GET.get('ref', '').split()
+	if len(t) == 6:
+		i = t[5]
+		dt = t[3:5]
+		t = t[:3]
     if not ref:
         ref = t
-    i = int(request.GET.get('i', '0'))
-    dt = request.GET.get('dt', '0')
     cids = get_cids(request.user.id)
     r = {'usageList': get_usage3_list(t, ref, i, dt, cids)}
     return render(request, 'esoda/collocation_result.html', r)

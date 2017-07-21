@@ -114,7 +114,7 @@
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
                   {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
-                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
+                    <div role="tabpanel" class="tab-pane fade usage-pane" colloc="{{ collocation.colloc }}"></div>
                     {% endfor %}
                   {% endif %}
                   </div>
@@ -207,14 +207,12 @@
         curSelectedUsage = $(this);
 
         // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
-        var type = $(this).text().replace(/ \(.*\)/, '');
-        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+        var collocat = $(this).parents('.tab-pane').attr('colloc');
         loadCount = 1;
         loading = 1;
         loaded = 0;
 
-        $.get("{% url 'sentences' %}", {t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt}, function(data) {
+        $.get("{% url 'sentences' %}", {ref: $(this).attr('ref'), colloc: collocat}, function(data) {
           $("#SentenceResult").html(data);
           if ($('#ExampleNumber').html() <= 10) {
             $('#ExampleEnd').show();

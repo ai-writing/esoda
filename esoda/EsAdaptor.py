@@ -157,7 +157,7 @@ class EsAdaptor():
         return res['hits']
 
     @staticmethod
-    def search3(t, d, ref, dbs, cids, type, sp=10):
+    def search3(t, d, ref, dbs, cids, sp=10):
         mst = []
         for tt in t:
             mst.append({
