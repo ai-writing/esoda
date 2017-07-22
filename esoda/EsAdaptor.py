@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from elasticsearch import Elasticsearch
 from django.conf import settings
 import logging
@@ -337,16 +338,16 @@ class EsAdaptor():
                 "nested": {
                     "path": "d",
                     "query": {
-						"bool": {
-							"must": lst
-						}
-					}
+                        "bool": {
+                            "must": lst
+                        }
+                    }
                 }
             })
             
         action = {
             "_source": False,
-			"size": 0,
+            "size": 0,
             "query": {
                 "bool": {
                     "must": mst
@@ -360,7 +361,7 @@ class EsAdaptor():
     @staticmethod
     def group3(t, dt, dbs, cids, type=0, sp=10):
         mst = []
-        st = ''
+        ddq, st = [], ''
         for i in (0, 1):
             lst = []
             lst.append({'term': {'d.dt': str(dt[i])}})
@@ -381,15 +382,15 @@ class EsAdaptor():
                 "nested": {
                     "path": "d",
                     "query": {
-						"bool": {
-							"must": lst
-						}
-					}
+                        "bool": {
+                            "must": lst
+                        }
+                    }
                 }
             })
         action = {
             "_source": False,
-			"size": 0,
+            "size": 0,
             "query": {
                 "bool": {
                     "must": mst
@@ -503,7 +504,44 @@ class EsAdaptor():
         res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total', 'aggregations'])
         return res
-
+    
+    @staticmethod
+    def count3(t, d, dbs, cids, type):
+        if type == 0:
+            dt = [{'dt': d[0], 'i1': 0, 'i2': 1}, {'dt': d[1], 'i1': 1, 'i2': 2}]
+        else:
+            dt = [{'dt': d[0], 'i1': 0, 'i2': 2}, {'dt': d[1], 'i1': 1, 'i2': 2}]
+        mst = []
+        for dd in dt:
+            lst = []
+            if 'dt' in dd:
+                lst.append({'term': {'d.dt': dd['dt']}})
+            if 'i1' in dd:
+                lst.append({'term': {'d.l1': t[dd['i1']]}})
+            if 'i2' in dd:
+                lst.append({'term': {'d.l2': t[dd['i2']]}})
+            mst.append({
+                "nested": {
+                    "path": "d",
+                    "query": {
+                        "bool": {
+                            "must": lst
+                        }
+                    }
+                }
+            })
+        action = {
+            "_source": False,
+            "query": {
+                "bool": {
+                    "must": mst
+                }
+            }
+        }
+        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
+            'hits.total'])
+        return res
+        
     @staticmethod
     def count(t, d, dbs, cids):
         mst = []
@@ -542,8 +580,6 @@ class EsAdaptor():
                 }
             }
         }
-        # import json
-        # print json.dumps(action, indent=2)
         res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
             'hits.total'])
         return res

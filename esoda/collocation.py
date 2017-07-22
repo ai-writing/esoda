@@ -35,7 +35,7 @@ def get_collocations3(clist, qt, cids):
                     clist.append({
                         'type': '%s %s %s %s %s' % (t[0], deps[i[0]], t[1], deps[i[1]], t[2]),
                         'label': 'Colloc%d' % len(clist),
-						'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], i[0], i[1], 0),
+                        'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], dt[0], dt[1], 0),
                     })
         if t[2] != '*':
             for i in colloc33:
@@ -44,7 +44,7 @@ def get_collocations3(clist, qt, cids):
                     clist.append({
                         'type': '%s %s %s %s %s' % (t[0], t[1], deps[i[0]], deps[i[1]], t[2]),
                         'label': 'Colloc%d' % len(clist),
-						'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], i[0], i[1], 1),
+                        'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], dt[0], dt[1], 1),
                     })
 
 

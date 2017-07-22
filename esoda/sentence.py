@@ -18,7 +18,7 @@ def sentence3_query(t, ref, i, dt, cids):
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search3(d, ref, defaultDB, cids, 50)
+    res = EsAdaptor.search3(t, d, ref, defaultDB, cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}

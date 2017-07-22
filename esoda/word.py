@@ -51,23 +51,22 @@ def get_usage_list(t, ref, i, dt, cids):
     return usageList
     
     
-def get_usage3_list(t, ref, i, dt, cids):
+def get_usage3_list(t, i, dt, cids):
     usageList = []
+    ref = t[:]
 
     if '*' not in t:
         cnt = EsAdaptor.count3(t, dt, defaultDB, cids, i)
         usageList.append({
             'ref': ' '.join(ref),
             'content': ' '.join(t),
-			'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], dt[0], dt[1], i),
+            'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], dt[0], dt[1], i),
             'count': cnt['hits']['total']
         })
     else:
         lst = EsAdaptor.group3(t, dt, defaultDB, cids, i)
-        starPos = [i for i, e in enumerate(t) if e == '*'][0]
-        ref.insert(starPos, 0)
-        t[starPos] = '%s'
-        pat = ' '.join(t)
+        starPos = [st for st, e in enumerate(t) if e == '*'][0]
+        pat = ' '.join(['%s' if e == '*' else e for e in t])
         try:
             ret = []
             for j in lst['aggregations']['d']['d']['d']['buckets']:
@@ -75,7 +74,7 @@ def get_usage3_list(t, ref, i, dt, cids):
                 ret.append({
                     'ref': ' '.join(ref),
                     'content': pat % j['key'],
-					'colloc %s %s %s' % (pat % j['key'], dt[0], dt[1], i),
+                    'colloc': '%s %s %s %s' % (pat % j['key'], dt[0], dt[1], i),
                     'count': j['doc_count']
                 })
             usageList += ret

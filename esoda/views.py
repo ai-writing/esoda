@@ -72,7 +72,6 @@ def esoda_view(request):
     cids = get_cids(request.user.id, r=r)
 
     r['collocationList'] = collocation3_list(qt, cids)
-    print r['collocationList']
 
     if len(qt) == 1:
         r['synonymous'] = synonyms(qt[0])[:10]
@@ -106,12 +105,13 @@ def esoda_view(request):
 
 
 def sentence_view(request):
-    t = request.GET.get('t', '').split()
+    t = request.GET.get('colloc', '').split()
     ref = request.GET.get('ref', '').split()
-	if len(t) == 6:
-		i = t[5]
-		dt = t[3:5]
-		t = t[:3]
+    i, dt = -1, []
+    if len(t) == 6:
+        i, dt, t = int(t[5]), t[3:5], t[:3]
+    if not t:
+        t = request.GET.get('t', '').split()
     if not ref:
         ref = t
     cids = get_cids(request.user.id)
@@ -126,15 +126,11 @@ def sentence_view(request):
 
 def usagelist_view(request):
     t = request.GET.get('colloc', '').split()
-    ref = request.GET.get('ref', '').split()
-	if len(t) == 6:
-		i = t[5]
-		dt = t[3:5]
-		t = t[:3]
-    if not ref:
-        ref = t
+    i, dt = -1, []
+    if len(t) == 6:
+        i, dt, t = int(t[5]), t[3:5], t[:3]
     cids = get_cids(request.user.id)
-    r = {'usageList': get_usage3_list(t, ref, i, dt, cids)}
+    r = {'usageList': get_usage3_list(t, i, dt, cids)}
     return render(request, 'esoda/collocation_result.html', r)
 
 

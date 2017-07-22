@@ -105,7 +105,7 @@
                   {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
                     <li role="presentation">
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" colloc="{{ collocation.colloc }}">{{ collocation.type }}</a>
                     </li>
                     {% endfor %}
                   {% endif %}
@@ -114,7 +114,7 @@
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
                   {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
-                    <div role="tabpanel" class="tab-pane fade usage-pane" colloc="{{ collocation.colloc }}"></div>
+                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}" colloc="{{ collocation.colloc }}"></div>
                     {% endfor %}
                   {% endif %}
                   </div>
@@ -207,7 +207,7 @@
         curSelectedUsage = $(this);
 
         // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-        var collocat = $(this).parents('.tab-pane').attr('colloc');
+        var collocat = $(this).attr('colloc');
         loadCount = 1;
         loading = 1;
         loaded = 0;
@@ -237,7 +237,7 @@
         loaded = 0;
 
         // console.log(collocQ);
-        $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
+        $.get("{% url 'sentences' %}", {t: collocQ, ref: REF}, function(data) {
           $("#SentenceResult").html(data);
           $('#CountUsage').html($('#ExampleNumber').html());
           if ($('#ExampleNumber').html() <= 10) {
@@ -255,25 +255,10 @@
         // if ($(this).parent().hasClass('active')) {
         //   return;
         // }
-        var id = $(this).attr('href');
-        var type = $(this).html();
-        var type0 = type.replace(/ \(.*\) /g , ' ');
-        var i, dt;
-        var ref = [];
-        for (i = 0; i < type.split(' ').length; i++) {
-          if (type.split(' ')[i] != type0.split(' ')[i]) break;
-        }
-        for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
-          if (type0.split(' ')[j] == '*') ref[j] = '*';
-          else {
-            ref[j] = REF.split(' ')[k];
-            k = k + 1;
-          }
-        }
-        if (i == 0) i = 1;
-        dt = id.replace('#', '').split('_')[1];
-
-        $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
+		var id = $(this).attr('href');
+        var collocat = $(this).attr('colloc');
+        
+        $.get("{% url 'collocation' %}", {colloc: collocat}, function(data) {
           $(id).html(data);
           $(id + ' .colloc-usage:eq(0)').click();
         });
