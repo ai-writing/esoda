@@ -7,9 +7,10 @@ def notstar(p, q):
     return p if p != '*' else q
 
 
-def get_usage_list(t, ref, i, dt, cids):
+def get_usage_list(t, i, dt, cids):
     usageList = []
     nt = list(t)
+    ref = t[:]
     del nt[i]
     del nt[i]
     nnt = list(nt)
@@ -22,6 +23,7 @@ def get_usage_list(t, ref, i, dt, cids):
         usageList.append({
             'ref': ' '.join(ref),
             'content': pat % (t[i], t[i + 1]),
+            'colloc': '%s %s %s' % (t[i], t[i+1], dt),
             'count': cnt['hits']['total']
         })
     for k in (('*', t[i + 1]), (t[i], '*')):
@@ -43,6 +45,7 @@ def get_usage_list(t, ref, i, dt, cids):
                         ret.append({
                             'ref': ' '.join(nref),
                             'content': pat % (l1, l2),
+                            'colloc': '%s %s %s' % (l1, l2, dt),
                             'count': j['doc_count']
                         })
                 usageList += ret

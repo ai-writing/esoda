@@ -9,16 +9,18 @@ import time
 def sentence3_query(t, ref, i, dt, cids):
     if not t:
         return {'time': 0.00, 'total': 0, 'sentence': []}
-    if dt:  # Search specific tag
+    if len(dt) == 2:
         if i == 0:
             d = [{'dt': dt[0], 'i1': 0, 'i2': 1}, {'dt': dt[1], 'i1': 1, 'i2': 2}]
         else:
             d = [{'dt': dt[0], 'i1': 0, 'i2': 2}, {'dt': dt[1], 'i1': 1, 'i2': 2}]
-    else:  # Search user input
+    elif len(dt) == 1:
+        d = [{'dt': dt, 'i1': i, 'i2': i + 1}]
+    else:
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search3(t, d, ref, defaultDB, cids, 50)
+    res = EsAdaptor.search(t, d, ref, defaultDB, cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}

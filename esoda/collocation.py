@@ -20,6 +20,7 @@ def get_collocations(clist, qt, i, cids):
         clist.append({
             'type': pat % (qt[i], deps[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
+            'colloc': '%s %s %s' % (qt[0], qt[1], j % 4 + 1)
             # 'usageList': [],
         })
 
@@ -57,8 +58,9 @@ def collocation_list(mqt, cids):
     return clist
     
 
-def collocation3_list(mqt, cids):
+def collocation3_list(qt, cids):
     clist = []
+    mqt = qt[:]
     if len(mqt) < 3:
         mqt.append('*')
     if len(mqt) == 3:
