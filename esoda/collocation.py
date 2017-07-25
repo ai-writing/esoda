@@ -28,25 +28,34 @@ def get_collocations(clist, qt, i, cids):
 colloc3 = [(0, 1), (0, 3), (1, 3), (2, 0), (2, 1), (2, 3), (3, 3)]
 colloc33 = [(0, 2), (1, 2), (2, 2), (3, 2)]
 def get_collocations3(clist, qt, cids):
-    for t in permutations(qt):
-        if t[1] != '*':
-            for i in colloc3:
-                dt = (i[0] + 1, i[1] + 1)
-                if EsAdaptor.collocation3(t, dt, defaultDB, cids, 0)['hits']['total']:
-                    clist.append({
-                        'type': '%s %s %s %s %s' % (t[0], deps[i[0]], t[1], deps[i[1]], t[2]),
-                        'label': 'Colloc%d' % len(clist),
-                        'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], dt[0], dt[1], 0),
-                    })
-        if t[2] != '*':
-            for i in colloc33:
-                dt = (i[0] + 1, i[1] + 1)
-                if EsAdaptor.collocation3(t, dt, defaultDB, cids, 1)['hits']['total']:
-                    clist.append({
-                        'type': '%s %s %s %s %s' % (t[0], t[1], deps[i[0]], deps[i[1]], t[2]),
-                        'label': 'Colloc%d' % len(clist),
-                        'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], dt[0], dt[1], 1),
-                    })
+    # for t in permutations(qt):
+    t = qt[:]
+    for j in range(2):
+        for i in colloc3:
+            dt = (i[0] + 1, i[1] + 1)
+            if EsAdaptor.collocation3(t, dt, defaultDB, cids, 0)['hits']['total']:
+                clist.append({
+                    'type': '%s %s %s %s %s' % (t[0], deps[i[0]], t[1], deps[i[1]], t[2]),
+                    'label': 'Colloc%d' % len(clist),
+                    'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], dt[0], dt[1], 0),
+                })
+        if t[2] == '*':
+            t = [t[2], t[0], t[1]]
+        else:
+            break
+    for j in range(2):
+        for i in colloc33:
+            dt = (i[0] + 1, i[1] + 1)
+            if EsAdaptor.collocation3(t, dt, defaultDB, cids, 1)['hits']['total']:
+                clist.append({
+                    'type': '%s %s %s %s %s' % (t[0], t[1], deps[i[0]], deps[i[1]], t[2]),
+                    'label': 'Colloc%d' % len(clist),
+                    'colloc': '%s %s %s %s %s %s' % (t[0], t[1], t[2], dt[0], dt[1], 1),
+                })
+        if t[0] == '*':
+            t = [t[1], t[0], t[2]]
+        else:
+            break
 
 
 def collocation_list(mqt, cids):
