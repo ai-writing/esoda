@@ -5,7 +5,7 @@ html {
 }
 
 body {
-    font-family: PingFangSC-Regular, Microsoft Yahei;
+    font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
     margin-bottom: 280px;
 }
@@ -406,9 +406,16 @@ button.close:focus {
     padding-bottom: 20px;
 }
 
-.input-group-lg>.form-control,
+.input-group-lg>.form-control {
+    border-top-left-radius: 1.5px;
+    border-bottom-left-radius: 1.5px;
+    outline: 0;
+}
+
 .input-group-lg>.input-group-btn>.btn {
-    border-radius: 1.5px;
+    border-top-right-radius: 1.5px;
+    border-bottom-right-radius: 1.5px;
+    outline: 0;
 }
 
 #SearchForm {
@@ -552,7 +559,7 @@ button.close:focus {
 }
 
 .ui-autocomplete-category {
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 18px;
     padding: .2em .4em;
@@ -561,12 +568,12 @@ button.close:focus {
 }
 
 .ui-autocomplete-label {
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
 }
 
 .ui-autocomplete-label > strong {
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     color: #999;
 }
@@ -616,7 +623,7 @@ button.close:focus {
 .col-introduction > p {
     color: #9b9b9b;
     font-size: 17px;
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
 }
 
@@ -637,7 +644,7 @@ button.close:focus {
 .col-feature-intro > p {
     margin: 0 0;
     color: #9b9b9b;
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 200;
     margin-top: 30px;
 }
@@ -676,7 +683,7 @@ button.close:focus {
     height: 1.6px;
     left: 11%;
     top: 50%;
-    width: 74%;
+    width: 78%;
     margin-top: -1px;
     border-top-width: 1px;
     border-top-style: solid;
@@ -759,14 +766,14 @@ button.close:focus {
 
 .copyright {
     text-align: center;
-    font-family: PingFangSC, Microsoft Yahei;
+    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 14px;
 }
 
 .footer a {
     color: #9b9b9b;
-    font-family: PingFangSC-Light, Microsoft Yahei;
+    font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
 }
 
 .footer-shares {
@@ -1012,7 +1019,7 @@ button.close:focus {
 .dictionary-middle-line {
     border-right: 1px solid #9b9b9b;
     width: 50%;
-    height: 40px;
+    height: 100px;
 }
 
 .dictionary-hint {
@@ -1076,7 +1083,7 @@ button.close:focus {
 .result-warning {
     padding: 10px 0px;
     color: #4a4a4a;
-    font-family: PingFangSC-Light, Microsoft Yahei;
+    font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
     font-weight: 200;
 }
 
@@ -1104,10 +1111,7 @@ button.close:focus {
 .colloc-result {
     margin: 10px 30px 0px 30px;
     padding: 10px 10px;
-    border-left: 1px solid #979797;
-    border-right: 1px solid #979797;
     max-height: 200px;
-    overflow-y: scroll;
 }
 
 .pagination > li > a {
@@ -1234,38 +1238,44 @@ button.close:focus {
     margin-left: 50px;
 }
 
-.fieldWrapper ul{
-    list-style-type:none;
-}
-
-.fieldWrapper input {
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  cursor: pointer;
-  border-radius: 6px;
-  background-color: hsla(0,0%,0%,.1);
-  background-image: -webkit-radial-gradient( hsla(200,100%,90%,1) 0%, hsla(200,100%,70%,1) 15%, hsla(200,100%,60%,.3) 28%, hsla(200,100%,30%,0) 70% );
-  background-repeat: no-repeat;
-}
-.fieldWrapper input:checked {
-  -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
-    -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
-  border-radius: 6px;
-  background-position: 0 0;
-}
-.fieldWrapper input:active {
-  -webkit-transform: scale(1.5);
-  -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
-  border-radius: 6px;
-}
-.fieldWrapper input,
-.fieldWrapper input:active {
-  background-position: 0 14px;
-}
 
 .field-select-btn {
     margin-top: 20px;
+}
+
+.treeview {
+    margin-top: 10px;
+}
+
+#search-bar {
+    margin-top: 20px;
+    position: relative;
+    width: 300px;
+}
+
+#search-bar input, button {
+    border: none;
+    outline: none;
+}
+
+.bar1 input {   
+    width: 100%;
+    height: 35px;
+    padding-left: 13px;
+    border: 2px solid #63b7e6;
+    border-radius: 5px;
+}
+.bar1 button {
+    position: absolute;
+    color:#ffffff;
+    height: 35px;
+    top: 0;
+    right: 0;
+    background: #63b7e6;
+    border-radius: 0 5px 5px 0;
+}
+.bar1 .glyphicon-search {
+    font-size: 26px;
 }
 
 .toast-success {
@@ -1308,13 +1318,12 @@ button.close:focus {
 .personal-changepassword {
     padding-top:10px;
 }
-
 #submit-changepassword {
     width: 180px;
     height: 30px;
     border-radius: 3px;
     background-color: #63b7e6;
-    font-family: PingFangSC;
+    font-family: PingFangSC, HeitiSC;
     font-size: 12px;
     font-weight: 600;
     text-align: center;
@@ -1430,7 +1439,6 @@ button.close:focus {
 .result-search {
     font-size: 20px;
     padding-top: 8px;
-    padding-left: 30px;
     width: 542px;
 }
 

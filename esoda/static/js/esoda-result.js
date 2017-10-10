@@ -22,6 +22,7 @@ $(function () {
   $( window ).scroll( function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
       if (loading == 1 || loaded == 1) return;
+      if ($('#Loading').is(':visible')) return;
 
       var total = $("#ExampleNumber").html();
       loading = 1;
@@ -78,10 +79,15 @@ $(function () {
     $(e.target).toggleClass("glyphicon-chevron-up");
   }
 
-  $('#ResultSearchBar').hover(function() {
+  $('#SearchBox').hover(function() {
+    if ($('#SearchBox').is(':focus')) {
+      return false;
+    }
     $('#SearchBox').focus();
     $('#SearchBox').select();
+  }, function() {
+    return false;
   });
 
-  $('#ResultSearchBar').hover();
+  $('#SearchBox').trigger('mouseover');
 });

@@ -6,6 +6,7 @@
 
 {% block head %}
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="{% static 'css/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -185,6 +186,8 @@
 
 {% block script %}
   <script src="{% static 'js/esoda-result.js' %}?v={% now 'Ymd' %}"></script>
+  <script src="{% static 'js/jquery.mousewheel.min.js' %}"></script>
+  <script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
   <script>
     $( function() {
 
@@ -194,9 +197,9 @@
       $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
         if ($(this).attr('state') == 'selected') return;
         e.preventDefault();
-        $("#CollocationTab0 li").removeClass('active');
         $("#ExampleEnd").hide();
-        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+        $('#SentenceResult').empty();
+        $('#Loading').show();
 
         $(this).attr('state', 'selected');
         $(this).removeAttr('href');
@@ -215,6 +218,7 @@
         loaded = 0;
 
         $.get("{% url 'sentences' %}", {t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt}, function(data) {
+          $('#Loading').hide();
           $("#SentenceResult").html(data);
           if ($('#ExampleNumber').html() <= 10) {
             $('#ExampleEnd').show();
@@ -226,12 +230,15 @@
 
       $('#CollapseColloc').on('click', '.not-limited', function (e) {
         e.preventDefault();
-        // if ($(this).parent().hasClass('acitve')) {
-        //   return;
-        // }
+        if ($(this).parent().hasClass('disabled')) {
+          return;
+        }
+        $(this).parent().addClass('disabled');
+        $("#CollocationTab li").removeClass('disabled');
         $("#CollocationTab li").removeClass('active');
         $("#ExampleEnd").hide();
-        $("#SentenceResult").html('<div class="result-table-cell center-align"><p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p></div>');
+        $('#SentenceResult').empty();
+        $('#Loading').show();
 
         var collocQ = $(this).text();
         loadCount = 1;
@@ -240,6 +247,7 @@
 
         // console.log(collocQ);
         $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
+          $('#Loading').hide();
           $("#SentenceResult").html(data);
           $('#CountUsage').html($('#ExampleNumber').html());
           if ($('#ExampleNumber').html() <= 10) {
@@ -254,9 +262,13 @@
 
       $('.colloc-sub-btn').click(function(e) {
         e.preventDefault();
-        // if ($(this).parent().hasClass('active')) {
-        //   return;
-        // }
+        if ($(this).parent().hasClass('disabled')) {
+          return;
+        }
+        $("#CollocationTab li").removeClass('disabled');
+        $("#CollocationTab0 li").removeClass('disabled');
+        $("#CollocationTab0 li").removeClass('active');
+        $(this).parent().addClass('disabled');
         var id = $(this).attr('href');
         var type = $(this).html();
         var type0 = type.replace(/ \(.*\) /g , ' ');
@@ -275,8 +287,13 @@
         if (i == 0) i = 1;
         dt = id.replace('#', '').split('_')[1];
 
+        $('#SentenceResult').empty();
+        $('#Loading').show();
         $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
+          $(id + ' .colloc-result').mCustomScrollbar({
+            theme: 'dark'
+          })
           $(id + ' .colloc-usage:eq(0)').click();
         });
         

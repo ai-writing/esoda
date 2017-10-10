@@ -8,7 +8,7 @@
   <h4 class="personal-title"><strong>学术领域选择</strong></h4>
   <hr class="personal-line"/>
   <h5><strong>通过选择学术领域缩小文章范围</strong><h5>
-  <form style="margin-top:10px;width:500px;" action="{% url 'domain' %}" method="post">
+  <!-- <form style="margin-top:10px;width:500px;" action="{% url 'domain' %}" method="post">
     {% csrf_token %}
     <div class='form-group fixed-form'>
         {% for field in form %}
@@ -19,18 +19,87 @@
     {% endfor %}
     </div>
     <button type="submit" class="btn field-select-btn">{% trans 'Save' %}</button>
-  </form>
+  </form> -->
+  <div class="form-group">
+    <label for="input-search" class="sr-only">Search Tree:</label>
+    <div class="search bar1" id="search-bar">
+      <input type="text" id="input-search" placeholder="Type to search...">
+      <button type="button" id="btn-search"><span class="glyphicon glyphicon-search"></span></button>
+    </div>
   </div>
+
+  <div id="tree" class="pre-scrollable" style="max-height: 500px"></div>
 </div>
 {% endblock %}
 {% block script %}
-  {% if messages %}
-    <script>
-    $(document).ready(function () {
-    {% for message in messages %}
-      toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
-    {% endfor %}
+<script src="{% static 'js/bootstrap-treeview.min.js' %}"></script>
+<script>
+ $(function () {
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
     });
-    </script>
-  {% endif %}
+    var tree = $.getJSON("{% url 'dept_tree' %}", '', function (data) {
+        $('#tree').treeview({
+            data: data,
+            level: 1,
+            showCheckbox: true,
+            showIcon: false,
+            highlightSelected: false,
+            onhoverColor: '#ffffff',
+            onNodeChecked: function (event, node) {
+                $.post("../domain/", {'id':node.id }, function(data){
+                  console.log(node.id);
+                })               
+                $.getJSON("{% url 'changed_child' %}", {'id':node.id }, function(data){
+                  for(var i=0;i<data.length;i++){
+                    $('#tree').treeview('checkNode', [ data[i], { silent: true } ]);
+                  } 
+                }); 
+            }
+        });
+        $('#tree').on('nodeUnchecked', function(event, node) {
+          $.post("../domain/", {'id':node.id }, function(data){
+            console.log(node.id);
+          })              
+          $.getJSON("{% url 'changed_child' %}", {'id':node.id }, function(data){
+            for(var i=0;i<data.length;i++){
+              $('#tree').treeview('uncheckNode', [ data[i], { silent: true } ]);
+            } 
+          });
+        });
+    });
+    var search = function(e) {
+      var pattern = $('#input-search').val();
+      var options = {
+        ignoreCase: true,     // case insensitive
+        exactMatch: false,    // like or equals
+        revealResults: true,  // reveal matching nodes
+      }
+      var results = $('#tree').treeview('search', [ pattern, options ]);
+      if(results.length>0)
+      {
+        // $('html, body').animate({  
+        //     scrollTop: $("#results[0].id").offset().top  
+        // }, 2000);
+      }
+    }
+
+
+    $('#btn-search').on('click', search);
+    $('#input-search').bind('keypress',function(event){
+        if(event.keyCode == "13") search();
+    });
+    // $('#input-search').on('keyup', search);
+
+});
+</script>
+{% if messages %}
+  <script>
+  $(document).ready(function () {
+  {% for message in messages %}
+    toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
+  {% endfor %}
+  });
+  </script>
+{% endif %}
 {% endblock %}
