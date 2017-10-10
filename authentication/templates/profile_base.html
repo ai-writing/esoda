@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-
+{% block head %}
+<link href="{% static 'css/bootstrap-treeview.min.css' %}" rel="stylesheet">
+{% endblock %}
 {% block title %}ESODA | profile{% endblock %}
 {% block header %}
 {% with tab="profile" %}

@@ -1238,38 +1238,44 @@ button.close:focus {
     margin-left: 50px;
 }
 
-.fieldWrapper ul{
-    list-style-type:none;
-}
-
-.fieldWrapper input {
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  cursor: pointer;
-  border-radius: 6px;
-  background-color: hsla(0,0%,0%,.1);
-  background-image: -webkit-radial-gradient( hsla(200,100%,90%,1) 0%, hsla(200,100%,70%,1) 15%, hsla(200,100%,60%,.3) 28%, hsla(200,100%,30%,0) 70% );
-  background-repeat: no-repeat;
-}
-.fieldWrapper input:checked {
-  -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
-    -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
-  border-radius: 6px;
-  background-position: 0 0;
-}
-.fieldWrapper input:active {
-  -webkit-transform: scale(1.5);
-  -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
-  border-radius: 6px;
-}
-.fieldWrapper input,
-.fieldWrapper input:active {
-  background-position: 0 14px;
-}
 
 .field-select-btn {
     margin-top: 20px;
+}
+
+.treeview {
+    margin-top: 10px;
+}
+
+#search-bar {
+    margin-top: 20px;
+    position: relative;
+    width: 300px;
+}
+
+#search-bar input, button {
+    border: none;
+    outline: none;
+}
+
+.bar1 input {   
+    width: 100%;
+    height: 35px;
+    padding-left: 13px;
+    border: 2px solid #63b7e6;
+    border-radius: 5px;
+}
+.bar1 button {
+    position: absolute;
+    color:#ffffff;
+    height: 35px;
+    top: 0;
+    right: 0;
+    background: #63b7e6;
+    border-radius: 0 5px 5px 0;
+}
+.bar1 .glyphicon-search {
+    font-size: 26px;
 }
 
 .toast-success {
@@ -1312,7 +1318,6 @@ button.close:focus {
 .personal-changepassword {
     padding-top:10px;
 }
-
 #submit-changepassword {
     width: 180px;
     height: 30px;
