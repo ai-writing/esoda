@@ -140,7 +140,7 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(config('LOGGING_DIR', default='.'), 'runtime.log'),
-            'maxBytes': 1024 * 500,
+            'maxBytes': 1024 * 1024 * 500,
             'backupCount': 20,
             'encoding': 'utf-8',
             'formatter': 'verbose',

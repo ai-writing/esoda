@@ -2,15 +2,17 @@
 Project home for ESODA (http://www.esoda.org)
 
 ## Setup
-* Install Python 2.7 and Java 8 is properly installed
+* Install Python 2.7.
 
-* Install python packages
+* Install prerequisite python packages
+
+Using `virtualenv` is recommended. Create an fresh environment named `venv` in the project's root folder.
 
 ```shell
-pip install -U -r requirements.txt
+(venv) pip install -U -r requirements.txt
 ```
 
-* (Optional) Download and run the latest [Stanford CoreNLP Server](http://stanfordnlp.github.io/CoreNLP/corenlp-server.html)
+* (Optional, only for deployment. Never do this during developing.) Install the latest Java runtime. Download and deploy the latest [Stanford CoreNLP Server](http://stanfordnlp.github.io/CoreNLP/corenlp-server.html)
 
 ```shell
 java -mx8g -cp "path/to/stanford-corenlp-full-XXXX-XX-XX/*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000
@@ -29,9 +31,13 @@ DEBUG=True
 The project also uses [dj-database-url](https://pypi.python.org/pypi/dj-database-url/), so in the `.env` file you should set the `DATABASE_URL` as:
 
 ```
-(on Windows) DATABASE_URL='sqlite:///C:\\path\\to\\project\\db.sqlite3'
-(on Linux)   DATABASE_URL='sqlite:////path/to/project/db.sqlite3'
+# (on Windows)
+DATABASE_URL='sqlite:///C:\\path\\to\\project\\db.sqlite3'
+# (on Linux)
+DATABASE_URL='sqlite:////path/to/project/db.sqlite3'
 ```
+
+Ask team Slack for other sensitive settings. **(You should NEVER commit setting files containing passwords to Github, of course.)**
 
 * Syncdb
 
