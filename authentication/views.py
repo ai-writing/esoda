@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
 import json
-from esoda.utils import CORPUS2ID
+from esoda.utils import CORPUS
 # Create your views here.
 
 FIELD_NAME = [u'BNC',u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
@@ -80,7 +80,7 @@ def get_dept_tree(corpus_id):
         node.text = FIELD_NAME[i]
         tree_first.append(c_id)
         c_id+=1
-        children = CORPUS2ID[str(i)]
+        children = CORPUS[str(i)]
         tree_second_lef=[]
         for i in children:
             node1 = TreeNode()
