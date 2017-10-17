@@ -53,4 +53,6 @@ If `syncdb` fails, check the `DATABASE_URL` in your `.env` file.
 python manage.py runserver
 ```
 
+Then have fun searching!
+
 ## Next Step
