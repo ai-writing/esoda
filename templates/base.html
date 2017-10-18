@@ -61,7 +61,7 @@
             </ul>
           {% else %}
             <ul class="nav navbar-nav navbar-right welback">
-              <li><a href="{% url 'auth_password_change' %}"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
+              <li><a href="{% url 'authentication:domain' %}"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
               <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
               <li><a href="{% url 'auth_logout' %}">登出</a></li>
             </ul>
@@ -114,7 +114,7 @@
             <a href="#" class="share-a"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
           </div>
         </div>
-        <p class="copyright">Copyright &copy; 2017 清华大学 · 人机交互实验室 · 京ICP备17037838号-1</p>
+        <p class="copyright">Copyright &copy; 2017 清华大学 · 人机交互实验室 · <a href="http://www.miitbeian.gov.cn/">京ICP备17037838号-1</a></p>
       </div>
     </footer>
 

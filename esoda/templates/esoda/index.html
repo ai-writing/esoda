@@ -175,7 +175,7 @@
           <a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>
         </div>
       </div>
-      <form id="MsgForm" class="message-content" method="post" action="{% url 'comment' %}">
+      <form id="MsgForm" class="message-content" method="post" action="{% url 'common:comment' %}">
         {% csrf_token %}
         <div>
           <textarea form="MsgForm" name="message" class="message-box" id="UsrMsgBox"></textarea>

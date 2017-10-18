@@ -1,6 +1,7 @@
 from django.conf.urls import url
-import views
+from . import views
 
+app_name = 'common'
 urlpatterns = [
     url(r'^comment/$', views.comment_view, name='comment'),
 ]
