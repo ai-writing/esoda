@@ -14,7 +14,7 @@ FIELD_NAME = [u'BNC',u'高性能计算', u'计算机网络', u'网络安全', u'
 # Views for profile urls
 @login_required
 def domain_view(request):
-    user = User.objects.get(id=request.user.id)
+    user = User.objects.get(id=request.user.pk)
     corpus_id = user.userprofile.getid()
     if request.method == 'POST':
         cid = int(request.POST['id'])      
@@ -95,7 +95,7 @@ def get_dept_tree(corpus_id):
     return display_tree
 
 def tree(request):
-    user = User.objects.get(id=request.user.id)
+    user = User.objects.get(id=request.user.pk)
     corpus_id = user.userprofile.getid()
     tree = get_dept_tree(corpus_id)
     return JsonResponse(tree, safe=False)

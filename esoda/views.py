@@ -15,23 +15,25 @@ from authentication.forms import FIELD_NAME
 from common.models import Comment
 
 
-deps = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
-defaultId = 11
-defaultDB = ['dblp', 'doaj', 'bnc', 'arxiv']
+ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
+# ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
+DEFAULT_DBS = ['dblp']
+DEFAULT_CIDS = ['_all']
 logger = logging.getLogger(__name__)
 
 
-def get_cids(rid, **kwargs):
-    if rid:
-        user = User.objects.get(id=rid)
-        corpus_id = user.userprofile.corpus_id
+def get_cids(user, r=None):
+    if user.is_authenticated:
+        dbs, cids = corpus_id2cids(user.userprofile.corpus_id)  # user.userprofile.corpus_id is a list
+        # TODO: name = get_name(dbs, cids)
+        name = u'自选领域'
     else:
-        corpus_id = defaultId
-    cids = corpus_id2cids(str(corpus_id))
-    if 'r' in kwargs:
-        p = [i[1] for i in FIELD_NAME if i[0] == corpus_id]
-        kwargs['r']['domain'] = p[0] if p else '其它'
-    return cids
+        dbs = DEFAULT_DBS
+        cids = DEFAULT_CIDS
+        name = u'计算机全部领域'
+    if r:
+        r['domain'] = name
+    return dbs, cids
 
 
 def get_feedback():
@@ -71,9 +73,9 @@ def esoda_view(request):
         ]
     }
 
-    cids = get_cids(request.user.id, r=r)
+    dbs, cids = get_cids(request.user, r=r)
 
-    r['collocationList'] = collocation_list(qt, cids)
+    r['collocationList'] = collocation_list(qt, dbs, cids)
 
     if len(qt) == 1:
         r['synonymous'] = synonyms(qt[0])[:10]
@@ -113,8 +115,8 @@ def sentence_view(request):
         ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
-    cids = get_cids(request.user.id)
-    sr = sentence_query(t, ref, i, dt, cids)
+    dbs, cids = get_cids(request.user)
+    sr = sentence_query(t, ref, i, dt, dbs, cids)
     info = {
         'example_number': sr['total'],
         'search_time': sr['time'],
@@ -130,8 +132,8 @@ def usagelist_view(request):
         ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
-    cids = get_cids(request.user.id)
-    r = {'usageList': get_usage_list(t, ref, i, dt, cids)}
+    dbs, cids = get_cids(request.user)
+    r = {'usageList': get_usage_list(t, ref, i, dt, dbs, cids)}
     return render(request, 'esoda/collocation_result.html', r)
 
 
@@ -151,7 +153,7 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
-def get_usage_list(t, ref, i, dt, cids):
+def get_usage_list(t, ref, i, dt, dbs, cids):
     usageList = []
     nt = list(t)
     del nt[i]
@@ -162,7 +164,7 @@ def get_usage_list(t, ref, i, dt, cids):
 
     if '*' not in t:
         d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-        cnt = EsAdaptor.count(nt, d, defaultDB, cids)
+        cnt = EsAdaptor.count(nt, d, dbs, cids)
         usageList.append({
             'ref': ' '.join(ref),
             'content': pat % (t[i], t[i + 1]),
@@ -172,7 +174,7 @@ def get_usage_list(t, ref, i, dt, cids):
         if k[0] != '*' or k[1] != '*':
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
 
-            lst = EsAdaptor.group(nt, d, defaultDB, cids)
+            lst = EsAdaptor.group(nt, d, dbs, cids)
             try:
                 ret = []
                 for j in lst['aggregations']['d']['d']['d']['buckets']:
@@ -195,11 +197,11 @@ def get_usage_list(t, ref, i, dt, cids):
     return usageList
 
 
-def get_collocations(clist, qt, i, cids):
+def get_collocations(clist, qt, i, dbs, cids):
     t, d = list(qt), (qt[i], qt[i + 1])
     del t[i]
     del t[i]
-    resList = EsAdaptor.collocation(t, d, defaultDB, cids)
+    resList = EsAdaptor.collocation(t, d, dbs, cids)
     t = list(t)
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
@@ -209,29 +211,29 @@ def get_collocations(clist, qt, i, cids):
         if not p:
             continue
         clist.append({
-            'type': pat % (qt[i], deps[j % 4], qt[i + 1]),
+            'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
             # 'usageList': [],
         })
 
 
-def collocation_list(mqt, cids):
+def collocation_list(mqt, dbs, cids):
     mqt = list(mqt)
     clist = []
     if len(mqt) == 1:
         mqt.append('*')
     for i in range(len(mqt) - 1):
-        get_collocations(clist, mqt, i, cids)
+        get_collocations(clist, mqt, i, dbs, cids)
     '''
     for i in range(len(mqt)):
         qt = list(mqt)
         qt.insert(i, '*')
-        get_collocation(clist, qt, i, cids)
+        get_collocation(clist, qt, i, dbs, cids)
     '''
     return clist
 
 
-def sentence_query(t, ref, i, dt, cids):
+def sentence_query(t, ref, i, dt, dbs, cids):
     if not t:
         return {'time': 0.00, 'total': 0, 'sentence': []}
     if dt != '0':  # Search specific tag
@@ -240,7 +242,7 @@ def sentence_query(t, ref, i, dt, cids):
         d = []
 
     time1 = time.time()
-    res = EsAdaptor.search(t, d, ref, defaultDB, cids, 50)
+    res = EsAdaptor.search(t, d, ref, dbs, cids, 50)
     time2 = time.time()
 
     sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
