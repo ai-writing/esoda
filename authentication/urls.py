@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
-import views
+from . import views
 
+app_name = 'authentication'
 urlpatterns = [
     url(r'', include('registration.backends.default.urls')),
     # url(r'', include('django.contrib.auth.urls')),

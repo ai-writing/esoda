@@ -44,10 +44,10 @@
       </form>
       <div class="modal-footer modal-login-footer center-block">
         <div class="modal-forgot-password">
-          <p><a href="{% url 'auth_password_reset' %}">忘记密码？</a></p>
+          <p><a href="{% url 'authentication:auth_password_reset' %}">忘记密码？</a></p>
         </div>
         <div class="modal-register">
-          <p><a href="{% url 'registration_register' %}">注册，加入易搜搭</a></p>
+          <p><a href="{% url 'authentication:registration_register' %}">注册，加入易搜搭</a></p>
         </div>
       </div>
     </div>

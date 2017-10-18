@@ -7,8 +7,9 @@
 <div id="field">
   <h4 class="personal-title"><strong>学术领域选择</strong></h4>
   <hr class="personal-line"/>
-  <h5><strong>通过选择学术领域缩小文章范围</strong><h5>
-  <!-- <form style="margin-top:10px;width:500px;" action="{% url 'domain' %}" method="post">
+  <h5><strong>选择对口学术刊物以获得精准写作建议</strong><h5>
+{% comment %}
+  <form style="margin-top:10px;width:500px;" action="{% url 'authentication:domain' %}" method="post">
     {% csrf_token %}
     <div class='form-group fixed-form'>
         {% for field in form %}
@@ -19,7 +20,8 @@
     {% endfor %}
     </div>
     <button type="submit" class="btn field-select-btn">{% trans 'Save' %}</button>
-  </form> -->
+  </form>
+{% endcomment %}
   <div class="form-group">
     <label for="input-search" class="sr-only">Search Tree:</label>
     <div class="search bar1" id="search-bar">
@@ -38,7 +40,7 @@
     $.ajaxSetup({
         data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
     });
-    var tree = $.getJSON("{% url 'dept_tree' %}", '', function (data) {
+    var tree = $.getJSON("{% url 'authentication:dept_tree' %}", '', function (data) {
         $('#tree').treeview({
             data: data,
             level: 1,
@@ -47,10 +49,10 @@
             highlightSelected: false,
             onhoverColor: '#ffffff',
             onNodeChecked: function (event, node) {
-                $.post("../domain/", {'id':node.id }, function(data){
+                $.post("{% url 'authentication:domain' %}", {'id':node.id }, function(data){
                   console.log(node.id);
                 })               
-                $.getJSON("{% url 'changed_child' %}", {'id':node.id }, function(data){
+                $.getJSON("{% url 'authentication:changed_child' %}", {'id':node.id }, function(data){
                   for(var i=0;i<data.length;i++){
                     $('#tree').treeview('checkNode', [ data[i], { silent: true } ]);
                   } 
@@ -58,10 +60,10 @@
             }
         });
         $('#tree').on('nodeUnchecked', function(event, node) {
-          $.post("../domain/", {'id':node.id }, function(data){
+          $.post("{% url 'authentication:domain' %}", {'id':node.id }, function(data){
             console.log(node.id);
           })              
-          $.getJSON("{% url 'changed_child' %}", {'id':node.id }, function(data){
+          $.getJSON("{% url 'authentication:changed_child' %}", {'id':node.id }, function(data){
             for(var i=0;i<data.length;i++){
               $('#tree').treeview('uncheckNode', [ data[i], { silent: true } ]);
             } 

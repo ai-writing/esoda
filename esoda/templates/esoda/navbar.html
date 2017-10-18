@@ -18,7 +18,7 @@
       </ul>
       {% else %}
       <ul class="indexback nav navbar-nav navbar-right">
-        <li><a href="{% url 'auth_password_change' %}"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
+        <li><a href="{% url 'authentication:domain' %}"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
         <li><a>欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
         <li><a href="/logout">登出</a></li>
       </ul>
@@ -26,7 +26,7 @@
       <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
         <li role="presentation" {% if tab == "index" %}class="active"{% endif %}><a role="tab" href="{% url 'esoda' %}">主页</a></li>
         <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
-        <li role="presentation" {% if tab == "profile" %}class="active"{% endif %}><a role="tab" {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'domain' %}" {% endif %}>个人领域</a></li>
+        <li role="presentation" {% if tab == "profile" %}class="active"{% endif %}><a role="tab" {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>个人领域</a></li>
         <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}><a role="tab" href="{% url 'guide' %}">搜搭教程</a></li>
       </ul>
     </div><!--/.navbar-collapse -->
