@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 def get_cids(user, r=None):
     if user.is_authenticated:
-        dbs, cids = corpus_id2cids(user.userprofile.corpus_id)  # user.userprofile.corpus_id is a list
+        dbs, cids = corpus_id2cids(user.userprofile.getid())  # user.userprofile.getid() get a list
         # TODO: name = get_name(dbs, cids)
         name = u'自选领域'
     else:

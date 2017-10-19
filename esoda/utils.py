@@ -27,10 +27,9 @@ def has_cn(s):
 
 
 def corpus_id2cids(corpus_id):
-    temp=json.loads(corpus_id)
     dbs, cids = set(), set()
-    for i in range(0,len(temp)):
-        if temp[i]!=0:
+    for i in range(0,len(corpus_id)):
+        if corpus_id[i]!=0:
             if CORPUS2ID[i]!="":
                 dbs.add(CORPUS2ID[i]['d'])
                 cids.add(CORPUS2ID[i]["i"].replace('/', '_'))
