@@ -41,9 +41,11 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ('127.0.0.1')
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ADMINS = config('ADMINS', default=(), cast=lambda s: [pair.split(',') for pair in s.strip().split(';')])
+
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=('*',), cast=Csv())
 
 SITE_ID = 1
 
@@ -224,13 +226,17 @@ DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
 
 # Esoda esearch configuration
 
-ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST', default=None)
-ELASTICSEARCH_INDEX = config('ELASTIC_INDEX', default='dblp')
+ELASTICSEARCH_HOST = config('ELASTICSEARCH_HOST')
+# ELASTICSEARCH_INDEX = config('ELASTIC_INDEX', default='dblp')
 # ELASTICSEARCH_DOCTYPE = config('ELASTIC_DOCTYPE', default='sentences')
 
 
 # Mongodb configuration
 
-MONGODB_HOST = config('MONGODB_HOST', default=None)
-MONGODB_USER = config('MONGODB_USER', default=None)
-MONGODB_PASSWORD = config('MONGODB_PASSWORD', default=None)
+MONGODB_HOST = config('MONGODB_HOST')
+MONGODB_USER = config('MONGODB_USER', default='')
+MONGODB_PASSWORD = config('MONGODB_PASSWORD', default='')
+
+
+# Stanford CoreNLP configuration
+STANFORD_CORENLP_SERVER = config('STANFORD_CORENLP_SERVER')

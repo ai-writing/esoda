@@ -47,6 +47,20 @@ python manage.py migrate
 
 If `syncdb` fails, check the `DATABASE_URL` in your `.env` file.
 
+* (Optional, for deployment) Django's [translation framework](https://docs.djangoproject.com/en/dev/topics/i18n/translation/) for multilingual interface
+
+Install [gettext](https://www.gnu.org/software/gettext/) toolset and add `gettext/bin/` to `PATH`
+
+> On Linux, use `apt-get` to install
+> On Windows, download [precompiled binaries](https://mlocati.github.io/articles/gettext-iconv-windows.html)
+
+Then compile the translation files for use:
+
+```shell
+python manage_debug.py makemessages
+```
+
+
 * Runserver
 
 ```shell

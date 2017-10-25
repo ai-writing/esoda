@@ -27,7 +27,7 @@ def youdao_suggest(q):
             suggest['desc'] = desc
             suggests.append(suggest)
     except Exception as e:
-        logger.exception('Failed in Youdao suggest')
+        logger.exception('Failed in Youdao suggest "%s"', q)
     r['suggest'] = suggests
     return r
 
@@ -50,7 +50,7 @@ def youdao_search(q0, q):
             for explain in jsonObj['ec']['word'][0]['trs']:
                 dictionary['explanationList'].append(explain['tr'][0]['l']['i'][0])
     except Exception:
-        logger.exception('Failed in Youdao dict search')
+        logger.exception('Failed in Youdao dict search "%s" "%s"', q0, q)
     dictionary['cn'] = cn
     return dictionary
 
@@ -61,7 +61,7 @@ def youdao_translate(q):
     try:
         r = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=10).json()
     except Exception:
-        logger.exception('Failed in Youdao translate')
+        logger.exception('Failed in Youdao translate "%s"', q)
     return {
         'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
