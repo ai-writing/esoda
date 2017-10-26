@@ -52,6 +52,11 @@ a {
     .input-group-lg>.input-group-btn>.btn {
         width: 100%;
     }
+    #WordExplanation {
+        padding-left: 30px;
+        padding-top: 10px;
+        font-size: 6px;
+}
 }
 
 #SearchBox{
@@ -143,7 +148,7 @@ a {
 .esoda-tips {
     text-align: left;
     margin-top: 10px;
-    margin-left: 30px;
+    margin-left: 20px;
     color: #fff;
     font-size: 15px;
 }
@@ -1146,6 +1151,7 @@ button.close:focus {
     padding: 10px 0px;
     margin: 0px;
     margin-top: 5px;
+    text-align: justify;
 }
 
 .example-hint {
