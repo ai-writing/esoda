@@ -17,21 +17,34 @@ def domain_view(request):
     user = User.objects.get(id=request.user.pk)
     corpus_id = user.userprofile.getid()
     if request.method == 'POST':
-        cid = int(request.POST['id'])      
-        result=1-corpus_id[cid] # need to update fid & cids
-        corpus_id[cid]=result
-        try:
-            index=tree_first.index(cid)
-            children=tree_second[index]
-            for i in children:
-                corpus_id[i]=result
-        except:
-            pass
+        cids=request.POST.getlist('ids')
+        corpus_id=[0]*1000
+        for i in cids:
+            corpus_id[int(i)]=1
         user.userprofile.setid(corpus_id) 
         user.userprofile.save()
+    #     cid = int(request.POST['id'])      
+    #     result=1-corpus_id[cid] # need to update fid & cids
+    #     corpus_id[cid]=result
+    #     try:
+    #         index=tree_first.index(cid)
+    #         children=tree_second[index]
+    #         for i in children:
+    #             corpus_id[i]=result
+    #     except:
+    #         pass
+    #     user.userprofile.setid(corpus_id) 
+    #     user.userprofile.save()
         # messages.success(request, u'领域更新成功')
             # return redirect(reverse('field_select'))
-    return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','tree': tree})
+    # corpus_list=[]
+    # for i in range(0,11):
+    #     corpus_list.append({})
+    #     corpus_list[i]['corpus']=CORPUS[str(i)]
+    #     corpus_list[i]['name']=FIELD_NAME[i]
+    #     print FIELD_NAME[i]
+    node_tree=tree(corpus_id)
+    return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
 
 def changed_child(request):
@@ -42,6 +55,23 @@ def changed_child(request):
     except:
         children=[]
     return JsonResponse(children, safe=False)
+
+def search(request):
+    result=[]
+    expand=[]
+    target=request.GET['target']
+    if target=="":
+        return JsonResponse(result, safe=False)
+    user = User.objects.get(id=request.user.pk)
+    corpus_id = user.userprofile.getid()
+    node_tree=tree(corpus_id)
+    for i in node_tree:
+        for j in i["nodes"]:
+            if target.lower() in j["text"].lower():
+                result.append(j["id"])
+                if not i["id"] in expand:
+                    expand.append(i["id"])
+    return JsonResponse({"expand":expand,"result":result}, safe=False)
 
 def personal_view(request):
     info = {
@@ -94,11 +124,9 @@ def get_dept_tree(corpus_id):
         display_tree.append(node.to_dict(corpus_id[node.id]))
     return display_tree
 
-def tree(request):
-    user = User.objects.get(id=request.user.pk)
-    corpus_id = user.userprofile.getid()
+def tree(corpus_id):
     tree = get_dept_tree(corpus_id)
-    return JsonResponse(tree, safe=False)
+    return tree
 
 class TreeNode():
     def __init__(self):
@@ -116,7 +144,7 @@ class TreeNode():
         temp={
             'id': self.id,
             'text': self.text,
-            'state': {'checked': checked, 'expanded': False}
+            'state': {'checked': checked}
         }
         if not len(self.nodes)==0:
             temp['nodes']=self.nodes

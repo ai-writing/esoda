@@ -8,82 +8,112 @@
   <h4 class="personal-title"><strong>学术领域选择</strong></h4>
   <hr class="personal-line"/>
   <h5><strong>选择对口学术刊物以获得精准写作建议</strong><h5>
-{% comment %}
-  <form style="margin-top:10px;width:500px;" action="{% url 'authentication:domain' %}" method="post">
-    {% csrf_token %}
-    <div class='form-group fixed-form'>
-        {% for field in form %}
-      <div class="fieldWrapper">
-        {{ field.label_tag }}{{ field }}
-        {{ field.errors }}
-      </div>
-    {% endfor %}
-    </div>
-    <button type="submit" class="btn field-select-btn">{% trans 'Save' %}</button>
-  </form>
-{% endcomment %}
   <div class="form-group">
     <label for="input-search" class="sr-only">Search Tree:</label>
     <div class="search bar1" id="search-bar">
       <input type="text" id="input-search" placeholder="Type to search...">
-      <button type="button" id="btn-search"><span class="glyphicon glyphicon-search"></span></button>
+      <button type="button" id="btn-search" ><span class="glyphicon glyphicon-search"></span></button>
     </div>
   </div>
-
-  <div id="tree" class="pre-scrollable" style="max-height: 500px"></div>
+  
+  <!-- <div id="tree" class="pre-scrollable" style="max-height: 500px"></div> -->
+  <form action="/domain/" method="post">
+    {% csrf_token %}
+    <div class="container">
+    {% for i in corpus %}
+      <div class="raw" >
+        <div class="col-xs-2 col-sm-2 col-md-2"><input type="checkbox" value="{{i.id}}" id="check{{i.id}}" name="ids" onclick="aa({{i.id}})" {% if i.state.checked %} checked="checked" {% endif %} >{{i.text}}</div>
+        <div class="col-xs-9 col-sm-9 col-md-9" id="field{{i.id}}" style="max-height:50px; overflow:hidden;">
+        {% for j in i.nodes %}
+          <label><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}">{{j.text}}</span></label>
+        {% endfor %}
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1">
+          <div onclick="bb({{i.id}})" id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+    <input type="submit" value="提交"/>
+  </form>
 </div>
 {% endblock %}
 {% block script %}
-<script src="{% static 'js/bootstrap-treeview.min.js' %}"></script>
+<!-- <script src="{% static 'js/bootstrap-treeview.min.js' %}"></script> -->
 <script>
- $(function () {
-    $.ajaxSetup({
-        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+  var last_result=[];
+  var last_expand=[];
+  function aa(id){
+    $.getJSON("{% url 'authentication:changed_child' %}", {'id':id }, function(data){
+      var temp =document.getElementById("check"+id).checked;
+      for(var i=0;i<data.length;i++){ 
+        document.getElementById("check"+data[i]).checked=temp;
+      }
     });
-    var tree = $.getJSON("{% url 'authentication:dept_tree' %}", '', function (data) {
-        $('#tree').treeview({
-            data: data,
-            level: 1,
-            showCheckbox: true,
-            showIcon: false,
-            highlightSelected: false,
-            onhoverColor: '#ffffff',
-            onNodeChecked: function (event, node) {
-                $.post("{% url 'authentication:domain' %}", {'id':node.id }, function(data){
-                  console.log(node.id);
-                })               
-                $.getJSON("{% url 'authentication:changed_child' %}", {'id':node.id }, function(data){
-                  for(var i=0;i<data.length;i++){
-                    $('#tree').treeview('checkNode', [ data[i], { silent: true } ]);
-                  } 
-                }); 
-            }
-        });
-        $('#tree').on('nodeUnchecked', function(event, node) {
-          $.post("{% url 'authentication:domain' %}", {'id':node.id }, function(data){
-            console.log(node.id);
-          })              
-          $.getJSON("{% url 'authentication:changed_child' %}", {'id':node.id }, function(data){
-            for(var i=0;i<data.length;i++){
-              $('#tree').treeview('uncheckNode', [ data[i], { silent: true } ]);
-            } 
-          });
-        });
-    });
+  }
+  function bb(id){
+    if(document.getElementById("expand"+id).innerHTML=="<span class=\"glyphicon glyphicon-chevron-down\"></span>"){
+      document.getElementById("field"+id).style="max-height:500px; overflow:hidden;"
+      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
+    }else{
+      document.getElementById("field"+id).style="max-height:50px; overflow:hidden;"
+      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
+    }
+  }
+ // $(function () {
+ //    $.ajaxSetup({
+ //        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+ //    });
+ //    var tree = $.getJSON("{% url 'authentication:dept_tree' %}", '', function (data) {
+ //        $('#tree').treeview({
+ //            data: data,
+ //            level: 1,
+ //            showCheckbox: true,
+ //            showIcon: false,
+ //            highlightSelected: false,
+ //            onhoverColor: '#ffffff',
+ //            onNodeChecked: function (event, node) {
+ //                $.post("{% url 'authentication:domain' %}", {'id':node.id }, function(data){
+ //                  console.log(node.id);
+ //                })               
+ //                $.getJSON("{% url 'authentication:changed_child' %}", {'id':node.id }, function(data){
+ //                  for(var i=0;i<data.length;i++){
+ //                    $('#tree').treeview('checkNode', [ data[i], { silent: true } ]);
+ //                  } 
+ //                }); 
+ //            }
+ //        });
+ //        $('#tree').on('nodeUnchecked', function(event, node) {
+ //          $.post("{% url 'authentication:domain' %}", {'id':node.id }, function(data){
+ //            console.log(node.id);
+ //          })              
+ //          $.getJSON("{% url 'authentication:changed_child' %}", {'id':node.id }, function(data){
+ //            for(var i=0;i<data.length;i++){
+ //              $('#tree').treeview('uncheckNode', [ data[i], { silent: true } ]);
+ //            } 
+ //          });
+ //        });
+ //    });
     var search = function(e) {
       var pattern = $('#input-search').val();
-      var options = {
-        ignoreCase: true,     // case insensitive
-        exactMatch: false,    // like or equals
-        revealResults: true,  // reveal matching nodes
-      }
-      var results = $('#tree').treeview('search', [ pattern, options ]);
-      if(results.length>0)
-      {
-        // $('html, body').animate({  
-        //     scrollTop: $("#results[0].id").offset().top  
-        // }, 2000);
-      }
+      $.getJSON("{% url 'authentication:search' %}", {'target':pattern }, function(data){
+        for(var i=0;i<last_expand.length;i++){ 
+          document.getElementById("field"+last_expand[i]).style="max-height:50px; overflow:hidden;"
+          document.getElementById("expand"+last_expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
+        } 
+        for(var i=0;i<last_result.length;i++){
+          document.getElementById("checktext"+last_result[i]).style.color="black";
+        }
+        last_result=data.result;
+        last_expand=data.expand;
+        for(var i=0;i<data.expand.length;i++){ 
+          document.getElementById("field"+data.expand[i]).style="max-height:500px; overflow:hidden;"
+          document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
+        } 
+        for(var i=0;i<data.result.length;i++){ 
+          document.getElementById("checktext"+data.result[i]).style.color="red";
+        }
+      });
     }
 
 
@@ -91,11 +121,10 @@
     $('#input-search').bind('keypress',function(event){
         if(event.keyCode == "13") search();
     });
-    // $('#input-search').on('keyup', search);
 
-});
+// });
 </script>
-{% if messages %}
+<!-- {% if messages %}
   <script>
   $(document).ready(function () {
   {% for message in messages %}
@@ -103,5 +132,5 @@
   {% endfor %}
   });
   </script>
-{% endif %}
+{% endif %} -->
 {% endblock %}
