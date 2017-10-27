@@ -21,10 +21,7 @@ def synonyms(word, score = 0, pos = None, exp = None, max_count = None):
                 l.extend([(syn['w'], syn['s']) for syn in m['syn'] if syn['s'] >= score])
         l.sort(cmp = lambda (w1, s1), (w2, s2): cmp(s1, s2), reverse = False)
         l = sorted(dict(l).iteritems(), key= lambda x: x[1], reverse=True)
-        l = [w for (w, s) in l]
-        if word in l:
-            l.remove(word)
-        l.insert(0, word)
+        l = [w for (w, s) in l if w != word]
         if max_count== None or max_count <= 0:
             return l
         else:

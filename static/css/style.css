@@ -52,6 +52,11 @@ a {
     .input-group-lg>.input-group-btn>.btn {
         width: 100%;
     }
+    #WordExplanation {
+        padding-left: 30px;
+        padding-top: 10px;
+        font-size: 6px;
+}
 }
 
 #SearchBox{
@@ -139,6 +144,13 @@ a {
 .esoda-brand-subtitle {
     color: #fff;
     font-size: 20px;
+}
+.esoda-tips {
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 20px;
+    color: #fff;
+    font-size: 15px;
 }
 
 .user-image {
@@ -552,6 +564,7 @@ button.close:focus {
 .ui-menu-item {
     overflow: hidden;
     text-overflow: ellipsis;
+    display: block;
 }
 
 .ui-autocomplete-loading {
@@ -975,8 +988,8 @@ button.close:focus {
 .dictionary-container {
     padding: 0px 10px;
     background-color: #fff;
-    height: 100px;
-    overflow-y: hidden;
+    height: 120px;
+    overflow-y: scroll;
 }
 
 .dictionary-left {
@@ -1019,7 +1032,7 @@ button.close:focus {
 .dictionary-middle-line {
     border-right: 1px solid #9b9b9b;
     width: 50%;
-    height: 100px;
+    height: 120px;
 }
 
 .dictionary-hint {
@@ -1139,6 +1152,7 @@ button.close:focus {
     padding: 10px 0px;
     margin: 0px;
     margin-top: 5px;
+    text-align: justify;
 }
 
 .example-hint {

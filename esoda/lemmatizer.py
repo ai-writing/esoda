@@ -1,7 +1,11 @@
 import requests, logging
 
-STANFORD_CORENLP_SERVER = 'http://166.111.139.15:8004/'
-LEMMATIZER_URL = STANFORD_CORENLP_SERVER + '?properties={"outputFormat":"conll"}'
+logger = logging.getLogger(__name__)
+
+from django.conf import settings
+
+LEMMATIZER_URL = settings.STANFORD_CORENLP_SERVER + '?properties={"outputFormat":"conll"}'
+
 
 def lemmatize(s):
     '''
@@ -10,12 +14,14 @@ def lemmatize(s):
     '''
 
     try:
-        conll = requests.post(LEMMATIZER_URL, s, timeout=10).text
-        tokens = [line.split('\t') for line in conll.split('\n') if line]
+        conll = requests.post(LEMMATIZER_URL, s, timeout=10).text  # may end with \r\n
+        lines = [line.strip() for line in conll.split('\n')]
+        tokens = [line.split('\t') for line in lines if line]
+        logger.info('conll: "%s" -> %s', s, tokens)
         ll = [t[2].lower() for t in tokens]
         ref = [t[1] for t in tokens]
     except Exception as e:
-        logging.exception('Failed to lemmatize "%s"', s)
+        logger.exception('Failed to lemmatize "%s"', s)
         ll = ref = s.split()
         ll = [l.lower() for l in ll]
 
