@@ -564,6 +564,7 @@ button.close:focus {
 .ui-menu-item {
     overflow: hidden;
     text-overflow: ellipsis;
+    display: block;
 }
 
 .ui-autocomplete-loading {
