@@ -77,6 +77,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+# Security settings
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
+
+
 ROOT_URLCONF = 'esodawebsite.urls'
 
 TEMPLATES = [
