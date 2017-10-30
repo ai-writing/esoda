@@ -86,33 +86,31 @@
               </div> <!-- usage panel -->
             {% endif %}
 
-              <div class="panel panel-default" id="CollapseColloc">
+              <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="HeadingColloc">
                   <div class="panel-title-wrapper">
-                    <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist">
-                      <li role="presentation" class="active" style="margin-left: 10px">
-                          <p><a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a>
-                          <span class="panel-subtitle"><font color="black">搭配</font>&nbsp;Collocation</span></p>
-                      </li>
-
-                      <a role="button" data-toggle="collapse" href="#CollapsePart" aria-expanded="true" aria-controls="CollapseColloc" onclick="$.clickChevron(event);">
-                        <span class="glyphicon glyphicon-chevron-up pull-right"></span>
-                      </a>
-                    </ul>
+                    搭配
+                    <span class="panel-subtitle">Collocation</span>
+                    <a role="button" data-toggle="collapse" href="#CollapseColloc" aria-expanded="true" aria-controls="CollapseColloc" onclick="$.clickChevron(event);">
+                      <span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                    </a>
                   </div>
                 </div>
-                <div id="CollapsePart" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                    <div class="row" style="margin-left: 10px; margin-right: 0px">
-                      <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
-                      {% if r.collocationList %}
-                        {% for collocation in r.collocationList %}
-                        <li role="presentation">
-                          <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
-                        </li>
-                        {% endfor %}
-                      {% endif %}
-                      </ul>
-                    </div>
+                <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
+                  <ul class="nav nav-tabs nav-tabs-collocation pull-right" id="CollocationTab0" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a>
+                    </li>
+                  </ul>
+                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
+                  {% if r.collocationList %}
+                    {% for collocation in r.collocationList %}
+                    <li role="presentation">
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
+                    </li>
+                    {% endfor %}
+                  {% endif %}
+                  </ul>
                   <div id="CollocContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
                   {% if r.collocationList %}
