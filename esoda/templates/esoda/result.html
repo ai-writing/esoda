@@ -14,7 +14,7 @@
   <div class="result-page">
     <div class="container">
       <div class="row">
-        <div class="col-sm-9 result-main">
+        <div class="col-lg-10 col-md-10 col-sm-9 result-main">
           <div>
 
             <div class="result-warning">
@@ -97,11 +97,15 @@
                   </div>
                 </div>
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                  <ul class="nav nav-tabs nav-tabs-collocation pull-right" id="CollocationTab0" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a>
+                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist">
+                    <li role="presentation">
+                      <a href="#" style="display: inline-block;" class="not-limited-btn" role="tab">显示全部</a>
+                      <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab" style="display: inline-block;">{{ q }}</a>
                     </li>
                   </ul>
+<!--                   <div class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist">
+                    <li><a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a></li>
+                  </div> -->
                   <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
                   {% if r.collocationList %}
                     {% for collocation in r.collocationList %}
@@ -137,7 +141,7 @@
           </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-lg-2 col-md-2 col-sm-3">
           <div class="hidden-xs">
             <div id="SidebarAffix" class="affix" data-spy="affix">
               <div class="panel-group">
@@ -227,6 +231,10 @@
           loading = 0;
         });
       });
+
+      $('#CollapseColloc').on('click','.not-limited-btn',function(e){
+        $('.not-limited').click();
+      })
 
       $('#CollapseColloc').on('click', '.not-limited', function (e) {
         e.preventDefault();
