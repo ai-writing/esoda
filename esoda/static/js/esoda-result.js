@@ -20,7 +20,7 @@ $(function () {
 
 
   $( window ).scroll( function () {
-    if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
+    if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
       if (loading == 1 || loaded == 1) return;
       if ($('#Loading').is(':visible')) return;
 
@@ -43,7 +43,6 @@ $(function () {
       }, 1000);
     }
   });
-
 
   $(".back-to-top").click(function() {
     $("html,body").animate({scrollTop: 0}, "fast");
