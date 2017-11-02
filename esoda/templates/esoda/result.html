@@ -97,12 +97,6 @@
                   </div>
                 </div>
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist">
-                    <li role="presentation">
-                      <a href="#" style="display: inline-block;" class="not-limited-btn" role="tab">显示全部</a>
-                      <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab" style="display: inline-block;">{{ q }}</a>
-                    </li>
-                  </ul>
 <!--                   <div class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist">
                     <li><a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a></li>
                   </div> -->
@@ -114,6 +108,10 @@
                     </li>
                     {% endfor %}
                   {% endif %}
+                    <li role="presentation">
+                      <a href="#" style="display: inline-block;" class="not-limited-btn" role="tab">显示全部</a>
+                      <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab" style="display: inline-block;">{{ q }}</a>
+                    </li>
                   </ul>
                   <div id="CollocContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
