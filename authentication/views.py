@@ -23,26 +23,7 @@ def domain_view(request):
             corpus_id[int(i)]=1
         user.userprofile.setid(corpus_id) 
         user.userprofile.save()
-    #     cid = int(request.POST['id'])      
-    #     result=1-corpus_id[cid] # need to update fid & cids
-    #     corpus_id[cid]=result
-    #     try:
-    #         index=tree_first.index(cid)
-    #         children=tree_second[index]
-    #         for i in children:
-    #             corpus_id[i]=result
-    #     except:
-    #         pass
-    #     user.userprofile.setid(corpus_id) 
-    #     user.userprofile.save()
-        # messages.success(request, u'领域更新成功')
-            # return redirect(reverse('field_select'))
-    # corpus_list=[]
-    # for i in range(0,11):
-    #     corpus_list.append({})
-    #     corpus_list[i]['corpus']=CORPUS[str(i)]
-    #     corpus_list[i]['name']=FIELD_NAME[i]
-    #     print FIELD_NAME[i]
+        messages.success(request, u'领域更新成功')
     node_tree=tree(corpus_id)
     return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
@@ -65,12 +46,13 @@ def search(request):
     user = User.objects.get(id=request.user.pk)
     corpus_id = user.userprofile.getid()
     node_tree=tree(corpus_id)
-    for i in node_tree:
-        for j in i["nodes"]:
-            if target.lower() in j["text"].lower():
-                result.append(j["id"])
-                if not i["id"] in expand:
-                    expand.append(i["id"])
+    for k in node_tree:
+        for i in k.nodes:
+            for j in i["nodes"]:
+                if target.lower() in j["text"].lower():
+                    result.append(j["id"])
+                    if not i["id"] in expand:
+                        expand.append(i["id"])
     return JsonResponse({"expand":expand,"result":result}, safe=False)
 
 def personal_view(request):
@@ -99,29 +81,44 @@ def favorites_view(request):
 
 
 tree_second=[]
-tree_first=[]
-
+tree_first=[0, 2, 51, 74, 99, 145, 179, 208, 237, 280, 299]
+field=["英国国家语料库","计算机科学与技术"]
+field_list=[[u'BNC'],[u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
+              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合']]
 def get_dept_tree(corpus_id):
+    tree_first=[]
     display_tree = []
     c_id=0;
-    for i in range(0,11):
-        node = TreeNode()
-        node.id = c_id
-        node.text = FIELD_NAME[i]
-        tree_first.append(c_id)
-        c_id+=1
-        children = CORPUS[str(i)]
-        tree_second_lef=[]
-        for i in children:
-            node1 = TreeNode()
-            node1.id = c_id
-            node1.text = i['i']
-            tree_second_lef.append(c_id);
+    a_id=0;
+    for k in range(len(field)):
+        node0=TreeNode()
+        node0.id=k
+        node0.text=field[k]
+        field_tree=[]
+        node0.nodes=field_tree
+        display_tree.append(node0)
+        for i in range(len(field_list[k])):
+            node = TreeNode()
+            node.id = c_id
+            node.text = field_list[k][i]
+            tree_first.append(c_id)
             c_id+=1
-            node1.nodes = []
-            node.nodes.append(node1.to_dict(corpus_id[node1.id]))
-        tree_second.append(tree_second_lef)
-        display_tree.append(node.to_dict(corpus_id[node.id]))
+            children = CORPUS[str(a_id)]
+            a_id+=1
+            tree_second_lef=[]
+            for i in children:
+                node1 = TreeNode()
+                node1.id = c_id
+                temp=i['i'].replace('conf/','')
+                temp=temp.replace('journals/','')
+                node1.text = temp
+                tree_second_lef.append(c_id);
+                c_id+=1
+                node1.nodes = []
+                node.nodes.append(node1.to_dict(corpus_id[node1.id]))
+            tree_second.append(tree_second_lef)
+            field_tree.append(node.to_dict(corpus_id[node.id]))
+    # print tree_first
     return display_tree
 
 def tree(corpus_id):

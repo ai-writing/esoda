@@ -19,22 +19,45 @@
   <!-- <div id="tree" class="pre-scrollable" style="max-height: 500px"></div> -->
   <form action="/domain/" method="post">
     {% csrf_token %}
-    <div class="container">
-    {% for i in corpus %}
-      <div class="raw" >
-        <div class="col-xs-2 col-sm-2 col-md-2"><input type="checkbox" value="{{i.id}}" id="check{{i.id}}" name="ids" onclick="aa({{i.id}})" {% if i.state.checked %} checked="checked" {% endif %} >{{i.text}}</div>
-        <div class="col-xs-9 col-sm-9 col-md-9" id="field{{i.id}}" style="max-height:50px; overflow:hidden;">
-        {% for j in i.nodes %}
-          <label><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}">{{j.text}}</span></label>
-        {% endfor %}
-        </div>
-        <div class="col-xs-1 col-sm-1 col-md-1">
-          <div onclick="bb({{i.id}})" id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
+    <div class="panel-group" id="accordion">
+    {% for k in corpus %}
+      <div class="panel-heading domain-panel-heading domain-block" >
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" 
+             href="#collapse{{k.id}}">
+            {{k.text}}
+          </a>
+        </h4>
+      </div>
+      <div id="collapse{{k.id}}" class="panel-collapse collapse">
+        <div class="panel-body domain-nopadding domain-panel-body">
+          <table>
+            <tbody>
+            {% for i in k.nodes %}
+              <tr class="row">
+                <td class="col-xs-4 col-sm-2 col-md-2 domain-level-1 domain-block domain-checkbox domain-border">
+                  {{i.text}}
+                  <input type="checkbox" value="{{i.id}}" id="check{{i.id}}" name="ids" onclick="aa({{i.id}})" {% if i.state.checked %} checked="checked" {% endif %} >
+                </td>
+                <td class="col-xs-8 col-sm-10 col-md-10 domain-block domain-nopadding domain-border">
+                  <div class="domain-expand">
+                    <div onclick="bb({{i.id}})" id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
+                  </div>
+                  <div id="field{{i.id}}" class="domain-level-2" style="max-height:30px; overflow:hidden;">
+                    {% for j in i.nodes %}
+                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}}" onclick="cc({{i.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                    {% endfor %}
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     {% endfor %}
     </div>
-    <input type="submit" value="提交"/>
+    <input class="btn" type="submit" value="提交"/>
   </form>
 </div>
 {% endblock %}
@@ -56,75 +79,46 @@
       document.getElementById("field"+id).style="max-height:500px; overflow:hidden;"
       document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
     }else{
-      document.getElementById("field"+id).style="max-height:50px; overflow:hidden;"
+      document.getElementById("field"+id).style="max-height:30px; overflow:hidden;"
       document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
     }
   }
- // $(function () {
- //    $.ajaxSetup({
- //        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
- //    });
- //    var tree = $.getJSON("{% url 'authentication:dept_tree' %}", '', function (data) {
- //        $('#tree').treeview({
- //            data: data,
- //            level: 1,
- //            showCheckbox: true,
- //            showIcon: false,
- //            highlightSelected: false,
- //            onhoverColor: '#ffffff',
- //            onNodeChecked: function (event, node) {
- //                $.post("{% url 'authentication:domain' %}", {'id':node.id }, function(data){
- //                  console.log(node.id);
- //                })               
- //                $.getJSON("{% url 'authentication:changed_child' %}", {'id':node.id }, function(data){
- //                  for(var i=0;i<data.length;i++){
- //                    $('#tree').treeview('checkNode', [ data[i], { silent: true } ]);
- //                  } 
- //                }); 
- //            }
- //        });
- //        $('#tree').on('nodeUnchecked', function(event, node) {
- //          $.post("{% url 'authentication:domain' %}", {'id':node.id }, function(data){
- //            console.log(node.id);
- //          })              
- //          $.getJSON("{% url 'authentication:changed_child' %}", {'id':node.id }, function(data){
- //            for(var i=0;i<data.length;i++){
- //              $('#tree').treeview('uncheckNode', [ data[i], { silent: true } ]);
- //            } 
- //          });
- //        });
- //    });
-    var search = function(e) {
-      var pattern = $('#input-search').val();
-      $.getJSON("{% url 'authentication:search' %}", {'target':pattern }, function(data){
-        for(var i=0;i<last_expand.length;i++){ 
-          document.getElementById("field"+last_expand[i]).style="max-height:50px; overflow:hidden;"
-          document.getElementById("expand"+last_expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
-        } 
-        for(var i=0;i<last_result.length;i++){
-          document.getElementById("checktext"+last_result[i]).style.color="black";
-        }
-        last_result=data.result;
-        last_expand=data.expand;
-        for(var i=0;i<data.expand.length;i++){ 
-          document.getElementById("field"+data.expand[i]).style="max-height:500px; overflow:hidden;"
-          document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
-        } 
-        for(var i=0;i<data.result.length;i++){ 
-          document.getElementById("checktext"+data.result[i]).style.color="red";
-        }
-      });
+  function cc(id) {
+    var items = document.getElementsByClassName("checkchild"+id);
+    var childStatus = false;
+    for (var i = 0; i < items.length; ++i) {
+        childStatus = (childStatus || items[i].checked);
     }
-
-
-    $('#btn-search').on('click', search);
-    $('#input-search').bind('keypress',function(event){
-        if(event.keyCode == "13") search();
+    document.getElementById("check"+id).checked = childStatus;
+  }
+  var search = function(e) {
+    var pattern = $('#input-search').val();
+    $.getJSON("{% url 'authentication:search' %}", {'target':pattern }, function(data){
+      for(var i=0;i<last_expand.length;i++){ 
+        document.getElementById("field"+last_expand[i]).style="max-height:25px; overflow:hidden;"
+        document.getElementById("expand"+last_expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
+      } 
+      for(var i=0;i<last_result.length;i++){
+        document.getElementById("checktext"+last_result[i]).style.color="#9b9b9b";
+      }
+      last_result=data.result;
+      last_expand=data.expand;
+      for(var i=0;i<data.expand.length;i++){ 
+        document.getElementById("field"+data.expand[i]).style="max-height:500px; overflow:hidden;"
+        document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
+      } 
+      for(var i=0;i<data.result.length;i++){ 
+        document.getElementById("checktext"+data.result[i]).style.color="red";
+      }
     });
+  }
 
-// });
+  $('#btn-search').on('click', search);
+  $('#input-search').bind('keypress',function(event){
+      if(event.keyCode == "13") search();
+  });
 </script>
-<!-- {% if messages %}
+  {% if messages %}
   <script>
   $(document).ready(function () {
   {% for message in messages %}
@@ -132,5 +126,5 @@
   {% endfor %}
   });
   </script>
-{% endif %} -->
+{% endif %}
 {% endblock %}
