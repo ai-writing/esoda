@@ -863,6 +863,8 @@ button.close:focus {
 .colloc-usage[state='selected'] {
     cursor: default;
     color: #888;
+    font-size: 2px;
+    text-overflow: ellipsis;
 }
 
 .colloc-usage[state='selected']:hover {
@@ -1038,9 +1040,9 @@ button.close:focus {
     color: #979797;
 }
 
-
 .nav-tabs {
     border-bottom-color: transparent;
+    padding-right: 0px;
 }
 
 #UsageTab >li >a {
