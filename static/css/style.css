@@ -974,7 +974,7 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding: 0px;
+    padding: 10px;
     font-size: 12px;
 }
 
