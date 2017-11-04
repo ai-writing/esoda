@@ -882,6 +882,12 @@ button.close:focus {
     display: none;
 }
 
+#ManualLoad {
+    display: none;
+    color: #9b9b9b;
+    cursor: pointer;
+}
+
 .result-page {
     background-color: #f5f5f9;
     padding-bottom: 40px;
@@ -969,12 +975,12 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding: 0px;
+    padding: 10px;
     font-size: 12px;
 }
 
 .panel-body {
-    padding-left: 0px;
+    padding-left: 10px;
     padding-top: 0px;
     padding-bottom: 20px;
     padding-right: 20px;
@@ -1042,6 +1048,7 @@ button.close:focus {
 
 .nav-tabs {
     border-bottom-color: transparent;
+    padding-right: 0px;
 }
 
 #UsageTab >li >a {
@@ -1067,6 +1074,10 @@ button.close:focus {
     border-bottom: 2px solid #63B7E6;
 }
 
+.usage-count {
+    font-size: 10px;
+}
+
 .nav-tabs-collocation>li>a {
     border: transparent;
 }
@@ -1082,6 +1093,20 @@ button.close:focus {
 .nav-tabs-collocation>li.active>a:hover {
     border: transparent;
     color: #4a4a4a;
+}
+
+#not-limited-btn {
+    display: inline-block; 
+    padding-right: 0px;
+    padding-left: 10px;
+}
+
+.not-limited {
+    display: inline-block; 
+}
+
+#CollocationTab0> {
+    padding-right: 0px;
 }
 
 .usage-panel-content {
