@@ -53,18 +53,22 @@ $(function () {
       $('#ManualLoad').on('click','#load-btn',function(e) {
         var total = $("#ExampleNumber").html();
         loading = 1;
-        var i;
-        for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
-          $("#Example" + i).show();
-        }
-        loadCount++;
-        loading = 0;
-        if (i > total || loadCount >= 5) {
-          loaded = 1;
-          $("#ManualLoad").hide();
-          $("#ExampleEnd").show();
-          return;
-        }
+        $("#ManualLoad").hide();
+        $("#Loading").show();
+        setTimeout(function() {
+          $("#Loading").hide();
+          var i;
+          for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
+            $("#Example" + i).show();
+          }
+          loadCount++;
+          loading = 0;
+          if (i > total || loadCount >= 5) {
+            loaded = 1;
+            $("#ExampleEnd").show();
+            return;
+          }
+        }, 1000);
       })
     }
   });
