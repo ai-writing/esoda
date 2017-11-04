@@ -7,6 +7,7 @@
 {% block head %}
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="{% static 'css/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -97,22 +98,23 @@
                   </div>
                 </div>
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-<!--                   <div class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist">
-                    <li><a href="#CollocAll" class="not-limited" role="tab" data-toggle="tab">{{ q }}</a></li>
-                  </div> -->
-                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
-                  {% if r.collocationList %}
-                    {% for collocation in r.collocationList %}
-                    <li role="presentation">
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
-                    </li>
-                    {% endfor %}
-                  {% endif %}
-                    <li role="presentation">
-                      <a href="#" style="display: inline-block;" class="not-limited-btn" role="tab">显示全部</a>
-                      <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab" style="display: inline-block;">{{ q }}</a>
-                    </li>
-                  </ul>
+                  <div class="row" style="margin-left: 10px;">
+                    <ul class="nav nav-tabs nav-tabs-collocation col-lg-2 col-md-2 col-sm-3 col-xs-3" id="CollocationTab0" role="tablist">
+                      <li role="presentation">
+                        <a href="#" id="not-limited-btn" role="tab">显示全部</a>
+                        <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab">{{ q }}</a>
+                      </li>
+                    </ul>
+                    <ul class="nav nav-tabs nav-tabs-collocation col-lg-10 col-md-10 col-sm-9 col-xs-9" id="CollocationTab" role="tablist">
+                    {% if r.collocationList %}
+                      {% for collocation in r.collocationList %}
+                      <li role="presentation">
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
+                      </li>
+                      {% endfor %}
+                    {% endif %}
+                    </ul>
+                  </div>
                   <div id="CollocContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
                   {% if r.collocationList %}
@@ -130,6 +132,10 @@
 
             <div id="Loading" class="result-table-cell center-align">
               <p><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span>正在加载</span></p>
+            </div>
+
+            <div id="ManualLoad" class="center-align">
+              <span id="load-btn">点击加载更多</span>
             </div>
 
             <div id="ExampleEnd" class="result-table-cell center-align">
@@ -200,6 +206,7 @@
         if ($(this).attr('state') == 'selected') return;
         e.preventDefault();
         $("#ExampleEnd").hide();
+        $('#ManualLoad').hide();
         $('#SentenceResult').empty();
         $('#Loading').show();
 
@@ -221,6 +228,7 @@
 
         $.get("{% url 'sentences' %}", {t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt}, function(data) {
           $('#Loading').hide();
+          $('#ManualLoad').hide();
           $("#SentenceResult").html(data);
           if ($('#ExampleNumber').html() <= 10) {
             $('#ExampleEnd').show();
@@ -230,7 +238,7 @@
         });
       });
 
-      $('#CollapseColloc').on('click','.not-limited-btn',function(e){
+      $('#CollapseColloc').on('click','#not-limited-btn',function(e) {
         $('.not-limited').click();
       })
 
@@ -243,6 +251,7 @@
         $("#CollocationTab li").removeClass('disabled');
         $("#CollocationTab li").removeClass('active');
         $("#ExampleEnd").hide();
+        $("#ManualLoad").hide();
         $('#SentenceResult').empty();
         $('#Loading').show();
 
@@ -254,6 +263,7 @@
         // console.log(collocQ);
         $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
           $('#Loading').hide();
+          $('#ManualLoad').hide();
           $("#SentenceResult").html(data);
           $('#CountUsage').html($('#ExampleNumber').html());
           if ($('#ExampleNumber').html() <= 10) {
@@ -295,6 +305,7 @@
 
         $('#SentenceResult').empty();
         $('#Loading').show();
+        $('#ManualLoad').hide();
         $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
           $(id + ' .colloc-result').mCustomScrollbar({

@@ -19,16 +19,40 @@ $(function () {
   });
 
 
-  $( window ).scroll( function () {
-    if ($(document).height() <= $(window).scrollTop() + $(window).height()) {
-      if (loading == 1 || loaded == 1) return;
-      if ($('#Loading').is(':visible')) return;
+  // $( window ).scroll( function () {
+  //   if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
+  //     if (loading == 1 || loaded == 1 ) return;
+  //     if ($('#Loading').is(':visible')) return;
 
-      var total = $("#ExampleNumber").html();
-      loading = 1;
-      $("#Loading").show();
-      setTimeout(function() {
-        $("#Loading").hide();
+  //     var total = $("#ExampleNumber").html();
+  //     loading = 1;
+  //     $("#Loading").show();
+  //     setTimeout(function() {
+  //       $("#Loading").hide();
+  //       var i;
+  //       for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
+  //         $("#Example" + i).show();
+  //       }
+  //       loadCount++;
+  //       loading = 0;
+  //       if (i > total || loadCount >= 5) {
+  //         loaded = 1;
+  //         $("#ExampleEnd").show();
+  //         return;
+  //       }
+  //     }, 1000);
+  //   }
+  // });
+
+    $( window ).scroll( function () {
+    if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
+      if (loading == 1 || loaded == 1 ) return;
+      if ($('#ManualLoad').is(':visible')) return;
+      
+      $("#ManualLoad").show();
+      $('#ManualLoad').on('click','#load-btn',function(e) {
+        var total = $("#ExampleNumber").html();
+        loading = 1;
         var i;
         for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
           $("#Example" + i).show();
@@ -37,10 +61,11 @@ $(function () {
         loading = 0;
         if (i > total || loadCount >= 5) {
           loaded = 1;
+          $("#ManualLoad").hide();
           $("#ExampleEnd").show();
           return;
         }
-      }, 1000);
+      })
     }
   });
 
