@@ -50,7 +50,7 @@ $(function () {
       if ($('#ManualLoad').is(':visible')) return;
       
       $("#ManualLoad").show();
-      $('#ManualLoad').on('click','#load-btn',function(e) {
+      $('#ManualLoad').click(function(e) {
         var total = $("#ExampleNumber").html();
         loading = 1;
         $("#ManualLoad").hide();
@@ -69,7 +69,7 @@ $(function () {
             return;
           }
         }, 1000);
-      })
+      });
     }
   });
 
