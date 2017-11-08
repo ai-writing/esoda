@@ -25,11 +25,10 @@
       {% endif %}
       <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
         <li role="presentation" {% if tab == "index" %}class="active"{% endif %}><a role="tab" href="{% url 'esoda' %}">主页</a></li>
+        <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}><a role="tab" href="{% url 'guide' %}">搜搭教程</a></li>
         <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
         <li role="presentation" {% if tab == "profile" %}class="active"{% endif %}><a role="tab" {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>个人领域</a></li>
-        <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}><a role="tab" href="{% url 'guide' %}">搜搭教程</a></li>
       </ul>
     </div><!--/.navbar-collapse -->
   </div>
 </nav>
- 

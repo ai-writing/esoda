@@ -21,7 +21,7 @@
         {% comment %}
         <li {% if profileTab == "personal" %}class="active"{% endif %}><a href="{% url 'authentication:personal' %}">个人信息</a></li>
         {% endcomment %}
-        <li class="{% if profileTab != 'domain' and profileTab != 'personal' and profileTab != 'favorites' %}active{% endif %}"><a {% if user.is_authenticated %} href="{% url 'auth_password_change' %}"{% else %} href="#" data-toggle="modal" data-target="#ModalLogin" {% endif %}>安全与隐私</a></li>
+        <li class="{% if profileTab != 'domain' and profileTab != 'personal' and profileTab != 'favorites' %}active{% endif %}"><a {% if user.is_authenticated %} href="{% url 'auth_password_change' %}"{% else %} href="#" data-toggle="modal" data-target="#ModalLogin" {% endif %}>修改密码</a></li>
         {% comment %}
         <li {% if profileTab == "favorites" %}class="active"{% endif %}><a href="{% url 'authentication:favorites' %}">收藏夹</a></li>
         {% endcomment %}
