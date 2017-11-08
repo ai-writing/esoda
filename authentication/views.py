@@ -40,9 +40,10 @@ def changed_child(request):
 def search(request):
     result=[]
     expand=[]
+    big=[]
     target=request.GET['target']
     if target=="":
-        return JsonResponse(result, safe=False)
+        return JsonResponse({"expand":expand,"result":result,"big":big}, safe=False)
     user = User.objects.get(id=request.user.pk)
     corpus_id = user.userprofile.getid()
     node_tree=tree(corpus_id)
@@ -53,7 +54,9 @@ def search(request):
                     result.append(j["id"])
                     if not i["id"] in expand:
                         expand.append(i["id"])
-    return JsonResponse({"expand":expand,"result":result}, safe=False)
+                    if not k.id in big:
+                        big.append(k.id)
+    return JsonResponse({"expand":expand,"result":result,"big":big}, safe=False)
 
 def personal_view(request):
     info = {

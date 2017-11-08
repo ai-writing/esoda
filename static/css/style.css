@@ -1463,6 +1463,9 @@ button.close:focus {
     padding:5px;
     color: #63B7E6;
 }
+.domain-expand:hover{
+    cursor:pointer;
+}
 .domain-expand span{
     margin: 0px;
 }
