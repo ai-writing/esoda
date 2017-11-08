@@ -7,7 +7,6 @@ profile_urls = [
     url(r'^personal/$', views.personal_view, name='personal'),
     url(r'^favorites/$', views.favorites_view, name='favorites'),
     url(r'^tree/$', views.tree, name='dept_tree'),
-    url(r'^changed/$', views.changed_child, name='changed_child'),
     url(r'^search/$', views.search, name='search'),
 ]
 

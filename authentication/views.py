@@ -28,15 +28,6 @@ def domain_view(request):
     return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
 
-def changed_child(request):
-    cid = int(request.GET['id'])  
-    try:
-        index=tree_first.index(cid)
-        children=tree_second[index]
-    except:
-        children=[]
-    return JsonResponse(children, safe=False)
-
 def search(request):
     result=[]
     expand=[]

@@ -68,12 +68,11 @@
   var last_expand=[];
   var last_big=[];
   function aa(id){
-    $.getJSON("{% url 'authentication:changed_child' %}", {'id':id }, function(data){
-      var temp =document.getElementById("check"+id).checked;
-      for(var i=0;i<data.length;i++){ 
-        document.getElementById("check"+data[i]).checked=temp;
-      }
-    });
+    var temp =document.getElementById("check"+id).checked;
+    var items = document.getElementsByClassName("checkchild"+id);
+    for (var i = 0; i < items.length; ++i) {
+        items[i].checked=temp;
+    }
   }
   function bb(id){
     if(document.getElementById("expand"+id).innerHTML=="<span class=\"glyphicon glyphicon-chevron-down\"></span>"){
