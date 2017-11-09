@@ -29,12 +29,13 @@
           </a>
         </h4>
       </div>
-      <div id="collapse{{k.id}}" class="panel-collapse collapse {% ifequal k.id 0 %} in {% endifequal %}">
+      <div id="collapse{{k.id}}" class="panel-collapse collapse in">
         <div class="panel-body domain-nopadding domain-panel-body">
           <table>
             <tbody>
             {% for i in k.nodes %}
               <tr class="row">
+                {%ifequal k.level 3 %}
                 <td class="col-xs-4 col-sm-2 col-md-2 domain-level-1 domain-block domain-checkbox domain-border">
                   {{i.text}}
                   <input type="checkbox" value="{{i.id}}" id="check{{i.id}}" name="ids" onclick="aa({{i.id}})" {% if i.state.checked %} checked="checked" {% endif %} >
@@ -49,6 +50,18 @@
                     {% endfor %}
                   </div>
                 </td>
+                {% else %}
+                <td class="col-xs-12 col-sm-12 col-md-12 domain-block domain-nopadding domain-border">
+                  <div class="domain-expand" onclick="bb({{i.id}})">
+                    <div id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
+                  </div>
+                  <div id="field{{i.id}}" class="domain-level-2" style="max-height:30px; overflow:hidden;">
+                    {% for j in i.nodes %}
+                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}}" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                    {% endfor %}
+                  </div>
+                </td>
+                {% endifequal %}
               </tr>
             {% endfor %}
             </tbody>

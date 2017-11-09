@@ -10,7 +10,7 @@ from esoda.utils import CORPUS
 # Create your views here.
 
 FIELD_NAME = [u'BNC',u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
-              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合', u'全部']
+              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合', u'doaj',u'arxiv']
 # Views for profile urls
 @login_required
 def domain_view(request):
@@ -21,7 +21,7 @@ def domain_view(request):
         corpus_id=[0]*1000
         for i in cids:
             corpus_id[int(i)]=1
-        user.userprofile.setid(corpus_id) 
+        user.userprofile.setid(corpus_id)
         user.userprofile.save()
         messages.success(request, u'领域更新成功')
     node_tree=tree(corpus_id)
@@ -75,10 +75,10 @@ def favorites_view(request):
 
 
 tree_second=[]
-tree_first=[0, 2, 51, 74, 99, 145, 179, 208, 237, 280, 299]
-field=["英国国家语料库","计算机科学与技术"]
-field_list=[[u'BNC'],[u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
-              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合']]
+tree_first=[0, 2, 51, 74, 99, 145, 179, 208, 237, 280, 299, 321, 330]
+field=["英国国家语料库(BNC)","计算机科学(DBLP)","DOAJ","Arxiv"]
+field_list=[[],[u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
+              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合'],[u'doaj'],[u'arxiv']]
 def get_dept_tree(corpus_id):
     tree_first=[]
     display_tree = []
@@ -91,10 +91,32 @@ def get_dept_tree(corpus_id):
         field_tree=[]
         node0.nodes=field_tree
         display_tree.append(node0)
-        for i in range(len(field_list[k])):
+        if k!=0:
+            for i in range(len(field_list[k])):
+                node = TreeNode()
+                node.id = c_id
+                node.text = field_list[k][i]
+                tree_first.append(c_id)
+                c_id+=1
+                children = CORPUS[str(a_id)]
+                a_id+=1
+                tree_second_lef=[]
+                for i in children:
+                    node1 = TreeNode()
+                    node1.id = c_id
+                    temp=i['i'].replace('conf/','')
+                    temp=temp.replace('journals/','')
+                    node1.text = temp
+                    tree_second_lef.append(c_id)
+                    c_id+=1
+                    node.nodes.append(node1.to_dict(corpus_id[node1.id]))
+                tree_second.append(tree_second_lef)
+                field_tree.append(node.to_dict(corpus_id[node.id]))
+        else:       
+            node0.level=2
             node = TreeNode()
             node.id = c_id
-            node.text = field_list[k][i]
+            node.text = ""
             tree_first.append(c_id)
             c_id+=1
             children = CORPUS[str(a_id)]
@@ -103,12 +125,9 @@ def get_dept_tree(corpus_id):
             for i in children:
                 node1 = TreeNode()
                 node1.id = c_id
-                temp=i['i'].replace('conf/','')
-                temp=temp.replace('journals/','')
-                node1.text = temp
-                tree_second_lef.append(c_id);
+                node1.text = i['i']
+                tree_second_lef.append(c_id)
                 c_id+=1
-                node1.nodes = []
                 node.nodes.append(node1.to_dict(corpus_id[node1.id]))
             tree_second.append(tree_second_lef)
             field_tree.append(node.to_dict(corpus_id[node.id]))
@@ -127,6 +146,7 @@ class TreeNode():
              'checked': False,
         }
         self.nodes = []
+        self.level=3
     def to_dict(self,checked):
         if checked==0:
             check=False
