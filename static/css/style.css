@@ -104,8 +104,8 @@ a {
 }
 
 .navbar-brand img {
-    width: 137px;
-    margin-top: 16px;
+    width: 255px;
+    margin: 30px 0px;
 }
 
 
@@ -782,7 +782,7 @@ button.close:focus {
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 14px;
-    margin: 30px 0 0;
+    margin-top: 30px;
 }
 
 .footer a {
