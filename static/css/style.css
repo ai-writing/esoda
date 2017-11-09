@@ -68,7 +68,7 @@ a {
 }
 
 .footer {
-    position: absolute;
+    /*position: absolute;*/
     bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
@@ -782,7 +782,7 @@ button.close:focus {
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 14px;
-    margin-top: 20px
+    margin: 30px 0 0;
 }
 
 .footer a {
