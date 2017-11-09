@@ -7,7 +7,7 @@ html {
 body {
     font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
-    margin-bottom: 280px;
+    margin-bottom: 0px;
 }
 
 a {
@@ -72,7 +72,7 @@ a {
     bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
-    height: 300px;
+    height: 0px;
     background: white;
     color: #9b9b9b;
     font-size: 18px;
@@ -782,6 +782,7 @@ button.close:focus {
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 14px;
+    margin-top: 20px
 }
 
 .footer a {
