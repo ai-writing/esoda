@@ -86,15 +86,6 @@
             <p><a href="#">PCG工作室</a></p>
           </div>
           <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#">我们的团队</a></p>
-          </div>
-          <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#">版权声明</a></p>
-          </div>
-          <div class="col-xs-4 col-sm-3 col-md-2">
-            <p><a href="#">商业合作</a></p>
-          </div>
-          <div class="col-xs-4 col-sm-3 col-md-2">
           {% if LANGUAGE_CODE == "zh-hans"%}
             <p><a href="#">语言：简体中文</a></p>
           {% elif LANGUAGE_CODE == "en-us" or LANGUAGE_CODE == "en" %}
@@ -102,18 +93,12 @@
           {% endif %}
           </div>
         </div>
-        <div class="row footer-shares">
-          <div class="col-sm-6">
-            <img src="{% static 'img/logo.png' %}" class="footer-logo">
-            <p>专业英文写作助手</p>
-          </div>
           <div class="col-sm-6 right-align xs-left-align xs-margin-bottom">
             <a href="#" class="share-a"><img class="shares" src="{% static 'img/email_F.svg' %}"></a>
             <a href="#" class="share-a"><img class="shares wechat-share" data-toggle="popover" data-placement="top" title="微信扫一扫：" data-content="<div class='wechat-qr'></div>" data-html="true" data-trigger="hover focus" src="{% static 'img/wechat_F.svg' %}"></a>
             <a href="#" class="share-a"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a>
             <a href="#" class="share-a"><img src="{% static 'img/sina_weibo_F.svg' %}"></a>
           </div>
-        </div>
         <p class="copyright">Copyright &copy; 2017 清华大学 · 人机交互实验室 · <a href="http://www.miitbeian.gov.cn/">京ICP备17037838号-1</a></p>
       </div>
     </footer>
