@@ -103,9 +103,15 @@ a {
     display: inline;
 }
 
-.navbar-brand img {
+.navbar-brand {
+    /*height: 50px;*/
+    margin-top: 45px;
+    overflow: hidden;
+}
+.navbar-brand>img {
     width: 255px;
-    margin: 30px 0px;
+    margin-top: -100px;
+    margin-left: 15px;
 }
 
 
