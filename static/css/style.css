@@ -7,7 +7,7 @@ html {
 body {
     font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
-    margin-bottom: 280px;
+    margin-bottom: 0px;
 }
 
 a {
@@ -68,11 +68,11 @@ a {
 }
 
 .footer {
-    position: absolute;
+    /*position: absolute;*/
     bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
-    height: 300px;
+    height: 0px;
     background: white;
     color: #9b9b9b;
     font-size: 18px;
@@ -103,9 +103,15 @@ a {
     display: inline;
 }
 
-.navbar-brand img {
-    width: 137px;
-    margin-top: 16px;
+.navbar-brand {
+    /*height: 50px;*/
+    margin-top: 45px;
+    overflow: hidden;
+}
+.navbar-brand>img {
+    width: 255px;
+    margin-top: -100px;
+    margin-left: 15px;
 }
 
 
@@ -782,6 +788,7 @@ button.close:focus {
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 14px;
+    margin-top: 30px;
 }
 
 .footer a {
