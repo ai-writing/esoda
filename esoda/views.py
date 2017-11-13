@@ -6,7 +6,7 @@ import logging
 
 import time
 
-from .utils import notstar, papers_source_str, corpus_id2cids
+from .utils import notstar, papers_source_str, corpus_id2cids,convert_type2title
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
@@ -213,6 +213,7 @@ def get_collocations(clist, qt, i, dbs, cids):
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
+            'title' : convert_type2title(pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]))
             # 'usageList': [],
         })
 
