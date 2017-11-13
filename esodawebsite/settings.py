@@ -39,13 +39,13 @@ LOGOUT_REDIRECT_URL = '/'
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default='False', cast=bool)
 
 INTERNAL_IPS = ('127.0.0.1')
 
-ADMINS = config('ADMINS', default=(), cast=lambda s: [pair.split(',') for pair in s.strip().split(';')])
+ADMINS = config('ADMINS', default='', cast=lambda s: [pair.split(',') for pair in s.strip().split(';')])
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=('*',), cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv(post_process=tuple))
 
 SITE_ID = 1
 
@@ -175,7 +175,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {
-            'min_length': config('MIN_PASSWORD_LENGTH', default=1, cast=int),
+            'min_length': config('MIN_PASSWORD_LENGTH', default='1', cast=int),
         }
     },
     # {
