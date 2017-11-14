@@ -9,13 +9,13 @@ CORPUS = {"0": [{"i": "bnc", "d": "bnc"}], "1": [{"i": "conf/IEEEpact", "d": "db
 DEPS_VIEW = {u'(主谓) *': u' + 动词', u'* (主谓)': u'主语 + ', u'(动宾) *': u' + 宾语', u'* (动宾)': u'动词 + ',
 u'(修饰) *': u' + 被修饰词', u'* (修饰)': u'修饰 + ', u'(介词) *': u' + 介词', u'* (介词)': u'介词 + '}
 
-CORPUS2ID=[]
-for i in range(0,10):
+CORPUS2ID = []
+for i in range(0, 10):
     CORPUS2ID.append("")
     for j in CORPUS[str(i)]:
         CORPUS2ID.append(j)
 
-def isAdjacent(rr):
+def is_adjacent(rr):
     # judge if * is adjacent to dep
     r_list = rr.split()
     r_len = len(r_list)
