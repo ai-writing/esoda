@@ -108,7 +108,7 @@
                     {% if r.collocationList %}
                       {% for collocation in r.collocationList %}
                       <li role="presentation">
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab">{{ collocation.type }}</a>
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" type="{{ collocation.type }}">{{ collocation.title }}</a>
                       </li>
                       {% endfor %}
                     {% endif %}
@@ -285,7 +285,8 @@
         $("#CollocationTab0 li").removeClass('active');
         $(this).parent().addClass('disabled');
         var id = $(this).attr('href');
-        var type = $(this).html();
+        //var type = $(this).html();
+        var type = $(this).attr('type');
         var type0 = type.replace(/ \(.*\) /g , ' ');
         var i, dt;
         var ref = [];
