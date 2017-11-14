@@ -6,13 +6,14 @@ import logging
 
 import time
 
-from .utils import notstar, papers_source_str, corpus_id2cids
+from .utils import notstar, papers_source_str, corpus_id2cids, convert_type2title
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
-from authentication.forms import FIELD_NAME
+from authentication.views import FIELD_NAME
 from common.models import Comment
+from authentication.views import tree_first
 
 
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
@@ -21,12 +22,19 @@ DEFAULT_DBS = ['dblp']
 DEFAULT_CIDS = ['_all']
 logger = logging.getLogger(__name__)
 
-
 def get_cids(user, r=None):
     if user.is_authenticated:
         dbs, cids = corpus_id2cids(user.userprofile.getid())  # user.userprofile.getid() get a list
         # TODO: name = get_name(dbs, cids)
-        name = u'自选领域'
+        corpus_id = user.userprofile.getid()
+        name=u''
+        count=0
+        print tree_first
+        for i in tree_first:
+            if corpus_id[i]==1:
+                name = name +FIELD_NAME[count]+ u','
+            count+=1
+        name=name[0:-1]
     else:
         dbs = DEFAULT_DBS
         cids = DEFAULT_CIDS
@@ -213,6 +221,7 @@ def get_collocations(clist, qt, i, dbs, cids):
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
+            'title' : convert_type2title(pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]))
             # 'usageList': [],
         })
 

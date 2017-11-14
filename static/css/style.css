@@ -7,7 +7,7 @@ html {
 body {
     font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
-    margin-bottom: 0px;
+    margin-bottom: 150px;
 }
 
 a {
@@ -68,11 +68,11 @@ a {
 }
 
 .footer {
-    /*position: absolute;*/
+    position: absolute;
     bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
-    height: 0px;
+    height: 150px;
     background: white;
     color: #9b9b9b;
     font-size: 18px;
@@ -109,9 +109,8 @@ a {
     overflow: hidden;
 }
 .navbar-brand>img {
-    width: 255px;
-    margin-top: -100px;
-    margin-left: 15px;
+    width: 240px;
+    margin-top: -95px;
 }
 
 
@@ -962,7 +961,7 @@ button.close:focus {
 }
 
 .panel-default > .panel-heading {
-    background-color: #fff;
+    background-color: #fff;   
     padding: 10px 7px;
 }
 
@@ -1428,6 +1427,88 @@ button.close:focus {
     height: 40px;
     border-radius: 3px;
     background-color: #63b7e6;
+}
+.domain-block {
+    color: #9b9b9b;
+    border-radius: 4px;
+    background: white;
+}
+.domain-panel-heading a {
+    text-decoration: none;  
+}
+.domain-panel-heading a:hover {
+    color: #63B7E6;
+}
+.domain-nopadding {
+    padding: 0px;
+}
+.domain-border{
+    border-radius: 5px;
+    border: 2px solid #f5f5f9;
+}
+.domain-panel-body{
+    margin-bottom: 1px;
+}
+.domain-level-1 {
+    padding: 5px;
+    padding-bottom: 8px;
+    font-size: 14px;
+    text-align:right;
+}
+.domain-level-2 {
+    margin-top:-2px;
+    margin-right: 20px;
+    min-height: 32px;
+    padding:5px;
+    border:4px;
+    border-width: 4px;
+    font-family: PingFangSC-Regular;
+}
+.domain-expand {
+    float: right;
+    padding:5px;
+    color: #63B7E6;
+}
+.domain-expand:hover{
+    cursor:pointer;
+}
+.domain-expand span{
+    margin: 0px;
+}
+.domain-checkbox input {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    border-radius: 80%;
+    box-shadow: 0px 1px 0 0 rgba(0, 0, 0, .2);
+    background-image: -webkit-radial-gradient( hsla(200,100%,90%,1) 0%, hsla(200,100%,70%,1) 15%, hsla(200,100%,60%,.3) 28%, hsla(200,100%,30%,0) 70% );
+    background-repeat: no-repeat;
+}
+.domain-checkbox input:checked {
+    -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
+    -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
+    background-position: 0 0;
+}
+.domain-checkbox input:active {
+    -webkit-transform: scale(1.5);
+    -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
+}
+.domain-checkbox input,
+.domain-checkbox input:active {
+    background-position: 0 14px;
+}
+.domain-item {
+    padding-left: 10px;
+    padding-bottom:10px;
+    margin-bottom:-5px;
+    width:100px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.domain-item span{
+    padding-left: 3px;
 }
 .example-image {
     margin-left: auto;
