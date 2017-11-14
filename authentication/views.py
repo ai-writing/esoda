@@ -10,38 +10,44 @@ from esoda.utils import CORPUS
 # Create your views here.
 
 FIELD_NAME = [u'BNC',u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
-              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合', u'全部']
+              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合', u'doaj',u'arxiv']
 # Views for profile urls
 @login_required
 def domain_view(request):
     user = User.objects.get(id=request.user.pk)
     corpus_id = user.userprofile.getid()
     if request.method == 'POST':
-        cid = int(request.POST['id'])      
-        result=1-corpus_id[cid] # need to update fid & cids
-        corpus_id[cid]=result
-        try:
-            index=tree_first.index(cid)
-            children=tree_second[index]
-            for i in children:
-                corpus_id[i]=result
-        except:
-            pass
-        user.userprofile.setid(corpus_id) 
+        cids=request.POST.getlist('ids')
+        corpus_id=[0]*1000
+        for i in cids:
+            corpus_id[int(i)]=1
+        user.userprofile.setid(corpus_id)
         user.userprofile.save()
-        # messages.success(request, u'领域更新成功')
-            # return redirect(reverse('field_select'))
-    return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','tree': tree})
+        messages.success(request, u'领域更新成功')
+    node_tree=tree(corpus_id)
+    return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
 
-def changed_child(request):
-    cid = int(request.GET['id'])  
-    try:
-        index=tree_first.index(cid)
-        children=tree_second[index]
-    except:
-        children=[]
-    return JsonResponse(children, safe=False)
+def search(request):
+    result=[]
+    expand=[]
+    big=[]
+    target=request.GET['target']
+    if target=="":
+        return JsonResponse({"expand":expand,"result":result,"big":big}, safe=False)
+    user = User.objects.get(id=request.user.pk)
+    corpus_id = user.userprofile.getid()
+    node_tree=tree(corpus_id)
+    for k in node_tree:
+        for i in k.nodes:
+            for j in i["nodes"]:
+                if target.lower() in j["text"].lower():
+                    result.append(j["id"])
+                    if not i["id"] in expand:
+                        expand.append(i["id"])
+                    if not k.id in big:
+                        big.append(k.id)
+    return JsonResponse({"expand":expand,"result":result,"big":big}, safe=False)
 
 def personal_view(request):
     info = {
@@ -69,36 +75,68 @@ def favorites_view(request):
 
 
 tree_second=[]
-tree_first=[]
-
+tree_first=[0, 2, 51, 74, 99, 145, 179, 208, 237, 280, 299, 321, 330]
+field=["英国国家语料库(BNC)","计算机科学(DBLP)","DOAJ","Arxiv"]
+field_list=[[],[u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
+              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合'],[u'doaj'],[u'arxiv']]
 def get_dept_tree(corpus_id):
+    tree_first=[]
     display_tree = []
     c_id=0;
-    for i in range(0,11):
-        node = TreeNode()
-        node.id = c_id
-        node.text = FIELD_NAME[i]
-        tree_first.append(c_id)
-        c_id+=1
-        children = CORPUS[str(i)]
-        tree_second_lef=[]
-        for i in children:
-            node1 = TreeNode()
-            node1.id = c_id
-            node1.text = i['i']
-            tree_second_lef.append(c_id);
+    a_id=0;
+    for k in range(len(field)):
+        node0=TreeNode()
+        node0.id=k
+        node0.text=field[k]
+        field_tree=[]
+        node0.nodes=field_tree
+        display_tree.append(node0)
+        if k!=0:
+            for i in range(len(field_list[k])):
+                node = TreeNode()
+                node.id = c_id
+                node.text = field_list[k][i]
+                tree_first.append(c_id)
+                c_id+=1
+                children = CORPUS[str(a_id)]
+                a_id+=1
+                tree_second_lef=[]
+                for i in children:
+                    node1 = TreeNode()
+                    node1.id = c_id
+                    temp=i['i'].replace('conf/','')
+                    temp=temp.replace('journals/','')
+                    node1.text = temp
+                    tree_second_lef.append(c_id)
+                    c_id+=1
+                    node.nodes.append(node1.to_dict(corpus_id[node1.id]))
+                tree_second.append(tree_second_lef)
+                field_tree.append(node.to_dict(corpus_id[node.id]))
+        else:       
+            node0.level=2
+            node = TreeNode()
+            node.id = c_id
+            node.text = ""
+            tree_first.append(c_id)
             c_id+=1
-            node1.nodes = []
-            node.nodes.append(node1.to_dict(corpus_id[node1.id]))
-        tree_second.append(tree_second_lef)
-        display_tree.append(node.to_dict(corpus_id[node.id]))
+            children = CORPUS[str(a_id)]
+            a_id+=1
+            tree_second_lef=[]
+            for i in children:
+                node1 = TreeNode()
+                node1.id = c_id
+                node1.text = i['i']
+                tree_second_lef.append(c_id)
+                c_id+=1
+                node.nodes.append(node1.to_dict(corpus_id[node1.id]))
+            tree_second.append(tree_second_lef)
+            field_tree.append(node.to_dict(corpus_id[node.id]))
+    # print tree_first
     return display_tree
 
-def tree(request):
-    user = User.objects.get(id=request.user.pk)
-    corpus_id = user.userprofile.getid()
+def tree(corpus_id):
     tree = get_dept_tree(corpus_id)
-    return JsonResponse(tree, safe=False)
+    return tree
 
 class TreeNode():
     def __init__(self):
@@ -108,6 +146,7 @@ class TreeNode():
              'checked': False,
         }
         self.nodes = []
+        self.level=3
     def to_dict(self,checked):
         if checked==0:
             check=False
@@ -116,7 +155,7 @@ class TreeNode():
         temp={
             'id': self.id,
             'text': self.text,
-            'state': {'checked': checked, 'expanded': False}
+            'state': {'checked': checked}
         }
         if not len(self.nodes)==0:
             temp['nodes']=self.nodes
