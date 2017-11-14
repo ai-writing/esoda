@@ -6,7 +6,7 @@ import logging
 
 import time
 
-from .utils import notstar, papers_source_str, corpus_id2cids,convert_type2title
+from .utils import notstar, papers_source_str, corpus_id2cids, convert_type2title
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
