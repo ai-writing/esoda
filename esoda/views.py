@@ -55,7 +55,7 @@ def esoda_view(request):
     # With query - render result.html
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
-    q= refine_query(q)
+    q = refine_query(q)
     qt, ref = lemmatize(q)
 
     r = {
