@@ -21,43 +21,48 @@
     {% csrf_token %}
     <div class="panel-group" id="accordion">
     {% for k in corpus %}
-      <div class="panel-heading domain-panel-heading domain-block" >
-        <h4 class="panel-title">
+      <div class="panel-heading domain-panel-heading domain-block domain-border" >
+        <h4 class="panel-title domain-checkbox domain-level-1">
+          <input type="checkbox" value="{{k.id}}" id="check{{k.id}}" name="ids" onclick="aa({{k.id}})" {% if k.state.checked %} checked="checked" {% endif %} >
           <a data-toggle="collapse" data-parent="#accordion" 
              href="#collapse{{k.id}}" id="collapse_head{{k.id}}">
             {{k.text}}
           </a>
         </h4>
       </div>
-      <div id="collapse{{k.id}}" class="panel-collapse collapse in">
+      <div id="collapse{{k.id}}" class="panel-collapse collapse">
         <div class="panel-body domain-nopadding domain-panel-body">
           <table>
             <tbody>
             {% for i in k.nodes %}
               <tr class="row">
                 {%ifequal k.level 3 %}
-                <td class="col-xs-4 col-sm-2 col-md-2 domain-level-1 domain-block domain-checkbox domain-border">
+                <td class="col-xs-4 col-sm-2 col-md-2 domain-level-2 domain-block domain-checkbox domain-border">
                   {{i.text}}
-                  <input type="checkbox" value="{{i.id}}" id="check{{i.id}}" name="ids" onclick="aa({{i.id}})" {% if i.state.checked %} checked="checked" {% endif %} >
+                  <input type="checkbox" value="{{i.id}}" id="check{{i.id}}" name="ids" class="checkchild{{k.id}}" onclick="aa({{i.id}});cc({{k.id}})" {% if i.state.checked %} checked="checked" {% endif %} >
                 </td>
                 <td class="col-xs-8 col-sm-10 col-md-10 domain-block domain-nopadding domain-border">
-                  <div class="domain-expand" onclick="bb({{i.id}})">
-                    <div id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
-                  </div>
-                  <div id="field{{i.id}}" class="domain-level-2" style="max-height:30px; overflow:hidden;">
+                  {% if i.state.expand %}  
+                    <div class="domain-expand" onclick="bb({{i.id}})">
+                      <div id="expand{{i.id}}"><span class="glyphicon glyphicon-plus" ></span></div>
+                    </div>
+                  {% endif %}
+                  <div id="field{{i.id}}" class="domain-level-3" style="max-height:30px; overflow:hidden;">
                     {% for j in i.nodes %}
-                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}}" onclick="cc({{i.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
                     {% endfor %}
                   </div>
                 </td>
                 {% else %}
                 <td class="col-xs-12 col-sm-12 col-md-12 domain-block domain-nopadding domain-border">
-                  <div class="domain-expand" onclick="bb({{i.id}})">
-                    <div id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
-                  </div>
-                  <div id="field{{i.id}}" class="domain-level-2" style="max-height:30px; overflow:hidden;">
+                  {% if i.state.expand %}  
+                    <div class="domain-expand" onclick="bb({{i.id}})">
+                      <div id="expand{{i.id}}"><span class="glyphicon glyphicon-plus" ></span></div>
+                    </div>
+                  {% endif %}
+                  <div id="field{{i.id}}" class="domain-level-3 domain-level-23" style="max-height:30px; overflow:hidden;">
                     {% for j in i.nodes %}
-                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}}" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
                     {% endfor %}
                   </div>
                 </td>
@@ -88,12 +93,12 @@
     }
   }
   function bb(id){
-    if(document.getElementById("expand"+id).innerHTML=="<span class=\"glyphicon glyphicon-chevron-down\"></span>"){
+    if(document.getElementById("expand"+id).innerHTML=="<span class=\"glyphicon glyphicon-plus\"></span>"){
       document.getElementById("field"+id).style="max-height:500px; overflow:hidden;"
-      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
+      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-minus\"></span>"
     }else{
       document.getElementById("field"+id).style="max-height:30px; overflow:hidden;"
-      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
+      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-plus\"></span>"
     }
   }
   function cc(id) {
@@ -101,7 +106,9 @@
     var childStatus = false;
     for (var i = 0; i < items.length; ++i) {
         childStatus = (childStatus || items[i].checked);
+        console.log(items[i].checked);
     }
+    // alert(childStatus);
     document.getElementById("check"+id).checked = childStatus;
   }
   var search = function(e) {
@@ -109,27 +116,31 @@
     $.getJSON("{% url 'authentication:search' %}", {'target':pattern }, function(data){
       for(var i=0;i<last_expand.length;i++){ 
         document.getElementById("field"+last_expand[i]).style="max-height:25px; overflow:hidden;"
-        document.getElementById("expand"+last_expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
+        document.getElementById("expand"+last_expand[i]).innerHTML="<span class=\"glyphicon glyphicon-plus\"></span>"
       } 
       for(var i=0;i<last_result.length;i++){
         document.getElementById("checktext"+last_result[i]).style.color="#9b9b9b";
       }
       for(var i=0;i<last_big.length;i++){
         document.getElementById("collapse_head"+last_big[i]).style.color="#9b9b9b";
+        if($.inArray(last_big[i], data.big)==-1){
+          $("#collapse"+last_big[i]).collapse('hide');
+        }
       }
-      last_result=data.result;
-      last_expand=data.expand;
-      last_big=data.big;
       for(var i=0;i<data.expand.length;i++){ 
         document.getElementById("field"+data.expand[i]).style="max-height:500px; overflow:hidden;"
-        document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
+        document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-minus\"></span>"
       } 
       for(var i=0;i<data.result.length;i++){ 
         document.getElementById("checktext"+data.result[i]).style.color="red";
       }
       for(var i=0;i<data.big.length;i++){ 
         document.getElementById("collapse_head"+data.big[i]).style.color="#63B7E6";
+        $("#collapse"+data.big[i]).collapse('show');
       }
+      last_result=data.result;
+      last_expand=data.expand;
+      last_big=data.big;
     });
   }
 
@@ -139,12 +150,16 @@
   });
 </script>
   {% if messages %}
-  <script>
-  $(document).ready(function () {
-  {% for message in messages %}
-    toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
-  {% endfor %}
-  });
-  </script>
-{% endif %}
+    <script>
+    $(document).ready(function () {
+    {% for message in messages %}
+      {% ifequal message.tags "success"%}
+        toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
+      {% else %}
+        toastr.warning('{{ message }}');
+      {% endifequal %}
+    {% endfor %}
+    });
+    </script>
+  {% endif %}
 {% endblock %}
