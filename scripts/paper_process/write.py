@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
-import time
 import os
-
-from pymongo import UpdateOne,MongoClient
-
-dbc= MongoClient('166.111.139.42')
-db=dbc.admin
-db.authenticate('root', 'root')
-db = dbc.dblp
 
 def p2t_write(pdf_dir):
 	f=open('p2t.bat','w')

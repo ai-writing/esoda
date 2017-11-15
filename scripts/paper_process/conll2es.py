@@ -12,9 +12,12 @@ ADJ_TYPES = ['JJ', 'JJR', 'JJS']
 NOUN_TYPES = ['NN', 'NNP', 'NNPS', 'NNS']
 # COLLOCATIONS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 
-dbc= MongoClient('166.111.139.42')
+mongo_ip = ''
+dbc= MongoClient(mongo_ip)
 db = dbc.admin
-db.authenticate('root', 'root')
+user = ''
+password = ''
+db.authenticate(user, password)
 poss = list(dbc.common.poss.find())
 pt2i = dict([(p['pt'], p['_id']) for p in poss])
 info=json.load(open('info.json'))

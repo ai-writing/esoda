@@ -2,9 +2,12 @@
 import os,sys
 from pymongo import UpdateOne,MongoClient
 
-dbc= MongoClient('166.111.139.42')
+mongo_ip = ''
+dbc= MongoClient(mongo_ip)
 db=dbc.admin
-db.authenticate('root', 'root')
+user = ''
+password = ''
+db.authenticate(user, password)
 db = dbc.common
 
 res=set([s['t'] for s in db.tokens.find()])
