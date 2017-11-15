@@ -7,10 +7,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
 import json
 from esoda.utils import CORPUS
+from esoda.utils import SECOND_LEVEL_FIELD
+from esoda.utils import FIELD_NAME
 # Create your views here.
 
-FIELD_NAME = [u'BNC',u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
-              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合', u'doaj',u'arxiv']
 # Views for profile urls
 @login_required
 def domain_view(request):
@@ -19,11 +19,16 @@ def domain_view(request):
     if request.method == 'POST':
         cids=request.POST.getlist('ids')
         corpus_id=[0]*1000
+        empty=True
         for i in cids:
             corpus_id[int(i)]=1
-        user.userprofile.setid(corpus_id)
-        user.userprofile.save()
-        messages.success(request, u'领域更新成功')
+            empty=False
+        if empty==True:
+            messages.error(request, u'选中领域为空，领域更新失败')
+        else:
+            user.userprofile.setid(corpus_id)
+            user.userprofile.save()
+            messages.success(request, u'领域更新成功')
     node_tree=tree(corpus_id)
     return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
@@ -39,14 +44,16 @@ def search(request):
     corpus_id = user.userprofile.getid()
     node_tree=tree(corpus_id)
     for k in node_tree:
-        for i in k.nodes:
+        for i in k["nodes"]:
             for j in i["nodes"]:
                 if target.lower() in j["text"].lower():
                     result.append(j["id"])
-                    if not i["id"] in expand:
-                        expand.append(i["id"])
-                    if not k.id in big:
-                        big.append(k.id)
+                    if k["level"]==3:
+                        if not i["id"] in expand:
+                            expand.append(i["id"])
+                    if not k["id"] in big:
+                        big.append(k["id"])
+    print result
     return JsonResponse({"expand":expand,"result":result,"big":big}, safe=False)
 
 def personal_view(request):
@@ -74,63 +81,52 @@ def favorites_view(request):
     return render(request, 'profile/favorites.html', info)
 
 
-tree_second=[]
-tree_first=[0, 2, 51, 74, 99, 145, 179, 208, 237, 280, 299, 321, 330]
-field=["英国国家语料库(BNC)","计算机科学(DBLP)","DOAJ","Arxiv"]
-field_list=[[],[u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
-              u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合'],[u'doaj'],[u'arxiv']]
+tree_first=[0, 3, 323, 326, 329, 332, 335, 338, 342, 346, 349, 352]
+
 def get_dept_tree(corpus_id):
     tree_first=[]
     display_tree = []
     c_id=0;
     a_id=0;
-    for k in range(len(field)):
+    for k in range(len(FIELD_NAME)):
         node0=TreeNode()
-        node0.id=k
-        node0.text=field[k]
+        node0.id=c_id
+        tree_first.append(c_id)
+        c_id+=1
+        node0.text=FIELD_NAME[k]
         field_tree=[]
-        node0.nodes=field_tree
-        display_tree.append(node0)
-        if k!=0:
-            for i in range(len(field_list[k])):
+        if k==1:
+            node0.level=3
+            for i in range(len(SECOND_LEVEL_FIELD[k])):
                 node = TreeNode()
                 node.id = c_id
-                node.text = field_list[k][i]
-                tree_first.append(c_id)
+                node.text = SECOND_LEVEL_FIELD[k][i]
                 c_id+=1
                 children = CORPUS[str(a_id)]
                 a_id+=1
-                tree_second_lef=[]
                 for i in children:
                     node1 = TreeNode()
                     node1.id = c_id
-                    temp=i['i'].replace('conf/','')
-                    temp=temp.replace('journals/','')
-                    node1.text = temp
-                    tree_second_lef.append(c_id)
+                    node1.text = i['n']
                     c_id+=1
                     node.nodes.append(node1.to_dict(corpus_id[node1.id]))
-                tree_second.append(tree_second_lef)
-                field_tree.append(node.to_dict(corpus_id[node.id]))
+                field_tree.append(node.to_dict(corpus_id[node.id],(len(node.nodes)>5)))
         else:       
-            node0.level=2
             node = TreeNode()
             node.id = c_id
-            node.text = ""
-            tree_first.append(c_id)
+            node.text = SECOND_LEVEL_FIELD[k][0]
             c_id+=1
             children = CORPUS[str(a_id)]
             a_id+=1
-            tree_second_lef=[]
             for i in children:
                 node1 = TreeNode()
                 node1.id = c_id
-                node1.text = i['i']
-                tree_second_lef.append(c_id)
+                node1.text = i['n']
                 c_id+=1
                 node.nodes.append(node1.to_dict(corpus_id[node1.id]))
-            tree_second.append(tree_second_lef)
             field_tree.append(node.to_dict(corpus_id[node.id]))
+        node0.nodes=field_tree
+        display_tree.append(node0.to_dict(corpus_id[node0.id]))
     # print tree_first
     return display_tree
 
@@ -146,8 +142,8 @@ class TreeNode():
              'checked': False,
         }
         self.nodes = []
-        self.level=3
-    def to_dict(self,checked):
+        self.level=2
+    def to_dict(self,checked,expand=False):
         if checked==0:
             check=False
         else:
@@ -155,7 +151,8 @@ class TreeNode():
         temp={
             'id': self.id,
             'text': self.text,
-            'state': {'checked': checked}
+            'state': {'checked': checked, 'expand':expand},
+            'level': self.level
         }
         if not len(self.nodes)==0:
             temp['nodes']=self.nodes

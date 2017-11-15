@@ -11,7 +11,7 @@ from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
-from authentication.views import FIELD_NAME
+from .utils import FIELD_NAME
 from common.models import Comment
 from authentication.views import tree_first
 
@@ -32,9 +32,9 @@ def get_cids(user, r=None):
         print tree_first
         for i in tree_first:
             if corpus_id[i]==1:
-                name = name +FIELD_NAME[count]+ u','
+                name = name +FIELD_NAME[count]+ u', '
             count+=1
-        name=name[0:-1]
+        name=name[0:-2]
     else:
         dbs = DEFAULT_DBS
         cids = DEFAULT_CIDS
