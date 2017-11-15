@@ -222,6 +222,10 @@ a {
     height: 40px;
 }
 
+.esoda-btn-link {
+    color: white;
+}
+
 .btn-message {
     margin-top: 15px;
     border-radius: 5px;
