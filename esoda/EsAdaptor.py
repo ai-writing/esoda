@@ -246,7 +246,7 @@ class EsAdaptor():
         return ret
 
     @staticmethod
-    def group(t, d, dbs, cids, sp=10):
+    def group(t, d, dbs, cids, sp=39):
         if not d or len(d) > 1:
             return {}
 

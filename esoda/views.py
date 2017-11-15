@@ -6,7 +6,7 @@ import logging
 
 import time
 
-from .utils import notstar, papers_source_str, corpus_id2cids, convert_type2title
+from .utils import notstar, papers_source_str, corpus_id2cids, convert_type2title, refine_query
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
@@ -63,6 +63,7 @@ def esoda_view(request):
     # With query - render result.html
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
+    q = refine_query(q)
     qt, ref = lemmatize(q)
 
     r = {
