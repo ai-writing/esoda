@@ -1326,6 +1326,9 @@ button.close:focus {
 .toast-success {
     background-color: #63b7e6;
 }
+.toast-warning {
+    background-color: "red";
+}
 .toast-success a {
     text-decoration: underline;
 }
@@ -1449,24 +1452,31 @@ button.close:focus {
 .domain-panel-body{
     margin-bottom: 1px;
 }
-.domain-level-1 {
-    padding: 5px;
-    padding-bottom: 8px;
-    font-size: 14px;
-    text-align:right;
+.domain-level-1 a{
+    padding-left: 8px;
 }
 .domain-level-2 {
+    padding: 5px;
+    padding-bottom: 10px;
+    text-align:right;
+    font-weight: 600;
+    font-size: 14px
+}
+.domain-level-3 {
     margin-top:-2px;
     margin-right: 20px;
     min-height: 32px;
     padding:5px;
     border:4px;
     border-width: 4px;
-    font-family: PingFangSC-Regular;
+    color:#ABABAB;
+}
+.domain-level-23 {
+    color:#9b9b9b;
 }
 .domain-expand {
     float: right;
-    padding:5px;
+    padding:8px;
     color: #63B7E6;
 }
 .domain-expand:hover{
@@ -1480,8 +1490,9 @@ button.close:focus {
     width: 14px;
     height: 14px;
     cursor: pointer;
+    /*border: 2px solid #C4C4C4;*/
     border-radius: 80%;
-    box-shadow: 0px 1px 0 0 rgba(0, 0, 0, .2);
+    box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, .2);
     background-image: -webkit-radial-gradient( hsla(200,100%,90%,1) 0%, hsla(200,100%,70%,1) 15%, hsla(200,100%,60%,.3) 28%, hsla(200,100%,30%,0) 70% );
     background-repeat: no-repeat;
 }
@@ -1508,7 +1519,7 @@ button.close:focus {
     white-space:nowrap;
 }
 .domain-item span{
-    padding-left: 3px;
+    padding-left: 8px;
 }
 .example-image {
     margin-left: auto;
