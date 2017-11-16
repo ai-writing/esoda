@@ -33,7 +33,6 @@ $(function () {
   });
 
     $('#btn-read').click(function() {
-        console.log('test');
         $('#feedback').show();
         $('#btn-read').hide();
         $('#btn-unread').show();
