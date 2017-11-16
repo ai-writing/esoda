@@ -35,10 +35,10 @@
          <!--  <br><br> -->
           <div class="esoda-tips">
             搜搭示范：
-            <button type="button" class="btn-link esoda-btn-link example-btn-link"><span style="color: #ffffff">同义表达</span></button>
-            <button type="button" class="btn-link esoda-btn-link example-btn-link"><span style="color: #ffffff">不同搭配</span></button>
-            <button type="button" class="btn-link esoda-btn-link example-btn-link"><span style="color: #ffffff">中英混搜</span></button>
-            <button type="button" class="btn-link esoda-btn-link example-btn-link"><span style="color: #ffffff">短语查找</span></button>
+            <button type="button" class="btn-link example-btn-link"><span style="color: #ffffff">同义表达</span></button>
+            <button type="button" class="btn-link example-btn-link"><span style="color: #ffffff">不同搭配</span></button>
+            <button type="button" class="btn-link example-btn-link"><span style="color: #ffffff">中英混搜</span></button>
+            <button type="button" class="btn-link example-btn-link"><span style="color: #ffffff">短语查找</span></button>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@
   </div>
 
   <!--TODO: fix the displaying problem in small screens-->
-  <div class="back-introduction section-blue">
+  <div class="back-introduction">
     <div class="container container-usage">
       <div class="row hidden-xs">
         <div class="col-xs-6 col-sm-3 col-introduction">
@@ -129,7 +129,35 @@
     </div>
   </div>
 
-  <div class="back-feedback">
+  <div class="back-message section-blue">
+    <div class="container container-message">
+      <div class="row">
+        <div class="col-xs-2 col-sm-1">
+          <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
+        </div>
+        <div class="col-xs-6">
+          为我们的工作点赞<br><br>留言帮助我们改进易搜搭
+        </div>
+        <div class="col-xs-6 col-message-right hidden">
+          <span id="CountOfFavorite">{{ count_of_favorite }}</span>
+          &nbsp;&nbsp;
+          <a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>
+        </div>
+      </div>
+      <form id="MsgForm" class="message-content" method="post" action="{% url 'common:comment' %}">
+        {% csrf_token %}
+        <div>
+          <textarea form="MsgForm" name="message" class="message-box" id="UsrMsgBox"></textarea>
+        </div>
+        <button type="submit" id="MessageBtn" class="btn btn-message col-btn">留言</button>
+      </form>
+      <button id="btn-read" class="btn">查看留言</button>
+      <button id="btn-unread" class="btn">收起留言</button>
+    </div>
+    <br><br>
+  </div>
+
+  <div class="back-feedback" id="feedback">
     <div class="container">
       <div>
         <ul class="nav nav-pills nav-pills-feedback" id="FeedbackTab" role="tablist">
@@ -168,30 +196,6 @@
     </div>
   </div>
 
-  <div class="back-message section-blue">
-    <div class="container container-message">
-      <div class="row">
-        <div class="col-xs-2 col-sm-1">
-          <img src="{% static 'img/notepad_L.svg' %}" class="message-notepad">
-        </div>
-        <div class="col-xs-6">
-          为我们的工作点赞<br><br>留言帮助我们改进易搜搭
-        </div>
-        <div class="col-xs-6 col-message-right hidden">
-          <span id="CountOfFavorite">{{ count_of_favorite }}</span>
-          &nbsp;&nbsp;
-          <a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>
-        </div>
-      </div>
-      <form id="MsgForm" class="message-content" method="post" action="{% url 'common:comment' %}">
-        {% csrf_token %}
-        <div>
-          <textarea form="MsgForm" name="message" class="message-box" id="UsrMsgBox"></textarea>
-        </div>
-        <button type="submit" id="MessageBtn" class="btn btn-message col-btn">留言</button>
-      </form>
-    </div>
-  </div>
 {% endblock content %}
 
 {% block script %}
