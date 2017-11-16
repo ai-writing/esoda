@@ -1458,6 +1458,7 @@ button.close:focus {
 }
 .domain-level-1 a{
     padding-left: 8px;
+    font-weight: 600;
 }
 .domain-level-2 {
     padding: 5px;
@@ -1477,6 +1478,7 @@ button.close:focus {
 }
 .domain-level-23 {
     color:#9b9b9b;
+    padding-left:20px;
 }
 .domain-expand {
     float: right;
