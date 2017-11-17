@@ -1439,9 +1439,6 @@ button.close:focus {
 .domain-panel-heading a {
     text-decoration: none; 
 }
-.domain-panel-heading a:hover {
-    color: #63B7E6;
-}
 .domain-nopadding {
     padding: 0px;
 }
