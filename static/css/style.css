@@ -1437,7 +1437,7 @@ button.close:focus {
     background: white;
 }
 .domain-panel-heading a {
-    text-decoration: none;  
+    text-decoration: none; 
 }
 .domain-panel-heading a:hover {
     color: #63B7E6;
@@ -1480,6 +1480,14 @@ button.close:focus {
     float: right;
     padding:8px;
     color: #63B7E6;
+}
+.domain-expand-1 {
+    float: right;
+    color: #63B7E6;
+    margin-top: -4px;
+}
+.domain-expand-1 span {
+    font-size:12px;
 }
 .domain-expand:hover{
     cursor:pointer;
