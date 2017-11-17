@@ -25,10 +25,18 @@
         <h4 class="panel-title domain-checkbox domain-level-1">
           <input type="checkbox" value="{{k.id}}" id="check{{k.id}}" name="ids" onclick="aa({{k.id}})" {% if k.state.checked %} checked="checked" {% endif %} >
           <a data-toggle="collapse" data-parent="#accordion" 
-             href="#collapse{{k.id}}" id="collapse_head{{k.id}}">
+             href="#collapse{{k.id}}">
             {{k.text}}
           </a>
-        </h4>
+          <div class="domain-expand-1">
+            <div>
+              <a data-toggle="collapse" data-parent="#accordion" 
+             href="#collapse{{k.id}}" id="expand{{k.id}}">
+                <span class="glyphicon glyphicon-chevron-down" ></span>
+              </a>
+            </div>
+          </div>
+        </h4>   
       </div>
       <div id="collapse{{k.id}}" class="panel-collapse collapse">
         <div class="panel-body domain-nopadding domain-panel-body">
@@ -44,7 +52,7 @@
                 <td class="col-xs-8 col-sm-10 col-md-10 domain-block domain-nopadding domain-border">
                   {% if i.state.expand %}  
                     <div class="domain-expand" onclick="bb({{i.id}})">
-                      <div id="expand{{i.id}}"><span class="glyphicon glyphicon-plus" ></span></div>
+                      <div id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
                     </div>
                   {% endif %}
                   <div id="field{{i.id}}" class="domain-level-3" style="max-height:30px; overflow:hidden;">
@@ -57,7 +65,7 @@
                 <td class="col-xs-12 col-sm-12 col-md-12 domain-block domain-nopadding domain-border">
                   {% if i.state.expand %}  
                     <div class="domain-expand" onclick="bb({{i.id}})">
-                      <div id="expand{{i.id}}"><span class="glyphicon glyphicon-plus" ></span></div>
+                      <div id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
                     </div>
                   {% endif %}
                   <div id="field{{i.id}}" class="domain-level-3 domain-level-23" style="max-height:30px; overflow:hidden;">
@@ -93,12 +101,12 @@
     }
   }
   function bb(id){
-    if(document.getElementById("expand"+id).innerHTML=="<span class=\"glyphicon glyphicon-plus\"></span>"){
+    if(document.getElementById("expand"+id).innerHTML=="<span class=\"glyphicon glyphicon-chevron-down\"></span>"){
       document.getElementById("field"+id).style="max-height:500px; overflow:hidden;"
-      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-minus\"></span>"
+      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
     }else{
       document.getElementById("field"+id).style="max-height:30px; overflow:hidden;"
-      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-plus\"></span>"
+      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
     }
   }
   function cc(id) {
@@ -115,27 +123,27 @@
     var pattern = $('#input-search').val();
     $.getJSON("{% url 'authentication:search' %}", {'target':pattern }, function(data){
       for(var i=0;i<last_expand.length;i++){ 
-        document.getElementById("field"+last_expand[i]).style="max-height:25px; overflow:hidden;"
-        document.getElementById("expand"+last_expand[i]).innerHTML="<span class=\"glyphicon glyphicon-plus\"></span>"
+        document.getElementById("field"+last_expand[i]).style="max-height:25px; overflow:hidden;";
+        document.getElementById("expand"+last_expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>";
       } 
       for(var i=0;i<last_result.length;i++){
         document.getElementById("checktext"+last_result[i]).style.color="#9b9b9b";
       }
       for(var i=0;i<last_big.length;i++){
-        document.getElementById("collapse_head"+last_big[i]).style.color="#9b9b9b";
+        // document.getElementById("collapse_head"+last_big[i]).style.color="#9b9b9b";
         if($.inArray(last_big[i], data.big)==-1){
           $("#collapse"+last_big[i]).collapse('hide');
         }
       }
       for(var i=0;i<data.expand.length;i++){ 
         document.getElementById("field"+data.expand[i]).style="max-height:500px; overflow:hidden;"
-        document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-minus\"></span>"
+        document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
       } 
       for(var i=0;i<data.result.length;i++){ 
-        document.getElementById("checktext"+data.result[i]).style.color="red";
+        document.getElementById("checktext"+data.result[i]).style.color="#63B7E6";
       }
       for(var i=0;i<data.big.length;i++){ 
-        document.getElementById("collapse_head"+data.big[i]).style.color="#63B7E6";
+        // document.getElementById("collapse_head"+data.big[i]).style.color="#63B7E6";
         $("#collapse"+data.big[i]).collapse('show');
       }
       last_result=data.result;
@@ -148,6 +156,30 @@
   $('#input-search').bind('keypress',function(event){
       if(event.keyCode == "13") search();
   });
+  $('#collapse0').on('show.bs.collapse', function () {document.getElementById("expand0").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse0').on('hide.bs.collapse', function () {document.getElementById("expand0").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse3').on('show.bs.collapse', function () {document.getElementById("expand3").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse3').on('hide.bs.collapse', function () {document.getElementById("expand3").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse323').on('show.bs.collapse', function () {document.getElementById("expand323").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse323').on('hide.bs.collapse', function () {document.getElementById("expand323").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse326').on('show.bs.collapse', function () {document.getElementById("expand326").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse326').on('hide.bs.collapse', function () {document.getElementById("expand326").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse329').on('show.bs.collapse', function () {document.getElementById("expand329").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse329').on('hide.bs.collapse', function () {document.getElementById("expand329").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse332').on('show.bs.collapse', function () {document.getElementById("expand332").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse332').on('hide.bs.collapse', function () {document.getElementById("expand332").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse335').on('show.bs.collapse', function () {document.getElementById("expand335").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse335').on('hide.bs.collapse', function () {document.getElementById("expand335").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse338').on('show.bs.collapse', function () {document.getElementById("expand338").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse338').on('hide.bs.collapse', function () {document.getElementById("expand338").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse342').on('show.bs.collapse', function () {document.getElementById("expand342").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse342').on('hide.bs.collapse', function () {document.getElementById("expand342").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse346').on('show.bs.collapse', function () {document.getElementById("expand346").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse346').on('hide.bs.collapse', function () {document.getElementById("expand346").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse349').on('show.bs.collapse', function () {document.getElementById("expand349").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse349').on('hide.bs.collapse', function () {document.getElementById("expand349").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
+  $('#collapse352').on('show.bs.collapse', function () {document.getElementById("expand352").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
+  $('#collapse352').on('hide.bs.collapse', function () {document.getElementById("expand352").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
 </script>
   {% if messages %}
     <script>
