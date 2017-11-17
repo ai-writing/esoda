@@ -3,8 +3,7 @@
 */
 
 $(function () {
-	'use strict';
-	
+    'use strict';
   $("#FeedbackTab a").click(function (e) {
     e.preventDefault();
     $(this).tab("show");
@@ -32,6 +31,18 @@ $(function () {
     $("#UserFeedback div:eq(" + curDisplay + ")").show();
     $("#UserFeedback div:eq(" + (curDisplay + 1) + ")").show();
   });
+
+    $('#btn-read').click(function() {
+        $('#feedback').show();
+        $('#btn-read').hide();
+        $('#btn-unread').show();
+      });
+
+    $('#btn-unread').click(function() {
+        $('#feedback').hide();
+        $('#btn-unread').hide();
+        $('#btn-read').show();
+      });
 
   $('#MsgForm').submit(function (e) {
     e.preventDefault();

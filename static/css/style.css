@@ -60,7 +60,8 @@ a {
 }
 
 #SearchBox{
-    height: 60px;
+    height: 50px;
+    font-size: 18px;
 }
 
 .section-blue {
@@ -148,7 +149,7 @@ a {
 }
 .esoda-brand-subtitle {
     color: #fff;
-    font-size: 20px;
+    font-size: 18px;
 }
 .esoda-tips {
     text-align: left;
@@ -214,6 +215,22 @@ a {
     color: #63B7E6;
 }
 
+#btn-read:hover, #btn-read:active,
+#btn-read:focus, #btn-read:active:focus {
+    background-color: #fff !important;
+    border: none;
+    border-left: 1px solid #63B7E6;
+    color: #63B7E6;
+}
+
+#btn-unread:hover, #btn-unread:active,
+#btn-unread:focus, #btn-unread:active:focus {
+    background-color: #fff !important;
+    border: none;
+    border-left: 1px solid #63B7E6;
+    color: #63B7E6;
+}
+
 .btn-search {
     color: #888;
     background-color: #fff;
@@ -222,7 +239,7 @@ a {
     height: 40px;
 }
 
-.esoda-btn-link {
+.esoda-tips .btn-link {
     color: white;
 }
 
@@ -231,6 +248,31 @@ a {
     border-radius: 5px;
     border: 1px solid #fff;
     font-size: 14px;
+}
+
+#btn-read {
+    margin-top: 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    font-size: 14px;
+    width: 84px;
+    height: 37px;
+    padding-top: 4px;
+    float: right;
+}
+
+#btn-unread {
+    margin-top: 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    font-size: 14px;
+    width: 84px;
+    height: 37px;
+    padding-top: 4px;
+    float: right;
+    display: none;
 }
 
 .menu-search {
@@ -445,11 +487,12 @@ button.close:focus {
     max-width: 623px;
 }
 #SearchForm .btn[type='submit'] {
-    height: 60px;
+    height: 50px;
     padding-top: 8px;
 }
 #SearchForm .btn[type='submit'] > span {
     vertical-align: middle;
+    font-size: 18px;
 }
 
 .glyphicon-search {
@@ -488,6 +531,10 @@ button.close:focus {
     border-color: #fff;
 }
 
+.footer-load {
+    padding-bottom: 30px;
+}
+
 #ResultSearchBar>.form-control:focus {
     box-shadow: none;
 }
@@ -511,7 +558,7 @@ button.close:focus {
 .container-message {
     padding-top: 40px;
     padding-bottom: 30px;
-    font-size: 16px;
+    font-size: 15px;
     color: #fff;
 }
 
@@ -557,12 +604,17 @@ button.close:focus {
 
 .back-introduction {
     height: 120px;
-    padding-top: 10px;
+    padding-top: 20px;
+    margin-left: 9px;
 }
 
 .back-feedback {
     border-top: 2px solid #979797;
     padding-top: 60px;
+}
+
+#feedback {
+    display: none;
 }
 
 .wechat-qr {
@@ -630,21 +682,24 @@ button.close:focus {
 }
 
 .col-introduction {
-    border: 1px solid #979797;
+/*    border: 5px solid #fff;
+    background: #63B7E6;*/
+    border: 3px solid #63B7E6;
     background: #fff;
     text-align: center;
     padding-top: 19px;
     padding-bottom: 19px;
+    margin-left: -3px;
 }
 
 .col-introduction > h3 {
     color: #000;
-    font-size: 23px;
+    font-size: 25px;
 }
 
 .col-introduction > p {
-    color: #9b9b9b;
-    font-size: 17px;
+    color: #616161;
+    font-size: 15px;
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
 }
@@ -660,7 +715,7 @@ button.close:focus {
 
 .col-feature-intro > h4 {
     margin-bottom: 20px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .col-feature-intro > p {
@@ -669,6 +724,7 @@ button.close:focus {
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 200;
     margin-top: 30px;
+    font-size: 13px;
 }
 
 .feedback-title {
@@ -680,7 +736,7 @@ button.close:focus {
 .usage-title {
     margin-bottom: 30px;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .usage-title-hr {
@@ -754,7 +810,7 @@ button.close:focus {
 }
 
 .caption-usage > h4 {
-    font-size: 19px;
+    font-size: 18px;
 }
 
 .caption-usage > p {
