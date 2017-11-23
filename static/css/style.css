@@ -1533,21 +1533,20 @@ button.close:focus {
 }
 .domain-block {
     color: #9b9b9b;
+    margin-top: -2px;
     border-radius: 4px;
     background: white;
 }
 .domain-panel-heading a {
     text-decoration: none;
 }
-.domain-nopadding {
+.panel-group .panel-heading+.panel-collapse > .domain-nopadding {
+    border-top: 0px;
     padding: 0px;
 }
 .domain-border{
     border-radius: 5px;
     border: 2px solid #f5f5f9;
-}
-.domain-panel-body{
-    margin-bottom: 1px;
 }
 .domain-level-1 a{
     padding-left: 8px;
@@ -1567,24 +1566,24 @@ button.close:focus {
     padding:5px;
     border:4px;
     border-width: 4px;
-    color:#ABABAB;
+    color:#B5B5B5;
 }
 .domain-level-23 {
-    color:#9b9b9b;
+    color:#969696;
     padding-left:20px;
 }
 .domain-expand {
     float: right;
-    padding:8px;
+    padding:8px 0px 8px 0px ;
     color: #63B7E6;
 }
 .domain-expand-1 {
     float: right;
-    color: #63B7E6;
     margin-top: -4px;
 }
 .domain-expand-1 span {
     font-size:12px;
+    color: #63B7E6;
 }
 .domain-expand:hover{
     cursor:pointer;
@@ -1617,7 +1616,6 @@ button.close:focus {
     background-position: 0 14px;
 }
 .domain-item {
-    padding-left: 10px;
     padding-bottom:10px;
     margin-bottom:-5px;
     width:100px;
