@@ -572,12 +572,12 @@ button.close:focus {
 
 .container-usage {
     color: #63B7E6;
-    margin-top: 45px;
+    margin-top: 80px;
 }
 
 .container-feature {
-    margin-top: 120px;
-    margin-bottom: 45px;
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 .container-message {
@@ -628,9 +628,19 @@ button.close:focus {
 }
 
 .back-introduction {
-    height: 120px;
-    padding-top: 20px;
-    margin-left: 9px;
+    height: 160px;
+    margin-top: 70px;
+    padding-top: 12px;
+    padding-left: 50px;
+    background-color: #E0E0E0;
+}
+
+.line {
+    border-right: 2px solid #9b9b9b;
+    height: 40px;
+    margin-top: 45px;
+    padding: 0;
+    position: absolute;
 }
 
 .back-feedback {
@@ -709,12 +719,13 @@ button.close:focus {
 .col-introduction {
 /*    border: 5px solid #fff;
     background: #63B7E6;*/
-    border: 3px solid #63B7E6;
-    background: #fff;
+    /*border: 3px solid #63B7E6;*/
     text-align: center;
+    margin: 0px;
     padding-top: 19px;
     padding-bottom: 19px;
-    margin-left: -3px;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
 .col-introduction > h3 {
@@ -977,6 +988,7 @@ button.close:focus {
     display: none;
     color: #9b9b9b;
     cursor: pointer;
+    margin-bottom: 15px;
 }
 
 .result-page {
