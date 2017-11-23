@@ -43,34 +43,36 @@ $(function () {
   //     }, 1000);
   //   }
   // });
+  
+  
+$( window ).scroll( function () {
+  if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
+    if (loading == 1 || loaded == 1 ) return;
+    if ($('#Loading').is(':visible')) return;
+    if ($('#ManualLoad').is(':visible')) return;
+    $("#ManualLoad").show();
+  }; 
+});
 
-    $( window ).scroll( function () {
-    if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
-      if (loading == 1 || loaded == 1 ) return;
-      if ($('#ManualLoad').is(':visible')) return;
-      
-      $("#ManualLoad").show();
-      $('#ManualLoad').click(function(e) {
-        var total = $("#ExampleNumber").html();
-        loading = 1;
-        $("#ManualLoad").hide();
-        $("#Loading").show();
-        setTimeout(function() {
-          $("#Loading").hide();
-          var i;
-          for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
-            $("#Example" + i).show();
-          }
-          loadCount++;
-          loading = 0;
-          if (i > total || loadCount >= 5) {
-            loaded = 1;
-            $("#ExampleEnd").show();
-            return;
-          }
-        }, 1000);
-      });
-    }
+$('#ManualLoad').click(function(e) {
+    var total = $("#ExampleNumber").html();
+    loading = 1;
+    $("#ManualLoad").hide();
+    $("#Loading").show();
+    setTimeout(function() {
+      $("#Loading").hide();
+      var i;
+      for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
+        $("#Example" + i).show();
+      }
+      loadCount++;
+      loading = 0;
+      if (i > total || loadCount >= 5) {
+        loaded = 1;
+        $("#ExampleEnd").show();
+        return;
+      }
+    }, 1000);
   });
 
   $(".back-to-top").click(function() {
