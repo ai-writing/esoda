@@ -163,8 +163,8 @@ a {
     text-align: center;
 }
 .esoda-brand-main {
-    width: 234px;
-    padding-bottom: 10px;
+    width: 270px;
+    padding-bottom: 0px;
 }
 .esoda-brand-hr {
     max-width: 200px;
@@ -213,8 +213,8 @@ a {
 }
 
 .jumbotron {
-    padding-top: 112px;
-    padding-bottom: 195px;
+    padding-top: 150px;
+    padding-bottom: 156px;
 }
 
 .btn {
@@ -1181,6 +1181,10 @@ button.close:focus {
     font-size: 10px;
 }
 
+.nav-tabs-collocation {
+    padding: 10px;
+}
+
 .nav-tabs-collocation>li>a {
     border: transparent;
 }
@@ -1201,19 +1205,18 @@ button.close:focus {
 #not-limited-btn {
     display: inline-block;
     padding-right: 0px;
-    padding-left: 10px;
+    padding-left: 15px;
 }
 
 .not-limited {
     display: inline-block;
 }
 
-#CollocationTab0> {
-    padding-right: 0px;
-}
-
 .usage-panel-content {
-    padding: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .usage-panel-content >a {
