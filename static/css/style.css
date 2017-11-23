@@ -988,7 +988,7 @@ button.close:focus {
     display: none;
     color: #9b9b9b;
     cursor: pointer;
-    margin-bottom: 15px;
+    padding-bottom: 20px;
 }
 
 .result-page {
