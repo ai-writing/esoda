@@ -1623,7 +1623,11 @@ button.close:focus {
     text-overflow:ellipsis;
     white-space:nowrap;
 }
-.domain-item span{
+.domain-item_span span{
+    padding-left: 4px;
+    font-weight: 400;
+}
+.domain-item_span1 span{
     padding-left: 8px;
 }
 .example-image {

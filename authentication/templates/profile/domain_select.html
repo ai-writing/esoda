@@ -57,7 +57,7 @@
                   {% endif %}
                   <div id="field{{i.id}}" class="domain-level-3" style="max-height:30px; overflow:hidden;">
                     {% for j in i.nodes %}
-                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                      <label class="domain-item domain-checkbox domain-item_span"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}>{% ifequal j.type "conf"%}<span class="glyphicon glyphicon-user" title="conference"></span>{%else%}<span class="glyphicon glyphicon-book" title="journal"></span>{% endifequal %}<span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
                     {% endfor %}
                   </div>
                 </td>
@@ -70,7 +70,7 @@
                   {% endif %}
                   <div id="field{{i.id}}" class="domain-level-3 domain-level-23" style="max-height:30px; overflow:hidden;">
                     {% for j in i.nodes %}
-                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                      <label class="domain-item domain-checkbox domain-item_span1"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
                     {% endfor %}
                   </div>
                 </td>

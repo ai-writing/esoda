@@ -109,6 +109,10 @@ def get_dept_tree(corpus_id):
                     node1.id = c_id
                     node1.text = i['n']
                     c_id+=1
+                    if 'conf' in i['i']:
+                        node1.type='conf'
+                    else:
+                        node1.type='jour'
                     node.nodes.append(node1.to_dict(corpus_id[node1.id]))
                 field_tree.append(node.to_dict(corpus_id[node.id],(len(node.nodes)>5)))
         else:       
@@ -143,6 +147,7 @@ class TreeNode():
         }
         self.nodes = []
         self.level=2
+        self.type=''
     def to_dict(self,checked,expand=False):
         if checked==0:
             check=False
@@ -152,7 +157,8 @@ class TreeNode():
             'id': self.id,
             'text': self.text,
             'state': {'checked': checked, 'expand':expand},
-            'level': self.level
+            'level': self.level,
+            'type':self.type
         }
         if not len(self.nodes)==0:
             temp['nodes']=self.nodes
