@@ -2,6 +2,12 @@
 {% load static %}
 {% load i18n %}
 
+{% block header %}
+{% with tab="profile" %}
+  {% include "esoda/navbar.html" %}
+{% endwith %}
+{% endblock %}
+
 {% block profile_content %}
 
 <div id="field">
