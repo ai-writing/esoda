@@ -79,11 +79,11 @@ a {
         font-size: 6px;
     }
     .navbar-brand {
-        margin-top: 40px;
-        width: 200px;
+        margin-top: 45px;
+        width: 170px;
     }
     .navbar-brand>img {
-        margin-top: -66px;
+        margin-top: -60px;
     }
 }
 
@@ -1680,7 +1680,7 @@ button.close:focus {
 }
 
 .result-index {
-    margin-top: 22px;
+    margin-top: 14px;
 }
 
 .result-search {
