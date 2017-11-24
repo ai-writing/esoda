@@ -97,23 +97,19 @@
                   </div>
                 </div>
                 <div id="CollapseColloc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                  <div class="row" style="margin-left: 10px;">
-                    <ul class="nav nav-tabs nav-tabs-collocation col-lg-2 col-md-2 col-sm-3 col-xs-3" id="CollocationTab0" role="tablist">
-                      <li role="presentation">
-                        <a href="#" id="not-limited-btn" role="tab">全部搭配</a>
-                        <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab">{{ q }}</a>
-                      </li>
-                    </ul>
-                    <ul class="nav nav-tabs nav-tabs-collocation col-lg-10 col-md-10 col-sm-9 col-xs-9" id="CollocationTab" role="tablist">
-                    {% if r.collocationList %}
-                      {% for collocation in r.collocationList %}
-                      <li role="presentation">
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      </li>
-                      {% endfor %}
-                    {% endif %}
-                    </ul>
-                  </div>
+                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist">
+                  {% if r.collocationList %}
+                    {% for collocation in r.collocationList %}
+                    <li role="presentation">
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                    </li>
+                    {% endfor %}
+                  {% endif %}
+                    <li role="presentation">
+                      <a href="#" id="not-limited-btn" role="tab">全部搭配</a>
+                      <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab">{{ q }}</a>
+                    </li>
+                  </ul>
                   <div id="CollocContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
                   {% if r.collocationList %}
@@ -306,6 +302,7 @@
         $('#SentenceResult').empty();
         $('#Loading').show();
         $('#ManualLoad').hide();
+        $("#ExampleEnd").hide();
         $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
           $(id + ' .colloc-result').mCustomScrollbar({

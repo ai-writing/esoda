@@ -14,7 +14,7 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 esoda-brand">
-          <img src="{% static 'img/logo_white.png' %}" class="esoda-brand-main">
+          <img src="{% static 'img/logo_white_Chinese.png' %}" class="esoda-brand-main">
           <hr class="esoda-brand-hr">
           <div class="esoda-brand-subtitle">
             <span>专业英文论文写作助手</span>
@@ -31,22 +31,21 @@
                 </button>
               </span>
             </div>
+            <div class="esoda-tips">
+              搜搭示范：
+              <button type="button" class="btn-link example-btn-link">同义表达</button>
+              <button type="button" class="btn-link example-btn-link">不同搭配</button>
+              <button type="button" class="btn-link example-btn-link">中英混搜</button>
+              <button type="button" class="btn-link example-btn-link">短语查找</button>
+            </div>
           </form>
-         <!--  <br><br> -->
-          <div class="esoda-tips">
-            搜搭示范：
-            <button type="button" class="btn-link example-btn-link">同义表达</button>
-            <button type="button" class="btn-link example-btn-link">不同搭配</button>
-            <button type="button" class="btn-link example-btn-link">中英混搜</button>
-            <button type="button" class="btn-link example-btn-link">短语查找</button>
-          </div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="container container-usage">
-    <div class="usage-title">点击预览易搜搭的神奇搜索</div>
+    <!-- <div class="usage-title">点击预览易搜搭的神奇搜索</div> -->
     {% with tab="index" %}
       {% include "esoda/guide_icon.html" %}
     {% endwith %}
@@ -55,23 +54,49 @@
 
   <!--TODO: fix the displaying problem in small screens-->
   <div class="back-introduction">
-    <div class="container container-usage">
-      <div class="row hidden-xs">
-        <div class="col-xs-6 col-sm-3 col-introduction">
-          <h3>149,000,000</h3>
-          <p>专业论文库</p>
+    <div class="row hidden-xs">
+        <div class="col-sm-3">
+          <div class="row">
+            <div class="col-sm-10 col-introduction">
+              <h3>149,000,000</h3>
+              <p>专业论文库</p>
+            </div>
+            <div class="col-sm-2">
+              <div class="line"></div>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-6 col-sm-3 col-introduction">
-          <h3>3,000+</h3>
-          <p>日均浏览量</p>
+        <div class="col-sm-3">
+           <div class="row">
+            <div class="col-sm-10 col-introduction">
+              <h3>3,000+</h3>
+              <p>日均浏览量</p>
+            </div>
+            <div class="col-sm-2">
+              <div class="line"></div>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-6 col-sm-3 col-introduction">
-          <h3>32+</h3>
-          <p>个人领域</p>
+        <div class="col-sm-3">
+          <div class="row">
+            <div class="col-sm-10 col-introduction">
+              <h3>32+</h3>
+              <p>个人领域</p>
+            </div>
+            <div class="col-sm-2">
+              <div class="line"></div>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-6 col-sm-3 col-introduction">
-          <h3>4+</h3>
-          <p>创新搜索方式</p>
+        <div class="col-sm-3">
+          <div class="row">
+            <div class="col-sm-10 col-introduction">
+              <h3>4+</h3>
+              <p>创新搜索方式</p>
+            </div>
+            <div class="col-sm-2">
+            </div>
+          </div>
         </div>
       </div>
     </div>

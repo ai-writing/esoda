@@ -2,6 +2,12 @@
 {% load static %}
 {% load i18n %}
 
+{% block header %}
+{% with tab="profile" %}
+  {% include "esoda/navbar.html" %}
+{% endwith %}
+{% endblock %}
+
 {% block profile_content %}
 
 <div id="field">
@@ -39,7 +45,7 @@
         </h4>   
       </div>
       <div id="collapse{{k.id}}" class="panel-collapse collapse">
-        <div class="panel-body domain-nopadding domain-panel-body">
+        <div class="panel-body domain-nopadding">
           <table>
             <tbody>
             {% for i in k.nodes %}
@@ -57,7 +63,7 @@
                   {% endif %}
                   <div id="field{{i.id}}" class="domain-level-3" style="max-height:30px; overflow:hidden;">
                     {% for j in i.nodes %}
-                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                      <label class="domain-item domain-checkbox domain-item_span"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}>{% ifequal j.type "conf"%}<span class="glyphicon glyphicon-paperclip" title="conference"></span>{%else%}<span class="glyphicon glyphicon-book" title="journal"></span>{% endifequal %}<span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
                     {% endfor %}
                   </div>
                 </td>
@@ -70,7 +76,7 @@
                   {% endif %}
                   <div id="field{{i.id}}" class="domain-level-3 domain-level-23" style="max-height:30px; overflow:hidden;">
                     {% for j in i.nodes %}
-                      <label class="domain-item domain-checkbox"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                      <label class="domain-item domain-checkbox domain-item_span1"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
                     {% endfor %}
                   </div>
                 </td>
@@ -140,7 +146,7 @@
         document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
       } 
       for(var i=0;i<data.result.length;i++){ 
-        document.getElementById("checktext"+data.result[i]).style.color="#63B7E6";
+        document.getElementById("checktext"+data.result[i]).style.color="red";
       }
       for(var i=0;i<data.big.length;i++){ 
         // document.getElementById("collapse_head"+data.big[i]).style.color="#63B7E6";
