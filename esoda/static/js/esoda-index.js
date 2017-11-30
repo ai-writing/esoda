@@ -9,7 +9,21 @@ $(function () {
     $(this).tab("show");
   });
 
-  $( "#SearchBox" ).val("");
+  $( "#SearchBox" ).val("英文写作新体验");
+
+  $("#SearchBox").each(function() {
+        var vdefault = this.value;
+        $(this).focus(function() {
+            if (this.value == vdefault) {
+                this.value = "";
+            }
+        });
+        $(this).blur(function() {
+            if (this.value == "") {
+                this.value = vdefault;
+            }
+        });
+    });
 
   var curDisplay = 0;
   $(".pager li .glyphicon-chevron-right").click(function (e) {
@@ -92,10 +106,10 @@ $(function () {
         // for campatibility with Chrome:
         scrollToTop(300, function () {
             $('#SearchBox').val('');
+            $('#SearchBox').focus();
             (function addChar() {
                 if (q) {
                     $('#SearchBox').val($('#SearchBox').val() + q[0]);
-                    // console.log(q[0]);
                     q = q.slice(1);
                     setTimeout(addChar, 80);
                 }

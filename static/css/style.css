@@ -30,7 +30,7 @@ a {
         margin-top: -70px;
     }
     .input-group-lg>.input-group-btn>.btn {
-        width: 144px;
+        width: 80px;
     }
     .navbar-search {
         width: 53% !important;
@@ -42,7 +42,7 @@ a {
         /*width: 496px;*/
     }
     .input-group-lg>.input-group-btn>.btn {
-        width: 144px;
+        width: 80px;
     }
     .navbar-brand {
         margin-top: 43px;
@@ -61,7 +61,7 @@ a {
         /*width: 420px;*/
     }
     .input-group-lg>.input-group-btn>.btn {
-        width: 120px;
+        width: 80px;
     }
     .navbar-brand {
         margin-top: 43px;
@@ -104,9 +104,14 @@ a {
     }
 }
 
-#SearchBox{
+#SearchBox {
     height: 50px;
     font-size: 18px;
+    color: #C0C0C0;
+}
+
+#SearchBox:focus {
+    color:  #000000;
 }
 
 .section-blue {
@@ -251,6 +256,10 @@ a {
 .btn-info {
     border-radius: 3px;
     border: 1px solid #fff;
+}
+
+#SearchBar .btn-info {
+    background-color: #ffffff;
 }
 
 .btn-info:hover, .btn-info:active,
@@ -1104,14 +1113,17 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     font-size: 12px;
 }
 
 .panel-body {
     padding-left: 10px;
     padding-top: 0px;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     padding-right: 20px;
 }
 
@@ -1123,7 +1135,7 @@ button.close:focus {
 .dictionary-container {
     padding: 0px 10px;
     background-color: #fff;
-    height: 120px;
+    height: 100px;
     overflow-y: scroll;
 }
 

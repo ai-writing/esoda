@@ -13,21 +13,22 @@
   <div class="jumbotron section-blue">
     <div class="container">
       <div class="row">
-        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 esoda-brand">
+        <div class="esoda-brand">
           <img src="{% static 'img/logo_white_Chinese.png' %}" class="esoda-brand-main">
           <hr class="esoda-brand-hr">
           <div class="esoda-brand-subtitle">
             <span>专业英文论文写作助手</span>
           </div>
         </div>
-        <div id="SearchBar" class="col-xs-12 col-md-8 col-md-offset-2">
+        <div id="SearchBar" class="col-xs-10 col-xs-offset-1">
+        <!-- <div id="SearchBar" class="col-xs-10 col-md-8 col-md-offset-2 col-xs-offset-1"> -->
           <form id="SearchForm" class="form-horizontal" role="search" action="{% url 'esoda' %}">
             <div class="input-group input-group-lg">
-              <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q"/>
+              <input id="SearchBox" type="text" class="form-control" value="英文写作新体验" name="q"/>
               <span class="input-group-btn">
                 <button type="submit" class="btn btn-info">
-                  <span class="hidden-xs">搜搭&nbsp;&nbsp;</span>
-                  <span class="glyphicon glyphicon-search"></span>
+                  <!-- <span class="hidden-xs">搜搭&nbsp;&nbsp;</span> -->
+                  <span class="glyphicon glyphicon-search" style="color: #63B7E6"></span>
                 </button>
               </span>
             </div>
