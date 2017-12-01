@@ -882,6 +882,10 @@ button.close:focus {
     width: 128px;
 }
 
+.btn-card {
+    background-color: #ffffff;
+}
+
 .caption-usage > h4 {
     font-size: 18px;
 }

@@ -119,16 +119,16 @@ $(function () {
     }
 
     $('.example-btn-link').click(function() {
-        if ($(this).text() == '同义表达') {
+        if (this.value == '同义表达') {
             fillWithExample('efficient');
         }
-        if ($(this).text() == '不同搭配') {
+        if (this.value == '不同搭配') {
             fillWithExample('wait');
         }
-        if ($(this).text() == '中英混搜') {
+        if (this.value == '中英混搜') {
             fillWithExample('减少 the demand of');
         }
-        if ($(this).text() == '短语查找') {
+        if (this.value == '短语查找') {
             fillWithExample('make effort');
         }
     });
