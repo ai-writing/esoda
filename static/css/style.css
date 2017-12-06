@@ -883,7 +883,7 @@ button.close:focus {
 }
 
 .btn-card {
-    background-color: #ffffff;
+    background-color: transparent;
 }
 
 .caption-usage > h4 {

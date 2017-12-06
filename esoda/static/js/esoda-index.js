@@ -11,6 +11,19 @@ $(function () {
 
   $( "#SearchBox" ).val("英文写作新体验");
 
+  $('#guide0_index').onclick = function(e) {
+    stopDefault(e);
+  }
+  $('#guide1_index').onclick = function(e) {
+    stopDefault(e);
+  }
+  $('#guide2_index').onclick = function(e) {
+    stopDefault(e);
+  }
+  $('#guide3_index').onclick = function(e) {
+    stopDefault(e);
+  }
+
   $("#SearchBox").each(function() {
         var vdefault = this.value;
         $(this).focus(function() {
