@@ -38,6 +38,12 @@ $(function () {
         });
     });
 
+  $(".btn-info").click(function() {
+    if(searchForm.q.value == "英文写作新体验") {
+        $("#SearchBox").val("");
+        }
+    });
+
   var curDisplay = 0;
   $(".pager li .glyphicon-chevron-right").click(function (e) {
     e.preventDefault();
@@ -89,7 +95,6 @@ $(function () {
   });
 
     var ANIMATION_ON = false;
-
 
     function scrollToTop(duration, callback) {
         var x = 0, initialY = scrollY, ease = function(n) {
