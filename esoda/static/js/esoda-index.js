@@ -9,7 +9,7 @@ $(function () {
     $(this).tab("show");
   });
 
-  $( "#SearchBox" ).val("英文写作新体验");
+  $( "#SearchBox" ).val("");
 
   $('#guide0_index').onclick = function(e) {
     stopDefault(e);
@@ -23,26 +23,6 @@ $(function () {
   $('#guide3_index').onclick = function(e) {
     stopDefault(e);
   }
-
-  $("#SearchBox").each(function() {
-        var vdefault = this.value;
-        $(this).focus(function() {
-            if (this.value == vdefault) {
-                this.value = "";
-            }
-        });
-        $(this).blur(function() {
-            if (this.value == "") {
-                this.value = vdefault;
-            }
-        });
-    });
-
-  $(".btn-info").click(function() {
-    if(searchForm.q.value == "英文写作新体验") {
-        $("#SearchBox").val("");
-        }
-    });
 
   var curDisplay = 0;
   $(".pager li .glyphicon-chevron-right").click(function (e) {
@@ -131,24 +111,14 @@ $(function () {
                     q = q.slice(1);
                     setTimeout(addChar, 80);
                 }
-                $( "#SearchForm" ).submit();
+                // $( "#SearchForm" ).submit();
             })();
         });
     }
 
     $('.example-btn-link').click(function() {
-        if (this.value == '同义表达') {
-            fillWithExample('efficient');
-        }
-        if (this.value == '不同搭配') {
-            fillWithExample('wait');
-        }
-        if (this.value == '中英混搜') {
-            fillWithExample('减少 the demand of');
-        }
-        if (this.value == '短语查找') {
-            fillWithExample('make effort');
-        }
+        fillWithExample(this.value);
+        window.location.href="/?q="+this.value+"&";
     });
 
     // Fix Safari cache on back
