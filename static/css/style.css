@@ -23,7 +23,7 @@ a {
         /*width: 496px;*/
     }
     .navbar-brand {
-        margin-top: 44px;
+        margin-top: 20px;
         width: 200px;
     }
     .navbar-brand>img {
@@ -45,7 +45,7 @@ a {
         width: 80px;
     }
     .navbar-brand {
-        margin-top: 43px;
+        margin-top: 20px;
         width: 200px;
     }
     .navbar-brand>img {
@@ -64,7 +64,7 @@ a {
         width: 80px;
     }
     .navbar-brand {
-        margin-top: 43px;
+        margin-top: 20px;
         width: 170px;
     }
     .navbar-brand>img {
@@ -83,19 +83,22 @@ a {
         width: 100%;
     }
     #WordExplanation {
-        padding-left: 30px;
+        padding-left: 20px;
         padding-top: 10px;
         font-size: 6px;
     }
     .navbar-brand {
-        margin-top: 45px;
+        margin-top: 20px;
         width: 170px;
     }
     .navbar-brand>img {
         margin-top: -60px;
     }
     .navbar-index {
-        margin-top: 15px !important;
+        margin-top: 0px !important;
+    }
+    #navbar.navbar-collapse {
+        padding-bottom: 5px;
     }
     #SearchForm {
         width: 96%;
@@ -167,7 +170,7 @@ a {
 }
 
 .navbar-header>.navbar-toggle {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .container>.navbar-header {
@@ -177,7 +180,6 @@ a {
 
 #navbar.navbar-collapse {
     background-color: rgba(255, 255, 255, 0.9);
-    padding-bottom: 10px;
 }
 
 .esoda-brand {
@@ -211,13 +213,14 @@ a {
 }
 
 .navbar-default {
-    height: 90px;
+    height: 60px;
     background: #fff;
     border-color: #fff;
+    margin-bottom: 10px;
 }
 
 .navbar-index {
-    margin-top: 35px;
+    /*margin-top: 10px;*/
 }
 
 .navbar-search {
@@ -347,6 +350,11 @@ a {
     color: #9b9b9b;
 }
 
+.nav>li>a:hover {
+    background-color:transparent;
+    color: #63B7e6;
+}
+
 .navbar-index .nav-pills > li.active > a,
 .navbar-index .nav-pills > li.active > a:hover,
 .navbar-index .nav-pills > li.active > a:focus {
@@ -359,7 +367,7 @@ a {
 }
 
 .nav-pills-index {
-    margin-top: 7px;
+    margin-top: 20px;
 }
 
 .nav-pills-index > li > a {
@@ -393,6 +401,10 @@ a {
 .login {
     font-size: 12px;
     padding-top: 13px;
+}
+
+.login .login-url {
+    color: #63B7E6 !important;
 }
 
 .modal-login-sm {
@@ -1081,6 +1093,7 @@ button.close:focus {
 
 .navbar-default .navbar-form {
     border: transparent;
+    margin-top: 0px;
 }
 
 .suggestion-container {
@@ -1722,7 +1735,7 @@ button.close:focus {
 }
 
 .result-index {
-    margin-top: 14px;
+    margin-top: 0px;
 }
 
 .result-search {
@@ -1744,14 +1757,14 @@ button.close:focus {
 
 .welback {
     font-size: 12px;
-    margin-top: 18px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
 }
 
 .indexback {
     font-size: 12px;
-    margin-top: -3px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
 }
