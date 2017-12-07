@@ -9,20 +9,7 @@ $(function () {
     $(this).tab("show");
   });
 
-  $( "#SearchBox" ).val("");
-
-  $('#guide0_index').onclick = function(e) {
-    stopDefault(e);
-  }
-  $('#guide1_index').onclick = function(e) {
-    stopDefault(e);
-  }
-  $('#guide2_index').onclick = function(e) {
-    stopDefault(e);
-  }
-  $('#guide3_index').onclick = function(e) {
-    stopDefault(e);
-  }
+  // $( "#SearchBox" ).val("");
 
   var curDisplay = 0;
   $(".pager li .glyphicon-chevron-right").click(function (e) {
@@ -110,6 +97,8 @@ $(function () {
                     $('#SearchBox').val($('#SearchBox').val() + q[0]);
                     q = q.slice(1);
                     setTimeout(addChar, 80);
+                } else {
+                    window.location.href="/?q="+text+"&";
                 }
                 // $( "#SearchForm" ).submit();
             })();
@@ -117,8 +106,8 @@ $(function () {
     }
 
     $('.example-btn-link').click(function() {
-        fillWithExample(this.value);
-        window.location.href="/?q="+this.value+"&";
+        fillWithExample($(this).attr('value'));
+        // window.location.href="/?q="+$(this).attr('value')+"&";
     });
 
     // Fix Safari cache on back

@@ -52,7 +52,7 @@
                     <span class="glyphicon glyphicon-search"></span>
                   </button>
                 </span>
-                <input type="text" id="SearchBox" class="navbar-search-box form-control result-search" placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}">
+                <input type="text" id="SearchBox" class="navbar-search-box form-control result-search" placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}" onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
               </div>
             </form>
           {% if not user.is_authenticated %}
