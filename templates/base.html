@@ -57,7 +57,7 @@
             </form>
           {% if not user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right result-login">
-              <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请登录</a></li>
+              <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请<span class="login-url">登录</span></a></li>
             </ul>
           {% else %}
             <ul class="nav navbar-nav navbar-right welback">

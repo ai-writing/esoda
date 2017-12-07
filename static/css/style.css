@@ -347,6 +347,7 @@ a {
 .navbar-index .nav-pills > li > a {
     border-radius: 0;
     color: #9b9b9b;
+    padding: 15px;
 }
 
 .nav>li>a:hover {
@@ -366,7 +367,7 @@ a {
 }
 
 .nav-pills-index {
-    margin-top: 20px;
+    margin-top: 14px;
 }
 
 .nav-pills-index > li > a {
@@ -399,11 +400,15 @@ a {
 
 .login {
     font-size: 12px;
-    padding-top: 13px;
+    margin-top: 13px;
 }
 
 .login .login-url {
     color: #63B7E6 !important;
+}
+
+.login .login-url:hover {
+    text-decoration: underline;
 }
 
 .modal-login-sm {
@@ -920,10 +925,6 @@ button.close:focus {
 
 .pager li>span:hover {
     color: #4a4a4a;
-}
-
-.login {
-    padding-top: 13px;
 }
 
 .user-feedback {
@@ -1764,10 +1765,6 @@ button.close:focus {
     font-size: 20px;
     padding-top: 8px;
     width: 542px;
-}
-
-.result-login {
-    margin-top: 20px;
 }
 
 .registration-title {
