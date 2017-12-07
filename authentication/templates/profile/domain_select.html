@@ -1,98 +1,85 @@
-{% extends "profile_base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-
+{% block head %}
+<link href="{% static 'css/bootstrap-treeview.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}ESODA | profile{% endblock %}
 {% block header %}
 {% with tab="profile" %}
   {% include "esoda/navbar.html" %}
 {% endwith %}
 {% endblock %}
 
-{% block profile_content %}
-
-<div id="field">
-  <h4 class="personal-title"><strong>学术领域选择</strong></h4>
-  <hr class="personal-line"/>
-  <h5><strong>选择对口学术刊物以获得精准写作建议</strong><h5>
-  <div class="form-group">
-    <label for="input-search" class="sr-only">Search Tree:</label>
-    <div class="search bar1" id="search-bar">
-      <input type="text" id="input-search" placeholder="Type to search...">
-      <button type="button" id="btn-search" ><span class="glyphicon glyphicon-search"></span></button>
+{% block content %}
+<div class="search" id="search-bar">
+  <input type="text" id="input-search" placeholder="Type to search...">
+</div>
+<div class="result-page">
+  <div class="container">
+    <div class="row domain-main">      
+      <form action="/domain/" method="post">
+        {% csrf_token %}
+        <div class="col-xs-4 col-sm-2 col-md-2 domain-tab">
+          <ul id="myTab" class="nav nav-pills nav-stacked ">
+            {% for k in corpus %}
+              <li class="mydomain domain-checkbox domain-level-1 {%ifequal k.level 3 %}active{% endifequal %}">
+                <h4>
+                  <a href="#firstlevel{{k.id}}" id="firstleveltext{{k.id}}" data-toggle="tab">{{k.text}}</a>
+                  <input type="checkbox" value="{{k.id}}" id="check{{k.id}}" name="ids" onclick="aa({{k.id}})" {% if k.state.checked %} checked="checked" {% endif %} />
+                </h4>
+              </li>
+            {% endfor %}
+        </div>
+        <div class="col-xs-8 col-sm-10 col-md-10">
+          <div id="myTabContent" class="tab-content">
+          {% for k in corpus %}
+            <div class="tab-pane domain-tab-pane fade in {%ifequal k.level 3 %}active{% endifequal %}" id="firstlevel{{k.id}}">
+              <table>
+                <tbody>
+                {% for i in k.nodes %}
+                  <tr class="row ">
+                    {%ifequal k.level 3 %}
+                    <td class="col-xs-4 col-sm-3 col-md-3 domain-level-2 domain-block domain-checkbox" >
+                      <span id="secondleveltext{{i.id}}" {% if i.state.expand %}onclick="bb({{i.id}})"{% endif %}>{{i.text}}</span>
+                      <input type="checkbox" value="{{i.id}}" id="check{{i.id}}" name="ids" class="checkchild{{k.id}}" onclick="aa({{i.id}});cc({{k.id}})" {% if i.state.checked %} checked="checked" {% endif %} >
+                    </td>
+                    <td class="col-xs-8 col-sm-9 col-md-9 domain-block domain-nopadding">
+                      <div id="field{{i.id}}" class="domain-level-3" text="unexpand" style="max-height:40px; overflow:hidden;">
+                        {% for j in i.nodes %}
+                          <label class="domain-item domain-checkbox domain-item-span"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}>{% ifequal j.type "conf"%}<span class="glyphicon glyphicon-file domain-icon" title="conference"></span>{%else%}<span class="glyphicon glyphicon-book domain-icon" title="journal"></span>{% endifequal %}<span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                        {% endfor %}
+                      </div>
+                    </td>
+                    {% else %}
+                    <td class="col-xs-12 col-sm-12 col-md-12 domain-block domain-nopadding">
+                      {% if i.state.expand %}  
+                        <div class="domain-expand" onclick="bb({{i.id}})">
+                          <div id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
+                        </div>
+                      {% endif %}
+                      <div id="field{{i.id}}" class="domain-level-3 domain-level-23" name="unexpand" style="max-height:40px; overflow:hidden;">
+                        {% for j in i.nodes %}
+                          <label class="domain-item domain-checkbox domain-item-span1"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                        {% endfor %}
+                      </div>
+                    </td>
+                    {% endifequal %}
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            <input class="btn domain-btn" type="submit" value="提交"/>
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-  
-  <!-- <div id="tree" class="pre-scrollable" style="max-height: 500px"></div> -->
-  <form action="/domain/" method="post">
-    {% csrf_token %}
-    <div class="panel-group" id="accordion">
-    {% for k in corpus %}
-      <div class="panel-heading domain-panel-heading domain-block domain-border" >
-        <h4 class="panel-title domain-checkbox domain-level-1">
-          <input type="checkbox" value="{{k.id}}" id="check{{k.id}}" name="ids" onclick="aa({{k.id}})" {% if k.state.checked %} checked="checked" {% endif %} >
-          <a data-toggle="collapse" data-parent="#accordion" 
-             href="#collapse{{k.id}}">
-            {{k.text}}
-          </a>
-          <div class="domain-expand-1">
-            <div>
-              <a data-toggle="collapse" data-parent="#accordion" 
-             href="#collapse{{k.id}}" id="expand{{k.id}}">
-                <span class="glyphicon glyphicon-chevron-down" ></span>
-              </a>
-            </div>
-          </div>
-        </h4>   
-      </div>
-      <div id="collapse{{k.id}}" class="panel-collapse collapse">
-        <div class="panel-body domain-nopadding">
-          <table>
-            <tbody>
-            {% for i in k.nodes %}
-              <tr class="row">
-                {%ifequal k.level 3 %}
-                <td class="col-xs-4 col-sm-2 col-md-2 domain-level-2 domain-block domain-checkbox domain-border">
-                  {{i.text}}
-                  <input type="checkbox" value="{{i.id}}" id="check{{i.id}}" name="ids" class="checkchild{{k.id}}" onclick="aa({{i.id}});cc({{k.id}})" {% if i.state.checked %} checked="checked" {% endif %} >
-                </td>
-                <td class="col-xs-8 col-sm-10 col-md-10 domain-block domain-nopadding domain-border">
-                  {% if i.state.expand %}  
-                    <div class="domain-expand" onclick="bb({{i.id}})">
-                      <div id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
-                    </div>
-                  {% endif %}
-                  <div id="field{{i.id}}" class="domain-level-3" style="max-height:30px; overflow:hidden;">
-                    {% for j in i.nodes %}
-                      <label class="domain-item domain-checkbox domain-item_span"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}>{% ifequal j.type "conf"%}<span class="glyphicon glyphicon-paperclip" title="conference"></span>{%else%}<span class="glyphicon glyphicon-book" title="journal"></span>{% endifequal %}<span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
-                    {% endfor %}
-                  </div>
-                </td>
-                {% else %}
-                <td class="col-xs-12 col-sm-12 col-md-12 domain-block domain-nopadding domain-border">
-                  {% if i.state.expand %}  
-                    <div class="domain-expand" onclick="bb({{i.id}})">
-                      <div id="expand{{i.id}}"><span class="glyphicon glyphicon-chevron-down" ></span></div>
-                    </div>
-                  {% endif %}
-                  <div id="field{{i.id}}" class="domain-level-3 domain-level-23" style="max-height:30px; overflow:hidden;">
-                    {% for j in i.nodes %}
-                      <label class="domain-item domain-checkbox domain-item_span1"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
-                    {% endfor %}
-                  </div>
-                </td>
-                {% endifequal %}
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    {% endfor %}
-    </div>
-    <input class="btn" type="submit" value="提交"/>
-  </form>
 </div>
 {% endblock %}
+
 {% block script %}
 <!-- <script src="{% static 'js/bootstrap-treeview.min.js' %}"></script> -->
 <script>
@@ -107,12 +94,12 @@
     }
   }
   function bb(id){
-    if(document.getElementById("expand"+id).innerHTML=="<span class=\"glyphicon glyphicon-chevron-down\"></span>"){
+    if(document.getElementById("secondleveltext"+id).style.color==""){
       document.getElementById("field"+id).style="max-height:500px; overflow:hidden;"
-      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
+      document.getElementById("secondleveltext"+id).style.color="#63b7e6"
     }else{
-      document.getElementById("field"+id).style="max-height:30px; overflow:hidden;"
-      document.getElementById("expand"+id).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"
+      document.getElementById("field"+id).style="max-height:40px; overflow:hidden;"
+      document.getElementById("secondleveltext"+id).style.color=""
     }
   }
   function cc(id) {
@@ -120,7 +107,6 @@
     var childStatus = false;
     for (var i = 0; i < items.length; ++i) {
         childStatus = (childStatus || items[i].checked);
-        console.log(items[i].checked);
     }
     // alert(childStatus);
     document.getElementById("check"+id).checked = childStatus;
@@ -129,28 +115,30 @@
     var pattern = $('#input-search').val();
     $.getJSON("{% url 'authentication:search' %}", {'target':pattern }, function(data){
       for(var i=0;i<last_expand.length;i++){ 
-        document.getElementById("field"+last_expand[i]).style="max-height:25px; overflow:hidden;";
-        document.getElementById("expand"+last_expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>";
+        document.getElementById("field"+last_expand[i]).style="max-height:40px; overflow:hidden;";
+        document.getElementById("secondleveltext"+last_expand[i]).style.color=""
       } 
       for(var i=0;i<last_result.length;i++){
-        document.getElementById("checktext"+last_result[i]).style.color="#9b9b9b";
+        document.getElementById("checktext"+last_result[i]).style.color="";
       }
-      for(var i=0;i<last_big.length;i++){
-        // document.getElementById("collapse_head"+last_big[i]).style.color="#9b9b9b";
+      if(last_big[0]!=data.big[0]){
+        $("#firstlevel"+last_big[0]).tab('show');
+      }
+      for(var i=0;i<last_big.length;i++){ 
         if($.inArray(last_big[i], data.big)==-1){
-          $("#collapse"+last_big[i]).collapse('hide');
+          document.getElementById("firstleveltext"+last_big[i]).style="font-weight:500";
         }
       }
       for(var i=0;i<data.expand.length;i++){ 
-        document.getElementById("field"+data.expand[i]).style="max-height:500px; overflow:hidden;"
-        document.getElementById("expand"+data.expand[i]).innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"
+        document.getElementById("field"+data.expand[i]).style="max-height:500px; overflow:hidden;"  ;
+        document.getElementById("secondleveltext"+data.expand[i]).style.color="#63b7e6";
       } 
       for(var i=0;i<data.result.length;i++){ 
         document.getElementById("checktext"+data.result[i]).style.color="red";
       }
+      $("#myTab a[href=\""+"#firstlevel"+data.big[0]+"\"]").tab('show');
       for(var i=0;i<data.big.length;i++){ 
-        // document.getElementById("collapse_head"+data.big[i]).style.color="#63B7E6";
-        $("#collapse"+data.big[i]).collapse('show');
+        document.getElementById("firstleveltext"+data.big[i]).style="font-weight:600";
       }
       last_result=data.result;
       last_expand=data.expand;
@@ -162,30 +150,6 @@
   $('#input-search').bind('keypress',function(event){
       if(event.keyCode == "13") search();
   });
-  $('#collapse0').on('show.bs.collapse', function () {document.getElementById("expand0").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse0').on('hide.bs.collapse', function () {document.getElementById("expand0").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse3').on('show.bs.collapse', function () {document.getElementById("expand3").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse3').on('hide.bs.collapse', function () {document.getElementById("expand3").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse323').on('show.bs.collapse', function () {document.getElementById("expand323").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse323').on('hide.bs.collapse', function () {document.getElementById("expand323").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse326').on('show.bs.collapse', function () {document.getElementById("expand326").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse326').on('hide.bs.collapse', function () {document.getElementById("expand326").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse329').on('show.bs.collapse', function () {document.getElementById("expand329").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse329').on('hide.bs.collapse', function () {document.getElementById("expand329").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse332').on('show.bs.collapse', function () {document.getElementById("expand332").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse332').on('hide.bs.collapse', function () {document.getElementById("expand332").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse335').on('show.bs.collapse', function () {document.getElementById("expand335").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse335').on('hide.bs.collapse', function () {document.getElementById("expand335").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse338').on('show.bs.collapse', function () {document.getElementById("expand338").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse338').on('hide.bs.collapse', function () {document.getElementById("expand338").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse342').on('show.bs.collapse', function () {document.getElementById("expand342").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse342').on('hide.bs.collapse', function () {document.getElementById("expand342").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse346').on('show.bs.collapse', function () {document.getElementById("expand346").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse346').on('hide.bs.collapse', function () {document.getElementById("expand346").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse349').on('show.bs.collapse', function () {document.getElementById("expand349").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse349').on('hide.bs.collapse', function () {document.getElementById("expand349").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
-  $('#collapse352').on('show.bs.collapse', function () {document.getElementById("expand352").innerHTML="<span class=\"glyphicon glyphicon-chevron-up\"></span>"});
-  $('#collapse352').on('hide.bs.collapse', function () {document.getElementById("expand352").innerHTML="<span class=\"glyphicon glyphicon-chevron-down\"></span>"});
 </script>
   {% if messages %}
     <script>
