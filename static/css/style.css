@@ -226,6 +226,11 @@ a {
     width: 40%;
 }
 
+.navbar-avatar {
+    padding-top: 12.5px !important;
+    padding-bottom: 12.5px !important;
+}
+
 #ResultSearchBar > #SearchBox {
     margin-left: -32px;
     padding-left: 32px;
@@ -372,6 +377,7 @@ a {
 
 .nav-pills-index > li > a {
     font-size: 12px;
+    line-height: 20px;
 }
 
 .nav-pills-feedback>li>a {
@@ -1756,14 +1762,14 @@ button.close:focus {
 
 .welback {
     font-size: 12px;
-    margin-top: 10px;
+    margin-top: 14px;
     display: flex;
     align-items: center;
 }
 
 .indexback {
     font-size: 12px;
-    margin-top: 10px;
+    margin-top: 14px;
     display: flex;
     align-items: center;
 }
