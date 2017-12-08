@@ -1297,7 +1297,7 @@ button.close:focus {
 }
 
 .uncover {
-    z-index: 100; 
+    z-index: 0; 
     height: 100%; 
     width: 100%; 
     opacity: 1; 
