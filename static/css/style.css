@@ -900,6 +900,7 @@ button.close:focus {
 
 .btn-card {
     background-color: transparent;
+    border-color: transparent;
 }
 
 .caption-usage > h4 {
@@ -908,6 +909,8 @@ button.close:focus {
 
 .caption-usage > p {
     font-size: 13px;
+    margin-left: -9px;
+    margin-right: -9px;
 }
 
 .col-comments {

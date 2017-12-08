@@ -9,7 +9,7 @@ $(function () {
     $(this).tab("show");
   });
 
-  // $( "#SearchBox" ).val("");
+  $( "#SearchBox" ).val("");
 
   var curDisplay = 0;
   $(".pager li .glyphicon-chevron-right").click(function (e) {
