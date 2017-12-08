@@ -9,7 +9,7 @@ $(function () {
     $(this).tab("show");
   });
 
-  $( "#SearchBox" ).val("");
+  // $( "#SearchBox" ).val("");
 
   var curDisplay = 0;
   $(".pager li .glyphicon-chevron-right").click(function (e) {
@@ -63,7 +63,6 @@ $(function () {
 
     var ANIMATION_ON = false;
 
-
     function scrollToTop(duration, callback) {
         var x = 0, initialY = scrollY, ease = function(n) {
             return n * (2 - n);
@@ -92,31 +91,23 @@ $(function () {
         // for campatibility with Chrome:
         scrollToTop(300, function () {
             $('#SearchBox').val('');
+            $('#SearchBox').focus();
             (function addChar() {
                 if (q) {
                     $('#SearchBox').val($('#SearchBox').val() + q[0]);
-                    // console.log(q[0]);
                     q = q.slice(1);
                     setTimeout(addChar, 80);
+                } else {
+                    window.location.href="/?q="+text+"&";
                 }
-                $( "#SearchForm" ).submit();
+                // $( "#SearchForm" ).submit();
             })();
         });
     }
 
     $('.example-btn-link').click(function() {
-        if ($(this).text() == '同义表达') {
-            fillWithExample('efficient');
-        }
-        if ($(this).text() == '不同搭配') {
-            fillWithExample('wait');
-        }
-        if ($(this).text() == '中英混搜') {
-            fillWithExample('减少 the demand of');
-        }
-        if ($(this).text() == '短语查找') {
-            fillWithExample('make effort');
-        }
+        fillWithExample($(this).attr('value'));
+        // window.location.href="/?q="+$(this).attr('value')+"&";
     });
 
     // Fix Safari cache on back

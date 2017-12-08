@@ -96,3 +96,5 @@ staticfiles/
 
 # tmp
 *.swp
+
+.idea/

@@ -3,9 +3,31 @@
 */
 
 var loadCount = 1, loading = 0, loaded = 0;
+var keyword = window.location.search;
 
 $(function () {
-	'use strict';
+  'use strict';
+
+  if( keyword.indexOf("&") >= 0) {
+    $(".cover").show();
+    if( keyword.indexOf("efficient") >= 0) {
+      $(".uncover-syn .uncover").css('z-index','1500');
+    }
+    if( keyword.indexOf("wait") >= 0) {
+      $(".uncover-colloc .uncover").css('z-index','1500');
+    }
+    if( keyword.indexOf("demand") >= 0) {
+      $(".uncover-chi .uncover").css('z-index','1500');
+    }
+        if( keyword.indexOf("effort") >= 0) {
+      $(".uncover-phrase .uncover").css('z-index','1500');
+    }
+  }
+
+  $(".cover").click( function() {
+    $(".cover").hide();
+    $(".uncover").css('z-index','100'); 
+  });
 
   $("#CollocationTab a").click(function (e) {
     e.preventDefault();
@@ -81,21 +103,21 @@ $('#ManualLoad').click(function(e) {
   });
 
   $("#SidebarAffix").affix({
-  	offset: {
-	    top: 20,
-	    bottom: function () {
-	      return (this.bottom = $(".footer").outerHeight(true) + $("#BackToTopAffix").outerHeight(true) + 40)
-	    }
-	  }
+    offset: {
+      top: 20,
+      bottom: function () {
+        return (this.bottom = $(".footer").outerHeight(true) + $("#BackToTopAffix").outerHeight(true) + 40)
+      }
+    }
   });
 
   $("#BackToTopAffix").affix({
-  	offset: {
-  		top: 0,
-	    bottom: function () {
-	      return (this.bottom = $(".footer").outerHeight(true) + 20)
-	    }
-	  }
+    offset: {
+      top: 0,
+      bottom: function () {
+        return (this.bottom = $(".footer").outerHeight(true) + 20)
+      }
+    }
   });
 
   $.clickStar = function(e) {

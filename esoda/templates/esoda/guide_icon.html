@@ -9,47 +9,63 @@
     </div> -->
     <div class="row">
       <div class="col-xs-6 col-sm-3">
-        <div class="thumbnail thumbnail-guide {% if tab == "guide" %}guide-thumbnail{% endif %}">
-          <a href="{% if tab == "index" %}/?q=efficient{% else %}#guide0{% endif %}" id="guide0_index">
-              <img src="{% static 'img/usage_1.png' %}" alt="...">
-          </a>
-          <div class="caption caption-usage">
-            <h4>换说法</h4>
-            <p>论文里感到用词不地道，找找看母语论文里别人怎么说</p>
-          </div>
-        </div>
+        <a href="#guide0" id="guide0_index">
+          <button value="efficient" class="example-btn-link btn-card">
+            <div class="thumbnail thumbnail-guide {% if tab == "guide" %}guide-thumbnail{% endif %}">
+              <!-- <a href="{% if tab == "index" %}/?q=efficient{% else %}#guide0{% endif %}" id="guide0_index"> -->
+                  <img src="{% static 'img/usage_1.png' %}" alt="...">
+              <!-- </a> -->
+              <div class="caption caption-usage">
+                <h4>换说法</h4>
+                <p>论文里感到用词不地道，找找看母语论文里别人怎么说</p>
+              </div>
+            </div>
+          </button>
+        </a>
       </div>
       <div class="col-xs-6 col-sm-3">
-        <div class="thumbnail thumbnail-guide {% if tab == "guide" %}guide-thumbnail{% endif %}">
-          <a href="{% if tab == "index" %}/?q=wait{% else %}#guide1{% endif %}" id="guide1_index">
+        <a href="#guide1" id="guide1_index">
+          <button value="wait" class="example-btn-link btn-card">
+            <div class="thumbnail thumbnail-guide {% if tab == "guide" %}guide-thumbnail{% endif %}">
+              <!-- <a href="{% if tab == "index" %}/?q=wait{% else %}#guide1{% endif %}" id="guide1_index"> -->
               <img src="{% static 'img/usage_2.png' %}" alt="...">
-          </a>
-          <div class="caption caption-usage">
-            <h4>搜搭配</h4>
-            <p>感到搭配用的不够漂亮，想换种说法，看看别人怎么搭配</p>
-          </div>
-        </div>
+              <!-- </a> -->
+              <div class="caption caption-usage">
+                <h4>搜搭配</h4>
+                <p>感到搭配用的不够漂亮，想换种说法，看看别人怎么搭配</p>
+              </div>
+            </div>
+          </button>
+        </a>
       </div>
       <div class="col-xs-6 col-sm-3">
-        <div class="thumbnail thumbnail-guide {% if tab == "guide" %}guide-thumbnail{% endif %}">
-          <a href="{% if tab == "index" %}/?q=减少+the+demand+of{% else %}#guide2{% endif %}" id="guide2_index">
+        <a href="#guide2" id="guide2_index">
+          <button value="减少 the demand of" class="example-btn-link btn-card">
+            <div class="thumbnail thumbnail-guide {% if tab == "guide" %}guide-thumbnail{% endif %}">
+              <!-- <a href="{% if tab == "index" %}/?q=减少+the+demand+of{% else %}#guide2{% endif %}" id="guide2_index"> -->
               <img src="{% static 'img/usage_3.png' %}" alt="...">
-          </a>
-          <div class="caption caption-usage">
-            <h4>中英混搭</h4>
-            <p>输入中文或中英文混合，在海量例句中上下文获得更精准的翻译</p>
-          </div>
-        </div>
+              <!-- </a> -->
+              <div class="caption caption-usage">
+                <h4>中英混搭</h4>
+                <p>输入中文或中英文混合，在海量例句中上下文获得更精准的翻译</p>
+              </div>
+            </div>
+          </button>
+        </a>
       </div>
       <div class="col-xs-6 col-sm-3">
-        <div class="thumbnail thumbnail-guide {% if tab == "guide" %}guide-thumbnail{% endif %}">
-          <a href="{% if tab == "index" %}/?q=make+effort{% else %}#guide3{% endif %}" id="guide3_index">
+        <a href="#guide3" id="guide3_index">
+          <button value="make effort" class="example-btn-link btn-card">
+            <div class="thumbnail thumbnail-guide {% if tab == "guide" %}guide-thumbnail{% endif %}">
+              <!-- <a href="{% if tab == "index" %}/?q=make+effort{% else %}#guide3{% endif %}" id="guide3_index"> -->
               <img src="{% static 'img/usage_4.png' %}" alt="...">
-          </a>
-          <div class="caption caption-usage">
-            <h4>找短语</h4>
-            <p>遇到不熟悉的短语，了解它在论文中最地道的用法</p>
-          </div>
-        </div>
+              <!-- </a> -->
+              <div class="caption caption-usage">
+                <h4>找短语</h4>
+                <p>遇到不熟悉的短语，了解它在论文中最地道的用法</p>
+              </div>
+            </div>
+          </button>
+        </a>
       </div>
     </div>

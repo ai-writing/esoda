@@ -88,9 +88,9 @@ $(function () {
 
 /*--------Testing code---------*/
   var defList = [
-    { label: "主谓", desc: "quality have", value: "quality have", category: "用法示例" },
-    { label: "修饰", desc: "quality data", value: "quality data", category: "用法示例" },
-    { label: "动宾", desc: "quality of", value: "quality of", category: "用法示例" }
+    { label: "主谓", desc: "value increase", value: "value increase", category: "用法示例" },
+    { label: "修饰", desc: "high impact", value: "high impact", category: "用法示例" },
+    { label: "动宾", desc: "open program", value: "open program", category: "用法示例" }
   ];
 /*--------Testing code---------*/
 
@@ -264,9 +264,9 @@ $(function () {
     $('.wechat-qr').qrcode({render: 'canvas', width: 100, height: 100, text: window.location.href});
   });
 
-  $(window).resize(function () {
-    $('#SearchBox').catcomplete('search');
-  });
+  // $(window).resize(function () {
+  //   $('#SearchBox').catcomplete('search');
+  // });
 
   $('#SearchBox').click(function() {
     $('#SearchBox').catcomplete('search');

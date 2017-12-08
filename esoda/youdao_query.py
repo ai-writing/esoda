@@ -29,6 +29,7 @@ def youdao_suggest(q):
     except Exception as e:
         logger.exception('Failed in Youdao suggest "%s"', q)
     r['suggest'] = suggests
+    logger.info('youdao_suggest: "%s" -> %s', q, repr(suggests))
     return r
 
 YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
@@ -52,6 +53,7 @@ def youdao_search(q0, q):
     except Exception:
         logger.exception('Failed in Youdao dict search "%s" "%s"', q0, q)
     dictionary['cn'] = cn
+    logger.info('youdao_search: "%s", "%s" -> %s', q0, q, repr(dictionary))
     return dictionary
 
 YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key=205873295&type=data&doctype=json&version=1.2&q=%s'
@@ -62,8 +64,10 @@ def youdao_translate(q):
         r = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=10).json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
-    return {
+    translated = {
         'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
         'cn': has_cn(q)
     }
+    logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
+    return translated
