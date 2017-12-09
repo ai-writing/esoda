@@ -96,9 +96,6 @@ a {
     .navbar-index {
         margin-top: 0px !important;
     }
-    #navbar.navbar-collapse {
-        padding-bottom: 5px;
-    }
     #SearchForm {
         width: 96%;
         margin-left: 0 !important;
@@ -232,7 +229,7 @@ a {
 }
 
 #ResultSearchBar > #SearchBox {
-    margin-left: -32px;
+    margin-left: -30px;
     padding-left: 32px;
     background-color: transparent;
     height: 44px;
@@ -406,7 +403,7 @@ a {
 
 .login {
     font-size: 12px;
-    margin-top: 13px;
+    margin-top: 14px;
 }
 
 .login .login-url {
