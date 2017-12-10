@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-{% block head %}
-<link href="{% static 'css/bootstrap-treeview.min.css' %}" rel="stylesheet">
-{% endblock %}
 {% block title %}ESODA | profile{% endblock %}
+{% block head %}
+    <link href="{% static 'css/domain.css' %}" rel="stylesheet">
+{% endblock %}
 {% block header %}
 {% with tab="profile" %}
   {% include "esoda/navbar.html" %}
@@ -47,7 +47,14 @@
                     <td class="col-xs-8 col-sm-9 col-md-9 domain-block domain-nopadding">
                       <div id="field{{i.id}}" class="domain-level-3" text="unexpand" style="max-height:40px; overflow:hidden;">
                         {% for j in i.nodes %}
-                          <label class="domain-item domain-checkbox domain-item-span"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}>{% ifequal j.type "conf"%}<span class="glyphicon glyphicon-file domain-icon" title="conference"></span>{%else%}<span class="glyphicon glyphicon-book domain-icon" title="journal"></span>{% endifequal %}<span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                          <label class="domain-item domain-checkbox domain-item-span">
+                            <input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}>
+                            {% ifequal j.type "conf"%}
+                              <span class="glyphicon glyphicon-file domain-icon" title="conference"></span>
+                            {%else%}
+                              <span class="glyphicon glyphicon-book domain-icon" title="journal"></span>
+                            {% endifequal %}
+                            <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
                         {% endfor %}
                       </div>
                     </td>
@@ -60,7 +67,10 @@
                       {% endif %}
                       <div id="field{{i.id}}" class="domain-level-3 domain-level-23" name="unexpand" style="max-height:40px; overflow:hidden;">
                         {% for j in i.nodes %}
-                          <label class="domain-item domain-checkbox domain-item-span1"><input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}><span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span></label>
+                          <label class="domain-item domain-checkbox domain-item-span1">
+                            <input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}>
+                            <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                          </label>
                         {% endfor %}
                       </div>
                     </td>
@@ -87,58 +97,60 @@
   var last_expand=[];
   var last_big=[];
   function aa(id){
-    var temp =document.getElementById("check"+id).checked;
+    var temp =$("#check"+id).prop("checked");
     var items = document.getElementsByClassName("checkchild"+id);
     for (var i = 0; i < items.length; ++i) {
         items[i].checked=temp;
     }
+    // $('.checkchild'+id).each(function (){
+    //   // alert($(this).val());
+    //   $(this).attr("checked", temp);
+    // });
   }
   function bb(id){
-    if(document.getElementById("secondleveltext"+id).style.color==""){
-      document.getElementById("field"+id).style="max-height:500px; overflow:hidden;"
-      document.getElementById("secondleveltext"+id).style.color="#63b7e6"
+    if($("#secondleveltext"+id).css('color')=='rgb(0, 0, 0)'){
+      $("#field"+id).css('max-height', "500px");
+      $("#secondleveltext"+id).css('color', "#63b7e6");
     }else{
-      document.getElementById("field"+id).style="max-height:40px; overflow:hidden;"
-      document.getElementById("secondleveltext"+id).style.color=""
+      $("#field"+id).css('max-height', "40px");
+      $("#secondleveltext"+id).css('color', "#000000");
     }
   }
   function cc(id) {
-    var items = document.getElementsByClassName("checkchild"+id);
     var childStatus = false;
-    for (var i = 0; i < items.length; ++i) {
-        childStatus = (childStatus || items[i].checked);
-    }
-    // alert(childStatus);
+    $('.checkchild'+id).each(function (){
+      childStatus = (childStatus || $(this).prop("checked"));
+    });
     document.getElementById("check"+id).checked = childStatus;
   }
   var search = function(e) {
     var pattern = $('#input-search').val();
     $.getJSON("{% url 'authentication:search' %}", {'target':pattern }, function(data){
       for(var i=0;i<last_expand.length;i++){ 
-        document.getElementById("field"+last_expand[i]).style="max-height:40px; overflow:hidden;";
-        document.getElementById("secondleveltext"+last_expand[i]).style.color=""
+        $("#field"+last_expand[i]).css('max-height', "40px");
+        $("#secondleveltext"+last_expand[i]).css('color', "#000000");
       } 
       for(var i=0;i<last_result.length;i++){
-        document.getElementById("checktext"+last_result[i]).style.color="";
+        $("#checktext"+last_result[i]).css('color', "#000000");
       }
       if(last_big[0]!=data.big[0]){
         $("#firstlevel"+last_big[0]).tab('show');
       }
       for(var i=0;i<last_big.length;i++){ 
         if($.inArray(last_big[i], data.big)==-1){
-          document.getElementById("firstleveltext"+last_big[i]).style="font-weight:500";
+          $("#firstleveltext"+last_big[i]).css('font-weight', "400");
         }
       }
       for(var i=0;i<data.expand.length;i++){ 
-        document.getElementById("field"+data.expand[i]).style="max-height:500px; overflow:hidden;"  ;
-        document.getElementById("secondleveltext"+data.expand[i]).style.color="#63b7e6";
+        $("#field"+data.expand[i]).css('max-height', "500px");
+        $("#secondleveltext"+data.expand[i]).css('color', "#63b7e6");
       } 
       for(var i=0;i<data.result.length;i++){ 
-        document.getElementById("checktext"+data.result[i]).style.color="red";
+        $("#checktext"+data.result[i]).css('color', "red");
       }
       $("#myTab a[href=\""+"#firstlevel"+data.big[0]+"\"]").tab('show');
       for(var i=0;i<data.big.length;i++){ 
-        document.getElementById("firstleveltext"+data.big[i]).style="font-weight:600";
+        $("#firstleveltext"+data.big[i]).css('font-weight', "600");
       }
       last_result=data.result;
       last_expand=data.expand;
