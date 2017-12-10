@@ -1504,16 +1504,6 @@ button.close:focus {
     margin-bottom:-5px;
 }
 
-.toast-success {
-    background-color: #63b7e6;
-}
-.toast-warning {
-    background-color: "red";
-}
-.toast-success a {
-    text-decoration: underline;
-}
-
 .form-text {
     font-size:12px;
     color: #4a4a4a;
@@ -1586,110 +1576,6 @@ button.close:focus {
     height: 40px;
     border-radius: 3px;
     background-color: #63b7e6;
-}
-.domain-main{
-    padding-top: 40px;
-}
-.domain-main .nav-pills a {
-    color: #000;
-    font-weight: 400;
-    text-decoration: none;
-}
-.domain-tab {
-    padding: 20px 20px 40px 20px;
-    background: #FFF;
-    text-align: left;
-}
-.domain-tab-pane{
-    padding: 30px 0px 80px 0px;
-    background: #FFF;
-}
-.domain-tab li.active a {
-    color:  #63b7e6;
-}
-.domain-block {
-    margin-top: -2px;
-    border-radius: 4px;
-    background: white;
-}
-.domain-level-1 {
-    height: 30px;
-}
-.domain-level-2 {
-    cursor:pointer;
-    padding: 5px 5px 10px 40px;
-    text-align:left;
-    font-weight: 400;
-    font-size: 16px
-}
-.domain-level-3 {
-    margin-top:-2px;
-    margin-right: 20px;
-    min-height: 32px;
-    padding:5px;
-    border:4px;
-    border-width: 4px;
-}
-.domain-level-23 {
-    padding-left:20px;
-}
-.domain-checkbox input {
-    border-radius: 50%;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    -o-appearance: none;
-    appearance: none;
-    position: relative;
-    top: 2px;
-    height: 16px;
-    width: 16px;
-    border: 1px solid #000;
-    color: #fff;
-    cursor: pointer;
-}
-.domain-btn {
-    background: #63b7e6;
-    float:right;
-    margin: 20px 30px 20px 20px;
-    border-radius: 0px;
-    width: 200px;
-}
-.domain-checkbox input:checked {
-    background: #63b7e6;
-    border: none;
-}
-.domain-checkbox input:checked::before {
-    height: 16px;
-    width: 16px;
-    position: absolute;
-    content: "\2714";
-    display: inline-block;
-    font-size: 10px;
-    text-align: center;
-    line-height: 16px;
-}
-.domain-checkbox input:checked::after {
-    background: #63b7e6;
-    content: '';
-}
-.domain-icon {
-    color:#b5b5b5;
-}
-.domain-item {
-    padding-bottom:10px;
-    margin-bottom:-5px;
-    width:120px;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-.domain-item-span span{
-    padding-left: 5px;
-    font-weight: 400;
-}
-.domain-item-span1 span{
-    padding-left: 8px;
 }
 .example-image {
     margin-left: auto;
