@@ -104,6 +104,7 @@ $(function () {
   });
   */
 
+  var auto = 0;
   $.widget( "custom.catcomplete", $.ui.autocomplete, {
     _create: function() {
       this._super();
@@ -137,6 +138,12 @@ $(function () {
     },
     _resizeMenu: function() {
       this.menu.element.outerWidth( $(".ui-autocomplete-input").outerWidth() );
+    },
+    _closeOnClickOutside: function( event ) {
+      if ( !this._isEventTargetInWidget( event ) ) {
+        this.close();
+        auto = 0;
+      }
     }
   });
   
@@ -264,11 +271,15 @@ $(function () {
     $('.wechat-qr').qrcode({render: 'canvas', width: 100, height: 100, text: window.location.href});
   });
 
-  // $(window).resize(function () {
-  //   $('#SearchBox').catcomplete('search');
-  // });
+  $(window).resize(function () {
+    if(auto == 1) {
+      $('#SearchBox').catcomplete('search'); 
+    }
+    // $('#SearchBox').catcomplete('close');
+  });
 
   $('#SearchBox').click(function() {
     $('#SearchBox').catcomplete('search');
-  })
+    auto = 1;
+  });
 });

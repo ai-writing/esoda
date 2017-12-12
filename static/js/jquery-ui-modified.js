@@ -5920,11 +5920,11 @@ $.widget( "ui.autocomplete", {
 			$.contains( menuElement, event.target );
 	},
 
-	_closeOnClickOutside: function( event ) {
-		if ( !this._isEventTargetInWidget( event ) ) {
-			this.close();
-		}
-	},
+	// _closeOnClickOutside: function( event ) {
+	// 	if ( !this._isEventTargetInWidget( event ) ) {
+	// 		this.close();
+	// 	}
+	// },
 
 	_appendTo: function() {
 		var element = this.options.appendTo;

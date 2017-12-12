@@ -26,7 +26,7 @@ $(function () {
 
   $(".cover").click( function() {
     $(".cover").hide();
-    $(".uncover").css('z-index','100'); 
+    $(".uncover").css('z-index','0'); 
   });
 
   $("#CollocationTab a").click(function (e) {
