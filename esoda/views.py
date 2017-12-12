@@ -6,7 +6,7 @@ import logging
 
 import time
 
-from .utils import notstar, papers_source_str, corpus_id2cids, convert_type2title, refine_query
+from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
@@ -265,7 +265,7 @@ def sentence_query(t, ref, i, dt, dbs, cids):
     for i in xrange(rlen):
         sentence = res['hits'][i]
         sr['sentence'].append({
-            'content': sentence['fields']['sentence'][0],
+            'content': cleaned_sentence(sentence['fields']['sentence'][0]),
             'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
             'heart_number': 129})
     return sr

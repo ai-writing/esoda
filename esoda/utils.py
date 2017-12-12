@@ -75,6 +75,10 @@ def notstar(p, q):
     return p if p != '*' else q
 
 
+def cleaned_sentence(s):
+	# eliminate all possibility of bad HTML in sentence to mark as safe
+	return s.replace('<', '< ').replace('< strong>', '<strong>').replace('< /strong>', '</strong>')
+
 def generate_source(year, title, authList, conference):
     source = ''
     # assert: should always be this case
