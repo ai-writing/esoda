@@ -362,8 +362,8 @@ a {
 .navbar-index .nav-pills > li.active > a:focus {
     color: #63B7e6;
     background-color: transparent;
-    padding-left: 22px;
-    padding-right: 22px;
+    padding-left: 15px;
+    padding-right: 15px;
     padding-bottom: 5px;
     border-bottom: 2px solid #63B7e6;
 }
@@ -904,6 +904,10 @@ button.close:focus {
 .btn-card {
     background-color: transparent;
     border-color: transparent;
+}
+
+.btn-card:focus {
+    outline-color: #63B7E6;
 }
 
 .caption-usage > h4 {

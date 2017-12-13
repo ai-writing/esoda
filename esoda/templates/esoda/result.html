@@ -261,7 +261,9 @@
         $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
           $(id + ' .colloc-result').mCustomScrollbar({
-            theme: 'dark'
+            theme: 'dark',
+            scrollInertia: 0,
+            mouseWheel: {preventDefault:true}
           })
           $(id + ' .colloc-usage:eq(0)').click();
         });
