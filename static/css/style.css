@@ -1007,11 +1007,6 @@ button.close:focus {
     padding-top: 10px;
 }
 
-#SearchDomain, #CountUsage {
-    font-weight: bold;
-    color: #666;
-}
-
 #CollocResults {
     margin: 10px 10px;
     margin-bottom: 5px;
@@ -1315,6 +1310,11 @@ button.close:focus {
     font-weight: 200;
 }
 
+.result-warning span {
+    font-weight: bold;
+    color: #666;
+}
+
 .result-table-cell {
     background-color: transparent;
     padding: 10px 25px;
@@ -1330,10 +1330,6 @@ button.close:focus {
 
 #Synonymous > span {
     padding: 0px 10px;
-}
-
-#CollocContent > .tab-pane.usage-pane{
-    padding-bottom: 10px;
 }
 
 .colloc-result {

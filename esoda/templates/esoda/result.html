@@ -19,7 +19,7 @@
           <div>
 
             <div class="result-warning">
-              当前个人领域为"<span id="SearchDomain">{{ r.domain|upper }}</span>"，结果共<span id="CountUsage"></span>句例句，在其他<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>个人领域</a>中搜索
+              当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>其他个人领域</a>中搜索
             </div>
 
             <div class="panel-group" role="tablist" aria-multiselectable="true">
@@ -30,7 +30,7 @@
             {% if r.synonymous %}
               <div class="panel panel-default uncover-syn">
                 <div class="uncover panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
-                  <ul class="nav nav-tabs nav-tabs-usage" id="UsageTab" role="tablist">
+                  <ul class="nav nav-tabs nav-tabs-usage" role="tablist">
                     <!--li role="presentation">
                       <a href="#{{ usage_label }}" role="tab" data-toggle="tab">{{ usage_title }}</a>
                     </li-->
@@ -45,7 +45,7 @@
                       <a href="#PhraseContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;常用短语</a>
                     </li>
                     {% endif %}
-                    {% if r.commonColloc%}
+                    {% if r.commonColloc %}
                     <li role="presentation">
                       <a href="#ColContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;常用搭配</a>
                     </li>
@@ -87,7 +87,8 @@
               </div> <!-- usage panel -->
             {% endif %}
 
-              <div class="panel panel-default uncover-colloc uncover-chi uncover-phrase">
+            {# {% if r.collocationList %} #}
+              <div class="panel panel-default uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
                 <div class="panel-heading uncover" role="tab" id="HeadingColloc">
                   <div class="panel-title-wrapper">
                     搭配
@@ -98,31 +99,28 @@
                   </div>
                 </div>
                 <div id="CollapseColloc" class="uncover panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
-                  {% if r.collocationList %}
-                    {% for collocation in r.collocationList %}
+                  <ul class="nav nav-tabs nav-tabs-collocation" role="tablist">
                     <li role="presentation">
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      {# <a href="#" id="not-limited-btn" role="tab">全部搭配</a> #}
+                      <a href="#CollocAll" role="tab" class="not-limited" data-toggle="tab" data="{{ q }}">全部搭配</a>
                     </li>
-                    {% endfor %}
-                  {% endif %}
+                  {% for collocation in r.collocationList %}
+                    <li role="presentation">
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                    </li>
+                  {% endfor %}
                 <!-- </ul> -->
                 <!-- <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist"> -->
-                    <li role="presentation" id="CollocationTab0">
-                      <a href="#" id="not-limited-btn" role="tab">全部搭配</a>
-                      <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab">{{ q }}</a>
-                    </li>
                   </ul>
-                  <div id="CollocContent" class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
-                  {% if r.collocationList %}
-                    {% for collocation in r.collocationList %}
+                  <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
+                  {% for collocation in r.collocationList %}
                     <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
-                    {% endfor %}
-                  {% endif %}
+                  {% endfor %}
                   </div>
                 </div>
               </div> <!-- collocation panel -->
+            {# {% endif %} #}
 
             </div> <!-- panel-group -->
 
@@ -200,91 +198,45 @@
       var curSelectedUsage;
       var REF = '{{ ref }}';
 
-      $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
-        if ($(this).attr('state') == 'selected') return;
-        e.preventDefault();
-        $("#ExampleEnd").hide();
-        $('#ManualLoad').hide();
-        $('#SentenceResult').empty();
-        $('#Loading').show();
-
-        $(this).attr('state', 'selected');
-        $(this).removeAttr('href');
-        if (curSelectedUsage) {
-          curSelectedUsage.attr('state', '');
-          curSelectedUsage.attr('href', '#');
-        }
-        curSelectedUsage = $(this);
-
-        // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
-        var type = $(this).text().replace(/ \(.*\)/, '');
-        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+      function searchAndFillSentences(params) {
         loadCount = 1;
         loading = 1;
         loaded = 0;
-
-        $.get("{% url 'sentences' %}", {t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt}, function(data) {
+        $.get("{% url 'sentences' %}", params, function(data) {
           $('#Loading').hide();
           $('#ManualLoad').hide();
           $("#SentenceResult").html(data);
-          if ($('#ExampleNumber').html() <= 10) {
+          if (Number($('#ExampleNumber').text()) <= 10) {
             $('#ExampleEnd').show();
             loaded = 1;
           }
           loading = 0;
         });
-      });
+      }
 
-      $('#CollapseColloc').on('click','#not-limited-btn',function(e) {
-        $('.not-limited').click();
-      })
-
-      $('#CollapseColloc').on('click', '.not-limited', function (e) {
+      $('.not-limited').click(function (e) {
         e.preventDefault();
-        if ($(this).parent().hasClass('disabled')) {
+        if ($(this).attr('aria-expanded') == 'true') {
           return;
         }
-        $(this).parent().addClass('disabled');
-        $("#CollocationTab li").removeClass('disabled');
-        $("#CollocationTab li").removeClass('active');
         $("#ExampleEnd").hide();
         $("#ManualLoad").hide();
         $('#SentenceResult').empty();
         $('#Loading').show();
 
-        var collocQ = $(this).text();
-        loadCount = 1;
-        loading = 1;
-        loaded = 0;
+        var query = $(this).attr('data');
 
-        // console.log(collocQ);
-        $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
-          $('#Loading').hide();
-          $('#ManualLoad').hide();
-          $("#SentenceResult").html(data);
-          $('#CountUsage').html($('#ExampleNumber').html());
-          if ($('#ExampleNumber').html() <= 10) {
-            $('#ExampleEnd').show();
-            loaded = 1;
-          }
-          loading = 0;
-        });
+        searchAndFillSentences({t: query, ref: REF, dt: 0});
       });
 
       $('.not-limited').click();
 
       $('.colloc-sub-btn').click(function(e) {
         e.preventDefault();
-        if ($(this).parent().hasClass('disabled')) {
+        if ($(this).attr('aria-expanded') == 'true') {
           return;
         }
-        $("#CollocationTab li").removeClass('disabled');
-        $("#CollocationTab0 li").removeClass('disabled');
-        $("#CollocationTab0 li").removeClass('active');
-        $(this).parent().addClass('disabled');
         var id = $(this).attr('href');
-        //var type = $(this).html();
         var type = $(this).attr('type');
         var type0 = type.replace(/ \(.*\) /g , ' ');
         var i, dt;
@@ -313,8 +265,27 @@
           })
           $(id + ' .colloc-usage:eq(0)').click();
         });
+
+      });
+
+      $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
+        e.preventDefault();
+        if ($(this).attr('state') == 'selected') return;
+        $("#ExampleEnd").hide();
+        $('#ManualLoad').hide();
+        $('#SentenceResult').empty();
+        $('#Loading').show();
+
+        $('.colloc-usage').removeAttr('state');
+        $(this).attr('state', 'selected');
+
+        // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
+        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
+        var type = $(this).text().replace(/ \(.*\)/, '');
+        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
         
-      })
+        searchAndFillSentences({t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt});
+      });
     } );
   </script>
 {% endblock %}

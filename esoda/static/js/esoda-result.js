@@ -2,13 +2,13 @@
 * Logic for esoda result page.
 */
 
-var loadCount = 1, loading = 0, loaded = 0;
+var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
 var keyword = window.location.search;
 
 $(function () {
   'use strict';
 
-  if( keyword.indexOf("&") >= 0) {
+  if( keyword.indexOf("&") >= 0) {    // TODO @xiaofei: should not test by words used in example
     $(".cover").show();
     if( keyword.indexOf("efficient") >= 0) {
       $(".uncover-syn .uncover").css('z-index','1500');
@@ -19,7 +19,7 @@ $(function () {
     if( keyword.indexOf("demand") >= 0) {
       $(".uncover-chi .uncover").css('z-index','1500');
     }
-        if( keyword.indexOf("effort") >= 0) {
+    if( keyword.indexOf("effort") >= 0) {
       $(".uncover-phrase .uncover").css('z-index','1500');
     }
   }
@@ -28,18 +28,6 @@ $(function () {
     $(".cover").hide();
     $(".uncover").css('z-index','0'); 
   });
-
-  $("#CollocationTab a").click(function (e) {
-    e.preventDefault();
-    $(this).tab("show");
-  });
-
-
-  $("#UsageTab a").click(function (e) {
-    e.preventDefault();
-    $(this).tab("show");
-  });
-
 
   // $( window ).scroll( function () {
   //   if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
@@ -106,7 +94,7 @@ $('#ManualLoad').click(function(e) {
     offset: {
       top: 20,
       bottom: function () {
-        return (this.bottom = $(".footer").outerHeight(true) + $("#BackToTopAffix").outerHeight(true) + 40)
+        return $(".footer").outerHeight(true) + $("#BackToTopAffix").outerHeight(true) + 40;
       }
     }
   });
@@ -115,7 +103,8 @@ $('#ManualLoad').click(function(e) {
     offset: {
       top: 0,
       bottom: function () {
-        return (this.bottom = $(".footer").outerHeight(true) + 20)
+        // TODO: fix position bugs on change of window length
+        return $(".footer").outerHeight(true) + 20;
       }
     }
   });
@@ -126,7 +115,7 @@ $('#ManualLoad').click(function(e) {
     $(e.target).toggleClass("glyphicon-star");
   };
 
-  $.clickChevron = function(e) {
+  $.clickChevron = function(e) {    // TODO: No need of this function, collpase.js will automatically handle
     $(e.target).toggleClass("glyphicon-chevron-down");
     $(e.target).toggleClass("glyphicon-chevron-up");
   }
