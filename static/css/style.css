@@ -35,6 +35,9 @@ a {
     .navbar-search {
         width: 53% !important;
     }
+    .navbar-default {
+        height: 60px;
+    }
 }
 
 @media (max-width: 1200px) and (min-width: 992px) {
@@ -54,9 +57,12 @@ a {
     .navbar-search {
         width: 53% !important;
     }
+    .navbar-default {
+        height: 60px;
+    }
 }
 
-@media (max-width: 992px) and (min-width: 768px) {
+@media (max-width: 992px) and (min-width: 767px) {
     #SearchBox{
         /*width: 420px;*/
     }
@@ -73,9 +79,12 @@ a {
     .navbar-search {
         width: 43% !important;
     }
+    .navbar-default {
+        height: 60px;
+    }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .fix-right-xs {
         padding-left: 85%;
     }
@@ -96,8 +105,15 @@ a {
     .navbar-index {
         margin-top: 0px !important;
     }
+    .navbar-header {
+        margin-bottom: -30px;
+    }
+    .navbar-default {
+        height: 166.5px;
+    }
     #SearchForm {
         width: 96%;
+        padding: 0px;
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
@@ -219,7 +235,6 @@ a {
 }
 
 .navbar-default {
-    height: 60px;
     background: #fff;
     border-color: #fff;
     margin-bottom: 10px;
@@ -422,6 +437,8 @@ a {
 .login {
     font-size: 12px;
     margin-top: 14px;
+    margin-right: 15px;
+    float: right;
 }
 
 .login .login-url {
