@@ -663,7 +663,7 @@ button.close:focus {
 
 .container-usage {
     color: #63B7E6;
-    margin-top: 100px;
+    margin-top: 89px;
 }
 
 .container-feature {
@@ -969,11 +969,6 @@ button.close:focus {
 .thumbnail-guide > img {
     max-width: 105px;
 }
-
-/*.thumbnail-guide > img:hover {
-    max-width: 105px;
-    box-shadow: 0 10px 20px;
-}*/
 
 .thumbnail-guide > a > img {
     max-width: 105px;
