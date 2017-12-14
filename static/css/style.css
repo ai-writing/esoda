@@ -123,9 +123,13 @@ a {
     width: 100%;
     /* Fixed height for body margin */
     height: 150px;
-    background: white;
+    /*background: white;*/
     color: #9b9b9b;
     font-size: 18px;
+    padding-top: 37px;
+
+    background: #E6EDED;
+    border: 1px solid #CACACA;
 }
 
 .footer hr {
@@ -183,7 +187,7 @@ a {
     text-align: center;
 }
 .esoda-brand-main {
-    width: 270px;
+    height: 57px;
     padding-bottom: 0px;
 }
 .esoda-brand-hr {
@@ -194,14 +198,20 @@ a {
 }
 .esoda-brand-subtitle {
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    letter-spacing: 0;
+    text-shadow: 0 0 5px rgba(0,0,0,0.20);
 }
 .esoda-tips {
     text-align: left;
     margin-top: 10px;
     margin-left: 20px;
     color: #fff;
-    font-size: 15px;
+    font-size: 16px;
+    opacity: 0.8;
+    font-family: PingFangSC-Regular;
+    letter-spacing: 0;
 }
 
 .user-image {
@@ -245,8 +255,9 @@ a {
 }
 
 .jumbotron {
-    padding-top: 150px;
-    padding-bottom: 156px;
+    height: 650px;
+    padding-top: 171px;
+/*    padding-bottom: 263px;*/
 }
 
 .btn {
@@ -276,7 +287,7 @@ a {
     color: #63B7E6;
 }
 
-#btn-read:hover, #btn-read:active,
+/*#btn-read:hover, #btn-read:active,
 #btn-read:focus, #btn-read:active:focus {
     background-color: #fff !important;
     border: none;
@@ -290,7 +301,7 @@ a {
     border: none;
     border-left: 1px solid #63B7E6;
     color: #63B7E6;
-}
+}*/
 
 .btn-search {
     color: #888;
@@ -311,28 +322,35 @@ a {
     font-size: 14px;
 }
 
+
 #btn-read {
     margin-top: 15px;
     margin-right: 5px;
-    border-radius: 5px;
-    border: 1px solid #fff;
-    font-size: 14px;
+    border-color: transparent;
+    background-color: transparent;
     width: 84px;
     height: 37px;
     padding-top: 4px;
     float: right;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #9B9B9B;
+    letter-spacing: 0;
 }
 
 #btn-unread {
     margin-top: 15px;
     margin-right: 5px;
-    border-radius: 5px;
-    border: 1px solid #fff;
-    font-size: 14px;
+    border-color: transparent;
+    background-color: transparent;
     width: 84px;
     height: 37px;
     padding-top: 4px;
     float: right;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #9B9B9B;
+    letter-spacing: 0;
     display: none;
 }
 
@@ -628,19 +646,24 @@ button.close:focus {
 
 .container-usage {
     color: #63B7E6;
-    margin-top: 80px;
+    margin-top: 100px;
 }
 
 .container-feature {
-    margin-top: 100px;
-    margin-bottom: 100px;
+    margin-top: 108px;
+    margin-bottom: 42px;
+}
+
+.back-message {
+    /*background: rgba(245,247,249,0.70);*/
+    border: 1px solid #979797;
 }
 
 .container-message {
-    padding-top: 40px;
+    padding-top: 51px;
     padding-bottom: 30px;
     font-size: 15px;
-    color: #fff;
+    color: #63B7E6;
 }
 
 .glyphicon-heart-empty{
@@ -658,20 +681,40 @@ button.close:focus {
 
 .message-box {
     font-size: 16px;
-    height: 82px;
+    height: 100px;
     text-align: left;
     color: #000;
     width: 100%;
     resize: none;
     overflow-y: scroll;
     border-color: white;
+    background: #F5F5F5;
+    box-shadow: inset 0 0 2px 0 rgba(0,0,0,0.20);
+    border-radius: 1px;
+}
+
+#MessageBtn:hover, #MessageBtn:active,
+#MessageBtn:focus, #MessageBtn:active:focus {
+    background-color: #fff !important;
+    border: none;
+    border-left: 1px solid #63B7E6;
+    color: #63B7E6;
 }
 
 #MessageBtn {
-    width: 84px;
-    height: 37px;
+    width: 170px;
+    height: 35px;
     padding-top: 4px;
+    margin-top: 15px;
+    border-radius: 5px;
     float: right;
+    background-color: #ffffff;
+
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #9B9B9B;
+    letter-spacing: 0;
+    border: 1px solid #9B9B9B;
 }
 
 .caption > p {
@@ -684,11 +727,11 @@ button.close:focus {
 }
 
 .back-introduction {
-    height: 160px;
-    margin-top: 70px;
-    padding-top: 12px;
+    height: 100px;
+    margin-top: 97px;
     padding-left: 50px;
-    background-color: #E0E0E0;
+    /*background-color: #E0E0E0;*/
+    background: rgba(230,237,237,0.60);
 }
 
 .line {
@@ -778,45 +821,58 @@ button.close:focus {
     /*border: 3px solid #63B7E6;*/
     text-align: center;
     margin: 0px;
-    padding-top: 19px;
-    padding-bottom: 19px;
+    padding-top: 24px;
+    padding-bottom: 24px;
     padding-right: 0px;
     padding-left: 0px;
 }
 
 .col-introduction > h3 {
-    color: #000;
-    font-size: 25px;
+    font-family: PingFangSC-Medium;
+    font-size: 24px;
+    color: #333333;
+    letter-spacing: 0;
+    margin-top: 0px;
+    margin-bottom: 6px;
 }
 
 .col-introduction > p {
-    color: #616161;
+/*    color: #616161;
     font-size: 15px;
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
-    font-weight: 500;
+    font-weight: 500;*/
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #9D9D9D;
+    letter-spacing: 0;
+    margin-bottom: 0px;
 }
 
 .col-feature {
-    margin-bottom: 20px;
+    margin-bottom: 78px;
 }
 
 .col-feature-img > img {
-    width: 135%;
-    max-width: 128px;
+    width: 100%;
+    max-width: 105px;
 }
 
 .col-feature-intro > h4 {
-    margin-bottom: 20px;
-    font-size: 18px;
+    margin-top: 0px;
+    margin-bottom: 7px;
+    font-family: PingFangSC-Medium;
+    font-size: 20px;
+    color: #4A4A4A;
+    letter-spacing: 0;
 }
 
 .col-feature-intro > p {
     margin: 0 0;
-    color: #9b9b9b;
-    font-family: PingFangSC, Microsoft Yahei, HeitiSC;
-    font-weight: 200;
-    margin-top: 30px;
+    font-family: PingFangSC-Light;
     font-size: 13px;
+    color: #9B9B9B;
+    letter-spacing: 0;
+    max-width: 300px;
 }
 
 .feedback-title {
@@ -894,11 +950,16 @@ button.close:focus {
 }
 
 .thumbnail-guide > img {
-    width: 128px;
+    max-width: 105px;
 }
 
+/*.thumbnail-guide > img:hover {
+    max-width: 105px;
+    box-shadow: 0 10px 20px;
+}*/
+
 .thumbnail-guide > a > img {
-    width: 128px;
+    max-width: 105px;
 }
 
 .btn-card {
@@ -911,13 +972,20 @@ button.close:focus {
 }
 
 .caption-usage > h4 {
-    font-size: 18px;
+    font-family: PingFangSC-Medium;
+    font-size: 20px;
+    color: #4A4A4A;
+    letter-spacing: 0;
 }
 
 .caption-usage > p {
+/*    margin-left: -9px;
+    margin-right: -9px;*/
+    font-family: PingFangSC-Light;
     font-size: 13px;
-    margin-left: -9px;
-    margin-right: -9px;
+    color: #9B9B9B;
+    letter-spacing: 0;
+    text-align: justify;
 }
 
 .col-comments {

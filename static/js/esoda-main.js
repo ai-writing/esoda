@@ -142,6 +142,7 @@ $(function () {
     _closeOnClickOutside: function( event ) {
       if ( !this._isEventTargetInWidget( event ) ) {
         this.close();
+        $('.jumbotron').css("padding-top","171px");
         auto = 0;
       }
     }
