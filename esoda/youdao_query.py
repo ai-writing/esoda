@@ -2,6 +2,9 @@ import xml.dom.minidom
 import requests, logging
 from .utils import has_cn
 
+import random
+import hashlib
+
 logger = logging.getLogger(__name__)
 # TODO: install requests_cache
 
@@ -55,13 +58,43 @@ def youdao_search(q0, q):
     dictionary['cn'] = cn
     logger.info('youdao_search: "%s", "%s" -> %s', q0, q, repr(dictionary))
     return dictionary
-
+'''
 YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key=205873295&type=data&doctype=json&version=1.2&q=%s'
 
 def youdao_translate(q):
     r = {}
     try:
         r = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=10).json()
+    except Exception:
+        logger.exception('Failed in Youdao translate "%s"', q)
+    translated = {
+        'query': r.get('query', q),
+        'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
+        'cn': has_cn(q)
+    }
+    logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
+    return translated
+'''
+
+def generate_url(q):
+    appKey = '651e902b582bea76'
+    secretKey = '09iOuYCan9iR6OhnnOkROoNYbSkJ6elp'
+    url = 'http://openapi.youdao.com/api'
+    fromLang = 'auto'
+    toLang = 'auto'
+    salt = random.randint(1, 65536)
+    sign = appKey + q + str(salt) + secretKey
+    m1 = hashlib.md5()
+    m1.update(sign.encode('utf-8'))
+    sign = m1.hexdigest()
+    translate_url = url + '?appKey=' + appKey + '&q=' + q + '&from=' + fromLang + '&to=' + toLang + '&salt=' + str(salt) + '&sign=' + sign
+    return translate_url
+
+def youdao_translate(q):
+    r = {}
+    try:
+        translate_url = generate_url(q)
+        r = requests.get(translate_url, timeout=10).json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
     translated = {
