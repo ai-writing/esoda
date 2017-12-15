@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'', include('authentication.urls')),
     url(r'', include('common.urls')),
     url(r'', include('esoda.urls')),
+    url(r'', include('monitor.urls')),
 ]

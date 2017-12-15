@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'registration',
     'common',
     'esoda',
+    'monitor',
     'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',

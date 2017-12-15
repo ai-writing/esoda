@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Monitor{% endblock %}
+
+
+{% block content %}
+<div class = "content-place">
+    <p class = "update-time">数据库的最近更新时间为 {{ update_time }}</p>
+    <div class = "table-responsive">
+        <table class = "table table-striped table-bordered" border = "1">
+            <thead>
+            <th nowrap = "nowrap">统计信息</th>
+            <th nowrap = "nowrap">会议/期刊数</th>
+            <th nowrap = "nowrap">已下载</th>
+            <th nowrap = "nowrap">总数</th>
+            <th nowrap = "nowrap">下载比例</th>
+            </thead>
+            <tbody>
+                <tr><td>CCF A</td><td>{{ ccfa|length }}</td><td>{{ an }}</td><td>{{ aN }}</td><td>{{ ap|floatformat:2 }} %</td></tr>
+                <tr><td>CCF B</td><td>{{ ccfb|length }}</td><td>{{ bn }}</td><td>{{ bN }}</td><td>{{ bp|floatformat:2 }} %</td></tr>
+            </tbody>
+        </table>
+        <p class = "table-annotation">点击表头进行排序</p>
+       <table class = "table table-striped table-bordered" border = "1">
+         <thead>
+            <tr>
+             <th nowrap = "nowrap">会议名称</th>
+             <th nowrap = "nowrap">类别</th>
+             <th nowrap = "nowrap">领域</th>
+             <th nowrap = "nowrap">影响因子</th>
+             <th nowrap = "nowrap">已下载</th>
+             <th nowrap = "nowrap">总数</th>
+             <th nowrap = "nowrap">下载比例</th>
+             <th nowrap = "nowrap">句子数</th>
+           </tr>
+         </thead>
+         <tbody>
+        {% for v in ccfa %}
+            <tr><td>{{ v.name }}</td><td>CCFA</td><td>{{ v.field }}</td><td>{{ v.impactFactor|floatformat:2 }}</td><td>{{ v.n }}</td><td>{{ v.N }}</td><td>{{ v.p|floatformat:2 }} %</td><td>{{ v.senNum }}</td></tr>
+        {% endfor %}
+        {% for v in ccfb %}
+            <tr><td>{{ v.name }}</td><td>CCFB</td><td>{{ v.field }}</td><td>{{ v.impactFactor|floatformat:2 }}</td><td>{{ v.n }}</td><td>{{ v.N }}</td><td>{{ v.p|floatformat:2 }} %</td><td>{{ v.senNum }}</td></tr>
+        {% endfor %}
+         </tbody>
+       </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type = "text/javascript" language = "javascript">
+    $(document).on('click', 'th', function(){
+        var table = $(this).parents('table').eq(0);
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
+        this.asc = !this.asc;
+        if (!this.asc){ rows = rows.reverse(); }
+        table.children('tbody').empty().html(rows);
+    });
+    function comparer(index) {
+        return function(a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index);
+            return $.isNumeric(valA) && $.isNumeric(valB) ?
+                valA - valB : valA.localeCompare(valB);
+        };
+    }
+    function getCellValue(row, index){
+        return $(row).children('td').eq(index).text();
+    }
+</script>
+{% endblock %}
