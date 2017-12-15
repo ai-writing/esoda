@@ -337,35 +337,22 @@ a {
     font-size: 14px;
 }
 
-
-#btn-read {
+.read .btn {
     margin-top: 15px;
     margin-right: 5px;
-    border-color: transparent;
-    background-color: transparent;
-    width: 84px;
+    /*border-color: transparent;*/
+    background-color: transparent !important;
+    width: 84px !important;
     height: 37px;
     padding-top: 4px;
     float: right;
     font-family: PingFangSC-Regular;
     font-size: 16px;
-    color: #9B9B9B;
+    color: #9B9B9B !important;
     letter-spacing: 0;
 }
 
 #btn-unread {
-    margin-top: 15px;
-    margin-right: 5px;
-    border-color: transparent;
-    background-color: transparent;
-    width: 84px;
-    height: 37px;
-    padding-top: 4px;
-    float: right;
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #9B9B9B;
-    letter-spacing: 0;
     display: none;
 }
 
@@ -608,7 +595,13 @@ button.close:focus {
     font-size: 18px;
 }
 
+#SearchBar .glyphicon-search {
+    font-size: 27px !important;
+    font-weight: lighter;
+}
+
 .glyphicon-search {
+    color: #63B7E6; 
     font-size: 18px;
 }
 
@@ -725,12 +718,11 @@ button.close:focus {
     margin-top: 15px;
     border-radius: 5px;
     float: right;
-    background-color: #ffffff;
-
     font-family: PingFangSC-Regular;
     font-size: 16px;
     color: #9B9B9B;
     letter-spacing: 0;
+    background-color: #ffffff;
     border: 1px solid #9B9B9B;
 }
 
@@ -970,9 +962,9 @@ button.close:focus {
     max-width: 105px;
 }
 
-.thumbnail-guide > a > img {
+/*.thumbnail-guide > a > img {
     max-width: 105px;
-}
+}*/
 
 .btn-card {
     background-color: transparent;

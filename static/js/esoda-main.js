@@ -276,10 +276,10 @@ $(function () {
     if(auto == 1) {
       $('#SearchBox').catcomplete('search'); 
     }
-    // $('#SearchBox').catcomplete('close');
   });
 
   $('#SearchBox').click(function() {
+    $('.jumbotron').css("padding-top","64px");
     $('#SearchBox').catcomplete('search');
     auto = 1;
   });
