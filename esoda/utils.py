@@ -3,6 +3,7 @@ from .paper import mongo_get_objects, DblpPaper
 import re
 import string
 import logging
+import difflib
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,19 @@ for i in range(21):
     count-=1
     for j in CORPUS[str(i)]:
         CORPUS2ID.append(j)
+
+def res_refine(res):
+	# Delete the one of the sentences that similarity > 0.7
+	r = []
+	for i in xrange(len(res['sentence'])-1):
+		a = res['sentence'][i]['content']
+		b = res['sentence'][i+1]['content']
+		diff_ratio = difflib.SequenceMatcher(None,a,b).ratio()
+		if diff_ratio < 0.7 :
+			r.append(res['sentence'][i])
+	r.append(res['sentence'][len(res['sentence'])-1])
+	res['sentence'] = r
+	return res
 
 def refine_query(q):
     # Note the difference between str.translate and unicode.translate
