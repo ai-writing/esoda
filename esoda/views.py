@@ -208,10 +208,11 @@ def get_usage_list(t, ref, i, dt, dbs, cids):
 
 def get_collocations(clist, qt, i, dbs, cids):
     t, d = list(qt), (qt[i], qt[i + 1])
+    cnt = 0
     del t[i]
     del t[i]
     resList = EsAdaptor.collocation(t, d, dbs, cids)
-    t = list(t)
+    nt = list(t)
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
     for j, p in enumerate(resList):
@@ -219,10 +220,19 @@ def get_collocations(clist, qt, i, dbs, cids):
             qt[i], qt[i + 1] = qt[i + 1], qt[i]
         if not p:
             continue
+        if '*' in qt:
+            tt = qt[:]
+            tt.remove('*')
+            res = EsAdaptor.search(tt, [], tt, dbs, cids, 50)
+            cnt = min(50, len(res['hits']) if 'hits' in res else 0)
+        else:
+            dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
+            cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-            'title' : convert_type2title(pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]))
+            'title' : convert_type2title(pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1])) + '(' + str(cnt) + ')',
+            'count' : cnt
             # 'usageList': [],
         })
 
