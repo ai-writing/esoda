@@ -33,42 +33,38 @@
       <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">NOTE: You are running in DEBUG mode.</div>
     {% endif %}
     {% block header %}
-      <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
-          <div class="navbar-header">
-<!--             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button> -->
-            <a class="navbar-brand" href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"></a>
-          </div>
-          <div id="navbar" class="navbar-index result-index">
-            <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search" action="{% url 'esoda' %}">
-              <div id="ResultSearchBar" class="input-group full-width">
-                <span class="input-group-btn">
-                  <button class="btn-navbar-search" type="submit">
-                    <span class="glyphicon glyphicon-search"></span>
-                  </button>
-                </span>
-                <input type="text" id="SearchBox" class="navbar-search-box form-control result-search" placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}" onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
-              </div>
-            </form>
-          {% if not user.is_authenticated %}
-            <ul class="nav navbar-nav navbar-right result-login">
-              <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请<span class="login-url">登录</span></a></li>
-            </ul>
-          {% else %}
-            <ul class="nav navbar-nav navbar-right welback">
-              <li><a href="{% url 'auth_password_change' %}" class="navbar-avatar"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
-              <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
-              <li><a href="{% url 'auth_logout' %}">登出</a></li>
-            </ul>
-          {% endif %}
-          </div><!--/.navbar-collapse -->
-        </div>
-      </nav>
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'esoda' %}"><img src="{% static 'img/logo_2.png' %}"></a>
+    </div>
+    <div id="navbar" class="navbar-index navbar-collapse collapse">
+      {% if not user.is_authenticated %}
+      <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请<span class="login-url">登录</span></a></li>
+      </ul>
+      {% else %}
+      <ul class="indexback nav navbar-nav navbar-right">
+        <li><a href="{% url 'auth_password_change' %}" class="navbar-avatar"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
+        <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a></li>
+        <li><a href="/logout">登出</a></li>
+      </ul>
+      {% endif %}
+      <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
+        <li role="presentation" {% if tab == "index" %}class="active"{% endif %}><a role="tab" href="{% url 'esoda' %}">主页</a></li>
+        <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}><a role="tab" href="{% url 'guide' %}">搜搭教程</a></li>
+        <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
+        <li role="presentation" {% if tab == "profile" %}class="active"{% endif %}><a role="tab" {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>个人领域</a></li>
+      </ul>
+    </div><!--/.navbar-collapse -->
+  </div>
+</nav>
     {% endblock %}
 
     <div class="modal fade" id="ModalLogin"></div>

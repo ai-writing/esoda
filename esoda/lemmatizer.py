@@ -26,3 +26,5 @@ def lemmatize(s):
         ll = [l.lower() for l in ll]
 
     return ll, ref
+
+lemmatize('checking')
