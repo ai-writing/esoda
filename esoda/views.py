@@ -86,8 +86,9 @@ def esoda_view(request):
 
     r['collocationList'] = collocation_list(qt, dbs, cids)
 
-    if len(qt) == 1:
-        r['synonymous'] = synonyms(qt[0])[:10]
+    r['synonymous'] = []
+    for t in qt:
+        r['synonymous'].append({t:synonyms(t)[:10]})
 
     suggestion = {
         'relatedList': [
@@ -223,8 +224,8 @@ def get_collocations(clist, qt, i, dbs, cids):
         if '*' in qt:
             tt = qt[:]
             tt.remove('*')
-            res = EsAdaptor.search(tt, [], tt, dbs, cids, 50)
-            cnt = min(50, len(res['hits']) if 'hits' in res else 0)
+            res = EsAdaptor.search(tt, [], tt, dbs, cids, 10000)
+            cnt = len(res['hits']) if 'hits' in res else 0
         else:
             dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
             cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
