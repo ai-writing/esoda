@@ -27,7 +27,7 @@
     </form>
   </div>
   <div class="result-page">
-    <div class="cover"></div>
+    <!-- <div class="cover"></div> -->
     <div class="container">
       <div class="row">
         <div class="col-lg-2 col-md-2 col-sm-3">
@@ -35,28 +35,21 @@
             <div id="SidebarAffix" class="affix" data-spy="affix">
               <div class="panel-group">
                 <div class="panel panel-default">
-                  <div class="panel-heading">
-                    同义替换
-                    <span id="loadMore" class="list-btn">+</span>
-                    <span id="showLess" class="list-btn">-</span>
-                  </div>
-                  <ul class="list-group synList">
-                    <li class="list-group-item">
-                      <a data="{{ q }}">{{ q }}</a>
-                    </li>
-                    {% if r.synonymous %}
-                      {% for syn in r.synonymous %}
-                        <li class="list-group-item"><a href="{% url 'esoda' %}?q={{ syn }}">{{ syn }}</a></li>
+                  {% if r.synonymous %}
+                    {% for syn in r.synonymous %}
+                      {% for key, value in syn.items %}
+                        <div class="panel-subheading">{{ key }}
+                          <span id="loadMore" class="list-btn">+</span>
+                          <span id="showLess" class="list-btn">-</span>
+                        </div>
+                        <ul class="list-group synList">
+                          {% for v in value %}
+                            <li class="list-group-item"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
+                          {% endfor %}
+                        </ul>
                       {% endfor %}
-                    {% endif %}
-                  </ul>
-                  <!-- <div class="panel-subheading"></div> -->
-                  <script type="text/javascript">
-                    for(var i=1;i<3;i++) {
-                      document.write('<div class="panel-subheading">'+i+'. 单词'+i+'</div><ul class="list-group"><li class="list-group-item"><a>单词'+i+'替换词</a></li></ul>');
-                      document.close();
-                    }
-                  </script>
+                    {% endfor %}
+                  {% endif %}
                 </div>
               </div>
             </div>
