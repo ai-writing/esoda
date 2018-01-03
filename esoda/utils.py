@@ -33,17 +33,16 @@ for i in range(21):
         CORPUS2ID.append(j)
 
 def res_refine(res):
-	# Delete the one of the sentences that similarity > 0.7
-	r = []
-	for i in xrange(len(res['sentence'])-1):
-		a = res['sentence'][i]['content']
-		b = res['sentence'][i+1]['content']
-		diff_ratio = difflib.SequenceMatcher(None,a,b).ratio()
-		if diff_ratio < 0.7 :
-			r.append(res['sentence'][i])
-	r.append(res['sentence'][len(res['sentence'])-1])
-	res['sentence'] = r
-	return res
+    # Delete the one of the sentences that similarity > 0.7
+    if res['sentence']:
+        r = []
+        r.append(res['sentence'][0])
+        for i in res['sentence']:
+            diff_ratio = difflib.SequenceMatcher(None,r[-1]['content'],i['content']).ratio()
+            if diff_ratio < 0.7:
+            	r.append(i)
+    res['sentence'] = r
+    return res
 
 def refine_query(q):
     # Note the difference between str.translate and unicode.translate
