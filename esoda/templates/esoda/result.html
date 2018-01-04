@@ -11,7 +11,7 @@
 
 {% block content %}
 
-  <div id="resultSearch">
+<!--   <div id="resultSearch">
     <form id="SearchForm" class="form-horizontal" role="search" action="{% url 'esoda' %}">
       <div class="input-group">
         <input type="text" id="SearchBox" class="navbar-search-box form-control result-search" placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}" onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
@@ -25,7 +25,7 @@
         当前个人领域为“<span>{{ r.domain|upper }}</span>” <a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>修改</a>
       </div>
     </form>
-  </div>
+  </div> -->
   <div class="result-page">
     <!-- <div class="cover"></div> -->
     <div class="container">
@@ -63,80 +63,27 @@
 
         <div class="col-lg-10 col-md-10 col-sm-9 result-main">
           <div>
+            <!-- <div class="result-warning">当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>其他个人领域</a>中搜索</div> -->
             <div class="panel-group" role="tablist" aria-multiselectable="true">
             {% if dictionary.explanationList %}
               {% include "esoda/dictionary_result.html" %}
-            {% endif %}
-            
-            {% if r.synonymous %}
-              <div class="panel panel-default uncover-syn hidden">
-                <div class="uncover panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
-                  <ul class="nav nav-tabs nav-tabs-usage" role="tablist">
-                    {% if r.synonymous %}
-                    <li role="presentation" class="active">
-                      <a href="#SynContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;同义表达</a>
-                    </li>
-                    {% endif %}
-                    {% comment %}
-                    {% if r.phrase %}
-                    <li role="presentation">
-                      <a href="#PhraseContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;常用短语</a>
-                    </li>
-                    {% endif %}
-                    {% if r.commonColloc %}
-                    <li role="presentation">
-                      <a href="#ColContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;常用搭配</a>
-                    </li>
-                    {% endif %}
-                    {% endcomment %}
-                  </ul>
-                  <div id="UsageContent" class="tab-content row" style="margin-left: 10px">
-                    {% if r.synonymous %}
-                    <div role="tabpanel" class="tab-pane fade active in" id="SynContent">
-                      <div class="usage-panel-content">
-                        {% for syn in r.synonymous %}
-                        <a href="{% url 'esoda' %}?q={{ syn }}">{{ syn }}</a>&nbsp;&nbsp;
-                        {% endfor %}
-                      </div>
-                    </div>
-                    {% endif %}
-                    {% if r.phrase %}
-                    <div role="tabpanel" class="tab-pane fade" id="PhraseContent">
-                      <div class="usage-panel-content">
-                        {% for phr in r.phrase %}
-                        <a href="{% url 'esoda' %}?q={{ phr }}">{{ phr }}</a>
-                        {% if not forloop.last %},{% endif %}&nbsp;
-                        {% endfor %}
-                      </div>
-                    </div>
-                    {% endif %}
-                    {% if r.commonColloc %}
-                    <div role="tabpanel" class="tab-pane fade" id="ColContent">
-                      <div class="usage-panel-content">
-                        {% for ccol in r.commonColloc %}
-                        <a href="{% url 'esoda' %}?q={{ ccol }}">{{ ccol }}</a>
-                        {% if not forloop.last %},{% endif %}&nbsp;
-                        {% endfor %}
-                      </div>
-                    </div>
-                    {% endif %}
-                  </div>
-                </div>
-              </div> <!-- usage panel -->
             {% endif %}
 
             {# {% if r.collocationList %} #}
               <div class="uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
                 <div id="CollapseColloc" class="uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
                   <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11" role="tablist">
-                    <li role="presentation">
-                      {# <a href="#" id="not-limited-btn" role="tab">全部搭配</a> #}
-                      <a href="#CollocAll" role="tab" class="not-limited colloc-sub-btn" data-toggle="tab" data="{{ q }}">全部搭配</a>
-                    </li>
                   {% for collocation in r.collocationList %}
-                    <li role="presentation">
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
-                    </li>
+                    {% if forloop.counter < 2 %}
+                      <li role="presentation">
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" id="first" role="tab" data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      </li>
+                    {% endif %}
+                    {% if forloop.counter > 1 %}
+                      <li role="presentation">
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      </li>
+                    {% endif %}
                   {% endfor %}
                   </ul>
                   <div class="tab-content hidden">
@@ -225,7 +172,7 @@
       });
 
       size_li_col = $(".colList li").size();
-      y=3;
+      y=2;
       $('.colList li:lt('+y+')').show();
       $('#colMore').click(function () {
           y= (y+6 <= size_li_col) ? y+6 : size_li_col;
@@ -234,28 +181,28 @@
           $('#colLess').show();
       });
       $('#colLess').click(function () {
-          y=(y-6<0) ? 3 : y-6;
+          y=(y-6<0) ? 2 : y-6;
           $('.colList li').not(':lt('+y+')').hide();
           $('#colLess').hide();
           $('#colMore').show();
       });
 
-      $('.not-limited').click(function (e) {
-        e.preventDefault();
-        if ($(this).attr('aria-expanded') == 'true') {
-          return;
-        }
-        $("#ExampleEnd").hide();
-        $("#ManualLoad").hide();
-        $('#SentenceResult').empty();
-        $('#Loading').show();
+      // $('.not-limited').click(function (e) {
+      //   e.preventDefault();
+      //   if ($(this).attr('aria-expanded') == 'true') {
+      //     return;
+      //   }
+      //   $("#ExampleEnd").hide();
+      //   $("#ManualLoad").hide();
+      //   $('#SentenceResult').empty();
+      //   $('#Loading').show();
 
-        var query = $(this).attr('data');
+      //   var query = $(this).attr('data');
 
-        searchAndFillSentences({t: query, ref: REF, dt: 0});
-      });
+      //   searchAndFillSentences({t: query, ref: REF, dt: 0});
+      // });
 
-      $('.not-limited').click();
+      // $('.not-limited').click();
 
       $('.colloc-sub-btn').click(function(e) {
         e.preventDefault();
@@ -293,8 +240,9 @@
           })
           $(id + ' .colloc-usage:eq(0)').click();
         });
-
       });
+
+      $('#first').click();
 
       $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
         e.preventDefault();

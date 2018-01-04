@@ -24,17 +24,20 @@ a {
         /*width: 496px;*/
     }
     .navbar-brand {
-        margin-top: 0px;
+        margin-top: 20px;
         width: 200px;
     }
     .navbar-brand>img {
-        /*margin-top: -70px;*/
+        margin-top: -70px;
     }
     .input-group-lg>.input-group-btn>.btn {
         width: 80px;
     }
     .navbar-search {
         width: 53% !important;
+    }
+    .navbar-default {
+        height: 60px;
     }
     .result-main {
         padding-left: 80px;
@@ -49,14 +52,17 @@ a {
         width: 80px;
     }
     .navbar-brand {
-        margin-top: 0px;
+        margin-top: 20px;
         width: 200px;
     }
     .navbar-brand>img {
-        /*margin-top: -70px;*/
+        margin-top: -70px;
     }
     .navbar-search {
         width: 53% !important;
+    }
+    .navbar-default {
+        height: 60px;
     }
     .result-main {
         padding-left: 80px;
@@ -71,14 +77,17 @@ a {
         width: 80px;
     }
     .navbar-brand {
-        margin-top: 0px;
+        margin-top: 20px;
         width: 170px;
     }
     .navbar-brand>img {
-        /*margin-top: -57px;*/
+        margin-top: -57px;
     }
     .navbar-search {
         width: 43% !important;
+    }
+    .navbar-default {
+        height: 60px;
     }
     .result-main {
         padding-left: 44px;
@@ -97,19 +106,25 @@ a {
         padding-top: 10px;
     }
     .navbar-brand {
-        margin-top: 0px;
+        margin-top: 20px;
         width: 170px;
     }
     .navbar-brand>img {
-        /*margin-top: -60px;*/
+        margin-top: -60px;
     }
     .navbar-index {
         margin-top: 0px !important;
     }
+    .navbar-header {
+        margin-bottom: -30px;
+    }
+    .navbar-default {
+        height: 166.5px;
+    }
     #SearchForm {
         width: 96%;
-/*        margin-left: 0 !important;
-        margin-right: 0 !important;*/
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
     .result-main {
         padding-left: 15px;
@@ -192,8 +207,7 @@ a {
 }
 
 #navbar.navbar-collapse {
-    /*background-color: rgba(255, 255, 255, 0.9);*/
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .esoda-brand {
@@ -233,11 +247,10 @@ a {
 }
 
 .navbar-default {
-    height: 70px;
-    /*background: #fff;*/
-    background: #3C3C3C;
-    /*border-color: #fff;*/
-    margin-bottom: 0px;
+    background: #fff;
+    border-color: #fff;
+    /*border-color: #63B7E6;*/
+    margin-bottom: 10px;
 }
 
 .navbar-index {
@@ -253,29 +266,15 @@ a {
     padding-bottom: 12.5px !important;
 }
 
-#resultSearch {
-    /*background: rgba(245,247,249,0.80);*/
-    background-color: #DDD;
-    box-shadow: 0 2px 2px 0 #D5D5D5;
-    padding-top: 35px;
-    padding-bottom: 5px;
-    width: 100%;
-}
-
-#resultSearch > #SearchBox {
+#ResultSearchBar > #SearchBox {
     margin-left: -30px;
     padding-left: 32px;
-    background-color: transparent;
-    height: 50px;
+    background-color: #fff;
+    height: 44px;
 }
 
-#resultSearch .input-group {
-    background-color: #ffffff;
-    border: 1px solid #63B7E6;
-}
-
-#resultSearch #SearchForm {
-    max-width: 500px !important;
+#ResultSearchBar .input-group-btn {
+    width: 32px;
 }
 
 .container-navbar {
@@ -383,9 +382,8 @@ a {
 .navbar-index .nav-pills > li > a {
     border-radius: 0;
     padding: 15px;
+    color: #9b9b9b;
     /*font-family: PingFangSC-Regular;*/
-    color: #FFFFFF;
-    letter-spacing: 0;
 }
 
 .nav>li>a:hover {
@@ -442,7 +440,7 @@ a {
     margin-top: 14px;
     margin-right: 15px;
     float: right;
-    color: #fff !important;
+    /*color: #fff !important;*/
     /*font-family: PingFangSC-Regular;*/
 }
 
@@ -1142,7 +1140,8 @@ button.close:focus {
 .result-page {
     /*background-color: #f5f5f9;*/
     background-color: #fff;
-    padding-top: 20px;
+    /*padding-top: 20px;*/
+    padding-top: 70px; 
     padding-bottom: 40px;
 }
 
@@ -1150,6 +1149,7 @@ button.close:focus {
     /*text-align: center;*/
     width: 180px;
     margin-left: -15px;
+    margin-top: 5px;
     border: 1px solid #42A5F5;
     box-shadow: 2px 2px 2px 0 
     background-color: #fff;
@@ -1418,7 +1418,7 @@ button.close:focus {
 }
 
 .colloc-sub-btn {
-    width: 166px;
+    width: 270px;
     height: 30px;
     padding: 6px 15px !important;
     margin-right: 30px !important;
@@ -1474,7 +1474,7 @@ button.close:focus {
 }
 
 .result-warning {
-    padding: 10px 0px;
+    padding: 0px 0px;
     color: #4a4a4a;
     font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
     font-weight: 200;
