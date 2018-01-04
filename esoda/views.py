@@ -3,9 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
-
 import time
-
 from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
@@ -118,6 +116,39 @@ def esoda_view(request):
     return render(request, 'esoda/result.html', info)
 
 
+def synonymous_view(request):
+    t = request.GET.get('q', '').split()
+    i = int(request.GET.get('i', '0'))
+    dt = request.GET.get('dt', '0')
+    dt = 2
+    dbs, cids = get_cids(request.user)
+    cnt = 0
+
+    nt = list(t)
+    del nt[i]
+    del nt[i]
+    nnt = nt[:]
+
+    synList = []
+    for j in xrange(len(t)):
+        for syn in synonyms(t[j])[:10]:
+            d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
+            nt = nnt
+            if j == i:
+                d = [{'dt': dt, 'l1': syn, 'l2': t[i + 1]}]
+            elif j == i+1:
+                d = [{'dt': dt, 'l1': t[i], 'l2': syn}]
+            else:
+                nt = [syn if x == t[j] else x for x in nt]
+            cnt = EsAdaptor.count(nt, d, dbs, cids)['hits']['total']
+            if cnt:
+                synList.append({t[j]:{'syn':syn,'cnt':cnt}})        
+    info = {
+        'synList': synList
+    }
+    return render(request, 'esoda/synonymous_result.html', info)
+
+
 def sentence_view(request):
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
@@ -217,22 +248,21 @@ def get_collocations(clist, qt, i, dbs, cids):
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
     for j, p in enumerate(resList):
-        if j == 4:
-            qt[i], qt[i + 1] = qt[i + 1], qt[i]
+        if j >= 4:
+            break
         if not p:
             continue
         if '*' in qt:
             tt = qt[:]
             tt.remove('*')
-            res = EsAdaptor.search(tt, [], tt, dbs, cids, 10000)
-            cnt = len(res['hits']) if 'hits' in res else 0
+            cnt = 0
         else:
             dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
             cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-            'title' : convert_type2title(pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1])) + '(' + str(cnt) + ')',
+            'title' : convert_type2title(pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1])),
             'count' : cnt
             # 'usageList': [],
         })
@@ -251,7 +281,8 @@ def collocation_list(mqt, dbs, cids):
         qt.insert(i, '*')
         get_collocation(clist, qt, i, dbs, cids)
     '''
-    return clist
+    newlist = sorted(clist, key=lambda k: k['count'], reverse = True)
+    return newlist
 
 
 def sentence_query(t, ref, i, dt, dbs, cids):
