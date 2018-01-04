@@ -1173,13 +1173,18 @@ button.close:focus {
     padding-bottom: 15px;
 }
 
-.synList li{
-    display:none;
+.listHide {
+    display: none;
     list-style: none;
 }
 
 .colList li{
     display:none;
+    list-style: none;
+}
+
+.listShow {
+    display: block;
     list-style: none;
 }
 
@@ -1198,7 +1203,7 @@ button.close:focus {
     color: #63B7E6;
 }
 
-#showLess {
+.showLess {
     display: none;
 }
 
@@ -1256,7 +1261,7 @@ button.close:focus {
     text-align: justify;
 }
 
-.panel-default > .panel-subheading {
+.panel-subheading {
     background: rgba(66,165,245,0.10);
     padding: 6px 13px;
     text-align: justify;

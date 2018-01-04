@@ -38,13 +38,18 @@
                   {% if r.synonymous %}
                     {% for syn in r.synonymous %}
                       {% for key, value in syn.items %}
-                        <div class="panel-subheading">{{ key }}
-                          <span id="loadMore" class="list-btn">+</span>
-                          <span id="showLess" class="list-btn">-</span>
-                        </div>
-                        <ul class="list-group synList">
+                        <ul class="list-group">
+                          <div class="panel-subheading">{{ key }}
+                            <span class="list-btn loadMore">+</span>
+                            <span class="list-btn showLess">-</span>
+                          </div>
                           {% for v in value %}
-                            <li class="list-group-item"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
+                            {% if forloop.counter < 4 %}
+                              <li class="list-group-item"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
+                            {% endif %}
+                            {% if forloop.counter > 3 %}
+                              <li class="list-group-item listHide listExpand"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
+                            {% endif %}
                           {% endfor %}
                         </ul>
                       {% endfor %}
@@ -208,20 +213,15 @@
         });
       }
 
-      size_li = $(".synList li").size();
-      x=3;
-      $('.synList li:lt('+x+')').show();
-      $('#loadMore').click(function () {
-          x= (x+5 <= size_li) ? x+5 : size_li;
-          $('.synList li:lt('+x+')').show();
-          $('#loadMore').hide();
-          $('#showLess').show();
+      $('.loadMore').click(function () {
+        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+        $(this).hide();
+        $(this).next('.showLess').show();
       });
-      $('#showLess').click(function () {
-          x=(x-5<0) ? 3 : x-5;
-          $('.synList li').not(':lt('+x+')').hide();
-          $('#showLess').hide();
-          $('#loadMore').show();
+      $('.showLess').click(function () {
+        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+        $(this).hide();
+        $(this).prevAll('.loadMore').show();
       });
 
       size_li_col = $(".colList li").size();
