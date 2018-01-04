@@ -56,6 +56,13 @@
                     {% endfor %}
                   {% endif %}
                 </div>
+                <div class="tab-content CollapseColloc panel panel-default">
+                  <div class="panel-subheading">常用搭配</div>
+                  <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
+                  {% for collocation in r.collocationList %}
+                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
+                  {% endfor %}
+                </div>
               </div>
             </div>
           </div>
@@ -71,7 +78,7 @@
 
             {# {% if r.collocationList %} #}
               <div class="uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
-                <div id="CollapseColloc" class="uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
+                <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
                   <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11" role="tablist">
                   {% for collocation in r.collocationList %}
                     {% if forloop.counter < 2 %}
@@ -86,17 +93,17 @@
                     {% endif %}
                   {% endfor %}
                   </ul>
-                  <div class="tab-content hidden">
-                    <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
-                  {% for collocation in r.collocationList %}
-                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
-                  {% endfor %}
-                  </div>
                   <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn">
                     <span id="colMore">+</span>
                     <span id="colLess">-</span>
                   </div>
                 </div>
+<!--                 <div class="tab-content row CollapseColloc ">
+                  <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
+                  {% for collocation in r.collocationList %}
+                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
+                  {% endfor %}
+                </div> -->
               </div><!--  collocation panel -->
             {# {% endif %} #}
 
@@ -244,7 +251,7 @@
 
       $('#first').click();
 
-      $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
+      $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
         e.preventDefault();
         if ($(this).attr('state') == 'selected') return;
         $("#ExampleEnd").hide();
