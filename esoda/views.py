@@ -127,7 +127,7 @@ def sentence_view(request):
     dbs, cids = get_cids(request.user)
     sr = sentence_query(t, ref, i, dt, dbs, cids)
     info = {
-        'example_number': sr['total'],
+        'example_number': len(sr['sentence']),
         'search_time': sr['time'],
         'exampleList': sr['sentence']
     }
