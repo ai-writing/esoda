@@ -2,9 +2,9 @@
 Project home for ESODA (http://www.esoda.org)
 
 ## Setup
-### Install Python 2.7.
+### 0. Install Python 2.7.
 
-### Install prerequisite python packages
+### 1. Install prerequisite python packages
 
 Using `virtualenv` is recommended. Create an fresh environment named `venv` in the project's root folder.
 
@@ -20,8 +20,8 @@ java -mx8g -cp "path/to/stanford-corenlp-full-XXXX-XX-XX/*" edu.stanford.nlp.pip
 
 where `XXXX-XX-XX` is the version number of Stanford CoreNLP
 
-### Python Decouple
-As the project uses [python-decouple](https://github.com/henriquebastos/python-decouple) you will need to create a file named `.env` on the root of the project. You can copy from `.env.example` as following:
+### 2. Create and Edit Essential Settings
+As the project uses [python-decouple](https://github.com/henriquebastos/python-decouple) you will need to **create a file named `.env` on the root of the project**. You can copy from `.env.example` as following:
 
 ```
 DEBUG=True
@@ -32,14 +32,14 @@ The project also uses [dj-database-url](https://pypi.python.org/pypi/dj-database
 
 ```
 # (on Windows)
-DATABASE_URL='sqlite:///C:\\path\\to\\project\\db.sqlite3'
+DATABASE_URL='sqlite:///X:\\path\\to\\project\\db.sqlite3'
 # (on Linux)
 DATABASE_URL='sqlite:////path/to/project/db.sqlite3'
 ```
 
-Ask team Slack for other sensitive settings. **(You should NEVER commit setting files containing passwords to Github, of course.)**
+Ask team Slack for other sensitive settings marked with `???`. **(You should NEVER commit setting files containing passwords to Github, of course.)**
 
-### Syncdb
+### 3. Syncdb
 
 ```shell 
 python manage.py migrate
@@ -61,7 +61,7 @@ python manage.py makemessages
 ```
 
 
-### Runserver
+### 4. Runserver
 
 ```shell
 python manage.py runserver

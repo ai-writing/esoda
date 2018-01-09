@@ -3,6 +3,7 @@ from .paper import mongo_get_objects, DblpPaper
 import re
 import string
 import logging
+import difflib
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,18 @@ for i in range(21):
     count-=1
     for j in CORPUS[str(i)]:
         CORPUS2ID.append(j)
+
+def res_refine(res):
+    # Delete the one of the sentences that similarity > 0.7
+    if res['sentence']:
+        r = []
+        r.append(res['sentence'][0])
+        for i in res['sentence']:
+            diff_ratio = difflib.SequenceMatcher(None,r[-1]['content'],i['content']).ratio()
+            if diff_ratio < 0.7:
+            	r.append(i)
+    res['sentence'] = r
+    return res
 
 def refine_query(q):
     # Note the difference between str.translate and unicode.translate
@@ -74,6 +87,10 @@ def corpus_id2cids(corpus_id):
 def notstar(p, q):
     return p if p != '*' else q
 
+
+def cleaned_sentence(s):
+	# eliminate all possibility of bad HTML in sentence to mark as safe
+	return s.replace('<', '< ').replace('< strong>', '<strong>').replace('< /strong>', '</strong>')
 
 def generate_source(year, title, authList, conference):
     source = ''

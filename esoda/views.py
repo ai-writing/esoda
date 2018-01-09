@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -6,8 +7,13 @@ import logging
 
 import time
 
-from .utils import notstar, papers_source_str, corpus_id2cids, convert_type2title, refine_query
-from .youdao_query import youdao_suggest, youdao_translate
+from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, res_refine
+from .youdao_query import youdao_suggest
+if settings.DEBUG:
+    from .youdao_query import youdao_translate_old as youdao_translate
+else:
+    from .youdao_query import youdao_translate_new as youdao_translate
+
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
@@ -127,7 +133,7 @@ def sentence_view(request):
     dbs, cids = get_cids(request.user)
     sr = sentence_query(t, ref, i, dt, dbs, cids)
     info = {
-        'example_number': sr['total'],
+        'example_number': len(sr['sentence']),
         'search_time': sr['time'],
         'exampleList': sr['sentence']
     }
@@ -265,7 +271,8 @@ def sentence_query(t, ref, i, dt, dbs, cids):
     for i in xrange(rlen):
         sentence = res['hits'][i]
         sr['sentence'].append({
-            'content': sentence['fields']['sentence'][0],
+            'content': cleaned_sentence(sentence['fields']['sentence'][0]),
             'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
             'heart_number': 129})
+    sr = res_refine(sr)
     return sr
