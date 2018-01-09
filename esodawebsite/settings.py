@@ -36,6 +36,7 @@ LOGOUT_REDIRECT_URL = '/'
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Note: SECRET_KEY doesn't have a default value and must be set in `.env`
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -251,4 +252,10 @@ MONGODB_PASSWORD = config('MONGODB_PASSWORD', default='')
 
 
 # Stanford CoreNLP configuration
-STANFORD_CORENLP_SERVER = config('STANFORD_CORENLP_SERVER')
+
+STANFORD_CORENLP_SERVER = config('STANFORD_CORENLP_SERVER', default='http://corenlp.run/')
+
+
+# Youdao API configuration
+YOUDAO_APP_KEY = config('YOUDAO_APP_KEY', default='')
+YOUDAO_SECRET_KEY = config('YOUDAO_SECRET_KEY', default='')
