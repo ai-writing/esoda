@@ -34,8 +34,8 @@ for i in range(21):
 
 def res_refine(res):
     # Delete the one of the sentences that similarity > 0.7
+    r = []
     if res['sentence']:
-        r = []
         r.append(res['sentence'][0])
         for i in res['sentence']:
             diff_ratio = difflib.SequenceMatcher(None,r[-1]['content'],i['content']).ratio()
