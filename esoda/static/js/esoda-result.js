@@ -90,14 +90,14 @@ $('#ManualLoad').click(function(e) {
     return false;
   });
 
-  $("#SidebarAffix").affix({
-    offset: {
-      top: 20,
-      bottom: function () {
-        return $(".footer").outerHeight(true) + $("#BackToTopAffix").outerHeight(true) + 40;
-      }
-    }
-  });
+  // $("#SidebarAffix").affix({
+  //   offset: {
+  //     top: 20,
+  //     bottom: function () {
+  //       return $(".footer").outerHeight(true) + $("#BackToTopAffix").outerHeight(true) + 40;
+  //     }
+  //   }
+  // });
 
   $("#BackToTopAffix").affix({
     offset: {

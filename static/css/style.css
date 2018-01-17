@@ -37,7 +37,7 @@ a {
         width: 53% !important;
     }
     .navbar-default {
-        height: 60px;
+        height: 62px;
     }
     .result-main {
         padding-left: 40px;
@@ -62,7 +62,7 @@ a {
         width: 53% !important;
     }
     .navbar-default {
-        height: 60px;
+        height: 62px;
     }
     .result-main {
         padding-left: 40px;
@@ -87,7 +87,7 @@ a {
         width: 43% !important;
     }
     .navbar-default {
-        height: 60px;
+        height: 62px;
     }
     .result-main {
         padding-left: 24px;
@@ -150,7 +150,8 @@ a {
     bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
-    height: 150px;
+    /*height: 150px;*/
+    min-height: 150px;
     /*background: white;*/
     color: #9b9b9b;
     font-size: 18px;
@@ -269,7 +270,7 @@ a {
 #ResultSearchBar > #SearchBox {
     margin-left: -30px;
     padding-left: 32px;
-    background-color: #fff;
+    background-color: transparent;
     height: 44px;
 }
 
@@ -1151,8 +1152,10 @@ button.close:focus {
     margin-left: -15px;
     margin-top: 5px;
     border: 1px solid #42A5F5;
-    box-shadow: 2px 2px 2px 0 
+    /*box-shadow: 2px 2px 2px 0;*/
     background-color: #fff;
+    max-height: 520px;
+    overflow: auto;
 }
 
 #SidebarAffix.affix {
@@ -1219,7 +1222,6 @@ button.close:focus {
     width: 100%;
     margin-top: 8px;
     padding-right: 16px;
-    padding-left: 16px;
 }
 
 .btn-navbar-search:focus {
