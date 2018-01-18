@@ -1315,6 +1315,14 @@ button.close:focus {
     text-align: justify;
 }
 
+.panel-category-heading {
+    background: rgba(66, 165, 245, 0.40);
+    padding: 6px 13px;
+    text-align: justify;
+    margin: 0 10px;
+    margin-top: 10px;
+}
+
 .panel-subheading {
     background: rgba(66, 165, 245, 0.10);
     padding: 6px 13px;
