@@ -272,11 +272,11 @@ $(function () {
     $('.wechat-qr').qrcode({render: 'canvas', width: 100, height: 100, text: window.location.href});
   });
 
-  $(window).resize(function () {
-    if(auto == 1) {
-      $('#SearchBox').catcomplete('search'); 
-    }
-  });
+  // $(window).resize(function () {
+  //   if(auto == 1) {
+  //     $('#SearchBox').catcomplete('search');
+  //   }
+  // });
 
   $('#SearchBox').click(function() {
     $('.jumbotron').css("padding-top","64px");
