@@ -134,7 +134,7 @@ a {
     }
 
     .navbar-search {
-        width: 30% !important;
+        width: 93% !important;
     }
 
     .result-main {
@@ -732,7 +732,7 @@ button.close:focus {
 
 .back-message {
     /*background: rgba(245,247,249,0.70);*/
-    border: 1px solid #979797;
+    border-top: 1px solid #979797;
 }
 
 .container-message {
