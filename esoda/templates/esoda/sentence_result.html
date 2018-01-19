@@ -4,7 +4,7 @@
   </div>
   {% for example in exampleList %}
   <div class="panel panel-default result-example row {% if forloop.counter > 10 %}collapse{% endif %}" id="Example{{ forloop.counter }}">
-    <div class="col-xs-11">
+    <div class="col-xs-12" style="padding-left: 0px;">
       <div class="panel-body">
         <div class="display-inline example-list-label">
           {{ forloop.counter }}.

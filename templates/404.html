@@ -11,16 +11,16 @@
 	<div class="result-page">
     <div class="container">
       <div class="row warning-page-main">
-        <div class="col-sm-6">
+        <div class="col-sm-7">
           <div class="warning-page-circle"></div>
-          <img src="{% static 'img/404.png' %}" class="warning-page-icon">
+          <img src="{% static 'img/404.png' %}" class="warning-page-icon-404">
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-5">
           <div class="warning-page-hints">
             <div class="huge-title-number">404</div>
             <div class="middle-title">好论文不是一次改完的</div>
             <div class="middle-subtitle">你所搜索的页面并不存在哦</div>
-            <button type="button" class="btn btn-warning-page" onclick="window.history.go(-1)">回到上一页</button>
+            <button type="button" class="btn btn-warning-page" onclick="window.history.go(-1)">再试一下<span class="glyphicon glyphicon-refresh"></span></button>
           </div>
         </div>
       </div>

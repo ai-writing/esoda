@@ -104,6 +104,7 @@ $(function () {
   });
   */
 
+  var auto = 0;
   $.widget( "custom.catcomplete", $.ui.autocomplete, {
     _create: function() {
       this._super();
@@ -137,6 +138,13 @@ $(function () {
     },
     _resizeMenu: function() {
       this.menu.element.outerWidth( $(".ui-autocomplete-input").outerWidth() );
+    },
+    _closeOnClickOutside: function( event ) {
+      if ( !this._isEventTargetInWidget( event ) ) {
+        this.close();
+        $('.jumbotron').css("padding-top","171px");
+        auto = 0;
+      }
     }
   });
   
@@ -265,10 +273,14 @@ $(function () {
   });
 
   // $(window).resize(function () {
-  //   $('#SearchBox').catcomplete('search');
+  //   if(auto == 1) {
+  //     $('#SearchBox').catcomplete('search');
+  //   }
   // });
 
   $('#SearchBox').click(function() {
+    $('.jumbotron').css("padding-top","64px");
     $('#SearchBox').catcomplete('search');
-  })
+    auto = 1;
+  });
 });

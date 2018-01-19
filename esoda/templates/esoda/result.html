@@ -11,179 +11,138 @@
 
 {% block content %}
 
+<!--   <div id="resultSearch">
+    <form id="SearchForm" class="form-horizontal" role="search" action="{% url 'esoda' %}">
+      <div class="input-group">
+        <input type="text" id="SearchBox" class="navbar-search-box form-control result-search" placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}" onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
+        <span class="input-group-btn">
+          <button type="submit" class="btn-navbar-search">
+            <span class="glyphicon glyphicon-search glyphicon-search-main"></span>
+          </button>
+        </span>
+      </div>
+      <div class="result-warning">
+        当前个人领域为“<span>{{ r.domain|upper }}</span>” <a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>修改</a>
+      </div>
+    </form>
+  </div> -->
   <div class="result-page">
-    <div class="cover"></div>
+    <!-- <div class="cover"></div> -->
     <div class="container">
       <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-3">
+          <div class="hidden-xs">
+            {% if r.hasSyn or r.collocationList%}
+            <div id="SidebarAffix" class="affix" data-spy="affix">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                {% if r.synonymous %}
+                    {% if r.hasSyn %}
+                        <div class="panel-category-heading">同义表达</div>
+                    {% endif %}
+                    {% for syn in r.synonymous %}
+                      {% for key, value in syn.items %}
+                        <ul class="list-group">
+                        {% if value %}
+                          <div class="panel-subheading">{{ key }}
+                            <span class="list-btn loadMore">+</span>
+                            <span class="list-btn showLess">-</span>
+                          </div>
+                          {% for v in value %}
+                            {% if forloop.counter < 4%}
+                                <li class="list-group-item"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
+                            {% elif forloop.counter > 3 %}
+                                <li class="list-group-item listHide listExpand"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                        </ul>
+                      {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                </div>
+                <div class="tab-content CollapseColloc panel panel-default">
+                {% if r.collocationList %}
+                  <div class="panel-category-heading">常用搭配</div>
+                  <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
+                  {% for collocation in r.collocationList %}
+                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
+                  {% endfor %}
+                {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
         <div class="col-lg-10 col-md-10 col-sm-9 result-main">
           <div>
-
-            <div class="result-warning">
-              当前个人领域为"<span id="SearchDomain">{{ r.domain|upper }}</span>"，结果共<span id="CountUsage"></span>句例句，在其他<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>个人领域</a>中搜索
-            </div>
-
+            <!-- <div class="result-warning">当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>其他个人领域</a>中搜索</div> -->
             <div class="panel-group" role="tablist" aria-multiselectable="true">
             {% if dictionary.explanationList %}
               {% include "esoda/dictionary_result.html" %}
             {% endif %}
-            
-            {% if r.synonymous %}
-              <div class="panel panel-default uncover-syn">
-                <div class="uncover panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingUsage">
-                  <ul class="nav nav-tabs nav-tabs-usage" id="UsageTab" role="tablist">
-                    <!--li role="presentation">
-                      <a href="#{{ usage_label }}" role="tab" data-toggle="tab">{{ usage_title }}</a>
-                    </li-->
-                    {% if r.synonymous %}
-                    <li role="presentation" class="active">
-                      <a href="#SynContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;同义表达</a>
-                    </li>
-                    {% endif %}
-                    {% comment %}
-                    {% if r.phrase %}
-                    <li role="presentation">
-                      <a href="#PhraseContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;常用短语</a>
-                    </li>
-                    {% endif %}
-                    {% if r.commonColloc%}
-                    <li role="presentation">
-                      <a href="#ColContent" role="tab" data-toggle="tab">{{ q }}&nbsp;&nbsp;常用搭配</a>
-                    </li>
-                    {% endif %}
-                    {% endcomment %}
-                  </ul>
-                  <div id="UsageContent" class="tab-content row" style="margin-left: 10px">
-                    {% if r.synonymous %}
-                    <div role="tabpanel" class="tab-pane fade active in" id="SynContent">
-                      <div class="usage-panel-content">
-                        {% for syn in r.synonymous %}
-                        <a href="{% url 'esoda' %}?q={{ syn }}">{{ syn }}</a>&nbsp;&nbsp;
-                        {% endfor %}
-                      </div>
-                    </div>
-                    {% endif %}
-                    {% if r.phrase %}
-                    <div role="tabpanel" class="tab-pane fade" id="PhraseContent">
-                      <div class="usage-panel-content">
-                        {% for phr in r.phrase %}
-                        <a href="{% url 'esoda' %}?q={{ phr }}">{{ phr }}</a>
-                        {% if not forloop.last %},{% endif %}&nbsp;
-                        {% endfor %}
-                      </div>
-                    </div>
-                    {% endif %}
-                    {% if r.commonColloc %}
-                    <div role="tabpanel" class="tab-pane fade" id="ColContent">
-                      <div class="usage-panel-content">
-                        {% for ccol in r.commonColloc %}
-                        <a href="{% url 'esoda' %}?q={{ ccol }}">{{ ccol }}</a>
-                        {% if not forloop.last %},{% endif %}&nbsp;
-                        {% endfor %}
-                      </div>
-                    </div>
-                    {% endif %}
-                  </div>
-                </div>
-              </div> <!-- usage panel -->
-            {% endif %}
 
-              <div class="panel panel-default uncover-colloc uncover-chi uncover-phrase">
-                <div class="panel-heading uncover" role="tab" id="HeadingColloc">
-                  <div class="panel-title-wrapper">
-                    搭配
-                    <span class="panel-subtitle">Collocation</span>
-                    <a role="button" data-toggle="collapse" href="#CollapseColloc" aria-expanded="true" aria-controls="CollapseColloc" onclick="$.clickChevron(event);">
-                      <span class="glyphicon glyphicon-chevron-up pull-right"></span>
-                    </a>
-                  </div>
-                </div>
-                <div id="CollapseColloc" class="uncover panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingColloc">
-                  <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab" role="tablist">
-                  {% if r.collocationList %}
-                    {% for collocation in r.collocationList %}
-                    <li role="presentation">
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" type="{{ collocation.type }}">{{ collocation.title }}</a>
-                    </li>
-                    {% endfor %}
-                  {% endif %}
-                <!-- </ul> -->
-                <!-- <ul class="nav nav-tabs nav-tabs-collocation" id="CollocationTab0" role="tablist"> -->
-                    <li role="presentation" id="CollocationTab0">
-                      <a href="#" id="not-limited-btn" role="tab">全部搭配</a>
-                      <a href="#CollocAll" role="tab" class="not-limited hidden" data-toggle="tab">{{ q }}</a>
-                    </li>
+            {# {% if r.collocationList %} #}
+              <div class="uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
+                <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
+                  <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11" role="tablist">
+                  {% for collocation in r.collocationList %}
+                    {% if forloop.counter < 2 %}
+                      <li role="presentation">
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" id="first" role="tab" data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      </li>
+                    {% endif %}
+                    {% if forloop.counter > 1 %}
+                      <li role="presentation">
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
                   </ul>
-                  <div id="CollocContent" class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade active in" id="CollocAll"></div>
-                  {% if r.collocationList %}
-                    {% for collocation in r.collocationList %}
-                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
-                    {% endfor %}
-                  {% endif %}
+                  <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn">
+                    <span id="colMore">+</span>
+                    <span id="colLess">-</span>
                   </div>
                 </div>
-              </div> <!-- collocation panel -->
+<!--                 <div class="tab-content row CollapseColloc ">
+                  <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
+                  {% for collocation in r.collocationList %}
+                    <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
+                  {% endfor %}
+                </div> -->
+              </div><!--  collocation panel -->
+            {# {% endif %} #}
 
             </div> <!-- panel-group -->
 
             <div id="SentenceResult"></div>
 
+            <div class="fix-right-xs">
+              <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
+                <div class="btn back-to-top">
+                  <p class="glyphicon glyphicon-chevron-up"></p>
+                  <p>回到顶部</p>
+                </div>
+              </div>
+            </div>
+
             <div id="Loading" class="result-table-cell center-align">
               <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
             </div>
 
-            <div id="ManualLoad" class="result-table-cell center-align">
-              <span>点击加载更多</span>
+            <div class="result-table-cell center-align">
+              <span id="ManualLoad">点击加载更多</span>
             </div>
 
             <div id="ExampleEnd" class="result-table-cell center-align">
               <span>您已浏览完全部结果</span>
             </div>
-
           </div>
         </div>
 
-        <div class="col-lg-2 col-md-2 col-sm-3">
-          <div class="hidden-xs">
-            <div id="SidebarAffix" class="affix" data-spy="affix">
-              <div class="panel-group">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    大家都在搜
-                  </div>
-                  <ul class="list-group">
-                  {% for related in suggestion.relatedList %}
-                    <li class="list-group-item">
-                      <a href="{% url 'esoda' %}?q={{ related }}">{{ related }}</a>
-                    </li>
-                  {% endfor %}
-                  </ul>
-                </div>
 
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    领域内热词
-                  </div>
-                  <ul class="list-group">
-                  {% for hot in suggestion.hotList %}
-                    <li class="list-group-item">
-                      <a href="{% url 'esoda' %}?q={{ hot }}">{{ hot }}</a>
-                    </li>
-                  {% endfor %}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="fix-right-xs">
-            <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
-              <div class="btn back-to-top">
-                <p class="glyphicon glyphicon-chevron-up"></p>
-                <p>回到顶部</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
       </div>
     </div>
@@ -200,91 +159,72 @@
       var curSelectedUsage;
       var REF = '{{ ref }}';
 
-      $('#CollapseColloc').on('click', '.colloc-usage', function (e) {
-        if ($(this).attr('state') == 'selected') return;
-        e.preventDefault();
-        $("#ExampleEnd").hide();
-        $('#ManualLoad').hide();
-        $('#SentenceResult').empty();
-        $('#Loading').show();
-
-        $(this).attr('state', 'selected');
-        $(this).removeAttr('href');
-        if (curSelectedUsage) {
-          curSelectedUsage.attr('state', '');
-          curSelectedUsage.attr('href', '#');
-        }
-        curSelectedUsage = $(this);
-
-        // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
-        var type = $(this).text().replace(/ \(.*\)/, '');
-        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+      function searchAndFillSentences(params) {
         loadCount = 1;
         loading = 1;
         loaded = 0;
-
-        $.get("{% url 'sentences' %}", {t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt}, function(data) {
+        $.get("{% url 'sentences' %}", params, function(data) {
           $('#Loading').hide();
           $('#ManualLoad').hide();
           $("#SentenceResult").html(data);
-          if ($('#ExampleNumber').html() <= 10) {
+          if (Number($('#ExampleNumber').text()) <= 10) {
             $('#ExampleEnd').show();
             loaded = 1;
           }
           loading = 0;
         });
+      }
+
+      $('.loadMore').click(function () {
+        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+        $(this).hide();
+        $(this).next('.showLess').show();
+      });
+      $('.showLess').click(function () {
+        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+        $(this).hide();
+        $(this).prevAll('.loadMore').show();
       });
 
-      $('#CollapseColloc').on('click','#not-limited-btn',function(e) {
-        $('.not-limited').click();
-      })
-
-      $('#CollapseColloc').on('click', '.not-limited', function (e) {
-        e.preventDefault();
-        if ($(this).parent().hasClass('disabled')) {
-          return;
-        }
-        $(this).parent().addClass('disabled');
-        $("#CollocationTab li").removeClass('disabled');
-        $("#CollocationTab li").removeClass('active');
-        $("#ExampleEnd").hide();
-        $("#ManualLoad").hide();
-        $('#SentenceResult').empty();
-        $('#Loading').show();
-
-        var collocQ = $(this).text();
-        loadCount = 1;
-        loading = 1;
-        loaded = 0;
-
-        // console.log(collocQ);
-        $.get("{% url 'sentences' %}", {t: collocQ, ref: REF, dt: 0}, function(data) {
-          $('#Loading').hide();
-          $('#ManualLoad').hide();
-          $("#SentenceResult").html(data);
-          $('#CountUsage').html($('#ExampleNumber').html());
-          if ($('#ExampleNumber').html() <= 10) {
-            $('#ExampleEnd').show();
-            loaded = 1;
-          }
-          loading = 0;
-        });
+      size_li_col = $(".colList li").size();
+      y=2;
+      $('.colList li:lt('+y+')').show();
+      $('#colMore').click(function () {
+          y= (y+6 <= size_li_col) ? y+6 : size_li_col;
+          $('.colList li:lt('+y+')').show();
+          $('#colMore').hide();
+          $('#colLess').show();
+      });
+      $('#colLess').click(function () {
+          y=(y-6<0) ? 2 : y-6;
+          $('.colList li').not(':lt('+y+')').hide();
+          $('#colLess').hide();
+          $('#colMore').show();
       });
 
-      $('.not-limited').click();
+      // $('.not-limited').click(function (e) {
+      //   e.preventDefault();
+      //   if ($(this).attr('aria-expanded') == 'true') {
+      //     return;
+      //   }
+      //   $("#ExampleEnd").hide();
+      //   $("#ManualLoad").hide();
+      //   $('#SentenceResult').empty();
+      //   $('#Loading').show();
+
+      //   var query = $(this).attr('data');
+
+      //   searchAndFillSentences({t: query, ref: REF, dt: 0});
+      // });
+
+      // $('.not-limited').click();
 
       $('.colloc-sub-btn').click(function(e) {
         e.preventDefault();
-        if ($(this).parent().hasClass('disabled')) {
+        if ($(this).attr('aria-expanded') == 'true') {
           return;
         }
-        $("#CollocationTab li").removeClass('disabled');
-        $("#CollocationTab0 li").removeClass('disabled');
-        $("#CollocationTab0 li").removeClass('active');
-        $(this).parent().addClass('disabled');
         var id = $(this).attr('href');
-        //var type = $(this).html();
         var type = $(this).attr('type');
         var type0 = type.replace(/ \(.*\) /g , ' ');
         var i, dt;
@@ -309,12 +249,34 @@
         $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' ') , i: i - 1, dt: dt}, function(data) {
           $(id).html(data);
           $(id + ' .colloc-result').mCustomScrollbar({
-            theme: 'dark'
+            theme: 'dark',
+            scrollInertia: 0,
+            mouseWheel: {preventDefault:true}
           })
           $(id + ' .colloc-usage:eq(0)').click();
         });
-        
-      })
+      });
+
+      $('#first').click();
+
+      $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
+        e.preventDefault();
+        if ($(this).attr('state') == 'selected') return;
+        $("#ExampleEnd").hide();
+        $('#ManualLoad').hide();
+        $('#SentenceResult').empty();
+        $('#Loading').show();
+
+        $('.colloc-usage').removeAttr('state');
+        $(this).attr('state', 'selected');
+
+        // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
+        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
+        var type = $(this).text().replace(/ \(.*\)/, '');
+        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+
+        searchAndFillSentences({t: type.replace('...', ' '),  ref: $(this).attr('ref'), i: i, dt: dt});
+      });
     } );
   </script>
 {% endblock %}

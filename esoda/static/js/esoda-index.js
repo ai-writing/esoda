@@ -61,6 +61,11 @@ $(function () {
     textarea.focus();
   });
 
+  // $('#SearchBox').click(function (e) {
+  //   $('.jumbotron').css("padding-top","64px");
+  //   $('#SearchBox').catcomplete('search'); 
+  // });
+
     var ANIMATION_ON = false;
 
     function scrollToTop(duration, callback) {
