@@ -36,10 +36,11 @@
             <div id="SidebarAffix" class="affix" data-spy="affix">
               <div class="panel-group">
                 <div class="panel panel-default">
+                  <div class="panel-category-heading">替换说法</div>
                 {% if r.synonymous %}
-                    {% if r.hasSyn %}
+<!--                     {% if r.hasSyn %}
                         <div class="panel-category-heading">同义表达</div>
-                    {% endif %}
+                    {% endif %} -->
                     {% for syn in r.synonymous %}
                       {% for key, value in syn.items %}
                         <ul class="list-group">
@@ -63,7 +64,7 @@
                 </div>
                 <div class="tab-content CollapseColloc panel panel-default">
                 {% if r.collocationList %}
-                  <div class="panel-category-heading">常用搭配</div>
+                  <!-- <div class="panel-category-heading">常用搭配</div> -->
                   <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
                   {% for collocation in r.collocationList %}
                     <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
