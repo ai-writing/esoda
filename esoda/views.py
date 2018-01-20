@@ -81,9 +81,8 @@ def esoda_view(request):
     }
 
     dbs, cids = get_cids(request.user, r=r)
-
+    r['tlen'] = len(qt)
     r['collocationList'] = collocation_list(qt, dbs, cids)
-
     r['synonymous'] = []
     r['hasSyn'] = False
     for t in qt:
