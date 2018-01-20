@@ -41,6 +41,7 @@
 <!--                     {% if r.hasSyn %}
                         <div class="panel-category-heading">同义表达</div>
                     {% endif %} -->
+                    <div class="syn-list">
                     {% for syn in r.synonymous %}
                       {% for key, value in syn.items %}
                         <ul class="list-group">
@@ -60,6 +61,7 @@
                         </ul>
                       {% endfor %}
                     {% endfor %}
+                    </div>
                 {% endif %}
                 </div>
                 <div class="tab-content CollapseColloc panel panel-default">
@@ -142,9 +144,6 @@
             </div>
           </div>
         </div>
-
-
-
       </div>
     </div>
   </div>

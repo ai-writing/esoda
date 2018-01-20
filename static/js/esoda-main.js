@@ -17,7 +17,7 @@ $(function () {
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+ d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  } 
+  }
   function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -147,7 +147,7 @@ $(function () {
       }
     }
   });
-  
+
   function split( val ) {
     return val.split( /\s+/ );
   }
@@ -235,7 +235,7 @@ $(function () {
 		$(e.target).toggleClass("glyphicon-heart");
   };
 
-  
+
   $("#AddBookmark").click(function(e){
     e.preventDefault();
     var bookmarkUrl = window.location.href;
@@ -246,7 +246,7 @@ $(function () {
     } else if (window.sidebar && window.sidebar.addPanel) { // Firefox <=22
       window.sidebar.addPanel(document.title, window.location.href,'');
     } else if ((window.sidebar && /Firefox/i.test(navigator.userAgent))
-               || (window.opera && window.print)) { // Firefox 23+ and Opera <=14 
+               || (window.opera && window.print)) { // Firefox 23+ and Opera <=14
       $(this).attr({
         href: bookmarkUrl,
         title: bookmarkTitle,
@@ -276,6 +276,10 @@ $(function () {
   //   if(auto == 1) {
   //     $('#SearchBox').catcomplete('search');
   //   }
+  // });
+
+  // $(window).mousewheel(function() {
+  //   $('#SearchBox').catcomplete('search').fixed();
   // });
 
   $('#SearchBox').click(function() {

@@ -7,7 +7,7 @@ html {
 body {
     font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
-    margin-bottom: 150px;
+    margin-bottom: 70px;
 }
 
 a {
@@ -184,12 +184,11 @@ a {
     bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
-    /*height: 150px;*/
-    min-height: 150px;
+    min-height: 60px;
     /*background: white;*/
     color: #9b9b9b;
     font-size: 18px;
-    padding-top: 37px;
+    padding-top: 15px;
 
     background: #E6EDED;
     border-top: 1px solid #CACACA;
@@ -1084,12 +1083,18 @@ button.close:focus {
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 14px;
-    margin-top: 30px;
+    margin-top: 5px;
 }
 
 .footer a {
     color: #9b9b9b;
     font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
+    font-size: 14px;
+}
+
+.footer ul li {
+    display: inline-block;
+    margin: 0 .5em;
 }
 
 .footer-shares {
@@ -1111,7 +1116,7 @@ button.close:focus {
 }
 
 .shares {
-    margin-right: 31px;
+    width: 23px;
 }
 
 .message-notepad {
@@ -1298,6 +1303,11 @@ button.close:focus {
     border: solid 1px #ddd;
 }
 
+.syn-list {
+    max-height: 280px;
+    overflow: auto;
+}
+
 .panel {
     background: transparent;
     border: none;
@@ -1305,8 +1315,6 @@ button.close:focus {
 
 .panel-default {
     background-color: #fff;
-    max-height: 300px;
-    overflow: auto;
 }
 
 .panel-default > .panel-heading {
