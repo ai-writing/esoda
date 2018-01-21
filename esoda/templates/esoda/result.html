@@ -35,13 +35,10 @@
             {% if r.hasSyn or r.collocationList%}
             <div id="SidebarAffix" class="affix" data-spy="affix">
               <div class="panel-group">
-                <div class="panel panel-default">
+                <div class="tab-content panel panel-default">
                   <div class="panel-category-heading">替换说法</div>
                 {% if r.synonymous %}
-<!--                     {% if r.hasSyn %}
-                        <div class="panel-category-heading">同义表达</div>
-                    {% endif %} -->
-                    <div class="syn-list">
+                    <div class="syn-list mCustomScrollbar">
                     {% for syn in r.synonymous %}
                       {% for key, value in syn.items %}
                         <ul class="list-group">
@@ -66,7 +63,6 @@
                 </div>
                 <div class="tab-content CollapseColloc panel panel-default">
                 {% if r.collocationList %}
-                  <!-- <div class="panel-category-heading">常用搭配</div> -->
                   <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
                   {% for collocation in r.collocationList %}
                     <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
@@ -218,6 +214,13 @@
       // });
 
       // $('.not-limited').click();
+
+      $(' .syn-list').mCustomScrollbar({
+            theme: 'dark',
+            scrollInertia: 0,
+            mouseWheel: {preventDefault:true},
+            autoHideScrollbar: true
+      });
 
       $('.colloc-sub-btn').click(function(e) {
         e.preventDefault();

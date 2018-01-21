@@ -69,7 +69,7 @@ a {
     }
 
     .result-main {
-        padding-left: 40px;
+        padding-left: 50px;
     }
 }
 
@@ -1203,7 +1203,7 @@ button.close:focus {
 #SidebarAffix {
     /*text-align: center;*/
     width: 180px;
-    margin-left: -15px;
+    /*margin-left: -15px;*/
     margin-top: 5px;
     border: 1px solid #42A5F5;
     background-color: #fff;
@@ -1223,7 +1223,7 @@ button.close:focus {
 
 #SidebarAffix .list-group-item {
     border-width: 0;
-    padding: 5px 23px;
+    padding: 5px 18px;
     text-align: justify;
 }
 
@@ -1308,6 +1308,16 @@ button.close:focus {
     overflow: auto;
 }
 
+._mCS_1 .mCSB_scrollTools .mCSB_draggerContainer{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+._mCS_1 .mCSB_container {
+    margin-right: 15px !important;
+}
+
 .panel {
     background: transparent;
     border: none;
@@ -1327,7 +1337,7 @@ button.close:focus {
     background: rgba(66, 165, 245, 0.40);
     padding: 6px 13px;
     text-align: justify;
-    margin: 0 10px;
+    margin: 0 5px;
     margin-top: 10px;
 }
 
@@ -1335,7 +1345,7 @@ button.close:focus {
     background: rgba(66, 165, 245, 0.10);
     padding: 6px 13px;
     text-align: justify;
-    margin: 0 10px;
+    margin: 0 5px;
     margin-top: 10px;
 }
 
