@@ -7,7 +7,7 @@ html {
 body {
     font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
-    margin-bottom: 70px;
+    margin-bottom: 50px;
 }
 
 a {
@@ -69,7 +69,7 @@ a {
     }
 
     .result-main {
-        padding-left: 50px;
+        padding-left: 65px;
     }
 }
 
@@ -96,7 +96,11 @@ a {
     }
 
     .result-main {
-        padding-left: 24px;
+        padding-left: 23px;
+    }
+
+    #SidebarAffix {
+        width: 165px !important;
     }
 }
 
@@ -1195,7 +1199,6 @@ button.close:focus {
 .result-page {
     /*background-color: #f5f5f9;*/
     background-color: #fff;
-    /*padding-top: 20px;*/
     padding-top: 80px;
     padding-bottom: 40px;
 }
@@ -1219,6 +1222,10 @@ button.close:focus {
 
 #SidebarAffix a:hover {
     color: #63b7e6;
+}
+
+#SidebarAffix .list-group{
+    margin-bottom: 10px;
 }
 
 #SidebarAffix .list-group-item {
@@ -1304,7 +1311,7 @@ button.close:focus {
 }
 
 .syn-list {
-    max-height: 280px;
+    max-height: 260px;
     overflow: auto;
 }
 
@@ -1497,7 +1504,7 @@ button.close:focus {
 }
 
 .colloc-sub-btn {
-    width: 270px;
+    width: 200px;
     height: 30px;
     padding: 6px 15px !important;
     margin-right: 30px !important;
@@ -1553,9 +1560,9 @@ button.close:focus {
 
 .result-warning {
     padding: 0px 0px;
-    color: #4a4a4a;
+    margin-bottom: 5px;
+    color: #666;
     font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
-    font-weight: 200;
     text-align: left;
 }
 
@@ -1618,6 +1625,7 @@ button.close:focus {
 
 .example-hint {
     color: #9b9b9b;
+    margin-top: 10px;
 }
 
 .panel-heart {
@@ -1673,13 +1681,13 @@ button.close:focus {
 }
 
 .back-to-top-affix.affix {
-    bottom: 10px;
+    bottom: 65px;
     right: 10px;
 }
 
 .back-to-top-affix.affix-top {
     position: fixed;
-    bottom: 10px;
+    bottom: 65px;
     right: 10px;
 }
 

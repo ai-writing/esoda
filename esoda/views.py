@@ -84,8 +84,11 @@ def esoda_view(request):
     r['tlen'] = len(qt)
     r['collocationList'] = collocation_list(qt, dbs, cids)
     r['synonymous'] = []
+    r['hasSyn'] = False
     for t in qt:
         r['synonymous'].append({t:synonyms(t)[:10]})
+        if synonyms(t)[:10] != []:
+            r['hasSyn'] = True
 
     suggestion = {
         'relatedList': [
