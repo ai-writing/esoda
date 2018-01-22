@@ -4,81 +4,81 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="">
 
-    <title>{% block title %}易搜搭 {% trans "ESODA" %}{% endblock %}</title>
+  <title>{% block title %}易搜搭 {% trans "ESODA" %}{% endblock %}</title>
 
-    <!-- Bootstrap core CSS -->
-    <!-- <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <!-- <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}?v={% now 'Ymd' %}" rel="stylesheet">
-    {% block head %}{% endblock %}
+  <!-- Custom styles for this template -->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}?v={% now 'Ymd' %}" rel="stylesheet">
+  {% block head %}{% endblock %}
 </head>
 
 <body>
 {% if debug %}
-    <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">NOTE: You are
-        running in DEBUG mode.
-    </div>
+  <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">NOTE: You are
+    running in DEBUG mode.
+  </div>
 {% endif %}
 {% block header %}
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                        aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"></a>
-            </div>
-            <div id="navbar" class="navbar-index navbar-collapse collapse result-index">
-                <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search"
-                      action="{% url 'esoda' %}">
-                    <div id="ResultSearchBar" class="input-group full-width">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"></a>
+      </div>
+      <div id="navbar" class="navbar-index navbar-collapse collapse result-index">
+        <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search"
+              action="{% url 'esoda' %}">
+          <div id="ResultSearchBar" class="input-group full-width">
                 <span class="input-group-btn">
                   <button class="btn-navbar-search" type="submit">
                     <span class="glyphicon glyphicon-search"></span>
                   </button>
                 </span>
-                        <input type="text" id="SearchBox" class="navbar-search-box form-control result-search"
-                               placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}"
-                               onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
-                    </div>
-                </form>
-                {% if not user.is_authenticated %}
-                    <ul class="nav navbar-nav navbar-right result-login">
-                        <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请<span
-                                class="login-url">登录</span></a></li>
-                    </ul>
-                {% else %}
-                    <ul class="nav navbar-nav navbar-right welback">
-                        <li><a href="{% url 'auth_password_change' %}" class="navbar-avatar"><img
-                                src="{% static 'img/user.png' %}" class="user-image"></a></li>
-                        <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a>
-                        </li>
-                        <li><a href="{% url 'auth_logout' %}">登出</a></li>
-                    </ul>
-                {% endif %}
-            </div><!--/.navbar-collapse -->
-        </div>
-    </nav>
+            <input type="text" id="SearchBox" class="navbar-search-box form-control result-search"
+                   placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}"
+                   onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
+          </div>
+        </form>
+        {% if not user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right result-login">
+            <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请<span
+                    class="login-url">登录</span></a></li>
+          </ul>
+        {% else %}
+          <ul class="nav navbar-nav navbar-right welback">
+            <li><a href="{% url 'auth_password_change' %}" class="navbar-avatar"><img
+                    src="{% static 'img/user.png' %}" class="user-image"></a></li>
+            <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a>
+            </li>
+            <li><a href="{% url 'auth_logout' %}">登出</a></li>
+          </ul>
+        {% endif %}
+      </div><!--/.navbar-collapse -->
+    </div>
+  </nav>
 
 {% endblock %}
 
@@ -87,33 +87,33 @@
 {% block content %}{% endblock %}
 
 <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <ul class="col-md-9">
-                <li class="copyright">Copyright &copy; 2017 清华大学 · 人机交互实验室 · <a href="http://www.miitbeian.gov.cn/">京ICP备17037838号-1</a>
-                </li>
-                <li><a href="#">联系我们</a></li>
-                {#                <li><a href="#">PCG工作室</a></li>#}
-                <li>
-                    {% if LANGUAGE_CODE == "zh-hans" %}
-                        <a href="#">语言：简体中文</a>
-                    {% elif LANGUAGE_CODE == "en-us" or LANGUAGE_CODE == "en" %}
-                        <a href="#">Language: English</a>
-                    {% endif %}
-                </li>
-            </ul>
-            <ul class="col-md-3 right-align">
-                <li><a href="#" class="share-a"><img class="shares" src="{% static 'img/email_F.svg' %}"></a></li>
-                <li><a href="#" class="share-a"><img class="shares wechat-share" data-toggle="popover"
-                                                     data-placement="top"
-                                                     title="微信扫一扫：" data-content="<div class='wechat-qr'></div>"
-                                                     data-html="true" data-trigger="hover focus"
-                                                     src="{% static 'img/wechat_F.svg' %}"></a></li>
-                <li><a href="#" class="share-a"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a></li>
-                <li><a href="#" class="share-a"><img class="shares" src="{% static 'img/sina_weibo_F.svg' %}"></a></li>
-            </ul>
-        </div>
+  <div class="container">
+    <div class="row">
+      <ul class="col-md-9">
+        <li class="copyright">Copyright &copy; 2017 清华大学 · 人机交互实验室 · <a href="http://www.miitbeian.gov.cn/">京ICP备17037838号-1</a>
+        </li>
+        <li><a href="#">联系我们</a></li>
+        {#                <li><a href="#">PCG工作室</a></li>#}
+        <li>
+          {% if LANGUAGE_CODE == "zh-hans" %}
+            <a href="#">语言：简体中文</a>
+          {% elif LANGUAGE_CODE == "en-us" or LANGUAGE_CODE == "en" %}
+            <a href="#">Language: English</a>
+          {% endif %}
+        </li>
+      </ul>
+      <ul class="col-md-3 right-align">
+        <li><a href="#" class="share-a"><img class="shares" src="{% static 'img/email_F.svg' %}"></a></li>
+        <li><a href="#" class="share-a"><img class="shares wechat-share" data-toggle="popover"
+                                             data-placement="top"
+                                             title="微信扫一扫：" data-content="<div class='wechat-qr'></div>"
+                                             data-html="true" data-trigger="hover focus"
+                                             src="{% static 'img/wechat_F.svg' %}"></a></li>
+        <li><a href="#" class="share-a"><img class="shares" src="{% static 'img/QQ_F.svg' %}"></a></li>
+        <li><a href="#" class="share-a"><img class="shares" src="{% static 'img/sina_weibo_F.svg' %}"></a></li>
+      </ul>
     </div>
+  </div>
 </footer>
 
 
@@ -142,9 +142,9 @@
 
 <!--Baidu statistics-->
 {% if debug %}
-    <script type="text/javascript">console.log('Won\'t load Baidu statistics in debug mode');</script>
+  <script type="text/javascript">console.log('Won\'t load Baidu statistics in debug mode');</script>
 {% else %}
-    {# TODO #}
+  {# TODO #}
 {% endif %}
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

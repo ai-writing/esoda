@@ -319,6 +319,7 @@ a {
 
 #ResultSearchBar .input-group-btn {
     width: 32px;
+    z-index: 999;
 }
 
 .container-navbar {
@@ -1284,6 +1285,7 @@ button.close:focus {
     width: 100%;
     margin-top: 8px;
     padding-right: 16px;
+    margin-left: 2px;
 }
 
 .btn-navbar-search:focus {
@@ -1626,6 +1628,20 @@ button.close:focus {
 .example-hint {
     color: #9b9b9b;
     margin-top: 10px;
+}
+
+.error-hint {
+    color: #666;
+    margin-top: 10px;
+}
+
+.error-hint > p {
+    font-size: 20px;
+}
+
+.hint-content {
+    font-size: 13px;
+    line-height: 28px;
 }
 
 .panel-heart {

@@ -12,120 +12,121 @@
 {% block content %}
 
   <div class="result-page">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-2 col-md-2 col-sm-3">
-        <div class="hidden-xs">
-          {% if r.hasSyn or r.collocationList %}
-            <div id="SidebarAffix" class="affix" data-spy="affix">
-              <div class="panel-group">
-                <div class="tab-content panel panel-default">
-                  <div class="panel-category-heading">替换说法</div>
-                  {% if r.synonymous %}
-                    <div class="syn-list mCustomScrollbar">
-                      {% for syn in r.synonymous %}
-                        {% for key, value in syn.items %}
-                          <ul class="list-group">
-                            {% if value %}
-                              <div class="panel-subheading">{{ key }}
-                                <span class="list-btn loadMore">+</span>
-                                <span class="list-btn showLess">-</span>
-                              </div>
-                              {% for v in value %}
-                                {% if forloop.counter < 4 %}
-                                  <li class="list-group-item"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
-                                {% elif forloop.counter > 3 %}
-                                  <li class="list-group-item listHide listExpand"><a
-                                          href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
-                                {% endif %}
-                              {% endfor %}
-                            {% endif %}
-                          </ul>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-3">
+          <div class="hidden-xs">
+            {% if r.hasSyn or r.collocationList %}
+              <div id="SidebarAffix" class="affix" data-spy="affix">
+                <div class="panel-group">
+                  <div class="tab-content panel panel-default">
+                    <div class="panel-category-heading">替换说法</div>
+                    {% if r.synonymous %}
+                      <div class="syn-list mCustomScrollbar">
+                        {% for syn in r.synonymous %}
+                          {% for key, value in syn.items %}
+                            <ul class="list-group">
+                              {% if value %}
+                                <div class="panel-subheading">{{ key }}
+                                  <span class="list-btn loadMore">+</span>
+                                  <span class="list-btn showLess">-</span>
+                                </div>
+                                {% for v in value %}
+                                  {% if forloop.counter < 4 %}
+                                    <li class="list-group-item"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
+                                  {% elif forloop.counter > 3 %}
+                                    <li class="list-group-item listHide listExpand"><a
+                                            href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
+                                  {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                            </ul>
+                          {% endfor %}
                         {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="tab-content CollapseColloc panel panel-default">
+                    {% if r.collocationList %}
+                      <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
+                      {% for collocation in r.collocationList %}
+                        <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
                       {% endfor %}
-                    </div>
-                  {% endif %}
-                </div>
-                <div class="tab-content CollapseColloc panel panel-default">
-                  {% if r.collocationList %}
-                    <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
-                    {% for collocation in r.collocationList %}
-                      <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
-                    {% endfor %}
-                  {% endif %}
+                    {% endif %}
+                  </div>
                 </div>
               </div>
-            </div>
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="col-lg-10 col-md-10 col-sm-9 result-main">
-        <div class="panel-group" role="tablist" aria-multiselectable="true">
-          {% if dictionary.explanationList %}
-            {% include "esoda/dictionary_result.html" %}
-          {% endif %}
-
-          <div class="result-warning">
-            {% if not user.is_authenticated %}
-              您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>进行个性化搜索
-            {% else %}
-              {% if r.domain|upper %}
-                当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a href="{% url 'authentication:domain' %}">其他个人领域</a>中搜索
-              {% else %}
-                您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加个人领域</a>进行个性化搜索
-              {% endif %}
             {% endif %}
           </div>
+        </div>
 
-          <div class="uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
-            <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
-              <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11"
-                  role="tablist">
-                {% for collocation in r.collocationList %}
-                  {% if forloop.counter < 2 %}
-                    <li role="presentation">
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" id="first" role="tab"
-                         data-toggle="tab" data="{{ collocation.title }}"
-                         type="{{ collocation.type }}">{{ collocation.title }}</a>
-                    </li>
-                  {% endif %}
-                  {% if forloop.counter > 1 %}
-                    <li role="presentation">
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab"
-                         data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-              <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn">
-                <span id="colMore">+</span>
-                <span id="colLess">-</span>
+        <div class="col-lg-10 col-md-10 col-sm-9 result-main">
+          <div class="panel-group" role="tablist" aria-multiselectable="true">
+            {% if dictionary.explanationList %}
+              {% include "esoda/dictionary_result.html" %}
+            {% endif %}
+
+            <div class="result-warning">
+              {% if not user.is_authenticated %}
+                您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>进行个性化搜索
+              {% else %}
+                {% if r.domain|upper %}
+                  当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a href="{% url 'authentication:domain' %}">其他个人领域</a>中搜索
+                {% else %}
+                  您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加个人领域</a>进行个性化搜索
+                {% endif %}
+              {% endif %}
+            </div>
+
+            <div class="uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
+              <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
+                <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11"
+                    role="tablist">
+                  {% for collocation in r.collocationList %}
+                    {% if forloop.counter < 2 %}
+                      <li role="presentation">
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" id="first" role="tab"
+                           data-toggle="tab" data="{{ collocation.title }}"
+                           type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      </li>
+                    {% endif %}
+                    {% if forloop.counter > 1 %}
+                      <li role="presentation">
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab"
+                           data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+                <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn">
+                  <span id="colMore">+</span>
+                  <span id="colLess">-</span>
+                </div>
+              </div>
+            </div> <!-- panel-group -->
+
+            <div id="SentenceResult"></div>
+
+            <div class="fix-right-xs">
+              <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
+                <div class="btn back-to-top">
+                  <p class="glyphicon glyphicon-chevron-up"></p>
+                  <p>回到顶部</p>
+                </div>
               </div>
             </div>
-          </div> <!-- panel-group -->
 
-          <div id="SentenceResult"></div>
-
-          <div class="fix-right-xs">
-            <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
-              <div class="btn back-to-top">
-                <p class="glyphicon glyphicon-chevron-up"></p>
-                <p>回到顶部</p>
-              </div>
+            <div id="Loading" class="result-table-cell center-align">
+              <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
             </div>
-          </div>
 
-          <div id="Loading" class="result-table-cell center-align">
-            <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
-          </div>
+            <div class="result-table-cell center-align">
+              <span id="ManualLoad">点击加载更多</span>
+            </div>
 
-          <div class="result-table-cell center-align">
-            <span id="ManualLoad">点击加载更多</span>
-          </div>
-
-          <div id="ExampleEnd" class="result-table-cell center-align">
-            <span>您已浏览完全部结果</span>
+            <div id="ExampleEnd" class="result-table-cell center-align">
+              <span>您已浏览完全部结果</span>
+            </div>
           </div>
         </div>
       </div>
@@ -268,6 +269,10 @@
 
               searchAndFillSentences({t: type.replace('...', ' '), ref: $(this).attr('ref'), i: i, dt: dt});
           });
+
+          if ($('#Loading').is(':hidden')) {
+              searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
+          }
       });
   </script>
 {% endblock %}
