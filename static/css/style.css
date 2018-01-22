@@ -7,7 +7,7 @@ html {
 body {
     font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
-    margin-bottom: 150px;
+    margin-bottom: 50px;
 }
 
 a {
@@ -69,7 +69,7 @@ a {
     }
 
     .result-main {
-        padding-left: 40px;
+        padding-left: 65px;
     }
 }
 
@@ -96,7 +96,11 @@ a {
     }
 
     .result-main {
-        padding-left: 24px;
+        padding-left: 23px;
+    }
+
+    #SidebarAffix {
+        width: 165px !important;
     }
 }
 
@@ -184,12 +188,11 @@ a {
     bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
-    /*height: 150px;*/
-    min-height: 150px;
+    min-height: 60px;
     /*background: white;*/
     color: #9b9b9b;
     font-size: 18px;
-    padding-top: 37px;
+    padding-top: 15px;
 
     background: #E6EDED;
     border-top: 1px solid #CACACA;
@@ -316,6 +319,7 @@ a {
 
 #ResultSearchBar .input-group-btn {
     width: 32px;
+    z-index: 999;
 }
 
 .container-navbar {
@@ -1084,12 +1088,18 @@ button.close:focus {
     font-family: PingFangSC, Microsoft Yahei, HeitiSC;
     font-weight: 500;
     font-size: 14px;
-    margin-top: 30px;
+    margin-top: 5px;
 }
 
 .footer a {
     color: #9b9b9b;
     font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
+    font-size: 14px;
+}
+
+.footer ul li {
+    display: inline-block;
+    margin: 0 .5em;
 }
 
 .footer-shares {
@@ -1111,7 +1121,7 @@ button.close:focus {
 }
 
 .shares {
-    margin-right: 31px;
+    width: 23px;
 }
 
 .message-notepad {
@@ -1190,7 +1200,6 @@ button.close:focus {
 .result-page {
     /*background-color: #f5f5f9;*/
     background-color: #fff;
-    /*padding-top: 20px;*/
     padding-top: 80px;
     padding-bottom: 40px;
 }
@@ -1198,7 +1207,7 @@ button.close:focus {
 #SidebarAffix {
     /*text-align: center;*/
     width: 180px;
-    margin-left: -15px;
+    /*margin-left: -15px;*/
     margin-top: 5px;
     border: 1px solid #42A5F5;
     background-color: #fff;
@@ -1216,9 +1225,13 @@ button.close:focus {
     color: #63b7e6;
 }
 
+#SidebarAffix .list-group{
+    margin-bottom: 10px;
+}
+
 #SidebarAffix .list-group-item {
     border-width: 0;
-    padding: 5px 23px;
+    padding: 5px 18px;
     text-align: justify;
 }
 
@@ -1272,6 +1285,7 @@ button.close:focus {
     width: 100%;
     margin-top: 8px;
     padding-right: 16px;
+    margin-left: 2px;
 }
 
 .btn-navbar-search:focus {
@@ -1298,6 +1312,21 @@ button.close:focus {
     border: solid 1px #ddd;
 }
 
+.syn-list {
+    max-height: 260px;
+    overflow: auto;
+}
+
+._mCS_1 .mCSB_scrollTools .mCSB_draggerContainer{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+._mCS_1 .mCSB_container {
+    margin-right: 15px !important;
+}
+
 .panel {
     background: transparent;
     border: none;
@@ -1305,8 +1334,6 @@ button.close:focus {
 
 .panel-default {
     background-color: #fff;
-    max-height: 300px;
-    overflow: auto;
 }
 
 .panel-default > .panel-heading {
@@ -1319,7 +1346,7 @@ button.close:focus {
     background: rgba(66, 165, 245, 0.40);
     padding: 6px 13px;
     text-align: justify;
-    margin: 0 10px;
+    margin: 0 5px;
     margin-top: 10px;
 }
 
@@ -1327,7 +1354,7 @@ button.close:focus {
     background: rgba(66, 165, 245, 0.10);
     padding: 6px 13px;
     text-align: justify;
-    margin: 0 10px;
+    margin: 0 5px;
     margin-top: 10px;
 }
 
@@ -1479,7 +1506,7 @@ button.close:focus {
 }
 
 .colloc-sub-btn {
-    width: 270px;
+    width: 200px;
     height: 30px;
     padding: 6px 15px !important;
     margin-right: 30px !important;
@@ -1535,9 +1562,9 @@ button.close:focus {
 
 .result-warning {
     padding: 0px 0px;
-    color: #4a4a4a;
+    margin-bottom: 5px;
+    color: #666;
     font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
-    font-weight: 200;
     text-align: left;
 }
 
@@ -1600,6 +1627,21 @@ button.close:focus {
 
 .example-hint {
     color: #9b9b9b;
+    margin-top: 10px;
+}
+
+.error-hint {
+    color: #666;
+    margin-top: 10px;
+}
+
+.error-hint > p {
+    font-size: 20px;
+}
+
+.hint-content {
+    font-size: 13px;
+    line-height: 28px;
 }
 
 .panel-heart {
@@ -1655,13 +1697,13 @@ button.close:focus {
 }
 
 .back-to-top-affix.affix {
-    bottom: 10px;
+    bottom: 65px;
     right: 10px;
 }
 
 .back-to-top-affix.affix-top {
     position: fixed;
-    bottom: 10px;
+    bottom: 65px;
     right: 10px;
 }
 
