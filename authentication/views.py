@@ -32,8 +32,8 @@ def domain_view(request):
     node_tree=tree(corpus_id)
     return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
-
-def search(request):
+@login_required
+def search_domain_tree_view(request):
     result=[]
     expand=[]
     big=[]
