@@ -55,7 +55,7 @@ def refine_query(q):
 def convert_type2title(rr):
     rr_title = ''
     if '*' in rr:
-        rr_title = re.sub('[a-zA-Z]*', '', rr).strip()
+        rr_title = re.sub('[a-zA-Z1-9]*', '', rr).strip()
         rr_title = rr.replace(rr_title, DEPS_VIEW[rr_title])
     return rr_title if rr_title else rr
 
