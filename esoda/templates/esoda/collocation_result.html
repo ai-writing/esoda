@@ -1,7 +1,8 @@
 <div class="colloc-result">
   {% for usage in usageList %}
   <div>
-    <p><a href="#" class="colloc-usage" ref="{{ usage.ref }}">{{ usage.content }} <span class="usage-count">({{ usage.count }})</span></a></p>
+    <p><a href="#" class="colloc-usage" ref="{{ usage.ref }}" lemma="{{ usage.lemma }}">{{ usage.content }}
+      <span class="usage-count">{% if usage.count >= 1000 %}({% widthratio usage.count 1000 1 %}k){% else %}({{ usage.count }}){% endif %}</span></a></p>
   </div>
   {% endfor %}
 </div>
