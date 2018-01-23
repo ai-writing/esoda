@@ -130,7 +130,7 @@
   }
   var search = function(e) {
     var pattern = $('#input-search').val();
-    $.getJSON("{% url 'authentication:search' %}", {'target':pattern }, function(data){
+    $.getJSON("{% url 'authentication:search_domain_tree' %}", {'target':pattern }, function(data){
       for(var i=0;i<last_expand.length;i++){ 
         $("#secondleveltext"+last_expand[i]).css('font-weight', "400");
       } 
