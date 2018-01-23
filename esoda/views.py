@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 import time
-from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query
+from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
@@ -82,12 +82,12 @@ def esoda_view(request):
 
     dbs, cids = get_cids(request.user, r=r)
     r['tlen'] = len(qt)
-    r['collocationList'] = collocation_list(qt, dbs, cids)
+    r['collocationList'] = collocation_list(qt, ref, dbs, cids)
     r['synonymous'] = []
     r['hasSyn'] = False
-    for t in qt:
-        r['synonymous'].append({t:synonyms(t)[:10]})
-        if synonyms(t)[:10] != []:
+    for i in xrange(len(qt)):
+        r['synonymous'].append({displayed_lemma(ref[i], qt[i]): synonyms(qt[i])[:10]})
+        if synonyms(qt[i])[:10] != []:
             r['hasSyn'] = True
 
     suggestion = {
@@ -210,19 +210,21 @@ def get_usage_list(t, ref, i, dt, dbs, cids):
         cnt = EsAdaptor.count(nt, d, dbs, cids)
         usageList.append({
             'ref': ' '.join(ref),
-            'content': pat % (t[i], t[i + 1]),
+            'lemma': pat % (t[i], t[i + 1]),
+            'content': pat % (displayed_lemma(ref[i], t[i]), displayed_lemma(ref[i + 1], t[i + 1])),
             'count': cnt['hits']['total']
         })
     for k in (('*', t[i + 1]), (t[i], '*')):
         if k[0] != '*' or k[1] != '*':
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
-
             lst = EsAdaptor.group(nt, d, dbs, cids)
             try:
                 ret = []
                 for j in lst['aggregations']['d']['d']['d']['buckets']:
                     l1 = notstar(d[0]['l1'], j['key'])
                     l2 = notstar(d[0]['l2'], j['key'])
+                    t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[i], k[0])]
+                    t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[i + 1], k[1])]
                     if (l1, l2) != (t[i], t[i + 1]):
                         nref = list(ref)
                         if l1 != t[i]:
@@ -231,7 +233,8 @@ def get_usage_list(t, ref, i, dt, dbs, cids):
                             nref[i + 1] = l2
                         ret.append({
                             'ref': ' '.join(nref),
-                            'content': pat % (l1, l2),
+                            'lemma': pat % (l1, l2),
+                            'content': pat % (t1[0], t2[0]),
                             'count': j['doc_count']
                         })
                 usageList += ret
@@ -240,7 +243,7 @@ def get_usage_list(t, ref, i, dt, dbs, cids):
     return usageList
 
 
-def get_collocations(clist, qt, i, dbs, cids):
+def get_collocations(clist, qt, ref, i, dbs, cids):
     t, d = list(qt), (qt[i], qt[i + 1])
     cnt = 0
     del t[i]
@@ -265,19 +268,20 @@ def get_collocations(clist, qt, i, dbs, cids):
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-            'title' : convert_type2title(pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1])),
+            'title' : convert_type2title(pat % (displayed_lemma(ref[i], qt[i]), ALL_DEPS[j % 4], displayed_lemma(ref[i+1], qt[i+1]))),
             'count' : cnt
             # 'usageList': [],
         })
 
 
-def collocation_list(mqt, dbs, cids):
+def collocation_list(mqt, ref, dbs, cids):
     mqt = list(mqt)
     clist = []
     if len(mqt) == 1:
         mqt.append('*')
+        ref.append('*')
     for i in range(len(mqt) - 1):
-        get_collocations(clist, mqt, i, dbs, cids)
+        get_collocations(clist, mqt, ref, i, dbs, cids)
     '''
     for i in range(len(mqt)):
         qt = list(mqt)

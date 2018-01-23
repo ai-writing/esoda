@@ -19,6 +19,8 @@ CORPUS2ID=[]
 FIELD_NAME = [u'通用语料库',u'计算机', u"化学",u"土木",u"教育",u"电子",u"地质",u"数学",u"物理",u"心理",u"金融工程",u"统计"]
 SECOND_LEVEL_FIELD=[[u'BNC'],[u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',
               u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合'],[u"化学"],[u"土木"],[u"教育"],[u"电子"],[u"地质"],[u"数学"],[u"物理"],[u"心理"],[u"金融工程"],[u"统计"]]
+EXCEPT = {u'her': u'she', u'him': u'he', u'his': u'he', u'its': u'its', u'me': u'I', u'others': u'other', u'our': u'we', u'their': u'they', 
+    u'them': u'they', u'us': u'we', u'your': u'you', u'yourselves': u'yourselve', u'data': 'datum'}
 count=0
 count1=0
 for i in range(21):
@@ -31,6 +33,13 @@ for i in range(21):
     for j in CORPUS[str(i)]:
         CORPUS2ID.append(j)
 
+def displayed_lemma(ref, lemma):
+	if ref in EXCEPT.keys():
+		return ref
+	else:
+		return lemma
+
+
 def refine_query(q):
     # Note the difference between str.translate and unicode.translate
     r = q.translate(TRANS_TABLE).strip()
@@ -38,6 +47,7 @@ def refine_query(q):
     if r != q:
         logger.info('refine_query: "%s" -> %s', q, r)
     return r
+
 
 def convert_type2title(rr):
     rr_title = ''
