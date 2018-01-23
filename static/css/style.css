@@ -1211,6 +1211,7 @@ button.close:focus {
     margin-top: 5px;
     border: 1px solid #42A5F5;
     background-color: #fff;
+    z-index: 999;
 }
 
 #SidebarAffix.affix {
