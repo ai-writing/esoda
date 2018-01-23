@@ -1231,7 +1231,7 @@ button.close:focus {
 
 #SidebarAffix .list-group-item {
     border-width: 0;
-    padding: 5px 18px;
+    padding: 5px 15px;
     text-align: justify;
 }
 
@@ -1320,10 +1320,13 @@ button.close:focus {
 ._mCS_1 .mCSB_scrollTools .mCSB_draggerContainer{
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-right: 10px;
 }
 
 ._mCS_1 .mCSB_container {
+    margin-right: 10px !important;
+}
+
+._mCS_2 .mCSB_container {
     margin-right: 15px !important;
 }
 
@@ -1352,7 +1355,7 @@ button.close:focus {
 
 .panel-subheading {
     background: rgba(66, 165, 245, 0.10);
-    padding: 6px 13px;
+    padding: 6px 10px;
     text-align: justify;
     margin: 0 5px;
     margin-top: 10px;
@@ -1591,8 +1594,8 @@ button.close:focus {
 }
 
 .colloc-result {
-    margin: 10px 5px 0px 5px;
-    padding: 0px 0px 0px 13px;
+    margin: 5px 0px 5px;
+    padding: 0px 0px 0px 15px;
     max-height: 200px;
 }
 
