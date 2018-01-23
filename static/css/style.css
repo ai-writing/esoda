@@ -1313,7 +1313,6 @@ button.close:focus {
 }
 
 .syn-list {
-<<<<<<< Updated upstream
     max-height: 260px;
     overflow: auto;
 }
@@ -1331,12 +1330,6 @@ button.close:focus {
     margin-right: 15px !important;
 }
 
-=======
-    max-height: 280px;
-    overflow: auto;
-}
-
->>>>>>> Stashed changes
 .panel {
     background: transparent;
     border: none;
