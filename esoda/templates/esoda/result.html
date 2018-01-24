@@ -49,9 +49,11 @@
                   <div class="tab-content CollapseColloc panel panel-default">
                     {% if r.collocationList %}
                       <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
-                      {% for collocation in r.collocationList %}
-                        <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
-                      {% endfor %}
+                      <div {% if r.collocationList|length == 1 %} class="hide-query" {% endif %}>
+                        {% for collocation in r.collocationList %}
+                          <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
+                        {% endfor %}
+                      </div>
                     {% endif %}
                   </div>
                 </div>
@@ -68,7 +70,8 @@
 
             <div class="result-warning">
               {% if not user.is_authenticated %}
-                默认搜索领域为"<span>计算机全部领域</span>"，您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>进行个性化搜索
+                默认搜索领域为"<span>计算机全部领域</span>"，您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>
+                进行个性化搜索
               {% else %}
                 {% if r.domain|upper %}
                   当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a href="{% url 'authentication:domain' %}">其他个人领域</a>中搜索
