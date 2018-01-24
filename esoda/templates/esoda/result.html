@@ -49,11 +49,9 @@
                   <div class="tab-content CollapseColloc panel panel-default">
                     {% if r.collocationList %}
                       <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
-                      <div {% if r.collocationList|length == 1 %} class="hide-query" {% endif %}>
-                        {% for collocation in r.collocationList %}
-                          <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
-                        {% endfor %}
-                      </div>
+                      {% for collocation in r.collocationList %}
+                        <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
+                      {% endfor %}
                     {% endif %}
                   </div>
                 </div>
