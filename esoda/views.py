@@ -262,8 +262,8 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
     for j, p in enumerate(resList):
-        if j >= 4:
-            break
+        if j == 4:
+            qt[i], qt[i + 1] = qt[i + 1], qt[i]
         if not p:
             continue
         if '*' in qt:
@@ -282,12 +282,13 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
 
 def collocation_list(mqt, ref, dbs, cids):
     mqt = list(mqt)
-    clist = [{'count': 0, 'title': u'全部结果', 'type': ' '.join(mqt), 'label':  'Colloc0_0'}] # all results
+    head = [{'count': 0, 'title': u'全部结果', 'type': ' '.join(mqt), 'label':  'Colloc0_0'}] # all results
+    clist = []
     tmp = []
     if len(mqt) >= 3:
-        return clist
+        return head
     if len(mqt) == 1:
-        tmp = clist[:]
+        tmp = head[:]
         mqt.append('*')
         ref.append('*')
     for i in range(len(mqt) - 1):

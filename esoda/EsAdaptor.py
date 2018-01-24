@@ -202,25 +202,25 @@ class EsAdaptor():
 
         if len(d) > 1:
             ret = []
-            for ps in (('d.l1', 'd.l2'), ('d.l2', 'd.l1')):
-                action['query']['bool']['must'] = list(mst)
-                ddq = [{'term': {ps[0]: d[0]}}, {'term': {ps[1]: d[1]}}]
-                action['query']['bool']['must'].append({
-                    "nested": {
-                        "path": "d",
-                        "query": {
-                            "bool": {
-                                "must": ddq
-                            }
+            #for ps in (('d.l1', 'd.l2'), ('d.l2', 'd.l1')):
+            action['query']['bool']['must'] = list(mst)
+            ddq = [{'term': {'d.l1': d[0]}}, {'term': {'d.l2': d[1]}}]
+            action['query']['bool']['must'].append({
+                "nested": {
+                    "path": "d",
+                    "query": {
+                        "bool": {
+                            "must": ddq
                         }
                     }
-                })
-                action['aggs']['d']['aggs']['d']['filter'] = {
-                    'bool': {
-                        'must': ddq
-                    }
                 }
-                ret += EsAdaptor.__checkResult(action, dbs, cids)
+            })
+            action['aggs']['d']['aggs']['d']['filter'] = {
+                'bool': {
+                    'must': ddq
+                }
+            }
+            ret += EsAdaptor.__checkResult(action, dbs, cids)
         else:
             ret = []
             for ps in ('d.l1', 'd.l2'):
