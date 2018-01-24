@@ -199,6 +199,15 @@ def guide_view(request):
 def get_usage_list(t, ref, i, dt, dbs, cids):
     usageList = []
     nt = list(t)
+    if dt == '0':
+        content = []
+        for i in xrange(len(t)):
+            content.append(displayed_lemma(ref[i], t[i]))
+        if len(t) == 1:
+            con = content[0]
+        else:
+            con = '...'.join(content)
+        return [{'ref':' '.join(ref), 'lemma': ' '.join(t), 'content': con, 'count': 0}]
     del nt[i]
     del nt[i]
     nnt = list(nt)
@@ -233,8 +242,8 @@ def get_usage_list(t, ref, i, dt, dbs, cids):
                             nref[i + 1] = l2
                         ret.append({
                             'ref': ' '.join(nref),
-                            'lemma': pat % (l1, l2),
-                            'content': pat % (t1[0], t2[0]),
+                            'lemma': pat % (l1, l2), # for query
+                            'content': pat % (t1[0], t2[0]), # for display
                             'count': j['doc_count']
                         })
                 usageList += ret
@@ -258,13 +267,10 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         if not p:
             continue
         if '*' in qt:
-            tt = qt[:]
-            tt.remove('*')
-            res = EsAdaptor.search(tt, [], tt, dbs, cids, 10000)
-            cnt = len(res['hits']) if 'hits' in res else 0
+            dd = []
         else:
             dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
-            cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
+        cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
@@ -276,8 +282,12 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
 
 def collocation_list(mqt, ref, dbs, cids):
     mqt = list(mqt)
-    clist = []
+    clist = [{'count': 0, 'title': u'全部结果', 'type': ' '.join(mqt), 'label':  'Colloc0_0'}] # all results
+    tmp = []
+    if len(mqt) >= 3:
+        return clist
     if len(mqt) == 1:
+        tmp = clist[:]
         mqt.append('*')
         ref.append('*')
     for i in range(len(mqt) - 1):
@@ -289,6 +299,8 @@ def collocation_list(mqt, ref, dbs, cids):
         get_collocation(clist, qt, i, dbs, cids)
     '''
     newlist = sorted(clist, key=lambda k: k['count'], reverse = True)
+    if tmp:
+        newlist = tmp + newlist
     return newlist
 
 
