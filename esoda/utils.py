@@ -33,11 +33,21 @@ for i in range(21):
     for j in CORPUS[str(i)]:
         CORPUS2ID.append(j)
 
+
+def get_defaulteColl(qlen, clist):
+    # Choose the default collocation
+    if qlen == 2 and len(clist) > 1 and clist[1]['count'] > 0.3 * clist[0]['count']:
+        return 2
+    else:
+        return 1
+
+
 def displayed_lemma(ref, lemma):
-	if ref in EXCEPT.keys():
-		return ref
-	else:
-		return lemma
+    # if lemma in EXCEPT, change the display of lemma
+    if ref in EXCEPT.keys():
+        return ref
+    else:
+       return lemma
 
 
 def refine_query(q):

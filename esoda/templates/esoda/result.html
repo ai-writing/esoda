@@ -49,7 +49,7 @@
                   <div class="tab-content CollapseColloc panel panel-default">
                     {% if r.collocationList %}
                       <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
-                      {% for collocation in r.collocationList %}
+                      {% for collocation in r.collocationList.cL %}
                         <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
                       {% endfor %}
                     {% endif %}
@@ -83,20 +83,17 @@
               <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
                 <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11"
                     role="tablist">
-                  {% for collocation in r.collocationList %}
-                    {% if forloop.counter < 2 %}
-                      <li role="presentation">
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" id="first" role="tab"
-                           data-toggle="tab" data="{{ collocation.title }}"
-                           type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      </li>
-                    {% endif %}
-                    {% if forloop.counter > 1 %}
-                      <li role="presentation">
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab"
-                           data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      </li>
-                    {% endif %}
+                  {% for collocation in r.collocationList.cL %}
+                    <li role="presentation">
+                      {% if forloop.counter == r.collocationList.index %}
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id ="first"
+                          data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      {% endif %}
+                      {% if forloop.counter != r.collocationList.index %}
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
+                          data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      {% endif %}
+                    </li>
                   {% endfor %}
                 </ul>
                 <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn">

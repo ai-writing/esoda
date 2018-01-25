@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 import time
-from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma
+from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma, get_defaulteColl
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
@@ -82,7 +82,8 @@ def esoda_view(request):
 
     dbs, cids = get_cids(request.user, r=r)
     r['tlen'] = len(qt)
-    r['collocationList'] = collocation_list(qt, ref, dbs, cids)
+    cL, cL_index = collocation_list(qt, ref, dbs, cids)
+    r['collocationList'] = {'cL': cL, 'index': cL_index}
     r['synonymous'] = []
     r['hasSyn'] = False
     for i in xrange(len(qt)):
@@ -268,9 +269,10 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
             continue
         if '*' in qt:
             dd = []
+            cnt = 10 # one word query set a default number of coll
         else:
             dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
-        cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
+            cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
@@ -281,14 +283,14 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
 
 
 def collocation_list(mqt, ref, dbs, cids):
+    # return collocation_list, default_collocation index
     mqt = list(mqt)
-    head = [{'count': 0, 'title': u'全部结果', 'type': ' '.join(mqt), 'label':  'Colloc0_0'}] # all results
+    cnt = EsAdaptor.count(mqt, [], dbs, cids)['hits']['total']
+    head = [{'count': cnt, 'title': u'全部结果', 'type': ' '.join(mqt), 'label':  'Colloc0_0'}] # all results
     clist = []
-    tmp = []
     if len(mqt) >= 3:
-        return head
+        return head, 1
     if len(mqt) == 1:
-        tmp = head[:]
         mqt.append('*')
         ref.append('*')
     for i in range(len(mqt) - 1):
@@ -300,9 +302,9 @@ def collocation_list(mqt, ref, dbs, cids):
         get_collocation(clist, qt, i, dbs, cids)
     '''
     newlist = sorted(clist, key=lambda k: k['count'], reverse = True)
-    if tmp:
-        newlist = tmp + newlist
-    return newlist
+    newlist = head + newlist
+    print get_defaulteColl(len(mqt), newlist), 'vvvvvvvvvvvvvvvvvvvvvvvvvvvv'
+    return newlist, get_defaulteColl(len(mqt), newlist)
 
 
 def sentence_query(t, ref, i, dt, dbs, cids):
