@@ -12,9 +12,11 @@ from .EsAdaptor import EsAdaptor
 from .utils import FIELD_NAME
 from common.models import Comment
 from authentication.views import tree_first
+from common.mongodb import MONGODB
 
 
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
+PERP_TOKENS = [r['_id'] for r in MONGODB.common.prep_tokens.find()]
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
 DEFAULT_DBS = ['dblp']
 DEFAULT_CIDS = ['_all']
@@ -282,29 +284,29 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         })
 
 
-def collocation_list(mqt, ref, dbs, cids):
+def collocation_list(t, ref, dbs, cids):
     # return collocation_list, default_collocation index
-    mqt = list(mqt)
-    cnt = EsAdaptor.count(mqt, [], dbs, cids)['hits']['total']
-    head = [{'count': cnt, 'title': u'全部结果', 'type': ' '.join(mqt), 'label':  'Colloc0_0'}] # all results
+    cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
+    head = [{'count': cnt, 'title': u'全部结果', 'type': ' '.join(t), 'label':  'Colloc0_0'}] # all results
     clist = []
-    if len(mqt) >= 3:
+    if len(t) >= 3:
         return head, 1
-    if len(mqt) == 1:
-        mqt.append('*')
+    if len(t) == 1:
+        if t[0] in PERP_TOKENS:
+            return head, 1
+        t.append('*')
         ref.append('*')
-    for i in range(len(mqt) - 1):
-        get_collocations(clist, mqt, ref, i, dbs, cids)
+    for i in range(len(t) - 1):
+        get_collocations(clist, t, ref, i, dbs, cids)
     '''
-    for i in range(len(mqt)):
-        qt = list(mqt)
+    for i in range(len(t)):
+        qt = list(t)
         qt.insert(i, '*')
         get_collocation(clist, qt, i, dbs, cids)
     '''
     newlist = sorted(clist, key=lambda k: k['count'], reverse = True)
     newlist = head + newlist
-    print get_defaulteColl(len(mqt), newlist), 'vvvvvvvvvvvvvvvvvvvvvvvvvvvv'
-    return newlist, get_defaulteColl(len(mqt), newlist)
+    return newlist, get_defaulteColl(len(t), newlist)
 
 
 def sentence_query(t, ref, i, dt, dbs, cids):
