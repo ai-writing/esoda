@@ -2,8 +2,8 @@
   {% for usage in usageList %}
     <div {% if usageList|length == 1 %} class="hide-query" {% endif %}>
       <p><a href="#" class="colloc-usage" ref="{{ usage.ref }}" lemma="{{ usage.lemma }}">{{ usage.content }}
-        <span class="usage-count">{% if usage.count >= 1000 %}({% widthratio usage.count 1000 1 %}k){% else %}(
-          {{ usage.count }}){% endif %}</span></a></p>
+        <span class="usage-count">{% if usage.count >= 1000 %}({% widthratio usage.count 1000 1 %}k)
+        {% else %}({{ usage.count }}){% endif %}</span></a></p>
     </div>
   {% endfor %}
 </div>

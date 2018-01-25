@@ -1030,6 +1030,13 @@ button.close:focus {
 
 .thumbnail-guide > img {
     max-width: 105px;
+    opacity: 0.75;
+    transition: 150ms;
+}
+
+.thumbnail-guide > img:hover {
+    max-width: 105px;
+    opacity: 1;
 }
 
 /*.thumbnail-guide > a > img {

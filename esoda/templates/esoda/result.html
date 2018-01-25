@@ -179,7 +179,7 @@
               $('#colLess').show();
           });
           $('#colLess').click(function () {
-              y = (y - 6 < 0) ? 2 : y - 6;
+              y = (y - 10 < 0) ? 2 : y - 10;
               $('.colList li').not(':lt(' + y + ')').hide();
               $('#colLess').hide();
               $('#colMore').show();
@@ -241,8 +241,9 @@
                   $(id + ' .colloc-result').mCustomScrollbar({
                       theme: 'dark',
                       scrollInertia: 0,
-                      mouseWheel: {preventDefault: true}
-                  })
+                      mouseWheel: {preventDefault: true},
+                      autoHideScrollbar: true
+                  });
                   $(id + ' .colloc-usage:eq(0)').click();
               });
           });
