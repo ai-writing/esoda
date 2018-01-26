@@ -103,6 +103,10 @@
               </div>
             </div> <!-- panel-group -->
 
+            <div id="Loading" class="result-table-cell center-align">
+              <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
+            </div>
+
             <div id="SentenceResult"></div>
 
             <div class="fix-right-xs">
@@ -112,10 +116,6 @@
                   <p>回到顶部</p>
                 </div>
               </div>
-            </div>
-
-            <div id="Loading" class="result-table-cell center-align">
-              <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
             </div>
 
             <div class="result-table-cell center-align">
@@ -149,7 +149,9 @@
               $.get("{% url 'sentences' %}", params, function (data) {
                   $('#Loading').hide();
                   $('#ManualLoad').hide();
-                  $("#SentenceResult").html(data);
+                  $('#SentenceResult').html(data);
+                  // $('#SentenceResult').css('visibility', 'visible');
+                  $('#SentenceResult').animate({ opacity: 1 });
                   if (Number($('#ExampleNumber').text()) <= 10) {
                       $('#ExampleEnd').show();
                       loaded = 1;
@@ -232,8 +234,10 @@
               if (i == 0) i = 1;
               dt = id.replace('#', '').split('_')[1];
 
-              $('#SentenceResult').empty();
-              $('#Loading').show();
+              // $('#SentenceResult').css('visibility', 'hidden');
+              $('#SentenceResult').animate({ opacity: 0 }, function () {
+                $('#Loading').show();
+              });
               $('#ManualLoad').hide();
               $("#ExampleEnd").hide();
               $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
@@ -255,8 +259,10 @@
               if ($(this).attr('state') == 'selected') return;
               $("#ExampleEnd").hide();
               $('#ManualLoad').hide();
-              $('#SentenceResult').empty();
-              $('#Loading').show();
+              // $('#SentenceResult').css('visibility', 'hidden');
+              $('#SentenceResult').animate({ opacity: 0 }, function () {
+                $('#Loading').show();
+              });
 
               $('.colloc-usage').removeAttr('state');
               $(this).attr('state', 'selected');
