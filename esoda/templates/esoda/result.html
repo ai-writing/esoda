@@ -261,7 +261,7 @@
               $('#ManualLoad').hide();
               // $('#SentenceResult').css('visibility', 'hidden');
               $('#SentenceResult').animate({ opacity: 0 }, function () {
-                $('#Loading').show();
+                if(loading) $('#Loading').show();
               });
 
               $('.colloc-usage').removeAttr('state');
@@ -272,7 +272,7 @@
               var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
               var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
 
-              searchAndFillSentences({t: type.replace('...', ' '), ref: $(this).attr('ref'), i: i, dt: dt});
+              searchAndFillSentences({t: type.replace('...', ' '), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
           });
 
           if ($('#Loading').is(':hidden')) {
