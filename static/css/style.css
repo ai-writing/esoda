@@ -188,11 +188,11 @@ a {
     bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
-    min-height: 60px;
+    min-height: 50px;
     /*background: white;*/
     color: #9b9b9b;
     font-size: 18px;
-    padding-top: 15px;
+    padding-top: 10px;
 
     background: #E6EDED;
     border-top: 1px solid #CACACA;
@@ -1030,6 +1030,13 @@ button.close:focus {
 
 .thumbnail-guide > img {
     max-width: 105px;
+    opacity: 0.75;
+    transition: 150ms;
+}
+
+.thumbnail-guide > img:hover {
+    max-width: 105px;
+    opacity: 1;
 }
 
 /*.thumbnail-guide > a > img {
@@ -1211,7 +1218,6 @@ button.close:focus {
     margin-top: 5px;
     border: 1px solid #42A5F5;
     background-color: #fff;
-    z-index: 999;
 }
 
 #SidebarAffix.affix {
@@ -1238,6 +1244,10 @@ button.close:focus {
 
 #SidebarAffix .list-group-item:last-child {
     padding-bottom: 15px;
+}
+
+.hide-query {
+    display: none !important;
 }
 
 .listHide {

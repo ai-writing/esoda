@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 import logging
 import time
 
-from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, res_refine, displayed_lemma
+from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, res_refine, displayed_lemma, get_defaulteColl
 from .youdao_query import youdao_suggest
 if settings.DEBUG:
     from .youdao_query import youdao_translate_old as youdao_translate
@@ -19,9 +19,11 @@ from .EsAdaptor import EsAdaptor
 from .utils import FIELD_NAME
 from common.models import Comment
 from authentication.views import tree_first
+from common.mongodb import MONGODB
 
 
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
+PERP_TOKENS = [r['_id'] for r in MONGODB.common.prep_tokens.find()]
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
 DEFAULT_DBS = ['dblp']
 DEFAULT_CIDS = ['_all']
@@ -89,7 +91,8 @@ def esoda_view(request):
 
     dbs, cids = get_cids(request.user, r=r)
     r['tlen'] = len(qt)
-    r['collocationList'] = collocation_list(qt, ref, dbs, cids)
+    cL, cL_index = collocation_list(qt, ref, dbs, cids)
+    r['collocationList'] = {'cL': cL, 'index': cL_index}
     r['synonymous'] = []
     r['hasSyn'] = False
     for i in xrange(len(qt)):
@@ -206,6 +209,15 @@ def guide_view(request):
 def get_usage_list(t, ref, i, dt, dbs, cids):
     usageList = []
     nt = list(t)
+    if dt == '0':
+        content = []
+        for i in xrange(len(t)):
+            content.append(displayed_lemma(ref[i], t[i]))
+        if len(t) == 1:
+            con = content[0]
+        else:
+            con = '...'.join(content)
+        return [{'ref':' '.join(ref), 'lemma': ' '.join(t), 'content': con, 'count': 0}]
     del nt[i]
     del nt[i]
     nnt = list(nt)
@@ -240,8 +252,8 @@ def get_usage_list(t, ref, i, dt, dbs, cids):
                             nref[i + 1] = l2
                         ret.append({
                             'ref': ' '.join(nref),
-                            'lemma': pat % (l1, l2),
-                            'content': pat % (t1[0], t2[0]),
+                            'lemma': pat % (l1, l2), # for query
+                            'content': pat % (t1[0], t2[0]), # for display
                             'count': j['doc_count']
                         })
                 usageList += ret
@@ -260,15 +272,13 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
     for j, p in enumerate(resList):
-        if j >= 4:
-            break
+        if j == 4:
+            qt[i], qt[i + 1] = qt[i + 1], qt[i]
         if not p:
             continue
         if '*' in qt:
-            tt = qt[:]
-            tt.remove('*')
-            res = EsAdaptor.search(tt, [], tt, dbs, cids, 10000)
-            cnt = len(res['hits']) if 'hits' in res else 0
+            dd = []
+            cnt = 10 # one word query set a default number of coll
         else:
             dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
             cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
@@ -281,22 +291,29 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         })
 
 
-def collocation_list(mqt, ref, dbs, cids):
-    mqt = list(mqt)
+def collocation_list(t, ref, dbs, cids):
+    # return collocation_list, default_collocation index
+    cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
+    head = [{'count': cnt, 'title': u'全部结果', 'type': ' '.join(t), 'label':  'Colloc0_0'}] # all results
     clist = []
-    if len(mqt) == 1:
-        mqt.append('*')
+    if len(t) >= 3:
+        return head, 1
+    if len(t) == 1:
+        if t[0] in PERP_TOKENS:
+            return head, 1
+        t.append('*')
         ref.append('*')
-    for i in range(len(mqt) - 1):
-        get_collocations(clist, mqt, ref, i, dbs, cids)
+    for i in range(len(t) - 1):
+        get_collocations(clist, t, ref, i, dbs, cids)
     '''
-    for i in range(len(mqt)):
-        qt = list(mqt)
+    for i in range(len(t)):
+        qt = list(t)
         qt.insert(i, '*')
         get_collocation(clist, qt, i, dbs, cids)
     '''
     newlist = sorted(clist, key=lambda k: k['count'], reverse = True)
-    return newlist
+    newlist = head + newlist
+    return newlist, get_defaulteColl(len(t), newlist)
 
 
 def sentence_query(t, ref, i, dt, dbs, cids):

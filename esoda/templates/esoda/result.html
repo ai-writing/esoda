@@ -49,7 +49,7 @@
                   <div class="tab-content CollapseColloc panel panel-default">
                     {% if r.collocationList %}
                       <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
-                      {% for collocation in r.collocationList %}
+                      {% for collocation in r.collocationList.cL %}
                         <div role="tabpanel" class="tab-pane fade usage-pane" id="{{ collocation.label }}"></div>
                       {% endfor %}
                     {% endif %}
@@ -68,7 +68,8 @@
 
             <div class="result-warning">
               {% if not user.is_authenticated %}
-                默认搜索领域为"<span>计算机全部领域</span>"，您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>进行个性化搜索
+                默认搜索领域为"<span>计算机全部领域</span>"，您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>
+                进行个性化搜索
               {% else %}
                 {% if r.domain|upper %}
                   当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a href="{% url 'authentication:domain' %}">其他个人领域</a>中搜索
@@ -82,20 +83,17 @@
               <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
                 <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11"
                     role="tablist">
-                  {% for collocation in r.collocationList %}
-                    {% if forloop.counter < 2 %}
-                      <li role="presentation">
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" id="first" role="tab"
-                           data-toggle="tab" data="{{ collocation.title }}"
-                           type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      </li>
-                    {% endif %}
-                    {% if forloop.counter > 1 %}
-                      <li role="presentation">
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" data-toggle="tab"
-                           data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      </li>
-                    {% endif %}
+                  {% for collocation in r.collocationList.cL %}
+                    <li role="presentation">
+                      {% if forloop.counter == r.collocationList.index %}
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id ="first"
+                          data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      {% endif %}
+                      {% if forloop.counter != r.collocationList.index %}
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
+                          data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                      {% endif %}
+                    </li>
                   {% endfor %}
                 </ul>
                 <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn">
@@ -104,6 +102,10 @@
                 </div>
               </div>
             </div> <!-- panel-group -->
+
+            <div id="Loading" class="result-table-cell center-align">
+              <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
+            </div>
 
             <div id="SentenceResult"></div>
 
@@ -114,10 +116,6 @@
                   <p>回到顶部</p>
                 </div>
               </div>
-            </div>
-
-            <div id="Loading" class="result-table-cell center-align">
-              <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
             </div>
 
             <div class="result-table-cell center-align">
@@ -151,7 +149,9 @@
               $.get("{% url 'sentences' %}", params, function (data) {
                   $('#Loading').hide();
                   $('#ManualLoad').hide();
-                  $("#SentenceResult").html(data);
+                  $('#SentenceResult').html(data);
+                  // $('#SentenceResult').css('visibility', 'visible');
+                  $('#SentenceResult').animate({ opacity: 1 });
                   if (Number($('#ExampleNumber').text()) <= 10) {
                       $('#ExampleEnd').show();
                       loaded = 1;
@@ -181,7 +181,7 @@
               $('#colLess').show();
           });
           $('#colLess').click(function () {
-              y = (y - 6 < 0) ? 2 : y - 6;
+              y = (y - 10 < 0) ? 2 : y - 10;
               $('.colList li').not(':lt(' + y + ')').hide();
               $('#colLess').hide();
               $('#colMore').show();
@@ -234,8 +234,10 @@
               if (i == 0) i = 1;
               dt = id.replace('#', '').split('_')[1];
 
-              $('#SentenceResult').empty();
-              $('#Loading').show();
+              // $('#SentenceResult').css('visibility', 'hidden');
+              $('#SentenceResult').animate({ opacity: 0 }, function () {
+                $('#Loading').show();
+              });
               $('#ManualLoad').hide();
               $("#ExampleEnd").hide();
               $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
@@ -243,8 +245,9 @@
                   $(id + ' .colloc-result').mCustomScrollbar({
                       theme: 'dark',
                       scrollInertia: 0,
-                      mouseWheel: {preventDefault: true}
-                  })
+                      mouseWheel: {preventDefault: true},
+                      autoHideScrollbar: true
+                  });
                   $(id + ' .colloc-usage:eq(0)').click();
               });
           });
@@ -256,8 +259,10 @@
               if ($(this).attr('state') == 'selected') return;
               $("#ExampleEnd").hide();
               $('#ManualLoad').hide();
-              $('#SentenceResult').empty();
-              $('#Loading').show();
+              // $('#SentenceResult').css('visibility', 'hidden');
+              $('#SentenceResult').animate({ opacity: 0 }, function () {
+                $('#Loading').show();
+              });
 
               $('.colloc-usage').removeAttr('state');
               $(this).attr('state', 'selected');
