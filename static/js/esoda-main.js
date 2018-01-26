@@ -108,6 +108,7 @@ $(function () {
   var auto = 0;
   $.widget("custom.catcomplete", $.ui.autocomplete, {
     _create: function () {
+      console.log('create');
       this._super();
       this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
     },
@@ -207,10 +208,12 @@ $(function () {
       return false;
     },
     select: function (event, ui) {
+
       var terms = split(this.value);
       terms.pop();
       terms.push(extractPrefix(ui.item.value));
-      this.value = terms.join(" ");
+      if (event.keyCode !== 13) this.value = terms.join(" ");  // if Enter not press
+
       if (event.keyCode !== $.ui.keyCode.TAB)
         $("#SearchForm").submit();
       else
