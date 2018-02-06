@@ -203,7 +203,7 @@ $(function () {
       }
     },
     focus: function (event, ui) {
-      if (event.keyCode == $.ui.keyCode.UP || event.keyCode == $.ui.keyCode.DOWN) this.value = ui.item.value;
+      if (event.keyCode == $.ui.keyCode.UP || event.keyCode == $.ui.keyCode.DOWN) this.value = extractPrefix(ui.item.value);
       return false;
     },
     select: function (event, ui) {
