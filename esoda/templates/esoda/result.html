@@ -81,27 +81,30 @@
 
             <div class="uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
               <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
-                <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11"
+                <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-8 col-md-8 col-sm-10 col-xs-10"
                     role="tablist">
                   {% for collocation in r.collocationList.cL %}
                     <li role="presentation">
                       {% if forloop.counter == r.collocationList.index %}
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id ="first"
-                          data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id="first"
+                           data-toggle="tab" data="{{ collocation.title }}"
+                           type="{{ collocation.type }}">{{ collocation.title }}</a>
                       {% endif %}
                       {% if forloop.counter != r.collocationList.index %}
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
-                          data-toggle="tab" data="{{ collocation.title }}" type="{{ collocation.type }}">{{ collocation.title }}</a>
+                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
+                           data-toggle="tab" data="{{ collocation.title }}"
+                           type="{{ collocation.type }}">{{ collocation.title }}</a>
                       {% endif %}
                     </li>
                   {% endfor %}
                 </ul>
-                <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn">
+                <div class="list-btn">
                   <span id="colMore">+</span>
                   <span id="colLess">-</span>
                 </div>
               </div>
             </div> <!-- panel-group -->
+
 
             <div id="Loading" class="result-table-cell center-align">
               <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
@@ -137,147 +140,147 @@
   <script src="{% static 'js/jquery.mousewheel.min.js' %}"></script>
   <script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
   <script>
-      $(function () {
+    $(function () {
 
-          var curSelectedUsage;
-          var REF = '{{ ref }}';
+      var curSelectedUsage;
+      var REF = '{{ ref }}';
 
-          function searchAndFillSentences(params) {
-              loadCount = 1;
-              loading = 1;
-              loaded = 0;
-              $.get("{% url 'sentences' %}", params, function (data) {
-                  $('#Loading').hide();
-                  $('#ManualLoad').hide();
-                  $('#SentenceResult').html(data);
-                  // $('#SentenceResult').css('visibility', 'visible');
-                  $('#SentenceResult').animate({ opacity: 1 });
-                  if (Number($('#ExampleNumber').text()) <= 10) {
-                      $('#ExampleEnd').show();
-                      loaded = 1;
-                  }
-                  loading = 0;
-              });
+      function searchAndFillSentences(params) {
+        loadCount = 1;
+        loading = 1;
+        loaded = 0;
+        $.get("{% url 'sentences' %}", params, function (data) {
+          $('#Loading').hide();
+          $('#ManualLoad').hide();
+          $('#SentenceResult').html(data);
+          // $('#SentenceResult').css('visibility', 'visible');
+          $('#SentenceResult').animate({opacity: 1});
+          if (Number($('#ExampleNumber').text()) <= 10) {
+            $('#ExampleEnd').show();
+            loaded = 1;
           }
+          loading = 0;
+        });
+      }
 
-          $('.loadMore').click(function () {
-              $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-              $(this).hide();
-              $(this).next('.showLess').show();
-          });
-          $('.showLess').click(function () {
-              $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-              $(this).hide();
-              $(this).prevAll('.loadMore').show();
-          });
-
-          size_li_col = $(".colList li").size();
-          y = 2;
-          $('.colList li:lt(' + y + ')').show();
-          $('#colMore').click(function () {
-              y = (y + 6 <= size_li_col) ? y + 6 : size_li_col;
-              $('.colList li:lt(' + y + ')').show();
-              $('#colMore').hide();
-              $('#colLess').show();
-          });
-          $('#colLess').click(function () {
-              y = (y - 10 < 0) ? 2 : y - 10;
-              $('.colList li').not(':lt(' + y + ')').hide();
-              $('#colLess').hide();
-              $('#colMore').show();
-          });
-
-          // $('.not-limited').click(function (e) {
-          //   e.preventDefault();
-          //   if ($(this).attr('aria-expanded') == 'true') {
-          //     return;
-          //   }
-          //   $("#ExampleEnd").hide();
-          //   $("#ManualLoad").hide();
-          //   $('#SentenceResult').empty();
-          //   $('#Loading').show();
-
-          //   var query = $(this).attr('data');
-
-          //   searchAndFillSentences({t: query, ref: REF, dt: 0});
-          // });
-
-          // $('.not-limited').click();
-
-          $(' .syn-list').mCustomScrollbar({
-              theme: 'dark',
-              scrollInertia: 0,
-              mouseWheel: {preventDefault: true},
-              autoHideScrollbar: true
-          });
-
-          $('.colloc-sub-btn').click(function (e) {
-              e.preventDefault();
-              if ($(this).attr('aria-expanded') == 'true') {
-                  return;
-              }
-              var id = $(this).attr('href');
-              var type = $(this).attr('type');
-              var type0 = type.replace(/ \(.*\) /g, ' ');
-              var i, dt;
-              var ref = [];
-              for (i = 0; i < type.split(' ').length; i++) {
-                  if (type.split(' ')[i] != type0.split(' ')[i]) break;
-              }
-              for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
-                  if (type0.split(' ')[j] == '*') ref[j] = '*';
-                  else {
-                      ref[j] = REF.split(' ')[k];
-                      k = k + 1;
-                  }
-              }
-              if (i == 0) i = 1;
-              dt = id.replace('#', '').split('_')[1];
-
-              // $('#SentenceResult').css('visibility', 'hidden');
-              $('#SentenceResult').animate({ opacity: 0 }, function () {
-                $('#Loading').show();
-              });
-              $('#ManualLoad').hide();
-              $("#ExampleEnd").hide();
-              $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
-                  $(id).html(data);
-                  $(id + ' .colloc-result').mCustomScrollbar({
-                      theme: 'dark',
-                      scrollInertia: 0,
-                      mouseWheel: {preventDefault: true},
-                      autoHideScrollbar: true
-                  });
-                  $(id + ' .colloc-usage:eq(0)').click();
-              });
-          });
-
-          $('#first').click();
-
-          $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
-              e.preventDefault();
-              if ($(this).attr('state') == 'selected') return;
-              $("#ExampleEnd").hide();
-              $('#ManualLoad').hide();
-              // $('#SentenceResult').css('visibility', 'hidden');
-              $('#SentenceResult').animate({ opacity: 0 }, function () {
-                if(loading) $('#Loading').show();
-              });
-
-              $('.colloc-usage').removeAttr('state');
-              $(this).attr('state', 'selected');
-
-              // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-              var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
-              var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
-              var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
-
-              searchAndFillSentences({t: type.replace('...', ' '), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
-          });
-
-          if ($('#Loading').is(':hidden')) {
-              searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
-          }
+      $('.loadMore').click(function () {
+        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+        $(this).hide();
+        $(this).next('.showLess').show();
       });
+      $('.showLess').click(function () {
+        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+        $(this).hide();
+        $(this).prevAll('.loadMore').show();
+      });
+
+      size_li_col = $(".colList li").size();
+      y = 2;
+      $('.colList li:lt(' + y + ')').show();
+      $('#colMore').click(function () {
+        y = (y + 6 <= size_li_col) ? y + 6 : size_li_col;
+        $('.colList li:lt(' + y + ')').show();
+        $('#colMore').hide();
+        $('#colLess').show();
+      });
+      $('#colLess').click(function () {
+        y = (y - 10 < 0) ? 2 : y - 10;
+        $('.colList li').not(':lt(' + y + ')').hide();
+        $('#colLess').hide();
+        $('#colMore').show();
+      });
+
+      // $('.not-limited').click(function (e) {
+      //   e.preventDefault();
+      //   if ($(this).attr('aria-expanded') == 'true') {
+      //     return;
+      //   }
+      //   $("#ExampleEnd").hide();
+      //   $("#ManualLoad").hide();
+      //   $('#SentenceResult').empty();
+      //   $('#Loading').show();
+
+      //   var query = $(this).attr('data');
+
+      //   searchAndFillSentences({t: query, ref: REF, dt: 0});
+      // });
+
+      // $('.not-limited').click();
+
+      $(' .syn-list').mCustomScrollbar({
+        theme: 'dark',
+        scrollInertia: 0,
+        mouseWheel: {preventDefault: true},
+        autoHideScrollbar: true
+      });
+
+      $('.colloc-sub-btn').click(function (e) {
+        e.preventDefault();
+        if ($(this).attr('aria-expanded') == 'true') {
+          return;
+        }
+        var id = $(this).attr('href');
+        var type = $(this).attr('type');
+        var type0 = type.replace(/ \(.*\) /g, ' ');
+        var i, dt;
+        var ref = [];
+        for (i = 0; i < type.split(' ').length; i++) {
+          if (type.split(' ')[i] != type0.split(' ')[i]) break;
+        }
+        for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
+          if (type0.split(' ')[j] == '*') ref[j] = '*';
+          else {
+            ref[j] = REF.split(' ')[k];
+            k = k + 1;
+          }
+        }
+        if (i == 0) i = 1;
+        dt = id.replace('#', '').split('_')[1];
+
+        // $('#SentenceResult').css('visibility', 'hidden');
+        $('#SentenceResult').animate({opacity: 0}, function () {
+          $('#Loading').show();
+        });
+        $('#ManualLoad').hide();
+        $("#ExampleEnd").hide();
+        $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
+          $(id).html(data);
+          $(id + ' .colloc-result').mCustomScrollbar({
+            theme: 'dark',
+            scrollInertia: 0,
+            mouseWheel: {preventDefault: true},
+            autoHideScrollbar: true
+          });
+          $(id + ' .colloc-usage:eq(0)').click();
+        });
+      });
+
+      $('#first').click();
+
+      $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
+        e.preventDefault();
+        if ($(this).attr('state') == 'selected') return;
+        $("#ExampleEnd").hide();
+        $('#ManualLoad').hide();
+        // $('#SentenceResult').css('visibility', 'hidden');
+        $('#SentenceResult').animate({opacity: 0}, function () {
+          if (loading) $('#Loading').show();
+        });
+
+        $('.colloc-usage').removeAttr('state');
+        $(this).attr('state', 'selected');
+
+        // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
+        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
+        var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
+        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+
+        searchAndFillSentences({t: type.replace('...', ' '), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
+      });
+
+      if ($('#Loading').is(':hidden')) {
+        searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
+      }
+    });
   </script>
 {% endblock %}

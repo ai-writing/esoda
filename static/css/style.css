@@ -1237,9 +1237,12 @@ button.close:focus {
 }
 
 .CollapseColloc .list-btn {
-    padding-left: 0px;
-    padding-top: 10px;
-    font-size: 18px;
+    padding-left: 20px;
+    padding-top: 6px;
+    font-size: 20px;
+    float: left;
+    position: relative;
+    z-index: 999;
 }
 
 .list-btn:hover {
@@ -1488,8 +1491,8 @@ button.close:focus {
 .colloc-sub-btn {
     width: 200px;
     height: 30px;
-    padding: 6px 15px !important;
-    margin-right: 30px !important;
+    padding: 6px 10px !important;
+    margin-right: 10px !important;
     margin-bottom: 10px !important;
     background-color: #ffffff;
     text-align: center;
@@ -1603,6 +1606,7 @@ button.close:focus {
     margin: 0px;
     margin-top: 5px;
     text-align: justify;
+    width: 95%;
 }
 
 .example-hint {

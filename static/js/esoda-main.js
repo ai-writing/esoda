@@ -217,7 +217,7 @@ $(function () {
       if (event.keyCode !== $.ui.keyCode.TAB)
         $("#SearchForm").submit();
       else
-        this.value += " ";
+        this.value = extractPrefix(ui.item.value);
 
       return false;
 
