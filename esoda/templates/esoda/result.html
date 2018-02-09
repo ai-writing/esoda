@@ -81,7 +81,7 @@
 
             <div class="uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
               <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
-                <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-8 col-md-8 col-sm-10 col-xs-10"
+                <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-10 col-md-8 col-sm-11 col-xs-11"
                     role="tablist">
                   {% for collocation in r.collocationList.cL %}
                     <li role="presentation">
@@ -174,18 +174,20 @@
         $(this).prevAll('.loadMore').show();
       });
 
-      size_li_col = $(".colList li").size();
-      y = 2;
-      $('.colList li:lt(' + y + ')').show();
+      colNum = ($(".colList").width() > 660) ? 3 : 2;
+      $('.colList li:lt(' + colNum + ')').show();
+      $(window).resize(function () {
+        colNum = ($(".colList").width() > 660) ? 3 : 2;
+        $('.colList li:lt(' + colNum + ')').show();
+        $('.colList li').not(':lt(' + colNum + ')').hide();
+      });
       $('#colMore').click(function () {
-        y = (y + 6 <= size_li_col) ? y + 6 : size_li_col;
-        $('.colList li:lt(' + y + ')').show();
+        $('.colList li').show();
         $('#colMore').hide();
         $('#colLess').show();
       });
       $('#colLess').click(function () {
-        y = (y - 10 < 0) ? 2 : y - 10;
-        $('.colList li').not(':lt(' + y + ')').hide();
+        $('.colList li').not(':lt(' + colNum + ')').hide();
         $('#colLess').hide();
         $('#colMore').show();
       });
