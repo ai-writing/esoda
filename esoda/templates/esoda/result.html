@@ -155,9 +155,11 @@
           $('#SentenceResult').html(data);
           // $('#SentenceResult').css('visibility', 'visible');
           $('#SentenceResult').animate({opacity: 1});
-          if (Number($('#ExampleNumber').text()) <= 10) {
+          var exampleNum=$("#ExampleNumber");
+          if (Number(exampleNum.text()) <= 10 && Number(exampleNum.text()) > 0) {
             $('#ExampleEnd').show();
             loaded = 1;
+            console.log("failure");
           }
           loading = 0;
         });
