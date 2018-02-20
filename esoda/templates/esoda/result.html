@@ -155,11 +155,10 @@
           $('#SentenceResult').html(data);
           // $('#SentenceResult').css('visibility', 'visible');
           $('#SentenceResult').animate({opacity: 1});
-          var exampleNum=$("#ExampleNumber");
-          if (Number(exampleNum.text()) <= 10 && Number(exampleNum.text()) > 0) {
+          var exampleNum = Number($("#ExampleNumber").text());
+          if (exampleNum <= 10 && exampleNum > 0) {
             $('#ExampleEnd').show();
             loaded = 1;
-            console.log("failure");
           }
           loading = 0;
         });
