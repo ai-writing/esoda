@@ -86,12 +86,12 @@ def esoda_view(request):
     r['tlen'] = len(qt)
     cL, cL_index = collocation_list(qt, ref, dbs, cids)
     r['collocationList'] = {'cL': cL, 'index': cL_index}
-    r['synonymous'] = []
-    r['hasSyn'] = False
-    for i in xrange(len(qt)):
-        r['synonymous'].append({displayed_lemma(ref[i], qt[i]): synonyms(qt[i])[:10]})
-        if synonyms(qt[i])[:10] != []:
-            r['hasSyn'] = True
+    # r['synonymous'] = []
+    # r['hasSyn'] = False
+    # for i in xrange(len(qt)):
+    #     r['synonymous'].append({displayed_lemma(ref[i], qt[i]): synonyms(qt[i])[:10]})
+    #     if synonyms(qt[i])[:10] != []:
+    #         r['hasSyn'] = True
 
     suggestion = {
         'relatedList': [
@@ -121,37 +121,45 @@ def esoda_view(request):
     return render(request, 'esoda/result.html', info)
 
 
-def synonymous_view(request):
-    t = request.GET.get('q', '').split()
+def syn_usageList_view(request):
+    # info = {
+    #    'syn_usage_dict': {'word1':[{'ref': '', 'lemma': '', 'content': '', 'count': 10},……],'word2' ……}
+    # }
+    t = request.GET.get('t', '').split()
+    ref = request.GET.get('ref', '').split()
+    if not ref:
+        ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
-    dt = 2
     dbs, cids = get_cids(request.user)
-    cnt = 0
-
-    nt = list(t)
-    del nt[i]
-    del nt[i]
-    nnt = nt[:]
-
-    synList = []
-    for j in xrange(len(t)):
-        for syn in synonyms(t[j])[:10]:
-            d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-            nt = nnt
-            if j == i:
-                d = [{'dt': dt, 'l1': syn, 'l2': t[i + 1]}]
-            elif j == i+1:
-                d = [{'dt': dt, 'l1': t[i], 'l2': syn}]
-            else:
-                nt = [syn if x == t[j] else x for x in nt]
-            cnt = EsAdaptor.count(nt, d, dbs, cids)['hits']['total']
-            if cnt:
-                synList.append({t[j]:{'syn':syn,'cnt':cnt}})        
+    usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
     info = {
-        'synList': synList
+        #'has_syn': False,
+        #'usage_dict': get_usage_dict(t, ref, i, dt, dbs, cids),
     }
-    return render(request, 'esoda/synonymous_result.html', info)
+    cnt = 10
+    syn_dict = {}
+    for i in xrange(len(t)):
+        syn_dict[t[i]] = synonyms(t[i])[:10] # displayed_lemma(ref[i], t[i])
+    if dt != '0' and len(t) == 2:
+        t2_syn_cnt = refresh_synList(t[0], syn_dict[t[1]], 1, dt, dbs, cids)
+        t1_syn_cnt = refresh_synList(t[1], syn_dict[t[0]], 2, dt, dbs, cids)
+        syn_dict[t[0]] = t1_syn_cnt
+        syn_dict[t[1]] = t2_syn_cnt
+    else:  
+        for j in xrange(len(t)):
+            syn_list = []
+            for syn in synonyms(t[j])[:10]:
+                #cnt = EsAdaptor.count(t.replace(t[j], syn), [], dbs, cids)['hits']['total']
+                if cnt:
+                    syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': '...'.join(t).replace(t[j], syn), 'content': syn, 'count': cnt})
+            syn_dict[t[j]] = syn_list
+    
+    syn_usage_dict = {}
+    for tt in t:
+        syn_usage_dict[tt] = syn_dict[tt] + usage_dict[tt]
+    info['syn_usage_dict'] = syn_usage_dict
+    return render(request, 'esoda/collocation_result.html', info)
 
 
 def sentence_view(request):
@@ -171,16 +179,16 @@ def sentence_view(request):
     return render(request, 'esoda/sentence_result.html', info)
 
 
-def usagelist_view(request):
-    t = request.GET.get('t', '').split()
-    ref = request.GET.get('ref', '').split()
-    if not ref:
-        ref = t
-    i = int(request.GET.get('i', '0'))
-    dt = request.GET.get('dt', '0')
-    dbs, cids = get_cids(request.user)
-    r = {'usageList': get_usage_list(t, ref, i, dt, dbs, cids)}
-    return render(request, 'esoda/collocation_result.html', r)
+# def usagelist_view(request):
+#     t = request.GET.get('t', '').split()
+#     ref = request.GET.get('ref', '').split()
+#     if not ref:
+#         ref = t
+#     i = int(request.GET.get('i', '0'))
+#     dt = request.GET.get('dt', '0')
+#     dbs, cids = get_cids(request.user)
+#     r = {'usageList': get_usage_list(t, ref, i, dt, dbs, cids)}
+#     return render(request, 'esoda/collocation_result.html', r)
 
 
 def dict_suggest_view(request):
@@ -199,60 +207,61 @@ def guide_view(request):
     return render(request, 'esoda/guide.html', info)
 
 
-def get_usage_list(t, ref, i, dt, dbs, cids):
+def get_usage_dict(t, ref, i, dt, dbs, cids):
     usageList = []
+    usageDict = {}
     nt = list(t)
+    for tt in t:
+        usageDict[tt] = []
     if dt == '0':
-        content = []
-        for i in xrange(len(t)):
-            content.append(displayed_lemma(ref[i], t[i]))
-        if len(t) == 1:
-            con = content[0]
-        else:
-            con = '...'.join(content)
-        return [{'ref':' '.join(ref), 'lemma': ' '.join(t), 'content': con, 'count': 0}]
+        return usageDict
     del nt[i]
     del nt[i]
     nnt = list(nt)
     nnt.insert(i, '%s...%s')
     pat = ' '.join(nnt)
 
-    if '*' not in t:
-        d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-        cnt = EsAdaptor.count(nt, d, dbs, cids)
-        usageList.append({
-            'ref': ' '.join(ref),
-            'lemma': pat % (t[i], t[i + 1]),
-            'content': pat % (displayed_lemma(ref[i], t[i]), displayed_lemma(ref[i + 1], t[i + 1])),
-            'count': cnt['hits']['total']
-        })
+    # if '*' not in t:
+    #     d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
+    #     cnt = EsAdaptor.count(nt, d, dbs, cids)
+    #     usageList.append({
+    #         'ref': ' '.join(ref),
+    #         'lemma': pat % (t[i], t[i + 1]),
+    #         'content': pat % (displayed_lemma(ref[i], t[i]), displayed_lemma(ref[i + 1], t[i + 1])),
+    #         'count': cnt['hits']['total']
+    #     })
+    con = ''
     for k in (('*', t[i + 1]), (t[i], '*')):
-        if k[0] != '*' or k[1] != '*':
-            d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
-            lst = EsAdaptor.group(nt, d, dbs, cids)
-            try:
-                ret = []
-                for j in lst['aggregations']['d']['d']['d']['buckets']:
-                    l1 = notstar(d[0]['l1'], j['key'])
-                    l2 = notstar(d[0]['l2'], j['key'])
-                    t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[i], k[0])]
-                    t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[i + 1], k[1])]
-                    if (l1, l2) != (t[i], t[i + 1]):
-                        nref = list(ref)
-                        if l1 != t[i]:
-                            nref[i] = l1
-                        else:
-                            nref[i + 1] = l2
-                        ret.append({
-                            'ref': ' '.join(nref),
-                            'lemma': pat % (l1, l2), # for query
-                            'content': pat % (t1[0], t2[0]), # for display
-                            'count': j['doc_count']
-                        })
-                usageList += ret
-            except Exception:
-                logger.exception('In get_usage_list')
-    return usageList
+        d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
+        lst = EsAdaptor.group(nt, d, dbs, cids)
+        try:
+            ret = []
+            for j in lst['aggregations']['d']['d']['d']['buckets']:
+                l1 = notstar(d[0]['l1'], j['key'])
+                l2 = notstar(d[0]['l2'], j['key'])
+                t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[i], k[0])]
+                t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[i + 1], k[1])]
+                if (l1, l2) != (t[i], t[i + 1]):
+                    nref = list(ref)
+                    if l1 != t[i]:
+                        con = t2[0]
+                        nref[i] = l1
+                    else:
+                        con = t1[0]
+                        nref[i + 1] = l2
+                    ret.append({
+                        'ref': ' '.join(nref),
+                        'lemma': pat % (l1, l2), # for query
+                        'content': con, # for display
+                        'count': j['doc_count']
+                    })
+            if k[0] == '*':
+                usageDict[t[i+1]] = ret
+            else:
+                usageDict[t[i]] = ret
+        except Exception:
+            logger.exception('In get_usage_list')
+    return usageDict
 
 
 def get_collocations(clist, qt, ref, i, dbs, cids):
@@ -335,3 +344,15 @@ def sentence_query(t, ref, i, dt, dbs, cids):
             'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
             'heart_number': 129})
     return sr
+
+
+def refresh_synList(t, syn_list, index, dt, dbs, cids):
+    # return a synonymous_list of every word
+    synonymous_list = []
+    for syn in syn_list:
+        t_syn = (t, syn) if index == 1 else (syn, t)
+        d = [{'dt': dt, 'l1': t_syn[0], 'l2': t_syn[1]}]
+        cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+        if cnt != 0:
+            synonymous_list.append({'ref': ' '.join(t_syn), 'lemma': '...'.join(t_syn), 'content': syn, 'count': cnt})
+    return synonymous_list
