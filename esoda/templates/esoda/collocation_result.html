@@ -1,4 +1,4 @@
-<div class="colloc-result">
+<!-- <div class="colloc-result">
   {% for key, value in syn_usage_dict.items %}
     <div {% if usageList|length == 1 %} class="hide-query" {% endif %}>
       <p><a href="#" class="colloc-usage" ref="{{ value.ref }}" lemma="{{ value.lemma }}">{{ value.content }}
@@ -6,24 +6,58 @@
         {% else %}({{ value.count }}){% endif %}</span></a></p>
     </div>
   {% endfor %}
+  {% for key, value in syn_usage_dict.items %}
+    <ul class="list-group">
+      {% if value %}
+        <div class="panel-subheading">{{ key }}
+          <span class="list-btn loadMore">+</span>
+          <span class="list-btn showLess">-</span>
+        </div>
+        {% for v in value %}
+          {% if forloop.counter < 4 %}
+            <li class="list-group-item"><a href="#" class="syn-item">{{ v.content }}</a></li>
+          {% elif forloop.counter > 3 %}
+            <li class="list-group-item listHide listExpand"><a href="#" class="syn-item">{{ v.content }}</a></li>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </ul>
+  {% endfor %}
+</div> -->
+
+<div class="colloc-result">
+  {% for key, value in syn_usage_dict.items %}
+    <ul class="list-group">
+      {% if value %}
+        <div class="panel-subheading"><span>{{ key }}</span>
+          <span class="list-btn loadMore">+</span>
+          <span class="list-btn showLess">-</span>
+        </div>
+        {% for v in value %}
+          {% if forloop.counter < 4 %}
+            <li class="list-group-item"><p><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+            <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+            {% else %}({{ v.count }}){% endif %}</span></a></p></li>
+          {% elif forloop.counter > 3 %}
+            <li class="list-group-item listHide listExpand"><p><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+            <span class="usage-count">{% if v.count >= 1000 %}({% widthratio value.count 1000 1 %}k)
+            {% else %}({{ v.count }}){% endif %}</span></a></p></li>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </ul>
+  {% endfor %}
 </div>
-<div class="syn-result">
-    {% for key, value in syn_usage_dict.items %}
-      <ul class="list-group">
-        {% if value %}
-          <div class="panel-subheading">{{ key }}
-            <span class="list-btn loadMore">+</span>
-            <span class="list-btn showLess">-</span>
-          </div>
-          {% for v in value %}
-            {% if forloop.counter < 4 %}
-              <li class="list-group-item"><a href="#" class="syn-item">{{ v.content }}</a></li>
-            {% elif forloop.counter > 3 %}
-              <li class="list-group-item listHide listExpand"><a
-                      href="#" class="syn-item">{{ v.content }}</a></li>
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-      </ul>
-    {% endfor %}
-</div>
+
+<script type="text/javascript">
+  $('.loadMore').click(function () {
+    $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+    $(this).hide();
+    $(this).next('.showLess').show();
+  });
+  $('.showLess').click(function () {
+    $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+    $(this).hide();
+    $(this).prevAll('.loadMore').show();
+  });
+</script>

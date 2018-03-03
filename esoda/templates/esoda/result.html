@@ -98,18 +98,18 @@
                     </li>
                   {% endfor %}
                 </ul>
-                <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn">
+                <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn2">
                   <span id="colMore">+</span>
                   <span id="colLess">-</span>
                 </div>
               </div>
             </div> <!-- panel-group -->
 
-            <div id="SentenceResult"></div>
-
             <div id="Loading" class="result-table-cell center-align">
               <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
             </div>
+
+            <div id="SentenceResult"></div>
 
             <div class="fix-right-xs">
               <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
@@ -206,13 +206,6 @@
       // });
 
       // $('.not-limited').click();
-
-        $(' .syn-list').mCustomScrollbar({
-            theme: 'dark',
-            scrollInertia: 0,
-            mouseWheel: {preventDefault: true},
-            autoHideScrollbar: true
-        });
 
           $('.colloc-sub-btn').click(function (e) {
               e.preventDefault();

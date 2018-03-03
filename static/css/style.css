@@ -1236,13 +1236,15 @@ button.close:focus {
     float: right;
 }
 
-.CollapseColloc .list-btn {
+/*.CollapseColloc .list-btn {*/
+.list-btn2 {
     padding-left: 30px;
     padding-top: 10px;
     font-size: 20px;
     float: left;
     position: relative;
     z-index: 999;
+    cursor: pointer;
 }
 
 .list-btn:hover {
@@ -1576,7 +1578,7 @@ button.close:focus {
 
 .colloc-result {
     margin: 5px 0px 5px;
-    padding: 0px 0px 0px 15px;
+    padding: 0px 0px 0px 0px;
     max-height: 200px;
 }
 
