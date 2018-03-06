@@ -139,3 +139,11 @@ def papers_source_str(pids):
         if i in p:
             res[i] = gen_source_url(p[i])
     return res
+
+
+def sort_syn_usageDict(syn_list, usage_list):
+    for syn in syn_list:
+        syn['count'] += 200 # synonymous weight
+    weighted_list = sorted(syn_list + usage_list, key=lambda x:x['count'], reverse = True)
+    return weighted_list
+

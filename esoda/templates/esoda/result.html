@@ -267,7 +267,7 @@
               var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
               var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
               var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
-              searchAndFillSentences({t: type.replace('...', ' '), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
+              searchAndFillSentences({t: $(this).attr('lemma'), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
           });
 
           if ($('#Loading').is(':hidden')) {

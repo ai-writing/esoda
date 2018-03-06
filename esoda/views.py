@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 import time
-from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma, get_defaulteColl
+from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma, get_defaulteColl, sort_syn_usageDict
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
@@ -126,16 +126,17 @@ def syn_usageList_view(request):
     #    'syn_usage_dict': {'word1':[{'ref': '', 'lemma': '', 'content': '', 'count': 10},……],'word2' ……}
     # }
     t = request.GET.get('t', '').split()
+    t_former = t[:]
     ref = request.GET.get('ref', '').split()
     if not ref:
         ref = t
+    t = [tt for tt in t if tt != '*']
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
-    usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
+    usage_dict = get_usage_dict(t_former, ref, i, dt, dbs, cids)
     info = {
-        #'has_syn': False,
-        #'usage_dict': get_usage_dict(t, ref, i, dt, dbs, cids),
+        't': ' '.join(t)
     }
     cnt = 10
     syn_dict = {}
@@ -150,15 +151,17 @@ def syn_usageList_view(request):
         for j in xrange(len(t)):
             syn_list = []
             for syn in synonyms(t[j])[:10]:
-                #cnt = EsAdaptor.count(t.replace(t[j], syn), [], dbs, cids)['hits']['total']
+                newtokens = [syn if tt == t[j] else tt for tt in t]
+                cnt = EsAdaptor.count(newtokens, [], dbs, cids)['hits']['total']
                 if cnt:
-                    syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': '...'.join(t).replace(t[j], syn), 'content': syn, 'count': cnt})
+                    syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': ' '.join(t_former).replace(t[j], syn), 'content': syn, 'count': cnt})
             syn_dict[t[j]] = syn_list
     
     syn_usage_dict = {}
     for tt in t:
-        syn_usage_dict[tt] = syn_dict[tt] + usage_dict[tt]
+        syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
     info['syn_usage_dict'] = syn_usage_dict
+    print syn_usage_dict
     return render(request, 'esoda/collocation_result.html', info)
 
 
@@ -218,7 +221,7 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
     del nt[i]
     del nt[i]
     nnt = list(nt)
-    nnt.insert(i, '%s...%s')
+    nnt.insert(i, '%s %s')
     pat = ' '.join(nnt)
 
     # if '*' not in t:
@@ -244,10 +247,10 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
                 if (l1, l2) != (t[i], t[i + 1]):
                     nref = list(ref)
                     if l1 != t[i]:
-                        con = t2[0]
+                        con = l1
                         nref[i] = l1
                     else:
-                        con = t1[0]
+                        con = l2
                         nref[i + 1] = l2
                     ret.append({
                         'ref': ' '.join(nref),
@@ -256,9 +259,9 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
                         'count': j['doc_count']
                     })
             if k[0] == '*':
-                usageDict[t[i+1]] = ret
-            else:
                 usageDict[t[i]] = ret
+            else:
+                usageDict[t[i+1]] = ret
         except Exception:
             logger.exception('In get_usage_list')
     return usageDict
@@ -354,5 +357,5 @@ def refresh_synList(t, syn_list, index, dt, dbs, cids):
         d = [{'dt': dt, 'l1': t_syn[0], 'l2': t_syn[1]}]
         cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
         if cnt != 0:
-            synonymous_list.append({'ref': ' '.join(t_syn), 'lemma': '...'.join(t_syn), 'content': syn, 'count': cnt})
+            synonymous_list.append({'ref': ' '.join(t_syn), 'lemma': ' '.join(t_syn), 'content': syn, 'count': cnt})
     return synonymous_list
