@@ -79,9 +79,9 @@
               {% endif %}
             </div>
 
-            <div class="uncover-colloc uncover-chi uncover-phrase {% if not r.collocationList %}hidden{% endif %}">
-              <div class="CollapseColloc uncover row" role="tabpanel" aria-labelledby="HeadingColloc">
-                <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-10 col-md-10 col-sm-11 col-xs-11"
+            <div class="{% if not r.collocationList %}hidden{% endif %}">
+              <div class="CollapseColloc row" role="tabpanel" aria-labelledby="HeadingColloc">
+                <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-11 col-md-11 col-sm-11 col-xs-11"
                     role="tablist">
                   {% for collocation in r.collocationList.cL %}
                     <li role="presentation">
@@ -98,7 +98,7 @@
                     </li>
                   {% endfor %}
                 </ul>
-                <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 list-btn2">
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2">
                   <span id="colMore">+</span>
                   <span id="colLess">-</span>
                 </div>
@@ -231,11 +231,13 @@
               dt = id.replace('#', '').split('_')[1];
 
               // $('#SentenceResult').css('visibility', 'hidden');
-              $('#SentenceResult').animate({ opacity: 0 }, function () {
-                $('#Loading').show();
-              });
-              $('#ManualLoad').hide();
-              $("#ExampleEnd").hide();
+
+              // $('#SentenceResult').animate({ opacity: 0 }, function () {
+              //   $('#Loading').show();
+              // });
+              // $('#ManualLoad').hide();
+              // $("#ExampleEnd").hide();
+              
               $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
                   $(id).html(data);
                   $(id + ' .colloc-result').mCustomScrollbar({

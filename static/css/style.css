@@ -11,7 +11,8 @@ body {
 }
 
 a {
-    color: #63B7E6;
+    /*color: #63B7E6;*/
+    color: #404040;
 }
 
 @media (min-width: 1200px) {
@@ -294,7 +295,7 @@ a {
     border-color: #fff;
     /*border-color: #63B7E6;*/
     margin-bottom: 10px;
-    height: 60px;
+    height: 70px;
 }
 
 .navbar-index {
@@ -1171,7 +1172,8 @@ button.close:focus {
 
 .result-page {
     /*background-color: #f5f5f9;*/
-    background-color: #fff;
+    /*background-color: #fff;*/
+    background-color: #EEEFF1;
     padding-top: 80px;
     padding-bottom: 40px;
 }
@@ -1181,7 +1183,8 @@ button.close:focus {
     width: 180px;
     /*margin-left: -15px;*/
     margin-top: 5px;
-    border: 1px solid #42A5F5;
+    /*border: 1px solid #42A5F5;*/
+    border-color: transparent;
     background-color: #fff;
     z-index: 999;
 }
@@ -1236,10 +1239,17 @@ button.close:focus {
     float: right;
 }
 
+.CollapseColloc {
+    background-color: #fff;
+    margin-right: 37px;
+    margin-left: 0px;
+}
+
 /*.CollapseColloc .list-btn {*/
 .list-btn2 {
     padding-left: 30px;
     padding-top: 10px;
+    /*padding-bottom: 5px;*/
     font-size: 20px;
     float: left;
     position: relative;
@@ -1466,8 +1476,8 @@ button.close:focus {
 
 .nav-tabs-collocation {
     padding: 5px;
-    margin-left: 10px;
-    margin-bottom: -10px;
+    /*margin-left: 10px;*/
+    margin-bottom: 0px;
     margin-right: -30px;
 }
 
@@ -1478,26 +1488,31 @@ button.close:focus {
 .nav-tabs-collocation > li > a:hover,
 .nav-tabs-collocation > li > a:focus {
     border: 1px solid transparent;
-    background-color: #fff;
+    /*background-color: #fff;*/
+    background-color: transparent;
 }
 
 .nav-tabs-collocation > li.active > a,
 .nav-tabs-collocation > li.active > a:focus,
 .nav-tabs-collocation > li.active > a:hover {
-    /*border: transparent;*/
-    /*color: #4a4a4a;*/
-    color: #fff;
-    background: #42A5F5;
+    color: #42A5F5;
+    border-bottom-color: #42A5F5;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    /*color: #fff;*/
+    /*background: #42A5F5;*/
     padding-top: 5px;
     margin-top: 5px;
     margin-bottom: 0px;
 }
 
 .colloc-sub-btn {
-    width: 230px;
+    width: 220px;
     height: 30px;
     margin-bottom: 5px;
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
+    background-color: transparent;
     text-align: center;
 }
 
@@ -1537,15 +1552,6 @@ button.close:focus {
     z-index: 1000;
 }
 
-.uncover {
-    z-index: 0;
-    height: 100%;
-    width: 100%;
-    opacity: 1;
-    position: relative;
-    /*display: none;*/
-}
-
 .result-warning {
     padding: 0px 0px;
     margin-bottom: 5px;
@@ -1580,6 +1586,10 @@ button.close:focus {
     margin: 5px 0px 5px;
     padding: 0px 0px 0px 0px;
     max-height: 200px;
+}
+
+.colloc-result #first {
+    padding-left: 15px;
 }
 
 .pagination > li > a {
