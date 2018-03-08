@@ -690,7 +690,7 @@ button.close:focus {
     align-items: center;
     margin-left: 10px;
     margin-top: 12px;
-    border-bottom: 1px solid #63B7E6;
+    border-bottom: 2px solid #63B7E6;
 }
 
 .container-usage {
@@ -1585,11 +1585,7 @@ button.close:focus {
 .colloc-result {
     margin: 5px 0px 5px;
     padding: 0px 0px 0px 0px;
-    max-height: 200px;
-}
-
-.colloc-result #first {
-    padding-left: 15px;
+    max-height: 500px;
 }
 
 .pagination > li > a {
@@ -1617,7 +1613,7 @@ button.close:focus {
     background-color: #fff;
     padding: 10px 0px;
     margin: 0px;
-    margin-top: 5px;
+    margin-top: 2px !important;
     text-align: justify;
     width: 95%;
 }
