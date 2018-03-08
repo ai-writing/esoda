@@ -26,7 +26,8 @@
 </div> -->
 
 <div class="colloc-result">
-  <a href="#" class="colloc-usage" ref="{{ t }}" lemma="{{ t }}" id="first">{{ t }}</a>
+  <a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}</a>
+  //修改
   {% for key, value in syn_usage_dict.items %}
     <ul class="list-group">
       {% if value %}
@@ -48,6 +49,7 @@
       {% endif %}
     </ul>
   {% endfor %}
+  //修改
 </div>
 
 <script type="text/javascript">

@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 import time
-from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma, get_defaulteColl, sort_syn_usageDict
+from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma, get_defaulteColl, sort_syn_usageDict, star2collocation
 from .youdao_query import youdao_suggest, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
@@ -126,23 +126,22 @@ def syn_usageList_view(request):
     #    'syn_usage_dict': {'word1':[{'ref': '', 'lemma': '', 'content': '', 'count': 10},……],'word2' ……}
     # }
     t = request.GET.get('t', '').split()
-    t_former = t[:]
     ref = request.GET.get('ref', '').split()
     if not ref:
         ref = t
-    t = [tt for tt in t if tt != '*']
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
-    usage_dict = get_usage_dict(t_former, ref, i, dt, dbs, cids)
+    usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
     info = {
-        't': ' '.join(t)
+        't_list': t,
+        't_str': ' '.join(t),
+        'type': star2collocation(t, dt)
     }
-    cnt = 10
     syn_dict = {}
     for i in xrange(len(t)):
         syn_dict[t[i]] = synonyms(t[i])[:10] # displayed_lemma(ref[i], t[i])
-    if dt != '0' and len(t) == 2:
+    if dt != '0' and len(t) == 2 and '*' not in t:
         t2_syn_cnt = refresh_synList(t[0], syn_dict[t[1]], 1, dt, dbs, cids)
         t1_syn_cnt = refresh_synList(t[1], syn_dict[t[0]], 2, dt, dbs, cids)
         syn_dict[t[0]] = t1_syn_cnt
@@ -154,14 +153,13 @@ def syn_usageList_view(request):
                 newtokens = [syn if tt == t[j] else tt for tt in t]
                 cnt = EsAdaptor.count(newtokens, [], dbs, cids)['hits']['total']
                 if cnt:
-                    syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': ' '.join(t_former).replace(t[j], syn), 'content': syn, 'count': cnt})
+                    syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': ' '.join(t).replace(t[j], syn), 'content': syn, 'count': cnt})
             syn_dict[t[j]] = syn_list
     
     syn_usage_dict = {}
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
     info['syn_usage_dict'] = syn_usage_dict
-    print syn_usage_dict
     return render(request, 'esoda/collocation_result.html', info)
 
 

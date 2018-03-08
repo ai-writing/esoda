@@ -147,3 +147,11 @@ def sort_syn_usageDict(syn_list, usage_list):
     weighted_list = sorted(syn_list + usage_list, key=lambda x:x['count'], reverse = True)
     return weighted_list
 
+
+def star2collocation(t, dt):
+    star2coll_dict = {'1': {'0': u'主语 +', '1': u'+ 动词'}, '2':{'0': u'动词 +', '1': u'+ 宾语'},
+        '3':{'0': u'修饰 +', '1': u'+ 被修饰词'}, '4':{'0': u'介词 +', '1': u'+ 介词'}}
+    if '*' in t:
+        i = t.index('*')
+        t = [star2coll_dict.get(dt).get(str(i)) if tt =='*' else tt for tt in t]
+    return ' '.join(t)
