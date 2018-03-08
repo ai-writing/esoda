@@ -27,29 +27,31 @@
 
 <div class="colloc-result">
   <a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}</a>
-  //修改
-  {% for key, value in syn_usage_dict.items %}
-    <ul class="list-group">
-      {% if value %}
-        <div class="panel-subheading"><span>{{ key }}</span>
-          <span class="list-btn loadMore">+</span>
-          <span class="list-btn showLess">-</span>
-        </div>
-        {% for v in value %}
-          {% if forloop.counter < 4 %}
-            <li class="list-group-item"><p><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-            <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-            {% else %}({{ v.count }}){% endif %}</span></a></p></li>
-          {% elif forloop.counter > 3 %}
-            <li class="list-group-item listHide listExpand"><p><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-            <span class="usage-count">{% if v.count >= 1000 %}({% widthratio value.count 1000 1 %}k)
-            {% else %}({{ v.count }}){% endif %}</span></a></p></li>
+  {% for k in t_list %}
+    {% for key, value in syn_usage_dict.items %}
+      {% if k == key %}
+        <ul class="list-group">
+          {% if value %}
+            <div class="panel-subheading"><span>{{ key }}</span>
+              <span class="list-btn loadMore">+</span>
+              <span class="list-btn showLess">-</span>
+            </div>
+            {% for v in value %}
+              {% if forloop.counter < 4 %}
+                <li class="list-group-item"><p><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                  <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                  {% else %}({{ v.count }}){% endif %}</span></a></p></li>
+              {% elif forloop.counter > 3 %}
+                <li class="list-group-item listHide listExpand"><p><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                  <span class="usage-count">{% if v.count >= 1000 %}({% widthratio value.count 1000 1 %}k)
+                  {% else %}({{ v.count }}){% endif %}</span></a></p></li>
+              {% endif %}
+            {% endfor %}
           {% endif %}
-        {% endfor %}
+        </ul>
       {% endif %}
-    </ul>
+    {% endfor %}
   {% endfor %}
-  //修改
 </div>
 
 <script type="text/javascript">
