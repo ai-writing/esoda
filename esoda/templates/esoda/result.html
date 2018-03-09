@@ -20,32 +20,6 @@
               <div id="SidebarAffix" class="affix" data-spy="affix">
                 <div class="panel-group">
                   <div class="panel-category-heading">替换说法</div>
-<!--                   <div class="tab-content panel panel-default">  
-                    {% if r.synonymous %}
-                      <div class="syn-list mCustomScrollbar">
-                        {% for syn in r.synonymous %}
-                          {% for key, value in syn.items %}
-                            <ul class="list-group">
-                              {% if value %}
-                                <div class="panel-subheading">{{ key }}
-                                  <span class="list-btn loadMore">+</span>
-                                  <span class="list-btn showLess">-</span>
-                                </div>
-                                {% for v in value %}
-                                  {% if forloop.counter < 4 %}
-                                    <li class="list-group-item"><a href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
-                                  {% elif forloop.counter > 3 %}
-                                    <li class="list-group-item listHide listExpand"><a
-                                            href="{% url 'esoda' %}?q={{ v }}">{{ v }}</a></li>
-                                  {% endif %}
-                                {% endfor %}
-                              {% endif %}
-                            </ul>
-                          {% endfor %}
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  </div> -->
                   <div class="tab-content CollapseColloc panel panel-default">
                     {% if r.collocationList %}
                       <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
