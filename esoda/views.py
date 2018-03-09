@@ -133,11 +133,7 @@ def syn_usageList_view(request):
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
     usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
-    info = {
-        't_list': t,
-        't_str': ' '.join(t),
-        'type': star2collocation(t, dt)
-    }
+
     syn_dict = {}
     for i in xrange(len(t)):
         syn_dict[t[i]] = synonyms(t[i])[:10] # displayed_lemma(ref[i], t[i])
@@ -155,10 +151,28 @@ def syn_usageList_view(request):
                 if cnt:
                     syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': ' '.join(t).replace(t[j], syn), 'content': syn, 'count': cnt})
             syn_dict[t[j]] = syn_list
-    
+    t_list, star = star2collocation(t, dt)
+
+    info = {
+        't_list': t_list,
+        't_str': ' '.join(t),
+        'type': ' + '.join(t_list)
+    }
+
+    if '*' in t:
+        usage_word = usage_dict['*'][0]['content']
+        no = [tt for tt in t if tt != '*']
+        info['t_str'] = info['t_str'].replace('*', usage_word)
+
     syn_usage_dict = {}
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
+    if '*' in t:
+        syn_usage_dict[star] = syn_usage_dict['*']
+        for syn in syn_usage_dict[no[0]]:
+            syn['ref'] = syn['ref'].replace('*', usage_word)
+            syn['lemma'] = syn['lemma'].replace('*', usage_word)
+               
     info['syn_usage_dict'] = syn_usage_dict
     return render(request, 'esoda/collocation_result.html', info)
 
