@@ -1176,6 +1176,7 @@ button.close:focus {
     background-color: #EEEFF1;
     padding-top: 80px;
     padding-bottom: 40px;
+    min-height: 600px;
 }
 
 #SidebarAffix {
