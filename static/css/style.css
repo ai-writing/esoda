@@ -28,6 +28,7 @@ a {
     .navbar-brand {
         margin-top: 20px;
         width: 200px;
+        margin-left: 5px;
     }
 
     .navbar-brand > img {
@@ -59,6 +60,7 @@ a {
     .navbar-brand {
         margin-top: 20px;
         width: 200px;
+        margin-left: 5px;
     }
 
     .navbar-brand > img {
@@ -86,6 +88,7 @@ a {
     .navbar-brand {
         margin-top: 20px;
         width: 170px;
+        margin-left: 5px;
     }
 
     .navbar-brand > img {
@@ -122,6 +125,7 @@ a {
     .navbar-brand {
         margin-top: 20px;
         width: 170px;
+        margin-left: 5px;
     }
 
     .navbar-brand > img {
@@ -226,6 +230,7 @@ a {
 .navbar-brand {
     /*height: 50px;*/
     overflow: hidden;
+    margin-left: 5px !important;
 }
 
 .navbar-brand > img {
@@ -313,7 +318,7 @@ a {
 
 #ResultSearchBar > #SearchBox {
     margin-left: -30px;
-    padding-left: 32px;
+    padding-left: 40px;
     background-color: transparent;
     height: 44px;
 }
@@ -615,6 +620,7 @@ button.close:focus {
     margin-left: auto;
     margin-right: auto;
     max-width: 623px;
+    padding-left: 0px;
 }
 
 #SearchForm .btn[type='submit'] {
@@ -1090,7 +1096,7 @@ button.close:focus {
 }
 
 .full-width {
-    width: 100%;
+    width: 120%;
 }
 
 .shares {
@@ -1241,13 +1247,19 @@ button.close:focus {
     float: right;
 }
 
+.panel-group .CollapseColloc {
+    width: 95%;
+}
+
+.result-main .CollapseColloc {
+    width: 90%;
+}
+
 .CollapseColloc {
     background-color: #fff;
-    width: 95%;
     margin-left: 0px;
 }
 
-/*.CollapseColloc .list-btn {*/
 .list-btn2 {
     padding-left: 30px;
     padding-top: 10px;
@@ -1377,8 +1389,8 @@ button.close:focus {
     background-color: #fff;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     font-size: 12px;
 }
 
@@ -1387,11 +1399,6 @@ button.close:focus {
     padding-top: 0px;
     padding-bottom: 5px;
     padding-right: 20px;
-}
-
-.example-list-source > a {
-    padding-left: 24px;
-    color: #9b9b9b;
 }
 
 .dictionary-container {
@@ -1514,7 +1521,7 @@ button.close:focus {
 }
 
 .colloc-sub-btn {
-    width: 220px;
+    width: auto;
     height: 30px;
     margin-bottom: 5px;
     /*background-color: #ffffff;*/
@@ -1558,17 +1565,30 @@ button.close:focus {
     z-index: 1000;
 }
 
+.oneline {
+    display: block;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .result-warning {
     padding: 0px 0px;
-    margin-bottom: 5px;
+    margin-bottom: -15px;
     color: #666;
     font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
     text-align: left;
 }
 
 .result-warning span {
-    font-weight: bold;
+    /*font-weight: bold;*/
     color: #666;
+    font-size: 12px;
+}
+
+.result-warning a {
+    color: #63B7E6 !important;
 }
 
 .result-table-cell {
@@ -1621,7 +1641,7 @@ button.close:focus {
     margin: 0px;
     margin-top: 2px !important;
     text-align: justify;
-    width: 95%;
+    width: 90%;
 }
 
 .example-hint {
@@ -1683,6 +1703,12 @@ button.close:focus {
     text-overflow: ellipsis;
     white-space: nowrap;
     word-wrap: normal;
+    width: 96%
+}
+
+.example-list-source > a {
+    /*padding-left: 24px;*/
+    color: #9b9b9b;
 }
 
 .affix-bottom {
