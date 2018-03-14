@@ -190,7 +190,7 @@ a {
 
 #SearchBox {
     height: 50px;
-    font-size: 18px;
+    font-size: 16px;
     color: #C0C0C0;
 }
 
@@ -1163,7 +1163,7 @@ button.close:focus {
 
 .colloc-usage[state='selected'] {
     cursor: default;
-    /*color: #888;*/
+    color: #888;
 }
 
 .colloc-usage[state='selected']:hover {
@@ -1262,6 +1262,7 @@ button.close:focus {
 .result-main .CollapseColloc {
     /*width: 95%;*/
     background-color: #F1F7FD;
+    padding-left: 32px;
 }
 
 .CollapseColloc {
@@ -1307,9 +1308,9 @@ button.close:focus {
 }
 
 .navbar-search-box {
-    border: 0;
-    border-radius: 0px;
-    box-shadow: none;
+    border: 0 !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
     color: #9b9b9b;
 }
 
@@ -1542,7 +1543,6 @@ button.close:focus {
     width: auto;
     height: 40px;
     margin-bottom: 5px;
-    /*background-color: #ffffff;*/
     background-color: transparent !important;
     text-align: center;
 }
@@ -1601,8 +1601,9 @@ button.close:focus {
 
 .result-warning span {
     /*font-weight: bold;*/
-    color: #666;
+    color: #ACACAC;
     font-size: 12px;
+    padding-bottom: 13px;
 }
 
 .result-warning a {
