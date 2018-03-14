@@ -85,6 +85,9 @@
             <div id="SentenceResult"></div>
 
             <div class="fix-right-xs">
+              <div id="Feedback" class="affix feedback-affix" data-spy="affix">
+                <div class="btn feedback">反馈</div>
+              </div>
               <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
                 <div class="btn back-to-top">
                   <p class="glyphicon glyphicon-chevron-up"></p>
@@ -117,6 +120,12 @@
       // $("#SidebarAffix").height($(".result-page").height())
       var curSelectedUsage;
       var REF = '{{ ref }}';
+
+      $("#Feedback").click(function () {
+        var FeedbackContent;
+        FeedbackContent = prompt("您的意见与反馈");
+        alert(FeedbackContent);
+      });
 
       function searchAndFillSentences(params) {
         loadCount = 1;

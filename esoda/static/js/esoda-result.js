@@ -109,6 +109,16 @@ $('#ManualLoad').click(function(e) {
     }
   });
 
+  $("#Feedback").affix({
+    offset: {
+      top: 0,
+      bottom: function () {
+        // TODO: fix position bugs on change of window length
+        return $(".footer").outerHeight(true) + 100;
+      }
+    }
+  });
+
   $.clickStar = function(e) {
     e.preventDefault();
     $(e.target).toggleClass("glyphicon-star-empty");

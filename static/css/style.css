@@ -1753,9 +1753,20 @@ button.close:focus {
     right: 10px;
 }
 
+.feedback-affix.affix {
+    bottom: 150px;
+    right: 10px;
+}
+
 .back-to-top-affix.affix-top {
     position: fixed;
     bottom: 65px;
+    right: 10px;
+}
+
+.feedback-affix.affix-top {
+    position: fixed;
+    bottom: 150px;
     right: 10px;
 }
 
@@ -1765,6 +1776,17 @@ button.close:focus {
     opacity: 0.5;
     color: #787878;
     width: 82px;
+}
+
+.feedback {
+    background-color: #42A5F5;
+    border: solid 1px #ddd;
+    color: #fff;
+    width: 82px;
+}
+
+.feedback:hover {
+    color: #fff;
 }
 
 .warning-page-main {
