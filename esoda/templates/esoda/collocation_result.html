@@ -26,7 +26,9 @@
 </div> -->
 
 <div class="colloc-result">
-  <a href="#" class="colloc-usage list-group-item" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}</a>
+  <div class="panel-category-heading">搭配替换
+    <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}</a></p>
+  </div>
   {% for k in t_list %}
     {% for key, value in syn_usage_dict.items %}
       {% if k == key %}
@@ -37,14 +39,14 @@
               <span class="list-btn showLess">-</span>
             </div>
             {% for v in value %}
-              {% if forloop.counter < 4 %}
-                <li class="list-group-item"><p><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+              {% if forloop.counter < 5 %}
+                <li class="list-group-item"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                   <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                  {% else %}({{ v.count }}){% endif %}</span></a></p></li>
-              {% elif forloop.counter > 3 %}
-                <li class="list-group-item listHide listExpand"><p><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                  {% else %}({{ v.count }}){% endif %}</span></a></li>
+              {% elif forloop.counter > 4 %}
+                <li class="list-group-item listHide listExpand"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                   <span class="usage-count">{% if v.count >= 1000 %}({% widthratio value.count 1000 1 %}k)
-                  {% else %}({{ v.count }}){% endif %}</span></a></p></li>
+                  {% else %}({{ v.count }}){% endif %}</span></a></li>
               {% endif %}
             {% endfor %}
           {% endif %}

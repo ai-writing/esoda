@@ -18,21 +18,23 @@
   {% for example in exampleList %}
     <div class="panel panel-default result-example row {% if forloop.counter > 10 %}collapse{% endif %}"
          id="Example{{ forloop.counter }}">
-      <div class="col-xs-12" style="padding-left: 0px;">
-        <div class="panel-body">
-          <div class="display-inline example-list-label">
-            {{ forloop.counter }}.
+      <div class="col-xs-12" style="padding: 0px 0px;">
+        <div class="example-box">
+          <div class="panel-body">
+            <div class="display-inline example-list-label">
+              {{ forloop.counter }}.
+            </div>
+            <div class="example-list-content pull-right">
+              {{ example.content|safe }}
+            </div>
           </div>
-          <div class="example-list-content pull-right">
-            {{ example.content|safe }}
+          <div class="panel-footer example-list-source pull-right">
+            {% if example.source %}
+              <a href="{{ example.source.url|default:'javascript:void(0)' }}" target="_blank"{% if example.source.url %}
+                 title="Link to source"{% endif %}>{{ example.source.source|safe }}</a>
+              {% comment %}<img src="{% static 'common/img/link.png' %}"></img>{% endcomment %}
+            {% endif %}
           </div>
-        </div>
-        <div class="panel-footer example-list-source pull-right">
-          {% if example.source %}
-            <a href="{{ example.source.url|default:'javascript:void(0)' }}" target="_blank"{% if example.source.url %}
-               title="Link to source"{% endif %}>{{ example.source.source|safe }}</a>
-            {% comment %}<img src="{% static 'common/img/link.png' %}"></img>{% endcomment %}
-          {% endif %}
         </div>
       </div>
       <div class="col-xs-1 hidden">

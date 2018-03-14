@@ -19,7 +19,6 @@
             {% if r.hasSyn or r.collocationList %}
               <div id="SidebarAffix" class="affix" data-spy="affix">
                 <div class="panel-group">
-                  <div class="panel-category-heading">替换说法</div>
                   <div class="tab-content CollapseColloc panel panel-default">
                     {% if r.collocationList %}
                       <div role="tabpanel" class="tab-pane fade in" id="CollocAll"></div>
@@ -114,7 +113,8 @@
   <script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
   <script>
     $(function () {
-
+      $("#SidebarAffix").height($(window).height());
+      // $("#SidebarAffix").height($(".result-page").height())
       var curSelectedUsage;
       var REF = '{{ ref }}';
 
