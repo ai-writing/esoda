@@ -1212,6 +1212,7 @@ button.close:focus {
     border-color: transparent;
     background-color: #fff;
     z-index: 999;
+    max-height: 90%;
 }
 
 #SidebarAffix .panel {
@@ -1228,7 +1229,7 @@ button.close:focus {
 
 #SidebarAffix .list-group-item {
     border-width: 0;
-    padding: 5px 20px;
+    padding: 5px 15px;
     text-align: justify;
 }
 
@@ -1390,7 +1391,7 @@ button.close:focus {
 
 .panel-subheading {
     background: rgba(66, 165, 245, 0.10);
-    padding: 6px 20px 6px 20px;
+    padding: 6px 20px 6px 15px;
     text-align: justify;
     margin: 0 0px;
     margin-top: 2px;
