@@ -255,9 +255,9 @@
               searchAndFillSentences({t: $(this).attr('lemma'), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
           });
 
-          if ($('#Loading').is(':hidden')) {
-              searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
-          }
+          // if ($('#Loading').is(':hidden')) {
+          //     searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
+          // }
       });
   </script>
 {% endblock %}
