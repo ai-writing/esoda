@@ -21,14 +21,14 @@
       <div class="col-xs-12" style="padding: 0px 0px;">
         <div class="example-box">
           <div class="panel-body">
-            <div class="display-inline example-list-label">
+<!--             <div class="display-inline example-list-label">
               {{ forloop.counter }}.
-            </div>
-            <div class="example-list-content pull-right">
-              {{ example.content|safe }}
+            </div> -->
+            <div class="example-list-content">
+              {{ forloop.counter }}. {{ example.content|safe }}
             </div>
           </div>
-          <div class="panel-footer example-list-source pull-right">
+          <div class="panel-footer example-list-source">
             {% if example.source %}
               <a href="{{ example.source.url|default:'javascript:void(0)' }}" target="_blank"{% if example.source.url %}
                  title="Link to source"{% endif %}>{{ example.source.source|safe }}</a>

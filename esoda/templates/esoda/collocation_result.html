@@ -34,16 +34,16 @@
       {% if k == key %}
         <ul class="list-group">
           {% if value %}
-            <div class="panel-subheading"><span>{{ key }}</span>
+            <div class="panel-subheading"><span>{{ key }}，还可以用：</span>
               <span class="list-btn loadMore">+</span>
               <span class="list-btn showLess">-</span>
             </div>
             {% for v in value %}
-              {% if forloop.counter < 5 %}
+              {% if forloop.counter < 6 %}
                 <li class="list-group-item"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                   <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
                   {% else %}({{ v.count }}){% endif %}</span></a></li>
-              {% elif forloop.counter > 4 %}
+              {% elif forloop.counter > 5 %}
                 <li class="list-group-item listHide listExpand"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                   <span class="usage-count">{% if v.count >= 1000 %}({% widthratio value.count 1000 1 %}k)
                   {% else %}({{ v.count }}){% endif %}</span></a></li>

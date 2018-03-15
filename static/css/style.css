@@ -17,14 +17,21 @@ a {
     color: #2D557B;
 }
 
-@media (min-width: 1200px) {
-    .container {
-        /*width: 980px;*/
+@media (min-width: 1201px) {
+    .result-page > .container {
         width: 950px;
     }
 
-    #SearchBox {
-        /*width: 496px;*/
+    .navbar-fixed-top > .container {
+        width: 950px;
+    }
+
+    .login {
+        margin-right: -100px;
+    }
+
+    .full-width {
+        width: 145%;
     }
 
     .navbar-brand {
@@ -55,8 +62,8 @@ a {
 }
 
 @media (max-width: 1200px) and (min-width: 992px) {
-    #SearchBox {
-        /*width: 496px;*/
+    .full-width {
+        width: 120%;
     }
 
     .btn-index-search {
@@ -77,6 +84,10 @@ a {
         width: 53% !important;
     }
 
+    .login {
+        margin-right: 0px;
+    }
+
     .result-main {
         /*padding-right: 65px;*/
         padding-left: 50px;
@@ -89,8 +100,8 @@ a {
 }
 
 @media (max-width: 992px) and (min-width: 767px) {
-    #SearchBox {
-        /*width: 420px;*/
+    .full-width {
+        width: 120%;
     }
 
     .btn-index-search {
@@ -468,7 +479,6 @@ a {
 .login {
     font-size: 12px;
     margin-top: 14px;
-    margin-right: 15px;
     float: right;
     /*color: #fff !important;*/
     /*font-family: PingFangSC-Regular;*/
@@ -1108,10 +1118,6 @@ button.close:focus {
     margin-bottom: 9px;
 }
 
-.full-width {
-    width: 90%;
-}
-
 .shares {
     width: 23px;
 }
@@ -1222,12 +1228,12 @@ button.close:focus {
 
 #SidebarAffix .list-group-item {
     border-width: 0;
-    padding: 3px 15px;
+    padding: 5px 20px;
     text-align: justify;
 }
 
 #SidebarAffix .list-group-item:last-child {
-    padding-bottom: 15px;
+    padding-bottom: 3px;
 }
 
 .hide-query {
@@ -1262,7 +1268,7 @@ button.close:focus {
 .result-main .CollapseColloc {
     /*width: 95%;*/
     background-color: #F1F7FD;
-    padding-left: 32px;
+    padding-left: 28px;
 }
 
 .CollapseColloc {
@@ -1378,16 +1384,16 @@ button.close:focus {
 
 .panel-category-heading .colloc-usage {
     /*font-family: Helvetica-Bold;*/
-    font-size: 18px;
+    font-size: 16px;
     color: #FFFFFF !important;
 }
 
 .panel-subheading {
     background: rgba(66, 165, 245, 0.10);
-    padding: 6px 20px 6px 10px;
+    padding: 6px 20px 6px 20px;
     text-align: justify;
-    margin: 0 5px;
-    margin-top: 10px;
+    margin: 0 0px;
+    margin-top: 2px;
 }
 
 .panel-default > .panel-collapse {
@@ -1534,15 +1540,18 @@ button.close:focus {
     border-right-color: transparent;
     /*color: #fff;*/
     /*background: #42A5F5;*/
-    padding-top: 5px;
-    margin-top: 5px;
+    /*padding-top: 5px;*/
+    /*margin-top: 5px;*/
     margin-bottom: 0px;
 }
 
 .colloc-sub-btn {
     width: auto;
     height: 40px;
-    margin-bottom: 5px;
+    /*margin-top: 5px;*/
+    margin-right: 28px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
     background-color: transparent !important;
     text-align: center;
 }
@@ -1604,6 +1613,7 @@ button.close:focus {
     color: #ACACAC;
     font-size: 12px;
     padding-bottom: 13px;
+    padding-right: 25px;
 }
 
 .result-warning a {
@@ -1630,7 +1640,7 @@ button.close:focus {
 .colloc-result {
     margin: 0px 0px 5px 0px;
     padding: 0px 0px 0px 0px;
-    max-height: 500px;
+    max-height: 570px;
 }
 
 .pagination > li > a {
@@ -1656,7 +1666,7 @@ button.close:focus {
 
 .result-example {
     background-color: #fff;
-    padding: 10px 0px 0px 0px;
+    padding: 20px 0px 0px 0px;
     margin: 0px;
     margin-top: 0px !important;
     text-align: justify;
@@ -1667,8 +1677,9 @@ button.close:focus {
     margin-left: 32px;
     margin-right: 32px; 
     margin-bottom: 0px;
-    border-bottom: 2px solid #D3D3D3;
-    padding-bottom: 30px;
+    border-top: 1px solid #D3D3D3;
+    padding-bottom: 4px;
+    padding-top: 10px;
 }
 
 .example-hint {
@@ -1718,7 +1729,7 @@ button.close:focus {
 }
 
 .example-list-content {
-    width: 96%;
+    width: 100%;
 }
 
 .example-list-content > strong {
