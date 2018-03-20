@@ -164,7 +164,7 @@ $(function () {
   var cache = {};
   $("#SearchBox").catcomplete({
     minLength: 0,
-    delay: 500,
+    delay: 150,
     source: function (request, response) {
 
       var term = extractLast(request.term);

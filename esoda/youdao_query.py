@@ -73,7 +73,7 @@ def suggest_new(q):
         suggest['desc'] = "; ".join(list(word['meanings']))
         suggests.append(suggest)
     r['suggest'] = suggests
-    logger.info('youdao_suggest: "%s" -> %s', q, repr(suggests))
+    logger.info('suggest_new: "%s" -> %s', q, repr(suggests))
     return r
 
 YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
