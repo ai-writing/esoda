@@ -326,6 +326,7 @@ a {
     /*border-color: #63B7E6;*/
     margin-bottom: 10px;
     height: 70px;
+    box-shadow: 0 0 5px 0 rgba(208,208,208,0.50);
 }
 
 .navbar-index {
@@ -1204,15 +1205,13 @@ button.close:focus {
 }
 
 #SidebarAffix {
-    /*text-align: center;*/
     width: 214px;
-    /*margin-left: -15px;*/
-    /*margin-top: 5px;*/
-    /*border: 1px solid #42A5F5;*/
     border-color: transparent;
-    background-color: #fff;
+    /*background-color: #fff;*/
     z-index: 999;
     max-height: 90%;
+    background: #FBFCFC;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
 
 #SidebarAffix .panel {
@@ -1270,6 +1269,7 @@ button.close:focus {
     /*width: 95%;*/
     background-color: #F1F7FD;
     padding-left: 28px;
+    box-shadow: 0 -3px 5px 0 rgba(15,42,66,0.05);
 }
 
 .CollapseColloc {
@@ -1352,6 +1352,10 @@ button.close:focus {
     margin-right: 0px !important;
 }
 
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+    margin: 0 0 0 auto !important;
+}
+
 ._mCS_2 .mCSB_container {
     margin-right: 0px !important;
 }
@@ -1379,8 +1383,7 @@ button.close:focus {
     font-family: PingFangSC-Semibold;
     font-size: 18px;
     color: #FFFFFF;
-/*    margin: 0 5px;
-    margin-top: 5px;*/
+    box-shadow: 0 5px 10px 0 rgba(19,65,116,0.15);
 }
 
 .panel-category-heading .colloc-usage {
@@ -1666,6 +1669,7 @@ button.close:focus {
 }*/
 
 .result-example {
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05) inset;
     background-color: #fff;
     padding: 20px 0px 0px 0px;
     margin: 0px;
