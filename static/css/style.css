@@ -1356,6 +1356,10 @@ button.close:focus {
     margin: 0 0 0 auto !important;
 }
 
+.mCSB_scrollTools .mCSB_draggerRail {
+    margin-right: 1px !important;
+}
+
 ._mCS_2 .mCSB_container {
     margin-right: 0px !important;
 }
