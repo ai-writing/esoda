@@ -134,15 +134,19 @@ def syn_usageList_view(request):
     dbs, cids = get_cids(request.user)
     usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
 
+    ttcnt = 0
     syn_dict = {}
-    for i in xrange(len(t)):
-        syn_dict[t[i]] = synonyms(t[i])[:10] # displayed_lemma(ref[i], t[i])
+    for j in xrange(len(t)):
+        syn_dict[t[j]] = synonyms(t[j])[:10] # displayed_lemma(ref[i], t[i])
     if dt != '0' and len(t) == 2 and '*' not in t:
         t2_syn_cnt = refresh_synList(t[0], syn_dict[t[1]], 1, dt, dbs, cids)
         t1_syn_cnt = refresh_synList(t[1], syn_dict[t[0]], 2, dt, dbs, cids)
         syn_dict[t[0]] = t1_syn_cnt
         syn_dict[t[1]] = t2_syn_cnt
-    else:  
+        d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
+        ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+    else:
+        ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
         for j in xrange(len(t)):
             syn_list = []
             for syn in synonyms(t[j])[:10]:
@@ -155,8 +159,10 @@ def syn_usageList_view(request):
 
     info = {
         't_list': t_list,
+        'count': ttcnt,
         't_str': ' '.join(t),
-        'type': ' + '.join(t_list)
+        'type': ' '.join(t_list),
+        'syn_dict': {}
     }
 
     if '*' in t:
@@ -167,6 +173,7 @@ def syn_usageList_view(request):
     syn_usage_dict = {}
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
+        info['syn_dict'][tt] = sorted(syn_dict[tt], key=lambda x:x['count'], reverse=True)
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
         for syn in syn_usage_dict[no[0]]:
@@ -223,7 +230,6 @@ def guide_view(request):
 
 
 def get_usage_dict(t, ref, i, dt, dbs, cids):
-    usageList = []
     usageDict = {}
     nt = list(t)
     for tt in t:
