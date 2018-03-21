@@ -4,6 +4,7 @@ from .utils import has_cn
 import heapq
 from common.mongodb import MONGODB
 import math
+import re
 
 logger = logging.getLogger(__name__)
 # TODO: install requests_cache
@@ -54,7 +55,8 @@ def suggest_new(q):
     len_q = len(q)
     suggest_num = 10
     collection = MONGODB.common.suggest
-    q_str = '^' + str(q) + '.*'
+    q_conv = re.escape(q)
+    q_str = '^' + str(q_conv) + '.*'
     word = collection.find_one({'_id': q})
     if word:
         words.append(word)
