@@ -1697,17 +1697,38 @@ button.close:focus {
 }
 
 .error-hint {
+    background-color: #fff;
+    height: 693px;
     color: #666;
-    margin-top: 10px;
+    padding-top: 10px;
 }
 
 .error-hint > p {
-    font-size: 20px;
+    font-size: 24px;
+    margin-left: 35px;
+    margin-top: 10px;
 }
 
-.hint-content {
-    font-size: 13px;
+.error-hint > .hint-content {
+    font-size: 14px;
     line-height: 28px;
+    margin-left: 35px;
+}
+
+.collocation-hint {
+    color: #2D557B;
+}
+
+.collocation-hint > h3 {
+    font-size: 18px;
+    margin-left: 13px;
+    margin-top: 20px;
+}
+
+.collocation-hint > .hint-content {
+    margin: 30px 0 40px 13px;
+    font-size: 14px;
+     line-height: 15px;
 }
 
 .panel-heart {
