@@ -1,6 +1,10 @@
 import xml.dom.minidom
 import requests, logging, random, hashlib
 from .utils import has_cn
+import heapq
+from common.mongodb import MONGODB
+import math
+import re
 
 from django.conf import settings
 
@@ -32,6 +36,48 @@ def youdao_suggest(q):
         logger.exception('Failed in Youdao suggest "%s"', q)
     r['suggest'] = suggests
     logger.info('youdao_suggest: "%s" -> %s', q, repr(suggests))
+    return r
+
+def rank(item, len_q):
+    mul = 0
+    diff = len(item['_id']) - len_q
+    if diff == 0:
+        mul = 0
+    elif diff >= 6:
+        mul = 3
+    else:
+        mul = diff/2 + 1
+    # return mul * math.log(item['tf'])
+    return mul * item['tf']
+
+def suggest_new(q):
+    r = {}
+    suggests = []
+    words = []
+    len_q = len(q)
+    suggest_num = 10
+    collection = MONGODB.common.suggest
+    q_conv = re.escape(q)
+    q_str = '^' + str(q_conv) + '.*'
+    word = collection.find_one({'_id': q})
+    if word:
+        words.append(word)
+        suggest_num -= 1
+    arr = list(collection.find({'_id': {'$regex': q_str}}).sort([('tf', -1)]).limit(1000))
+    words.extend(heapq.nlargest(suggest_num, arr, key=lambda s: rank(s, len_q)))
+    for word in words:
+        suggest = {}
+        if suggests and word['_id'] == q:
+            continue
+        if word['_id'].find(' ') < 0:
+            suggest['category'] = 'Words'
+        else:
+            suggest['category'] = 'Expressions'
+        suggest['label'] = word['_id']
+        suggest['desc'] = "; ".join(list(word['meanings']))
+        suggests.append(suggest)
+    r['suggest'] = suggests
+    logger.info('suggest_new: "%s" -> %s', q, repr(suggests))
     return r
 
 YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'

@@ -18,15 +18,23 @@ a {
 }
 
 @media (min-width: 1201px) {
-    .result-page > .container {
+/*    .result-page > .container {
         width: 950px;
     }
 
     .navbar-fixed-top > .container {
         width: 950px;
+    }*/
+
+    .container {
+        width: 950px;
     }
 
     .login {
+        margin-right: -100px;
+    }
+
+    .welback {
         margin-right: -100px;
     }
 
@@ -63,7 +71,7 @@ a {
 
 @media (max-width: 1200px) and (min-width: 992px) {
     .full-width {
-        width: 120%;
+        width: 130%;
     }
 
     .btn-index-search {
@@ -88,6 +96,10 @@ a {
         margin-right: 0px;
     }
 
+    .welback {
+        margin-right: 0px;
+    }
+
     .result-main {
         /*padding-right: 65px;*/
         padding-left: 50px;
@@ -101,7 +113,7 @@ a {
 
 @media (max-width: 992px) and (min-width: 767px) {
     .full-width {
-        width: 120%;
+        width: 160%;
     }
 
     .btn-index-search {
@@ -324,8 +336,9 @@ a {
     background: #fff;
     border-color: #fff;
     /*border-color: #63B7E6;*/
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     height: 70px;
+    box-shadow: 0 0 5px 0 rgba(208,208,208,0.50);
 }
 
 .navbar-index {
@@ -339,6 +352,8 @@ a {
 .navbar-avatar {
     padding-top: 12.5px !important;
     padding-bottom: 12.5px !important;
+    padding-left: 30px !important;
+    padding-right: 0px !important;
 }
 
 #ResultSearchBar > #SearchBox {
@@ -478,7 +493,7 @@ a {
 
 .login {
     font-size: 12px;
-    margin-top: 14px;
+    margin-top: 13px;
     float: right;
     /*color: #fff !important;*/
     /*font-family: PingFangSC-Regular;*/
@@ -1204,15 +1219,13 @@ button.close:focus {
 }
 
 #SidebarAffix {
-    /*text-align: center;*/
     width: 214px;
-    /*margin-left: -15px;*/
-    /*margin-top: 5px;*/
-    /*border: 1px solid #42A5F5;*/
     border-color: transparent;
-    background-color: #fff;
+    /*background-color: #fff;*/
     z-index: 999;
     max-height: 90%;
+    background: #FBFCFC;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
 
 #SidebarAffix .panel {
@@ -1270,6 +1283,7 @@ button.close:focus {
     /*width: 95%;*/
     background-color: #F1F7FD;
     padding-left: 28px;
+    box-shadow: 0 -3px 5px 0 rgba(15,42,66,0.05);
 }
 
 .CollapseColloc {
@@ -1352,6 +1366,14 @@ button.close:focus {
     margin-right: 0px !important;
 }
 
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+    margin: 0 0 0 auto !important;
+}
+
+.mCSB_scrollTools .mCSB_draggerRail {
+    margin-right: 1px !important;
+}
+
 ._mCS_2 .mCSB_container {
     margin-right: 0px !important;
 }
@@ -1379,8 +1401,7 @@ button.close:focus {
     font-family: PingFangSC-Semibold;
     font-size: 18px;
     color: #FFFFFF;
-/*    margin: 0 5px;
-    margin-top: 5px;*/
+    box-shadow: 0 5px 10px 0 rgba(19,65,116,0.15);
 }
 
 .panel-category-heading .colloc-usage {
@@ -1666,6 +1687,7 @@ button.close:focus {
 }*/
 
 .result-example {
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05) inset;
     background-color: #fff;
     padding: 20px 0px 0px 0px;
     margin: 0px;
@@ -1689,17 +1711,38 @@ button.close:focus {
 }
 
 .error-hint {
+    background-color: #fff;
+    height: 693px;
     color: #666;
-    margin-top: 10px;
+    padding-top: 10px;
 }
 
 .error-hint > p {
-    font-size: 20px;
+    font-size: 24px;
+    margin-left: 35px;
+    margin-top: 10px;
 }
 
-.hint-content {
-    font-size: 13px;
+.error-hint > .hint-content {
+    font-size: 14px;
     line-height: 28px;
+    margin-left: 35px;
+}
+
+.collocation-hint {
+    color: #2D557B;
+}
+
+.collocation-hint > h3 {
+    font-size: 18px;
+    margin-left: 13px;
+    margin-top: 20px;
+}
+
+.collocation-hint > .hint-content {
+    margin: 30px 0 40px 13px;
+    font-size: 14px;
+     line-height: 15px;
 }
 
 .panel-heart {
@@ -2008,15 +2051,16 @@ button.close:focus {
 }
 
 .welback {
-    font-size: 12px;
-    margin-top: 14px;
     display: flex;
     align-items: center;
+    font-size: 12px;
+    margin-top: 13px;
+    float: right;
 }
 
 .indexback {
     font-size: 12px;
-    margin-top: 14px;
+    margin-top: 13px;
     display: flex;
     align-items: center;
 }

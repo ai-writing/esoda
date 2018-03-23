@@ -26,7 +26,9 @@
 </div> -->
 
 <div class="panel-category-heading">搭配替换
-  <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}</a></p>
+  <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >
+    {% if type|length > 15 %}{{ type | slice:":15" }}...{% else %}{{ type }}{% endif %}
+    {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</a></p>
 </div>
 <div class="colloc-result">
   {% for k in t_list %}
@@ -35,9 +37,9 @@
         <ul class="list-group">
           {% if value %}
             <div class="panel-subheading">
-              <span>{{ key }}，还可以用：</span>
-              <span class="list-btn loadMore">+</span>
-              <span class="list-btn showLess">-</span>
+              <span>{% if key|length > 5 %}{{ key | slice:":2" }}..{{ key | slice:"-2 :" }}{% else %}{{ key }}{% endif %}，还可以用：</span>
+              <div class="list-btn loadMore">+</div>
+              <div class="list-btn showLess">-</div>
               <div style="clear:both"></div>
             </div>
             {% for v in value %}
@@ -56,6 +58,14 @@
       {% endif %}
     {% endfor %}
   {% endfor %}
+  <div class="collocation-hint">
+    <h3>暂无可替换搭配。</h3>
+    <div class="hint-content">
+      <p>温馨提示：</p>
+      <p>修改"个人领域"</p>
+      <p>扩大搜索范围</p>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -69,4 +79,10 @@
     $(this).hide();
     $(this).prevAll('.loadMore').show();
   });
+  var str = document.getElementsByClassName('list-group')[0].innerText;
+  if(str == "") {
+    $(".collocation-hint").show();
+  } else {
+    $(".collocation-hint").hide();
+  }
 </script>

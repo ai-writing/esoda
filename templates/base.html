@@ -84,8 +84,8 @@
           <ul class="nav navbar-nav navbar-right welback">
             <li><a href="{% url 'auth_password_change' %}" class="navbar-avatar"><img
                     src="{% static 'img/user.png' %}" class="user-image"></a></li>
-            <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a>
-            </li>
+<!--             <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a>
+            </li> -->
             <li><a href="{% url 'auth_logout' %}">登出</a></li>
           </ul>
         {% endif %}
