@@ -164,7 +164,7 @@ $(function () {
   var cache = {};
   $("#SearchBox").catcomplete({
     minLength: 0,
-    delay: 500,
+    delay: 150,
     source: function (request, response) {
 
       var term = extractLast(request.term);
@@ -180,7 +180,8 @@ $(function () {
 
       $.getJSON("/suggest/", {term: term}, function (data, status, xhr) {
         var show = [];
-        var matcher = new RegExp("^" + term, "i");
+        var reg_term = term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        var matcher = new RegExp("^" + reg_term, "i");
         // As experimented, the items in *data* are references through getData method,
         // so that there's a new array needed for showing.
         data.suggest.forEach(function (item) {

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 import logging
 import time
 from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma, get_defaulteColl, sort_syn_usageDict, star2collocation
-from .youdao_query import youdao_suggest, youdao_translate
+from .youdao_query import suggest_new, youdao_translate
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
@@ -216,10 +216,8 @@ def sentence_view(request):
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {}
-    try:
-        r = youdao_suggest(q)
-    except Exception:
-        logger.exception('Failed to parse Youdao suggest')
+    # r = youdao_suggest(q)
+    r = suggest_new(q)
     return JsonResponse(r)
 
 
