@@ -18,15 +18,23 @@ a {
 }
 
 @media (min-width: 1201px) {
-    .result-page > .container {
+/*    .result-page > .container {
         width: 950px;
     }
 
     .navbar-fixed-top > .container {
         width: 950px;
+    }*/
+
+    .container {
+        width: 950px;
     }
 
     .login {
+        margin-right: -100px;
+    }
+
+    .welback {
         margin-right: -100px;
     }
 
@@ -63,7 +71,7 @@ a {
 
 @media (max-width: 1200px) and (min-width: 992px) {
     .full-width {
-        width: 120%;
+        width: 130%;
     }
 
     .btn-index-search {
@@ -88,6 +96,10 @@ a {
         margin-right: 0px;
     }
 
+    .welback {
+        margin-right: 0px;
+    }
+
     .result-main {
         /*padding-right: 65px;*/
         padding-left: 50px;
@@ -101,7 +113,7 @@ a {
 
 @media (max-width: 992px) and (min-width: 767px) {
     .full-width {
-        width: 120%;
+        width: 160%;
     }
 
     .btn-index-search {
@@ -324,7 +336,7 @@ a {
     background: #fff;
     border-color: #fff;
     /*border-color: #63B7E6;*/
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     height: 70px;
     box-shadow: 0 0 5px 0 rgba(208,208,208,0.50);
 }
@@ -340,6 +352,8 @@ a {
 .navbar-avatar {
     padding-top: 12.5px !important;
     padding-bottom: 12.5px !important;
+    padding-left: 30px !important;
+    padding-right: 0px !important;
 }
 
 #ResultSearchBar > #SearchBox {
@@ -2037,10 +2051,11 @@ button.close:focus {
 }
 
 .welback {
-    font-size: 12px;
-    margin-top: 14px;
     display: flex;
     align-items: center;
+    font-size: 12px;
+    margin-top: 14px;
+    float: right;
 }
 
 .indexback {
