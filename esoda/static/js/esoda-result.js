@@ -68,9 +68,11 @@ $('#ManualLoad').click(function(e) {
     var total = $("#ExampleNumber").html();
     loading = 1;
     $("#ManualLoad").hide();
-    $("#Loading").show();
+    // console.log("test0");
+    $("#Loading2").show();
+    // console.log("test");
     setTimeout(function() {
-      $("#Loading").hide();
+      $("#Loading2").hide();
       var i;
       for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
         $("#Example" + i).show();

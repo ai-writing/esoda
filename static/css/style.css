@@ -1203,6 +1203,10 @@ button.close:focus {
     display: none;
 }
 
+#Loading2 {
+    display: none;
+}
+
 #ManualLoad {
     display: none;
     color: #9b9b9b;
