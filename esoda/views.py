@@ -4,8 +4,9 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 import time
+import re
 from .utils import notstar, cleaned_sentence, papers_source_str, corpus_id2cids, convert_type2title, refine_query, displayed_lemma, get_defaulteColl, sort_syn_usageDict, star2collocation
-from .youdao_query import suggest_new, youdao_translate
+from .youdao_query import suggest_new, youdao_translate, youdao_suggest
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
@@ -209,8 +210,11 @@ def sentence_view(request):
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {}
-    # r = youdao_suggest(q)
-    r = suggest_new(q)
+    reMatch = re.compile('^[a-zA-Z0-9\s\'\-\.]*$')
+    if reMatch.match(q):
+        r = suggest_new(q)
+    else:
+        r = youdao_suggest(q)
     return JsonResponse(r)
 
 

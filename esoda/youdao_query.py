@@ -55,13 +55,13 @@ def suggest_new(q):
     len_q = len(q)
     suggest_num = 10
     collection = MONGODB.common.suggest
-    # q_conv = re.escape(q)
-    # q_str = '^' + str(q_conv) + '.*'
-    word = collection.find_one({'_id': q})
+    q_conv = re.escape(q)
+    q_str = '^' + str(q_conv) + '.*'
+    word = collection.find_one({'_id': q_str})
     if word:
         words.append(word)
         suggest_num -= 1
-    arr = list(collection.find({'_id': {'$regex': q}}).sort([('tf', -1)]).limit(1000))
+    arr = list(collection.find({'_id': {'$regex': q_str}}).sort([('tf', -1)]).limit(1000))
     words.extend(heapq.nlargest(suggest_num, arr, key=lambda s: rank(s, len_q)))
     for word in words:
         suggest = {}
