@@ -15,7 +15,7 @@ import json
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    corpus_id = models.CharField(max_length=1000,default=json.dumps([0]*1000))
+    corpus_id = models.CharField(max_length=10000,default=json.dumps([0]*1000))
 
     def setid(self, x):
         self.corpus_id = json.dumps(x)

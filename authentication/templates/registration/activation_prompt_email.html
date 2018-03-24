@@ -1,0 +1,36 @@
+{% load i18n %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>{{ site.name }} {% trans 'registration' %}</title>
+</head>
+
+<body>
+<p>{% trans 'Hi there,' %}</p>
+<p>
+    {% blocktrans with site_name=site.name %}
+    We find you have signed up {{ site_name }} with the email account {{ user }}. You only need one more step to active it.
+    Just click the following link (which remains active in {{ expiration_days }} days):
+    {% endblocktrans %}
+</p>
+<p>
+    <a href="http://{{site.domain}}{% url 'registration_activate' activation_key %}">
+        {{site.domain}}{% url 'registration_activate' activation_key %}
+    </a>
+</p>
+<p>
+    {% blocktrans with site_name=site.name %}
+    If you have problem clicking on the link, simply copy and paste it in the in the address bar. And then you can enjoy your own {{ site_name }} experience.
+    {% endblocktrans %}
+</p>
+<p>{% trans "Have fun searching, and don't hesitate to contact us with your feedback." %}</p>
+<p>
+    {% blocktrans with site_name=site.name %}
+    Yours Sincerely,
+    {{ site_name }} Team
+    {% endblocktrans %}
+</p>
+</body>
+
+</html>
