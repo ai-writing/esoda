@@ -14,26 +14,25 @@ import json
 #         return self.name
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    corpus_id = models.CharField(max_length=10000,default=json.dumps([0]*1000))
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    corpus_id = models.CharField(max_length=10000, default=json.dumps([0]*2000, separators=(',', ':')))
 
     def setid(self, x):
-        self.corpus_id = json.dumps(x)
+        self.corpus_id = json.dumps(x, separators=(',', ':'))
     
     def getid(self):
-        if isinstance(self.corpus_id,(int)):
-            temp=[0]*1000
-            checked=[tree_first[self.corpus_id]]+tree_second[self.corpus_id]
-            for i in checked:
-                temp[i]=1
-            self.corpus_id=json.dumps(temp)
+        try:
+            ids = json.loads(self.corpus_id)
+        except ValueError, e:
+            ids = [0]*2000
+            self.corpus_id = json.dumps(ids, separators=(',', ':'))
             self.save()
-            return temp
-        return json.loads(self.corpus_id)
+        return ids
+
     @staticmethod
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             UserProfile(user=instance).save()
 
 post_save.connect(UserProfile.create_user_profile, sender=User)
-       
+

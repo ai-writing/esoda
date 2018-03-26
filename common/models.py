@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 
+from datetime import datetime
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, null=True, blank=True)
@@ -17,3 +19,13 @@ class Comment(models.Model):
     @classmethod
     def get_latest_comments(cls, limit=10):
         return list(cls.objects.filter(display=True).order_by('-date')[:limit])
+
+class UserCorpus(models.Model):
+    user = models.ForeignKey(User)
+    # db = models.IntegerField(default=0)
+    status = models.IntegerField(default=0)
+    date_created = models.DateTimeField(default=datetime.now)
+    name = models.CharField(max_length=64)  #unique=True
+    description = models.CharField(max_length=256, blank=True)
+    # ispublic = models.BooleanField(default=True)
+
