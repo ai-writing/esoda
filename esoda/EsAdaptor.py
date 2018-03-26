@@ -125,8 +125,7 @@ class EsAdaptor():
                     },
                     "script_score": {
                         "script": {
-                            "lang": "painless",
-                            "file": "calculate-cost",
+                            "id": "calculate-cost",
                             "params": {
                                 "tList": t,
                                 "dList": d,
@@ -139,8 +138,7 @@ class EsAdaptor():
             "script_fields": {
                 "sentence": {
                     "script": {
-                        "lang": "painless",
-                        "file": "highlight-sentence",
+                        "id": "highlight-sentence",
                         "params": {
                             "tList": t,
                             "dList": d,
