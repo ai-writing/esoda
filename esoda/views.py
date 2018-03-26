@@ -5,9 +5,10 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import logging
 import time
+import re
 
 from .utils import *
-from .youdao_query import suggest_new
+from .youdao_query import youdao_suggest, suggest_new
 if settings.DEBUG:
     from .youdao_query import youdao_translate_old as youdao_translate
 else:
@@ -223,8 +224,11 @@ def sentence_view(request):
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {}
-    # r = youdao_suggest(q)
-    r = suggest_new(q)
+    reMatch = re.compile('^[a-zA-Z0-9\s\'\-\.]*$')
+    if reMatch.match(q):
+        r = suggest_new(q)
+    else:
+        r = youdao_suggest(q)
     return JsonResponse(r)
 
 
