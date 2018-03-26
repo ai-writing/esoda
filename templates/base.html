@@ -157,7 +157,15 @@
 {% if debug %}
   <script type="text/javascript">console.log('Won\'t load Baidu statistics in debug mode');</script>
 {% else %}
-  {# TODO #}
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?b6388185fe6e04d6db4797029f1cd9ac";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
 {% endif %}
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
