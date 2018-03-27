@@ -32,23 +32,22 @@ logger = logging.getLogger(__name__)
 
 def get_cids(user, r=None):
     if user.is_authenticated:
-        dbs, cids = corpus_id2cids(user.userprofile.getid())  # user.userprofile.getid() get a list
+        corpus_id = user.userprofile.getid()  # user.userprofile.getid() get a list
+        dbs, cids = corpus_id2cids(corpus_id)
         # TODO: name = get_name(dbs, cids)
-        corpus_id = user.userprofile.getid()
-        name=u''
-        count=0
-        print tree_first
+        name = u''
+        count = 0
         for i in tree_first:
-            if corpus_id[i]==1:
+            if corpus_id[i] == 1:
                 name = name +FIELD_NAME[count]+ u', '
             count+=1
         name=name[0:-2]
     else:
-        dbs = DEFAULT_DBS
-        cids = DEFAULT_CIDS
         name = u'计算机全部领域'
     if r:
         r['domain'] = name
+    dbs = dbs or DEFAULT_DBS
+    cids = cids or DEFAULT_CIDS
     return dbs, cids
 
 
