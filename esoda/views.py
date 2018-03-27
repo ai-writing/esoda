@@ -31,6 +31,7 @@ DEFAULT_CIDS = ['_all']
 logger = logging.getLogger(__name__)
 
 def get_cids(user, r=None):
+    dbs, cids = [], []
     if user.is_authenticated:
         corpus_id = user.userprofile.getid()  # user.userprofile.getid() get a list
         dbs, cids = corpus_id2cids(corpus_id)
@@ -39,9 +40,9 @@ def get_cids(user, r=None):
         count = 0
         for i in tree_first:
             if corpus_id[i] == 1:
-                name = name +FIELD_NAME[count]+ u', '
-            count+=1
-        name=name[0:-2]
+                name = name + FIELD_NAME[count] + u', '
+            count += 1
+        name = name[0:-2]
     else:
         name = u'计算机全部领域'
     if r:
