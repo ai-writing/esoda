@@ -38,8 +38,8 @@
           {% if value %}
             <div class="panel-subheading">
               <span><div class="panel-key">{{ key }}</div></span>
-              <div class="list-btn loadMore">+</div>
-              <div class="list-btn showLess">-</div>
+              <div class="list-btn loadMore"><i class="fa fas fa-angle-double-down"></i></div>
+              <div class="list-btn showLess"><i class="fa fas fa-angle-double-up"></i></div>
             </div>
             {% for v in value %}
               {% if forloop.counter < 6 %}
