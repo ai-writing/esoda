@@ -76,15 +76,22 @@ class EsAdaptor():
         EsAdaptor.es.indices.put_mapping(index=db, body=mappings)
 
     @staticmethod
-    def cidsearch(index, doc_type, body, filter_path):
-        if doc_type in ('_all', ['_all']):
-            return EsAdaptor.es.search(index=index, body=body, filter_path=filter_path)
+    def cidsearch(index, body, filter_path):
+        #if doc_type in ('_all', ['_all']):
+        return EsAdaptor.es.search(index=index, body=body, filter_path=filter_path)
+        # else:
+        #     return EsAdaptor.es.search(index=index, doc_type=doc_type, body=body, filter_path=filter_path)
+
+    @staticmethod
+    def check_type(cids):
+        if cids in ('_all', ['_all']):
+            return []
         else:
-            return EsAdaptor.es.search(index=index, doc_type=doc_type, body=body, filter_path=filter_path)
+            return [{ "terms": { "c": cids  }}]
 
     @staticmethod
     def search(t, d, ref, dbs, cids, sp=10):
-        mst = []
+        mst = EsAdaptor.check_type(cids)
         for tt in t:
             mst.append({
                 "nested": {
@@ -148,7 +155,7 @@ class EsAdaptor():
                 }
             }
         }
-        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.cidsearch(index=dbs, body=action, filter_path=[
             'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
         return res['hits']
 
@@ -187,7 +194,7 @@ class EsAdaptor():
             }
         }
 
-        mst = []
+        mst = EsAdaptor.check_type(cids)
         for tt in t:
             mst.append({
                 "nested": {
@@ -201,7 +208,7 @@ class EsAdaptor():
         if len(d) > 1:
             ret = []
             #for ps in (('d.l1', 'd.l2'), ('d.l2', 'd.l1')):
-            action['query']['bool']['must'] = list(mst)
+            action['query']['bool']['must'].append(list(mst))
             ddq = [{'term': {'d.l1': d[0]}}, {'term': {'d.l2': d[1]}}]
             action['query']['bool']['must'].append({
                 "nested": {
@@ -236,7 +243,7 @@ class EsAdaptor():
 
     @staticmethod
     def __checkResult(action, dbs, cids):
-        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.cidsearch(index=dbs, body=action, filter_path=[
             'hits.total', 'aggregations'])
         ret = [False] * 4
         for agg in res['aggregations']['d']['d']['d']['buckets']:
@@ -264,7 +271,7 @@ class EsAdaptor():
             return {}
         st = 'd.dt' if cover == 6 else 'd.l1' if cover == 5 else 'd.l2'
 
-        mst = []
+        mst = EsAdaptor.check_type(cids)
         for tt in t:
             mst.append({
                 "nested": {
@@ -320,13 +327,13 @@ class EsAdaptor():
         }
         # import json
         # print json.dumps(action, indent=2)
-        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.cidsearch(index=dbs, body=action, filter_path=[
             'hits.total', 'aggregations'])
         return res
 
     @staticmethod
     def count(t, d, dbs, cids):
-        mst = []
+        mst = EsAdaptor.check_type(cids)
         for tt in t:
             mst.append({
                 "nested": {
@@ -364,6 +371,6 @@ class EsAdaptor():
         }
         # import json
         # print json.dumps(action, indent=2)
-        res = EsAdaptor.cidsearch(index=dbs, doc_type=cids, body=action, filter_path=[
+        res = EsAdaptor.cidsearch(index=dbs, body=action, filter_path=[
             'hits.total'])
         return res
