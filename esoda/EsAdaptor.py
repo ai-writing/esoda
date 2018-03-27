@@ -168,7 +168,7 @@ class EsAdaptor():
             "size": 0,
             "query": {
                 "bool": {
-                    "must": None
+                    "must": []
                 }
             },
             "aggs": {
@@ -208,7 +208,7 @@ class EsAdaptor():
         if len(d) > 1:
             ret = []
             #for ps in (('d.l1', 'd.l2'), ('d.l2', 'd.l1')):
-            action['query']['bool']['must'].append(list(mst))
+            action['query']['bool']['must'] += mst
             ddq = [{'term': {'d.l1': d[0]}}, {'term': {'d.l2': d[1]}}]
             action['query']['bool']['must'].append({
                 "nested": {
