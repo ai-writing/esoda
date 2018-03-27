@@ -42,7 +42,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default='False', cast=bool)
 
-INTERNAL_IPS = ('127.0.0.1')
+INTERNAL_IPS = ('127.0.0.1',)
 
 ADMINS = config('ADMINS', default='', cast=lambda s: [pair.split(',') for pair in s.strip().split(';')])
 
