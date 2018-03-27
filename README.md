@@ -6,7 +6,7 @@ Project home for ESODA (http://www.esoda.org)
 
 ### 1. Install prerequisite python packages
 
-Using `virtualenv` is recommended. Create an fresh environment named `venv` in the project's root folder.
+Using `virtualenv` is recommended. Create a fresh environment named `venv` in the project's root folder.
 
 ```shell
 (venv) pip install -U -r requirements.txt
@@ -20,7 +20,7 @@ java -mx8g -cp "path/to/stanford-corenlp-full-XXXX-XX-XX/*" edu.stanford.nlp.pip
 
 where `XXXX-XX-XX` is the version number of Stanford CoreNLP
 
-### 2. Create and Edit Essential Settings
+### 2. Create and Modify Essential Settings
 As the project uses [python-decouple](https://github.com/henriquebastos/python-decouple) you will need to **create a file named `.env` on the root of the project**. You can copy from `.env.example` as following:
 
 ```
@@ -57,7 +57,7 @@ Install [gettext](https://www.gnu.org/software/gettext/) toolset and add `gettex
 Then compile the translation files for use:
 
 ```shell
-python manage.py makemessages
+python manage.py compilemessages
 ```
 
 

@@ -8,9 +8,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="">
+  <meta name="renderer" content="webkit">
+  <meta name="keywords" content="易搜搭; ESODA; 搭配; 语料库; 学术; 写作; 助手; 查询; 清华; 大学; 人机交互; 实验室; ESLWriter; English as a second language; ESL; academic writing; writing assistant; collocation; corpus; dictionary">
+  {# {% blocktrans asvar meta_description %}ESODA is an English writing assistant for researchers, created by the HCI Group at Tsinghua University. It is powered by AI technology to help you find idiomatic usages and examples in authentic academic papers.{% endblocktrans %} #}
+  <meta name="description" content="易搜搭(ESODA)是一款适合国人英语写作的信息助手,由清华大学人机交互实验室出品,它广泛收录了各学科领域的海量论文作为数据库,通过智能语言分析等算法,供您通过各种方式查询地道的英语搭配和例句.从今以后像老外一样写作,再也不用担心自己的语言问题了!">
+  <meta name="author" content="清华大学人机交互实验室; Tsinghua Pervasive Interaction Group; Tsinghua PI Group">
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
+  <link rel="bookmark" href="{% static 'img/favicon.ico' %}" />
 
   <title>{% block title %}易搜搭 {% trans "ESODA" %}{% endblock %}</title>
 
@@ -31,8 +35,8 @@
 
 <body>
 {% if debug %}
-  <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">NOTE: You are
-    running in DEBUG mode.
+  <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">
+    NOTE: You are running in DEBUG mode.
   </div>
 {% endif %}
 {% block header %}

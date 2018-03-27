@@ -90,12 +90,35 @@
 
             <div class="fix-right-xs">
               <div id="Feedback" class="affix feedback-affix" data-spy="affix">
-                <div class="btn feedback">反馈</div>
+                <div class="btn feedback" data-toggle="modal" data-target="#FeedbackModal">反馈</div>
               </div>
               <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
                 <div class="btn back-to-top">
                   <p class="glyphicon glyphicon-chevron-up"></p>
                   <p>回到顶部</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal fade" id="FeedbackModal">
+              <div class="modal-dialog modal-sm modal-login-sm" id="feedback-modal">
+                <div class="modal-content">
+                  <div class="modal-header modal-login-header">
+                    <img src="{% static 'img/logo.png' %}" class="modal-logo">
+                    <h4>请提供您的意见与反馈</h4>
+                  </div>
+                  <div class="modal-body modal-login-body">
+                    <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
+                      {% csrf_token %}
+
+                      <div>
+                        <textarea form="FeedbackForm" name="comment" class="form-control"></textarea>
+                      </div>
+
+                      <input type="hidden" name="next" value="{{ next }}"/>
+                      <input class="btn btn-primary" type="submit" value="提交反馈"/>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,12 +147,6 @@
       // $("#SidebarAffix").height($(".result-page").height())
       var curSelectedUsage;
       var REF = '{{ ref }}';
-
-      $("#Feedback").click(function () {
-        var FeedbackContent;
-        FeedbackContent = prompt("您的意见与反馈");
-        alert(FeedbackContent);
-      });
 
       function searchAndFillSentences(params) {
         loadCount = 1;
@@ -196,74 +213,92 @@
 
       // $('.not-limited').click();
 
-          $('.colloc-sub-btn').click(function (e) {
-              e.preventDefault();
-              if ($(this).attr('aria-expanded') == 'true') {
-                  return;
-              }
-              var id = $(this).attr('href');
-              var type = $(this).attr('type');
-              var type0 = type.replace(/ \(.*\) /g, ' ');
-              var i, dt;
-              var ref = [];
-              for (i = 0; i < type.split(' ').length; i++) {
-                  if (type.split(' ')[i] != type0.split(' ')[i]) break;
-              }
-              for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
-                  if (type0.split(' ')[j] == '*') ref[j] = '*';
-                  else {
-                      ref[j] = REF.split(' ')[k];
-                      k = k + 1;
-                  }
-              }
-              if (i == 0) i = 1;
-              dt = id.replace('#', '').split('_')[1];
+      $('.colloc-sub-btn').click(function (e) {
+        e.preventDefault();
+        if ($(this).attr('aria-expanded') == 'true') {
+          return;
+        }
+        var id = $(this).attr('href');
+        var type = $(this).attr('type');
+        var type0 = type.replace(/ \(.*\) /g, ' ');
+        var i, dt;
+        var ref = [];
+        for (i = 0; i < type.split(' ').length; i++) {
+          if (type.split(' ')[i] != type0.split(' ')[i]) break;
+        }
+        for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
+          if (type0.split(' ')[j] == '*') ref[j] = '*';
+          else {
+            ref[j] = REF.split(' ')[k];
+            k = k + 1;
+          }
+        }
+        if (i == 0) i = 1;
+        dt = id.replace('#', '').split('_')[1];
 
-              // $('#SentenceResult').css('visibility', 'hidden');
+        // $('#SentenceResult').css('visibility', 'hidden');
 
-              // $('#SentenceResult').animate({ opacity: 0 }, function () {
-              //   $('#Loading').show();
-              // });
-              // $('#ManualLoad').hide();
-              // $("#ExampleEnd").hide();
-              
-              $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
-                  $(id).html(data);
-                  $(id + ' .colloc-result').mCustomScrollbar({
-                      theme: 'dark',
-                      scrollInertia: 0,
-                      mouseWheel: {preventDefault: true},
-                      autoHideScrollbar: true
-                  });
-                  $(id + ' .colloc-usage:eq(0)').click();
-              });
+        // $('#SentenceResult').animate({ opacity: 0 }, function () {
+        //   $('#Loading').show();
+        // });
+        // $('#ManualLoad').hide();
+        // $("#ExampleEnd").hide();
+
+        $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
+          $(id).html(data);
+          $(id + ' .colloc-result').mCustomScrollbar({
+            theme: 'dark',
+            scrollInertia: 0,
+            mouseWheel: {preventDefault: true},
+            autoHideScrollbar: true
           });
-
-          $('#first').click();
-
-          $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
-              e.preventDefault();
-              if ($(this).attr('state') == 'selected') return;
-              $("#ExampleEnd").hide();
-              $('#ManualLoad').hide();
-              // $('#SentenceResult').css('visibility', 'hidden');
-              $('#SentenceResult').animate({ opacity: 0 }, function () {
-                if(loading) $('#Loading').show();
-              });
-
-              $('.colloc-usage').removeAttr('state');
-              $(this).attr('state', 'selected');
-
-              // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-              var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
-              var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
-              var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
-              searchAndFillSentences({t: $(this).attr('lemma'), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
-          });
-
-          // if ($('#Loading').is(':hidden')) {
-          //     searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
-          // }
+          $(id + ' .colloc-usage:eq(0)').click();
+        });
       });
+
+      $('#first').click();
+
+      $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
+        e.preventDefault();
+        if ($(this).attr('state') == 'selected') return;
+        $("#ExampleEnd").hide();
+        $('#ManualLoad').hide();
+        // $('#SentenceResult').css('visibility', 'hidden');
+        $('#SentenceResult').animate({opacity: 0}, function () {
+          if (loading) $('#Loading').show();
+        });
+
+        $('.colloc-usage').removeAttr('state');
+        $(this).attr('state', 'selected');
+
+        // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
+        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
+        var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
+        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+        searchAndFillSentences({t: $(this).attr('lemma'), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
+      });
+
+      $('#FeedbackForm').submit(function (e) {
+        e.preventDefault();
+        var textarea = $(this).find('[name="comment"]');
+        var msg = textarea.val().trim();
+        if (msg) {
+          $.post($(this).attr('action'), $(this).serialize(), function (r) {
+            toastr.remove();
+            toastr.success('反馈成功');
+            textarea.val('');
+            $('#FeedbackModal').modal('hide');
+          });
+        } else {
+          toastr.remove();
+          toastr.warning('请输入反馈内容');
+        }
+        textarea.focus();
+      });
+
+      // if ($('#Loading').is(':hidden')) {
+      //     searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
+      // }
+    });
   </script>
 {% endblock %}
