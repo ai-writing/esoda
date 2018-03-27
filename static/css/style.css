@@ -671,6 +671,25 @@ button.close:focus {
     background-color: #ffffff;
 }
 
+#FeedbackForm .btn-primary {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-size: 20px;
+    padding: 10px 12px;
+    width: 100%;
+}
+
+#FeedbackForm .form-control {
+    margin-top: 15px;
+    padding: 10px 12px;
+    font-size: 18px;
+    text-align: center;
+    height: 100px;
+    color: #242424;
+    resize: none;
+}
+
+
 .btn-index-search:hover,
 .btn-index-search:active,
 .btn-index-search:focus {
@@ -1400,10 +1419,10 @@ button.close:focus {
 .panel-category-heading {
     /*background: rgba(66, 165, 245, 0.40);*/
     background-image: linear-gradient(90deg, #42A5F5 2%, #3082DE 100%);
-    padding: 6px 13px;
+    padding: 10px 13px;
     text-align: justify;
     font-family: PingFangSC-Semibold;
-    font-size: 18px;
+    font-size: 16px;
     color: #FFFFFF;
     box-shadow: 0 5px 10px 0 rgba(19,65,116,0.15);
 }
@@ -1420,6 +1439,30 @@ button.close:focus {
     text-align: justify;
     margin: 0 0px;
     margin-top: 2px;
+}
+
+.panel-key {
+    clear:both;
+    display: inline-block;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    width: 90%;
+}
+
+.panel-heading-title {
+    background-color: #FFFFFF;
+    color: #42A5F5;
+    border-radius: 4px;
+    font-size: 12px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 8px;
+}
+
+.panel-icon {
+    margin-left: 8px;
+    vertical-align: middle;
 }
 
 .panel-default > .panel-collapse {
@@ -1536,6 +1579,7 @@ button.close:focus {
 
 .usage-count {
     font-size: 10px;
+    float: right;
 }
 
 .nav-tabs-collocation {

@@ -25,10 +25,10 @@
   {% endfor %}
 </div> -->
 
-<div class="panel-category-heading">搭配替换
-  <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >
-    {% if type|length > 15 %}{{ type | slice:":15" }}...{% else %}{{ type }}{% endif %}
-    {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</a></p>
+<div class="panel-category-heading">
+  <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}
+   {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</a></p>
+  搭配替换<span class="panel-icon glyphicon glyphicon-transfer"></span><span class="panel-heading-title">仅同义</span>
 </div>
 <div class="colloc-result">
   {% for k in t_list %}
@@ -37,10 +37,9 @@
         <ul class="list-group">
           {% if value %}
             <div class="panel-subheading">
-              <span>{% if key|length > 5 %}{{ key | slice:":2" }}..{{ key | slice:"-2 :" }}{% else %}{{ key }}{% endif %}，还可以用：</span>
+              <span><div class="panel-key">{{ key }}</div></span>
               <div class="list-btn loadMore">+</div>
               <div class="list-btn showLess">-</div>
-              <div style="clear:both"></div>
             </div>
             {% for v in value %}
               {% if forloop.counter < 6 %}
