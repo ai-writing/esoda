@@ -19,14 +19,3 @@ def comment_view(request):
         comment.save()
         logger.info('%s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, msg)
     return JsonResponse({'success': True})
-
-def feedback_view(request):
-    msg = request.POST.get('feedback', '').strip()
-    if msg:
-        request.session.save()
-        comment = Comment(text=msg, display=settings.DEBUG, session=request.session.session_key)
-        if request.user.is_authenticated:
-            comment.user = request.user
-        comment.save()
-        logger.info('%s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, msg)
-    return JsonResponse({'success': True})

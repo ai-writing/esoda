@@ -108,11 +108,11 @@
                     <h4>请提供您的意见与反馈</h4>
                   </div>
                   <div class="modal-body modal-login-body">
-                    <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:feedback' %}">
+                    <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
                       {% csrf_token %}
 
                       <div>
-                        <textarea form="FeedbackForm" name="feedback" class="form-control"></textarea>
+                        <textarea form="FeedbackForm" name="comment" class="form-control"></textarea>
                       </div>
 
                       <input type="hidden" name="next" value="{{ next }}"/>
@@ -280,7 +280,7 @@
 
       $('#FeedbackForm').submit(function (e) {
         e.preventDefault();
-        var textarea = $(this).find('[name="feedback"]');
+        var textarea = $(this).find('[name="comment"]');
         var msg = textarea.val().trim();
         if (msg) {
           $.post($(this).attr('action'), $(this).serialize(), function (r) {
