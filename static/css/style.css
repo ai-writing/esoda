@@ -1417,7 +1417,8 @@ button.close:focus {
 
 .panel-category-heading {
     /*background: rgba(66, 165, 245, 0.40);*/
-    background-image: linear-gradient(90deg, #42A5F5 2%, #3082DE 100%);
+    /*background-image: linear-gradient(90deg, #42A5F5 2%, #3082DE 100%);*/
+    background: #42A5F5;
     padding: 10px 13px;
     text-align: justify;
     font-family: PingFangSC-Semibold;
