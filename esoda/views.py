@@ -173,9 +173,8 @@ def syn_usageList_view(request):
         'syn_dict': {}
     }
 
-    if '*' in t:
+    if '*' in t and usage_dict["*"]:
         usage_word = usage_dict['*'][0]['content']
-        no = [tt for tt in t if tt != '*']
         info['t_str'] = info['t_str'].replace('*', usage_word)
 
     syn_usage_dict = {}
@@ -183,6 +182,8 @@ def syn_usageList_view(request):
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
         info['syn_dict'][tt] = sorted(syn_dict[tt], key=lambda x:x['count'], reverse=True)
     if '*' in t:
+        no = t[:]
+        no.remove(t[t.index('*')])
         syn_usage_dict[star] = syn_usage_dict['*']
         for syn in syn_usage_dict[no[0]]:
             syn['ref'] = syn['ref'].replace('*', usage_word)
