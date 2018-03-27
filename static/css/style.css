@@ -1682,8 +1682,8 @@ button.close:focus {
     /*font-weight: bold;*/
     color: #ACACAC;
     font-size: 12px;
-    padding-bottom: 13px;
-    padding-right: 25px;
+    padding-bottom: 7px;
+    padding-right: 5px;
 }
 
 .result-warning a {
@@ -2088,6 +2088,7 @@ button.close:focus {
 .result-search {
     font-size: 20px;
     padding-top: 8px;
+    padding-bottom: 0px;
     width: 542px;
 }
 

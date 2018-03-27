@@ -70,7 +70,7 @@
                 <span class="oneline">默认搜索: 计算机全部领域</span>
               {% else %}
                 {% if r.domain|upper %}
-                <span class="oneline">当前个人领域为“{{ r.domain|upper }}</span> ”<a href="{% url 'authentication:domain' %}">修改</a>
+                <span class="oneline">当前个人领域为“{{ r.domain|upper }}” <a href="{% url 'authentication:domain' %}">修改</a></span>
                 {% else %}
                   <span class="oneline">您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加</a><span>
                 {% endif %}
