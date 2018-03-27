@@ -36,10 +36,10 @@
       {% if k == key %}
         <ul class="list-group">
           {% if value %}
-            <div class="panel-subheading">
+            <div class="panel-subheading click">
               <span><div class="panel-key">{{ key }}</div></span>
-              <div class="list-btn loadMore"><i class="fa fas fa-angle-down"></i></div>
-              <div class="list-btn showLess"><i class="fa fas fa-angle-up"></i></div>
+              <div class="list-btn more"><i class="fa fas fa-angle-down"></i></div>
+              <div class="list-btn less"><i class="fa fas fa-angle-up"></i></div>
             </div>
             {% for v in value %}
               {% if forloop.counter < 6 %}
@@ -68,16 +68,26 @@
 </div>
 
 <script type="text/javascript">
-  $('.loadMore').click(function () {
+  $('.click').click(function () {
     $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-    $(this).hide();
-    $(this).next('.showLess').show();
+    if ($(this).children('.less').css('display') == 'none') {
+      $(this).children('.more').hide();
+      $(this).children('.less').show();
+    } else {
+      $(this).children('.less').hide();
+      $(this).children('.more').show();
+    }
   });
-  $('.showLess').click(function () {
-    $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-    $(this).hide();
-    $(this).prevAll('.loadMore').show();
-  });
+
+  // $('.showLess').click(function () {
+  //   console.log("see");
+  //   $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+  //   $(this).children('.less').hide();
+  //   $(this).children('.more').show();
+  //   $(this).toggleClass('showLess');
+  //   $(this).toggleClass('loadMore');
+  // });
+
   var str = document.getElementsByClassName('list-group')[0].innerText;
   if(str == "") {
     $(".collocation-hint").show();

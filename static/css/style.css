@@ -1327,8 +1327,12 @@ button.close:focus {
     color: #63B7E6;
 }
 
-.showLess {
+.less {
     display: none;
+}
+
+.click {
+    cursor: pointer;
 }
 
 #colLess {

@@ -167,17 +167,6 @@
         });
       }
 
-      $('.loadMore').click(function () {
-        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-        $(this).hide();
-        $(this).next('.showLess').show();
-      });
-      $('.showLess').click(function () {
-        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-        $(this).hide();
-        $(this).prevAll('.loadMore').show();
-      });
-
       colNum = ($(".colList").width() > 600) ? 4 : 3;
       $('.colList li:lt(' + colNum + ')').show();
       $(window).resize(function () {
