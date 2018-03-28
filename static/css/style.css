@@ -71,7 +71,7 @@ a {
 
 @media (max-width: 1200px) and (min-width: 992px) {
     .full-width {
-        width: 130%;
+        width: 135%;
     }
 
     .btn-index-search {
@@ -328,10 +328,6 @@ a {
     letter-spacing: 0;
 }
 
-.user-image {
-    width: 25px;
-}
-
 .navbar-default {
     background: #fff;
     border-color: #fff;
@@ -354,11 +350,14 @@ a {
     padding-bottom: 12.5px !important;
     padding-left: 30px !important;
     padding-right: 0px !important;
+    width: 25px;
+    z-index:999;
 }
 
 #ResultSearchBar > #SearchBox {
     margin-left: -30px;
     padding-left: 40px;
+    padding-bottom: 8px;
     background-color: transparent;
     height: 44px;
 }
@@ -489,21 +488,19 @@ a {
 
 .navbar-default .navbar-nav > li > a:focus {
     outline: none;
+    color: #63B7E6 !important;
+    background-color: transparent !important;
 }
 
 .login {
     font-size: 12px;
     margin-top: 13px;
     float: right;
-    /*color: #fff !important;*/
+    color: #63B7E6 !important;
     /*font-family: PingFangSC-Regular;*/
 }
 
-.login .login-url {
-    color: #63B7E6 !important;
-}
-
-.login .login-url:hover {
+.login:hover {
     text-decoration: underline;
 }
 
@@ -751,8 +748,9 @@ button.close:focus {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 12px;
-    border-bottom: 2px solid #63B7E6;
+    margin-top: 15px;
+    background-color: #F8F8F8;
+    /*border-bottom: 2px solid #63B7E6;*/
 }
 
 .container-usage {
@@ -1243,11 +1241,7 @@ button.close:focus {
 #SidebarAffix {
     width: 214px;
     border-color: transparent;
-    /*background-color: #fff;*/
     z-index: 999;
-    max-height: 90%;
-    background: #FBFCFC;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
 
 #SidebarAffix .panel {
@@ -1270,6 +1264,12 @@ button.close:focus {
 
 #SidebarAffix .list-group-item:last-child {
     padding-bottom: 3px;
+}
+
+.collocation-panel {
+    height: 90vh;
+    background: #FBFCFC;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
 
 .hide-query {
@@ -1484,7 +1484,7 @@ button.close:focus {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 0px;
-    padding-bottom: 0px;
+    padding-bottom: 5px;
     font-size: 12px;
 }
 
@@ -1682,7 +1682,7 @@ button.close:focus {
     /*font-weight: bold;*/
     color: #ACACAC;
     font-size: 12px;
-    padding-bottom: 7px;
+    padding-bottom: 15px;
     padding-right: 5px;
 }
 
@@ -1737,7 +1737,7 @@ button.close:focus {
 .result-example {
     /*box-shadow: 0 0 10px 0 rgba(0,0,0,0.05) inset;*/
     background-color: #fff;
-    padding: 20px 0px 0px 0px;
+    padding: 5px 0px 0px 0px;
     margin: 0px;
     margin-top: 0px !important;
     text-align: justify;
@@ -1751,11 +1751,15 @@ button.close:focus {
     padding-right: 0px;
 }
 
+.panel-group .panel {
+    border-radius: 0px;
+}
+
 .example-box {
     margin-left: 32px;
     margin-right: 32px; 
     margin-bottom: 0px;
-    border-top: 1px solid #D3D3D3;
+    border-bottom: 1px solid #D3D3D3;
     padding-bottom: 4px;
     padding-top: 10px;
 }

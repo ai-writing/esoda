@@ -3,7 +3,8 @@
 <nav class="navbar navbar-default navbar-static-top">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+              aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -13,21 +14,39 @@
     </div>
     <div id="navbar" class="navbar-index navbar-collapse collapse">
       {% if not user.is_authenticated %}
-      <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请<span class="login-url">登录</span></a></li>
-      </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">登录</a></li>
+        </ul>
       {% else %}
-      <ul class="indexback nav navbar-nav navbar-right">
-        <li><a href="{% url 'auth_password_change' %}" class="navbar-avatar"><img src="{% static 'img/user.png' %}" class="user-image"></a></li>
-        <!-- <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a></li> -->
-        <li><a href="/logout">登出</a></li>
-      </ul>
+        <ul class="indexback nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              {{ user.username|truncatechars:10 }}<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'auth_password_change' %}">修改密码</a></li>
+              <li><a href="{% url 'authentication:domain' %}">修改个人领域</a></li>
+              <li class="divider"></li>
+              <li><a href="{% url 'auth_logout' %}">登出</a></li>
+            </ul>
+          </li>
+{#          <li><a href="{% url 'auth_password_change' %}" class="navbar-avatar">#}
+            {#          <img src="{% static 'img/user.png' %}" class="user-image">#}
+{#          </a></li>#}
+          <!-- <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a></li> -->
+{#          <li><a href="/logout">登出</a></li>#}
+        </ul>
       {% endif %}
       <ul class="nav nav-pills navbar-right nav-pills-index" role="tablist">
-        <li role="presentation" {% if tab == "index" %}class="active"{% endif %}><a role="tab" href="{% url 'esoda' %}">主页</a></li>
-        <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}><a role="tab" href="{% url 'guide' %}">搜搭教程</a></li>
+        <li role="presentation" {% if tab == "index" %}class="active"{% endif %}><a role="tab" href="{% url 'esoda' %}">主页</a>
+        </li>
+        <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}><a role="tab" href="{% url 'guide' %}">搜搭教程</a>
+        </li>
         <li role="presentation"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
-        <li role="presentation" {% if tab == "profile" %}class="active"{% endif %}><a role="tab" {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %} href="{% url 'authentication:domain' %}" {% endif %}>个人领域</a></li>
+        <li role="presentation" {% if tab == "profile" %}class="active"{% endif %}><a role="tab"
+                {% if not user.is_authenticated %} href="#" data-toggle="modal" data-target="#ModalLogin" {% else %}
+                                                                                      href="{% url 'authentication:domain' %}" {% endif %}>个人领域</a>
+        </li>
       </ul>
     </div><!--/.navbar-collapse -->
   </div>

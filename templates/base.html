@@ -9,12 +9,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <meta name="renderer" content="webkit">
-  <meta name="keywords" content="易搜搭; ESODA; 搭配; 语料库; 学术; 写作; 助手; 查询; 清华; 大学; 人机交互; 实验室; ESLWriter; English as a second language; ESL; academic writing; writing assistant; collocation; corpus; dictionary">
+  <meta name="keywords"
+        content="易搜搭; ESODA; 搭配; 语料库; 学术; 写作; 助手; 查询; 清华; 大学; 人机交互; 实验室; ESLWriter; English as a second language; ESL; academic writing; writing assistant; collocation; corpus; dictionary">
   {# {% blocktrans asvar meta_description %}ESODA is an English writing assistant for researchers, created by the HCI Group at Tsinghua University. It is powered by AI technology to help you find idiomatic usages and examples in authentic academic papers.{% endblocktrans %} #}
-  <meta name="description" content="易搜搭(ESODA)是一款适合国人英语写作的信息助手,由清华大学人机交互实验室出品,它广泛收录了各学科领域的海量论文作为数据库,通过智能语言分析等算法,供您通过各种方式查询地道的英语搭配和例句.从今以后像老外一样写作,再也不用担心自己的语言问题了!">
+  <meta name="description"
+        content="易搜搭(ESODA)是一款适合国人英语写作的信息助手,由清华大学人机交互实验室出品,它广泛收录了各学科领域的海量论文作为数据库,通过智能语言分析等算法,供您通过各种方式查询地道的英语搭配和例句.从今以后像老外一样写作,再也不用担心自己的语言问题了!">
   <meta name="author" content="清华大学人机交互实验室; Tsinghua Pervasive Interaction Group; Tsinghua PI Group">
-  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
-  <link rel="bookmark" href="{% static 'img/favicon.ico' %}" />
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}"/>
+  <link rel="bookmark" href="{% static 'img/favicon.ico' %}"/>
 
   <title>{% block title %}易搜搭 {% trans "ESODA" %}{% endblock %}</title>
 
@@ -70,9 +72,9 @@
                 <span class="oneline">默认搜索: 计算机全部领域</span>
               {% else %}
                 {% if r.domain|upper %}
-                <span class="oneline">当前个人领域为“{{ r.domain|upper }}” <a href="{% url 'authentication:domain' %}">修改</a></span>
+                  <span class="oneline">当前个人领域为“{{ r.domain|upper }}” <a href="{% url 'authentication:domain' %}">修改</a></span>
                 {% else %}
-                  <span class="oneline">您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加</a><span>
+                  <span class="oneline">您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加</a></span>
                 {% endif %}
               {% endif %}
             </div>
@@ -81,16 +83,25 @@
         </form>
         {% if not user.is_authenticated %}
           <ul class="nav navbar-nav navbar-right result-login">
-            <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">您好，请<span
-                    class="login-url">登录</span></a></li>
+            <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">登录</a></li>
           </ul>
         {% else %}
           <ul class="nav navbar-nav navbar-right welback">
-            <li><a href="{% url 'auth_password_change' %}" class="navbar-avatar"><img
-                    src="{% static 'img/user.png' %}" class="user-image"></a></li>
-<!--             <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {{ user.username|truncatechars:10 }}<span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'auth_password_change' %}">修改密码</a></li>
+                <li><a href="{% url 'authentication:domain' %}">修改个人领域</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'auth_logout' %}">登出</a></li>
+              </ul>
+            </li>
+            <!--             <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a>
             </li> -->
-            <li><a href="{% url 'auth_logout' %}">登出</a></li>
+            {#              <a href="{% url 'auth_logout' %}">登出</a>#}
+{#           <img src="{% static 'img/user.png' %}" class="navbar-avatar">#}
           </ul>
         {% endif %}
       </div><!--/.navbar-collapse -->
@@ -162,13 +173,13 @@
   <script type="text/javascript">console.log('Won\'t load Baidu statistics in debug mode');</script>
 {% else %}
   <script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?b6388185fe6e04d6db4797029f1cd9ac";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-  })();
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b6388185fe6e04d6db4797029f1cd9ac";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
   </script>
 {% endif %}
 
@@ -177,29 +188,29 @@
 <script src="{% static 'js/jquery-ui-modified.js' %}"></script>
 <script src="{% static 'js/esoda-main.js' %}?v={% now 'Ymd' %}"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        toastr.options = {
-            "closeButton": true,
-            "positionClass": "toast-top-right"
-        };
-        {% if not user.is_authenticated %}
-            function onLoginFormLoaded() {
-                $('#LoginForm').submit(function (event) {
-                    $.post('{% url "auth_login" %}', $(this).serialize(), function (data, status, xhr) {
-                        // TODO: better logic to test login success, e.g., $(data).find('#LoginForm').length > 0
-                        if (data.indexOf('<!DOCTYPE html>') > 0) {
-                            window.location.reload();
-                        } else {
-                            $('#ModalLogin').html(data);
-                            onLoginFormLoaded();
-                        }
-                    });
-                    event.preventDefault();
-                });
+  $(document).ready(function () {
+    toastr.options = {
+      "closeButton": true,
+      "positionClass": "toast-top-right"
+    };
+    {% if not user.is_authenticated %}
+      function onLoginFormLoaded() {
+        $('#LoginForm').submit(function (event) {
+          $.post('{% url "auth_login" %}', $(this).serialize(), function (data, status, xhr) {
+            // TODO: better logic to test login success, e.g., $(data).find('#LoginForm').length > 0
+            if (data.indexOf('<!DOCTYPE html>') > 0) {
+              window.location.reload();
+            } else {
+              $('#ModalLogin').html(data);
+              onLoginFormLoaded();
             }
-            $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
-        {% endif %}
-    });
+          });
+          event.preventDefault();
+        });
+      }
+      $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
+    {% endif %}
+  });
 </script>
 {% block script %}{% endblock %}
 
