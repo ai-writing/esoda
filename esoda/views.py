@@ -131,10 +131,23 @@ def esoda_view(request):
 
 def get_synonyms_dict(t, ref, i, dt, dbs, cids):
     syn_dict = {}
-    for tt in t:
+    t_new = t[:]
+    ref_new = ref[:]
+    if '*' in t:
+        syn_dict['*'] = []
+        t_new.remove('*')
+        ref_new.remove('*')
+    for tt in t_new:
         syn_dict[tt] = []
         for syn in synonyms(tt)[:6]:
-            syn_dict[tt].append({'ref': syn, 'lemma': syn, 'content': syn, 'count': 10}) #default
+            lemma = ' '.join(t_new).replace(tt, syn)
+            reff = ' '.join(ref_new).replace(tt, syn)
+            if dt == '0' or len(t_new) == 1:
+                cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
+            else:
+                d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
+                cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']        
+            syn_dict[tt].append({'ref': reff, 'lemma': lemma, 'content': syn, 'count': cnt})
     return syn_dict
 
 
@@ -158,52 +171,26 @@ def syn_usageList_view(request):
         ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
     else:
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
-    # syn_dict = {}
-    # for j in xrange(len(t)):
-    #     syn_dict[t[j]] = synonyms(t[j])[:10] # displayed_lemma(ref[i], t[i])
-    # if dt != '0' and len(t) == 2 and '*' not in t:
-    #     t2_syn_cnt = refresh_synList(t[0], syn_dict[t[1]], 1, dt, dbs, cids)
-    #     t1_syn_cnt = refresh_synList(t[1], syn_dict[t[0]], 2, dt, dbs, cids)
-    #     syn_dict[t[0]] = t1_syn_cnt
-    #     syn_dict[t[1]] = t2_syn_cnt
-    #     d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-    #     ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
-    # else:
-    #     ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
-    #     for j in xrange(len(t)):
-    #         syn_list = []
-    #         for syn in synonyms(t[j])[:10]:
-    #             newtokens = [syn if tt == t[j] else tt for tt in t]
-    #             cnt = EsAdaptor.count(newtokens, [], dbs, cids)['hits']['total']
-    #             if cnt:
-    #                 syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': ' '.join(t).replace(t[j], syn), 'content': syn, 'count': cnt})
-    #         syn_dict[t[j]] = syn_list
-    t_list, star = star2collocation(t, dt)
 
+    t_list, star = star2collocation(t, dt)
+    t_str = ' '.join(t)
     info = {
         't_list': t_list,
         'count': ttcnt,
-        't_str': ' '.join(t),
         'type': ' '.join(t_list),
         'syn_dict': {}
     }
-
-    # if '*' in t and usage_dict["*"]:
-    #     usage_word = usage_dict['*'][0]['content']
-    #     info['t_str'] = info['t_str'].replace('*', usage_word)
 
     syn_usage_dict = {}
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
         info['syn_dict'][tt] = sorted(syn_dict[tt], key=lambda x:x['count'], reverse=True)
-    # if '*' in t:
-    #     no = t[:]
-    #     no.remove(t[t.index('*')])
-    #     syn_usage_dict[star] = syn_usage_dict['*']
-    #     for syn in syn_usage_dict[no[0]]:
-    #         syn['ref'] = syn['ref'].replace('*', usage_word)
-    #         syn['lemma'] = syn['lemma'].replace('*', usage_word)
-               
+
+    if '*' in t:
+        syn_usage_dict[star] = syn_usage_dict['*']
+        t_str = t_str.strip('*')
+
+    info['t_str'] = t_str
     info['syn_usage_dict'] = syn_usage_dict
     return render(request, 'esoda/collocation_result.html', info)
 
@@ -216,6 +203,8 @@ def sentence_view(request):
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
+    if len(t) == 1:
+        dt = '0'
     sr = sentence_query(t, ref, i, dt, dbs, cids)
     info = {
         'example_number': len(sr['sentence']),
