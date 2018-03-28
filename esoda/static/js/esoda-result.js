@@ -3,25 +3,134 @@
 */
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
-var keyword = window.location.search;
+var REF, SENTENCES_URL, COLLOCATION_URL;
+// var keyword = window.location.search;
 
 $(function () {
   'use strict';
 
-  // if( keyword.indexOf("&") >= 0) {    // TODO @xiaofei: should not test by words used in example
-  //   $(".cover").show();
-  //   if( keyword.indexOf("efficient") >= 0) {
-  //     $(".uncover-syn .uncover").css('z-index','1500');
+  $("#SidebarAffix").height($(window).height());
+  // $("#SidebarAffix").height($(".result-page").height())
+
+  function searchAndFillSentences(params) {
+    loadCount = 1;
+    loading = 1;
+    loaded = 0;
+    $.get(SENTENCES_URL, params, function (data) {
+      $('#Loading').hide();
+      $('#ManualLoad').hide();
+      $('#SentenceResult').html(data);
+      // $('#SentenceResult').css('visibility', 'visible');
+      $('#SentenceResult').animate({opacity: 1});
+      var exampleNum = Number($("#ExampleNumber").text());
+      if (exampleNum <= 10 && exampleNum > 0) {
+        $('#ExampleEnd').show();
+        loaded = 1;
+      }
+      loading = 0;
+    });
+  }
+
+  var colNum = ($(".colList").width() > 600) ? 4 : 3;
+  $('.colList li:lt(' + colNum + ')').show();
+  $(window).resize(function () {
+    colNum = ($(".colList").width() > 600) ? 4 : 3;
+    $('.colList li:lt(' + colNum + ')').show();
+    $('.colList li').not(':lt(' + colNum + ')').hide();
+  });
+  $('#colMore').click(function () {
+    $('.colList li').show();
+    $('#colMore').hide();
+    $('#colLess').show();
+  });
+  $('#colLess').click(function () {
+    $('.colList li').not(':lt(' + colNum + ')').hide();
+    $('#colLess').hide();
+    $('#colMore').show();
+  });
+
+  $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
+    e.preventDefault();
+    if ($(this).attr('state') == 'selected') return;
+    $("#ExampleEnd").hide();
+    $('#ManualLoad').hide();
+    // $('#SentenceResult').css('visibility', 'hidden');
+    $('#SentenceResult').animate({opacity: 0}, function () {
+      if (loading) $('#Loading').show();
+    });
+
+    $('.colloc-usage').removeAttr('state');
+    $(this).attr('state', 'selected');
+
+    // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
+    var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
+    var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
+    var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+    searchAndFillSentences({t: $(this).attr('lemma'), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
+  });
+
+  // $('.not-limited').click(function (e) {
+  //   e.preventDefault();
+  //   if ($(this).attr('aria-expanded') == 'true') {
+  //     return;
   //   }
-  //   if( keyword.indexOf("wait") >= 0) {
-  //     $(".uncover-colloc .uncover").css('z-index','1500');
-  //   }
-  //   if( keyword.indexOf("demand") >= 0) {
-  //     $(".uncover-chi .uncover").css('z-index','1500');
-  //   }
-  //   if( keyword.indexOf("effort") >= 0) {
-  //     $(".uncover-phrase .uncover").css('z-index','1500');
-  //   }
+  //   $("#ExampleEnd").hide();
+  //   $("#ManualLoad").hide();
+  //   $('#SentenceResult').empty();
+  //   $('#Loading').show();
+
+  //   var query = $(this).attr('data');
+
+  //   searchAndFillSentences({t: query, ref: REF, dt: 0});
+  // });
+
+  // $('.not-limited').click();
+
+  $('.colloc-sub-btn').click(function (e) {
+    e.preventDefault();
+    if ($(this).attr('aria-expanded') == 'true') {
+      return;
+    }
+    var id = $(this).attr('href');
+    var type = $(this).attr('type');
+    var type0 = type.replace(/ \(.*\) /g, ' ');
+    var i, dt;
+    var ref = [];
+    for (i = 0; i < type.split(' ').length; i++) {
+      if (type.split(' ')[i] != type0.split(' ')[i]) break;
+    }
+    for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
+      if (type0.split(' ')[j] == '*') ref[j] = '*';
+      else {
+        ref[j] = REF.split(' ')[k];
+        k = k + 1;
+      }
+    }
+    if (i == 0) i = 1;
+    dt = id.replace('#', '').split('_')[1];
+
+    // $('#SentenceResult').css('visibility', 'hidden');
+
+    // $('#SentenceResult').animate({ opacity: 0 }, function () {
+    //   $('#Loading').show();
+    // });
+    // $('#ManualLoad').hide();
+    // $("#ExampleEnd").hide();
+
+    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
+      $(id).html(data);
+      $(id + ' .colloc-result').mCustomScrollbar({
+        theme: 'dark',
+        scrollInertia: 0,
+        mouseWheel: {preventDefault: true},
+        autoHideScrollbar: true
+      });
+      $(id + ' .colloc-usage:eq(0)').click();
+    });
+  });
+
+  // if ($('#Loading').is(':hidden')) {
+  //     searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
   // }
 
   // $(".cover").click( function() {
@@ -54,23 +163,20 @@ $(function () {
   //   }
   // });
   
-  
-$( window ).scroll( function () {
-  if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
-    if (loading == 1 || loaded == 1 ) return;
-    if ($('#Loading').is(':visible')) return;
-    if ($('#ManualLoad').is(':visible')) return;
-    $("#ManualLoad").show();
-  }; 
-});
+  $( window ).scroll( function () {
+    if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
+      if (loading == 1 || loaded == 1 ) return;
+      if ($('#Loading').is(':visible')) return;
+      if ($('#ManualLoad').is(':visible')) return;
+      $("#ManualLoad").show();
+    }; 
+  });
 
-$('#ManualLoad').click(function(e) {
+  $('#ManualLoad').click(function(e) {
     var total = $("#ExampleNumber").html();
     loading = 1;
     $("#ManualLoad").hide();
-    // console.log("test0");
     $("#Loading2").show();
-    // console.log("test");
     setTimeout(function() {
       $("#Loading2").hide();
       var i;
@@ -85,6 +191,24 @@ $('#ManualLoad').click(function(e) {
         return;
       }
     }, 1000);
+  });
+
+  $('#FeedbackForm').submit(function (e) {
+    e.preventDefault();
+    var textarea = $(this).find('[name="comment"]');
+    var msg = textarea.val().trim();
+    if (msg) {
+      $.post($(this).attr('action'), $(this).serialize(), function (r) {
+        toastr.remove();
+        toastr.success('反馈成功');
+        textarea.val('');
+        $('#FeedbackModal').modal('hide');
+      });
+    } else {
+      toastr.remove();
+      toastr.warning('请输入反馈内容');
+    }
+    textarea.focus();
   });
 
   $(".back-to-top").click(function() {
@@ -127,11 +251,6 @@ $('#ManualLoad').click(function(e) {
     $(e.target).toggleClass("glyphicon-star");
   };
 
-  $.clickChevron = function(e) {    // TODO: No need of this function, collpase.js will automatically handle
-    $(e.target).toggleClass("glyphicon-chevron-down");
-    $(e.target).toggleClass("glyphicon-chevron-up");
-  }
-
   $('#SearchBox').hover(function() {
     if ($('#SearchBox').is(':focus')) {
       return false;
@@ -143,4 +262,5 @@ $('#ManualLoad').click(function(e) {
   });
 
   $('#SearchBox').trigger('mouseover');
+  $('#first').click();
 });
