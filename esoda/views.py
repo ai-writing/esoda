@@ -129,6 +129,15 @@ def esoda_view(request):
     return render(request, 'esoda/result.html', info)
 
 
+def get_synonyms_dict(t, ref, i, dt, dbs, cids):
+    syn_dict = {}
+    for tt in t:
+        syn_dict[tt] = []
+        for syn in synonyms(tt)[:6]:
+            syn_dict[tt].append({'ref': syn, 'lemma': syn, 'content': syn, 'count': 10}) #default
+    return syn_dict
+
+
 def syn_usageList_view(request):
     # info = {
     #    'syn_usage_dict': {'word1':[{'ref': '', 'lemma': '', 'content': '', 'count': 10},……],'word2' ……}
@@ -141,28 +150,34 @@ def syn_usageList_view(request):
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
     usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
+    syn_dict = get_synonyms_dict(t, ref, i, dt, dbs, cids)
 
     ttcnt = 0
-    syn_dict = {}
-    for j in xrange(len(t)):
-        syn_dict[t[j]] = synonyms(t[j])[:10] # displayed_lemma(ref[i], t[i])
-    if dt != '0' and len(t) == 2 and '*' not in t:
-        t2_syn_cnt = refresh_synList(t[0], syn_dict[t[1]], 1, dt, dbs, cids)
-        t1_syn_cnt = refresh_synList(t[1], syn_dict[t[0]], 2, dt, dbs, cids)
-        syn_dict[t[0]] = t1_syn_cnt
-        syn_dict[t[1]] = t2_syn_cnt
+    if dt != '0' and '*' not in t:
         d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
         ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
     else:
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
-        for j in xrange(len(t)):
-            syn_list = []
-            for syn in synonyms(t[j])[:10]:
-                newtokens = [syn if tt == t[j] else tt for tt in t]
-                cnt = EsAdaptor.count(newtokens, [], dbs, cids)['hits']['total']
-                if cnt:
-                    syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': ' '.join(t).replace(t[j], syn), 'content': syn, 'count': cnt})
-            syn_dict[t[j]] = syn_list
+    # syn_dict = {}
+    # for j in xrange(len(t)):
+    #     syn_dict[t[j]] = synonyms(t[j])[:10] # displayed_lemma(ref[i], t[i])
+    # if dt != '0' and len(t) == 2 and '*' not in t:
+    #     t2_syn_cnt = refresh_synList(t[0], syn_dict[t[1]], 1, dt, dbs, cids)
+    #     t1_syn_cnt = refresh_synList(t[1], syn_dict[t[0]], 2, dt, dbs, cids)
+    #     syn_dict[t[0]] = t1_syn_cnt
+    #     syn_dict[t[1]] = t2_syn_cnt
+    #     d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
+    #     ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+    # else:
+    #     ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
+    #     for j in xrange(len(t)):
+    #         syn_list = []
+    #         for syn in synonyms(t[j])[:10]:
+    #             newtokens = [syn if tt == t[j] else tt for tt in t]
+    #             cnt = EsAdaptor.count(newtokens, [], dbs, cids)['hits']['total']
+    #             if cnt:
+    #                 syn_list.append({'ref':' '.join(ref).replace(t[j], syn), 'lemma': ' '.join(t).replace(t[j], syn), 'content': syn, 'count': cnt})
+    #         syn_dict[t[j]] = syn_list
     t_list, star = star2collocation(t, dt)
 
     info = {
@@ -173,21 +188,21 @@ def syn_usageList_view(request):
         'syn_dict': {}
     }
 
-    if '*' in t and usage_dict["*"]:
-        usage_word = usage_dict['*'][0]['content']
-        info['t_str'] = info['t_str'].replace('*', usage_word)
+    # if '*' in t and usage_dict["*"]:
+    #     usage_word = usage_dict['*'][0]['content']
+    #     info['t_str'] = info['t_str'].replace('*', usage_word)
 
     syn_usage_dict = {}
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
         info['syn_dict'][tt] = sorted(syn_dict[tt], key=lambda x:x['count'], reverse=True)
-    if '*' in t:
-        no = t[:]
-        no.remove(t[t.index('*')])
-        syn_usage_dict[star] = syn_usage_dict['*']
-        for syn in syn_usage_dict[no[0]]:
-            syn['ref'] = syn['ref'].replace('*', usage_word)
-            syn['lemma'] = syn['lemma'].replace('*', usage_word)
+    # if '*' in t:
+    #     no = t[:]
+    #     no.remove(t[t.index('*')])
+    #     syn_usage_dict[star] = syn_usage_dict['*']
+    #     for syn in syn_usage_dict[no[0]]:
+    #         syn['ref'] = syn['ref'].replace('*', usage_word)
+    #         syn['lemma'] = syn['lemma'].replace('*', usage_word)
                
     info['syn_usage_dict'] = syn_usage_dict
     return render(request, 'esoda/collocation_result.html', info)
