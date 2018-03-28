@@ -16,12 +16,12 @@
     </div>
   {% endif %}
   {% for example in exampleList %}
-    <div class="panel panel-default result-example row {% if forloop.counter > 10 %}collapse{% endif %}"
+    <div class="result-example row {% if forloop.counter > 10 %}collapse{% endif %}"
          id="Example{{ forloop.counter }}">
       <div class="col-xs-12" style="padding: 0px 0px;">
         <div class="example-box">
           <div class="panel-body">
-            <!--             <div class="display-inline example-list-label">
+            <!-- <div class="display-inline example-list-label">
               {{ forloop.counter }}.
             </div> -->
             <div class="example-list-content">
