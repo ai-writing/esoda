@@ -53,10 +53,10 @@
             </div>
 
             <div class="CollapseColloc row {% if not r.collocationList %}hidden{% endif %}" role="tabpanel" aria-labelledby="HeadingColloc">
-                <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-11 col-md-11 col-sm-11 col-xs-11"
+                <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
                     role="tablist">
                   {% for collocation in r.collocationList.cL %}
-                    <li role="presentation">
+                    <li class="second-row" role="presentation">
                       {% if forloop.counter == r.collocationList.index %}
                         <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id="first"
                            data-toggle="tab" data="{{ collocation.title }}"

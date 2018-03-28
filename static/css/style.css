@@ -1281,11 +1281,6 @@ button.close:focus {
     list-style: none;
 }
 
-.colList li {
-    display: none;
-    list-style: none;
-}
-
 .listShow {
     display: block;
     list-style: none;
@@ -1315,11 +1310,7 @@ button.close:focus {
 .list-btn2 {
     padding-left: 30px;
     padding-top: 10px;
-    /*padding-bottom: 5px;*/
     font-size: 20px;
-    float: left;
-    position: relative;
-    z-index: 999;
     cursor: pointer;
 }
 
@@ -1335,7 +1326,14 @@ button.close:focus {
     cursor: pointer;
 }
 
-#colLess {
+.CollapseColloc.expanded .colList li.second-row,
+.CollapseColloc #colMore,
+.CollapseColloc.expanded #colLess {
+    display: block;
+}
+.CollapseColloc .colList li.second-row,
+.CollapseColloc #colLess,
+.CollapseColloc.expanded #colMore {
     display: none;
 }
 

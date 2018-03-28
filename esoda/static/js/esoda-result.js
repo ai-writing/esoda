@@ -31,22 +31,16 @@ $(function () {
     });
   }
 
-  var colNum = ($(".colList").width() > 600) ? 4 : 3;
-  $('.colList li:lt(' + colNum + ')').show();
+  var colNum = ($(".colList").width() > 590) ? 4 : 3;
+  $('.colList li').removeClass('second-row');
+  $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
   $(window).resize(function () {
-    colNum = ($(".colList").width() > 600) ? 4 : 3;
-    $('.colList li:lt(' + colNum + ')').show();
-    $('.colList li').not(':lt(' + colNum + ')').hide();
+    colNum = ($(".colList").width() > 590) ? 4 : 3;
+    $('.colList li').removeClass('second-row');
+    $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
   });
-  $('#colMore').click(function () {
-    $('.colList li').show();
-    $('#colMore').hide();
-    $('#colLess').show();
-  });
-  $('#colLess').click(function () {
-    $('.colList li').not(':lt(' + colNum + ')').hide();
-    $('#colLess').hide();
-    $('#colMore').show();
+  $('.list-btn2').click(function () {
+    $('.result-main .CollapseColloc').toggleClass('expanded');
   });
 
   $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
@@ -88,6 +82,11 @@ $(function () {
 
   $('.colloc-sub-btn').click(function (e) {
     e.preventDefault();
+    // Prevent click event propagation
+    // e.cancelBubble = true;  // IE6-8
+    // if (e.stopPropagation) {    // standard
+    //     e.stopPropagation();
+    // }
     if ($(this).attr('aria-expanded') == 'true') {
       return;
     }
