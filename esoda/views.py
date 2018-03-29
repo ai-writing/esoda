@@ -173,12 +173,13 @@ def syn_usageList_view(request):
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
 
     t_list, star = star2collocation(t, dt)
-    t_str = ' '.join(t)
+    # t_str = ' '.join(t)
     info = {
         't_list': t_list,
         'count': ttcnt,
         'type': ' '.join(t_list),
-        'syn_dict': {}
+        'syn_dict': {},
+        't_dt': (t, dt)
     }
 
     syn_usage_dict = {}
@@ -188,9 +189,9 @@ def syn_usageList_view(request):
 
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
-        t_str = t_str.strip('*')
+        # t_str = t_str.strip('*')
 
-    info['t_str'] = t_str
+    # info['t_str'] = t_str
     info['syn_usage_dict'] = syn_usage_dict
     return render(request, 'esoda/collocation_result.html', info)
 
@@ -322,7 +323,7 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-            'title' : convert_type2title(pat % (displayed_lemma(ref[i], qt[i]), ALL_DEPS[j % 4], displayed_lemma(ref[i+1], qt[i+1]))),
+            't_dt' : (list(qt), str(j % 4 + 1)), # convert_type2title(pat % (displayed_lemma(ref[i], qt[i]), ALL_DEPS[j % 4], displayed_lemma(ref[i+1], qt[i+1]))),
             'count' : cnt
             # 'usageList': [],
         })
@@ -331,7 +332,7 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
 def collocation_list(t, ref, dbs, cids):
     # return collocation_list, default_collocation index
     cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
-    head = [{'count': cnt, 'title': u'全部结果', 'type': ' '.join(t), 'label':  'Colloc0_0'}] # all results
+    head = [{'count': cnt, 't_dt': (t, '0'), 'type': ' '.join(t), 'label':  'Colloc0_0'}] # all results
     clist = []
     if len(t) >= 3:
         return head, 1
