@@ -4,6 +4,7 @@ import re
 import string
 import logging
 import difflib
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -157,8 +158,10 @@ def papers_source_str(pids):
 
 def sort_syn_usageDict(syn_list, usage_list):
     for syn in syn_list:
-        syn['count'] += 200 # synonymous weight
-    weighted_list = sorted(syn_list + usage_list, key=lambda x:x['count'], reverse = True)
+        syn['weight'] = syn['weight'] + math.log(syn['count'])
+    for usa in usage_list:
+        usa['weight'] = math.log(usa['count'])
+    weighted_list = sorted(syn_list + usage_list, key=lambda x:x['weight'], reverse = True)
     return weighted_list
 
 
