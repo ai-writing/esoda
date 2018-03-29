@@ -1471,7 +1471,7 @@ button.close:focus {
 }
 
 .panel-subheading {
-    padding: 6px 20px 6px 15px;
+    padding: 6px 20px 2px 15px;
     text-align: justify;
     margin: 0 0px;
     background: #F4F7FA;
@@ -1521,10 +1521,7 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 0px;
-    padding-bottom: 5px;
+    padding: 0px 10px 0px 10px;
     font-size: 12px;
 }
 
@@ -1778,7 +1775,7 @@ button.close:focus {
 .result-example {
     /*box-shadow: 0 0 10px 0 rgba(0,0,0,0.05) inset;*/
     background-color: #fff;
-    padding: 5px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     margin: 0px;
     margin-top: 0px !important;
     text-align: justify;
@@ -1800,9 +1797,9 @@ button.close:focus {
     margin-left: 32px;
     margin-right: 32px; 
     margin-bottom: 0px;
-    border-bottom: 1px solid #D3D3D3;
-    padding-bottom: 4px;
-    padding-top: 10px;
+    border-top: 1px solid #D3D3D3;
+    padding-bottom: 0px;
+    padding-top: 15px;
 }
 
 .example-hint {

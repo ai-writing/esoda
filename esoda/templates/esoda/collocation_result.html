@@ -42,9 +42,9 @@
         <ul class="list-group">
           {% if value %}
             <div class="panel-subheading click">
-              <span><div class="panel-key">{{ key }}</div></span>
-              <div class="list-btn more"><i class="fa fas fa-chevron-down"></i></div>
-              <div class="list-btn less"><i class="fa fas fa-chevron-up"></i></div>
+              <span class="panel-key">{{ key }}</span>
+              <span class="list-btn more"><i class="fa fas fa-angle-down"></i></span>
+              <span class="list-btn less"><i class="fa fas fa-angle-up"></i></span>
             </div>
             {% for v in value %}
               {% if forloop.counter < 6 %}
