@@ -29,9 +29,11 @@
 
 <div class="collocation-panel">
 <div class="panel-category-heading">
-  <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}
-   {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</a></p>
-  搭配替换<span class="panel-icon glyphicon glyphicon-transfer"></span><span class="panel-heading-title">仅同义</span>
+  <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}</a><span class="total-cnt">
+   {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span></p>
+   <span class="panel-icon glyphicon glyphicon-transfer"></span>
+   <!-- <i class="fa fas fa-exchange-alt"></i> -->
+   <span class="colloc-heading">搭配替换</span><span class="synFilter">仅同义</span>
 </div>
 <div class="colloc-result">
   {% for k in t_list %}
@@ -41,8 +43,8 @@
           {% if value %}
             <div class="panel-subheading click">
               <span><div class="panel-key">{{ key }}</div></span>
-              <div class="list-btn more"><i class="fa fas fa-angle-down"></i></div>
-              <div class="list-btn less"><i class="fa fas fa-angle-up"></i></div>
+              <div class="list-btn more"><i class="fa fas fa-chevron-down"></i></div>
+              <div class="list-btn less"><i class="fa fas fa-chevron-up"></i></div>
             </div>
             {% for v in value %}
               {% if forloop.counter < 6 %}
@@ -69,6 +71,7 @@
     </div>
   </div>
 </div>
+
 </div>
 
 <script type="text/javascript">
@@ -91,6 +94,11 @@
   //   $(this).toggleClass('showLess');
   //   $(this).toggleClass('loadMore');
   // });
+
+  $('.synFilter').click(function() {
+    // console.log("syn");
+    // $('.list-group').toggleClass('hidden');
+  });
 
   var str = document.getElementsByClassName('list-group')[0].innerText;
   if(str == "") {

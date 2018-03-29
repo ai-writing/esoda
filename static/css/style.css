@@ -67,6 +67,9 @@ a {
     .result-main {
         padding-left: 90px;
     }
+    .panel-category-heading {
+        padding: 10px 20px;
+    }
 }
 
 @media (max-width: 1200px) and (min-width: 992px) {
@@ -109,6 +112,10 @@ a {
         /*margin-left: 65px;*/
         width: 180px;
     }
+
+    .panel-category-heading {
+        padding: 10px 15px;
+    }
 }
 
 @media (max-width: 992px) and (min-width: 767px) {
@@ -142,6 +149,10 @@ a {
     #SidebarAffix.affix {
         /*margin-left: 65px;*/
         width: 165px;
+    }
+
+    .panel-category-heading {
+        padding: 10px 10px;
     }
 }
 
@@ -1419,8 +1430,8 @@ button.close:focus {
 
 .panel-category-heading {
     /*background-image: linear-gradient(90deg, #42A5F5 2%, #3082DE 100%);*/
-    background: #42A5F5;
-    padding: 10px 13px;
+    /*background: #42A5F5;*/
+    background: #63B7E6;
     text-align: justify;
     font-family: PingFangSC-Semibold;
     font-size: 16px;
@@ -1432,13 +1443,30 @@ button.close:focus {
     /*font-family: Helvetica-Bold;*/
     font-size: 16px;
     color: #FFFFFF !important;
+    font-family: Beirut;
+}
+
+.colloc-heading {
+    font-family: PingFangSC-Medium;
+    font-size: 16px;
+    color: #FFFFFF;
+    margin-left: 7px;
+}
+
+.total-cnt {
+    margin-top: 3px;
+    float: right;
+    font-family: PingFangSC-Regular;
+    font-size: 10px;
+    color: #FFFFFF;
 }
 
 .panel-subheading {
-    background: #ECF6FE;
     padding: 6px 20px 6px 15px;
     text-align: justify;
     margin: 0 0px;
+    background: #F4F7FA;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05);
 }
 
 .panel-key {
@@ -1447,21 +1475,24 @@ button.close:focus {
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
-    width: 90%;
+    width: 80%;
 }
 
-.panel-heading-title {
-    background-color: #FFFFFF;
-    color: #42A5F5;
+.synFilter {
+    font-family: PingFangSC-Semibold;
+    font-size: 11px;
+    color: #FFFFFF;
+    /*color: #42A5F5;*/
+    border: 1px solid #FFFFFF;
     border-radius: 4px;
-    font-size: 12px;
     padding-left: 3px;
     padding-right: 3px;
-    margin-left: 8px;
+    margin-left: 7px;
+    margin-bottom: 3px;
 }
 
 .panel-icon {
-    margin-left: 8px;
+    margin-left: 0px;
     vertical-align: middle;
 }
 
@@ -1688,6 +1719,7 @@ button.close:focus {
 
 .result-warning a {
     color: #63B7E6 !important;
+    margin-right: 12px;
 }
 
 .result-table-cell {
