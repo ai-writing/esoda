@@ -53,28 +53,28 @@
             </div>
 
             <div class="CollapseColloc row {% if not r.collocationList %}hidden{% endif %}" role="tabpanel" aria-labelledby="HeadingColloc">
-                <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
+              <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
                     role="tablist">
-                  {% for collocation in r.collocationList.cL %}
-                    <li class="second-row" role="presentation">
-                      {% if forloop.counter == r.collocationList.index %}
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id="first"
+                {% for collocation in r.collocationList.cL %}
+                  <li class="second-row" role="presentation">
+                    {% if forloop.counter == r.collocationList.index %}
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id="first"
                            data-toggle="tab" data="{{ collocation.title }}"
                            type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      {% endif %}
-                      {% if forloop.counter != r.collocationList.index %}
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
+                    {% endif %}
+                    {% if forloop.counter != r.collocationList.index %}
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
                            data-toggle="tab" data="{{ collocation.title }}"
                            type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      {% endif %}
-                    </li>
-                  {% endfor %}
-                </ul>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2">
-                  <div id="colMore"><i class="fa fas fa-chevron-down"></i></div>
-                  <div id="colLess"><i class="fa fas fa-chevron-up"></i></div>
-                </div>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2">
+                <div id="colMore"><i class="fa fas fa-angle-down"></i></div>
+                <div id="colLess"><i class="fa fas fa-angle-up"></i></div>
               </div>
+            </div>
 
             <div id="Loading" class="result-table-cell center-align">
               <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
