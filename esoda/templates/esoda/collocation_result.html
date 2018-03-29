@@ -1,4 +1,5 @@
-<!-- <div class="colloc-result">
+{% comment %}
+<div class="colloc-result">
   {% for key, value in syn_usage_dict.items %}
     <div {% if usageList|length == 1 %} class="hide-query" {% endif %}>
       <p><a href="#" class="colloc-usage" ref="{{ value.ref }}" lemma="{{ value.lemma }}">{{ value.content }}
@@ -23,7 +24,8 @@
       {% endif %}
     </ul>
   {% endfor %}
-</div> -->
+</div>
+{% endcomment %}
 
 <div class="panel-category-heading">
   <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}
@@ -36,10 +38,10 @@
       {% if k == key %}
         <ul class="list-group">
           {% if value %}
-            <div class="panel-subheading">
+            <div class="panel-subheading click">
               <span><div class="panel-key">{{ key }}</div></span>
-              <div class="list-btn loadMore">+</div>
-              <div class="list-btn showLess">-</div>
+              <div class="list-btn more"><i class="fa fas fa-angle-down"></i></div>
+              <div class="list-btn less"><i class="fa fas fa-angle-up"></i></div>
             </div>
             {% for v in value %}
               {% if forloop.counter < 6 %}
@@ -68,16 +70,26 @@
 </div>
 
 <script type="text/javascript">
-  $('.loadMore').click(function () {
+  $('.click').click(function () {
     $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-    $(this).hide();
-    $(this).next('.showLess').show();
+    if ($(this).children('.less').css('display') == 'none') {
+      $(this).children('.more').hide();
+      $(this).children('.less').show();
+    } else {
+      $(this).children('.less').hide();
+      $(this).children('.more').show();
+    }
   });
-  $('.showLess').click(function () {
-    $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-    $(this).hide();
-    $(this).prevAll('.loadMore').show();
-  });
+
+  // $('.showLess').click(function () {
+  //   console.log("see");
+  //   $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+  //   $(this).children('.less').hide();
+  //   $(this).children('.more').show();
+  //   $(this).toggleClass('showLess');
+  //   $(this).toggleClass('loadMore');
+  // });
+
   var str = document.getElementsByClassName('list-group')[0].innerText;
   if(str == "") {
     $(".collocation-hint").show();

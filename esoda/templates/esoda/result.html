@@ -52,12 +52,11 @@
               {% endif %}
             </div>
 
-            <div class="{% if not r.collocationList %}hidden{% endif %}">
-              <div class="CollapseColloc row" role="tabpanel" aria-labelledby="HeadingColloc">
-                <ul class="colList nav nav-tabs nav-tabs-collocation  col-lg-11 col-md-11 col-sm-11 col-xs-11"
+            <div class="CollapseColloc row {% if not r.collocationList %}hidden{% endif %}" role="tabpanel" aria-labelledby="HeadingColloc">
+                <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
                     role="tablist">
                   {% for collocation in r.collocationList.cL %}
-                    <li role="presentation">
+                    <li class="second-row" role="presentation">
                       {% if forloop.counter == r.collocationList.index %}
                         <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id="first"
                            data-toggle="tab" data="{{ collocation.title }}"
@@ -72,11 +71,10 @@
                   {% endfor %}
                 </ul>
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2">
-                  <div id="colMore">+</div>
-                  <div id="colLess">-</div>
+                  <div id="colMore"><i class="fa fas fa-angle-down"></i></div>
+                  <div id="colLess"><i class="fa fas fa-angle-up"></i></div>
                 </div>
               </div>
-            </div> <!-- panel-group -->
 
             <div id="Loading" class="result-table-cell center-align">
               <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
@@ -130,7 +128,7 @@
             <div id="ExampleEnd" class="result-table-cell center-align">
               <span>您已浏览完全部结果</span>
             </div>
-          </div>
+          </div> <!-- panel-group -->
         </div>
       </div>
     </div>
@@ -138,167 +136,12 @@
 {% endblock %}
 
 {% block script %}
-  <script src="{% static 'js/esoda-result.js' %}?v={% now 'Ymd' %}"></script>
   <script src="{% static 'js/jquery.mousewheel.min.js' %}"></script>
   <script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
+  <script src="{% static 'js/esoda-result.js' %}?v={% now 'Ymd' %}"></script>
   <script>
-    $(function () {
-      $("#SidebarAffix").height($(window).height());
-      // $("#SidebarAffix").height($(".result-page").height())
-      var curSelectedUsage;
-      var REF = '{{ ref }}';
-
-      function searchAndFillSentences(params) {
-        loadCount = 1;
-        loading = 1;
-        loaded = 0;
-        $.get("{% url 'sentences' %}", params, function (data) {
-          $('#Loading').hide();
-          $('#ManualLoad').hide();
-          $('#SentenceResult').html(data);
-          // $('#SentenceResult').css('visibility', 'visible');
-          $('#SentenceResult').animate({opacity: 1});
-          var exampleNum = Number($("#ExampleNumber").text());
-          if (exampleNum <= 10 && exampleNum > 0) {
-            $('#ExampleEnd').show();
-            loaded = 1;
-          }
-          loading = 0;
-        });
-      }
-
-      $('.loadMore').click(function () {
-        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-        $(this).hide();
-        $(this).next('.showLess').show();
-      });
-      $('.showLess').click(function () {
-        $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-        $(this).hide();
-        $(this).prevAll('.loadMore').show();
-      });
-
-      colNum = ($(".colList").width() > 600) ? 4 : 3;
-      $('.colList li:lt(' + colNum + ')').show();
-      $(window).resize(function () {
-        colNum = ($(".colList").width() > 600) ? 4 : 3;
-        $('.colList li:lt(' + colNum + ')').show();
-        $('.colList li').not(':lt(' + colNum + ')').hide();
-      });
-      $('#colMore').click(function () {
-        $('.colList li').show();
-        $('#colMore').hide();
-        $('#colLess').show();
-      });
-      $('#colLess').click(function () {
-        $('.colList li').not(':lt(' + colNum + ')').hide();
-        $('#colLess').hide();
-        $('#colMore').show();
-      });
-
-      // $('.not-limited').click(function (e) {
-      //   e.preventDefault();
-      //   if ($(this).attr('aria-expanded') == 'true') {
-      //     return;
-      //   }
-      //   $("#ExampleEnd").hide();
-      //   $("#ManualLoad").hide();
-      //   $('#SentenceResult').empty();
-      //   $('#Loading').show();
-
-      //   var query = $(this).attr('data');
-
-      //   searchAndFillSentences({t: query, ref: REF, dt: 0});
-      // });
-
-      // $('.not-limited').click();
-
-      $('.colloc-sub-btn').click(function (e) {
-        e.preventDefault();
-        if ($(this).attr('aria-expanded') == 'true') {
-          return;
-        }
-        var id = $(this).attr('href');
-        var type = $(this).attr('type');
-        var type0 = type.replace(/ \(.*\) /g, ' ');
-        var i, dt;
-        var ref = [];
-        for (i = 0; i < type.split(' ').length; i++) {
-          if (type.split(' ')[i] != type0.split(' ')[i]) break;
-        }
-        for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
-          if (type0.split(' ')[j] == '*') ref[j] = '*';
-          else {
-            ref[j] = REF.split(' ')[k];
-            k = k + 1;
-          }
-        }
-        if (i == 0) i = 1;
-        dt = id.replace('#', '').split('_')[1];
-
-        // $('#SentenceResult').css('visibility', 'hidden');
-
-        // $('#SentenceResult').animate({ opacity: 0 }, function () {
-        //   $('#Loading').show();
-        // });
-        // $('#ManualLoad').hide();
-        // $("#ExampleEnd").hide();
-
-        $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
-          $(id).html(data);
-          $(id + ' .colloc-result').mCustomScrollbar({
-            theme: 'dark',
-            scrollInertia: 0,
-            mouseWheel: {preventDefault: true},
-            autoHideScrollbar: true
-          });
-          $(id + ' .colloc-usage:eq(0)').click();
-        });
-      });
-
-      $('#first').click();
-
-      $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
-        e.preventDefault();
-        if ($(this).attr('state') == 'selected') return;
-        $("#ExampleEnd").hide();
-        $('#ManualLoad').hide();
-        // $('#SentenceResult').css('visibility', 'hidden');
-        $('#SentenceResult').animate({opacity: 0}, function () {
-          if (loading) $('#Loading').show();
-        });
-
-        $('.colloc-usage').removeAttr('state');
-        $(this).attr('state', 'selected');
-
-        // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-        var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
-        var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
-        var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
-        searchAndFillSentences({t: $(this).attr('lemma'), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
-      });
-
-      $('#FeedbackForm').submit(function (e) {
-        e.preventDefault();
-        var textarea = $(this).find('[name="comment"]');
-        var msg = textarea.val().trim();
-        if (msg) {
-          $.post($(this).attr('action'), $(this).serialize(), function (r) {
-            toastr.remove();
-            toastr.success('反馈成功');
-            textarea.val('');
-            $('#FeedbackModal').modal('hide');
-          });
-        } else {
-          toastr.remove();
-          toastr.warning('请输入反馈内容');
-        }
-        textarea.focus();
-      });
-
-      // if ($('#Loading').is(':hidden')) {
-      //     searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
-      // }
-    });
+    REF = '{{ ref }}';
+    SENTENCES_URL = "{% url 'sentences' %}";
+    COLLOCATION_URL = "{% url 'collocation' %}";
   </script>
 {% endblock %}

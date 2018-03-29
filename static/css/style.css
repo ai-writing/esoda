@@ -1281,11 +1281,6 @@ button.close:focus {
     list-style: none;
 }
 
-.colList li {
-    display: none;
-    list-style: none;
-}
-
 .listShow {
     display: block;
     list-style: none;
@@ -1315,11 +1310,7 @@ button.close:focus {
 .list-btn2 {
     padding-left: 30px;
     padding-top: 10px;
-    /*padding-bottom: 5px;*/
     font-size: 20px;
-    float: left;
-    position: relative;
-    z-index: 999;
     cursor: pointer;
 }
 
@@ -1327,11 +1318,22 @@ button.close:focus {
     color: #63B7E6;
 }
 
-.showLess {
+.less {
     display: none;
 }
 
-#colLess {
+.click {
+    cursor: pointer;
+}
+
+.CollapseColloc.expanded .colList li.second-row,
+.CollapseColloc #colMore,
+.CollapseColloc.expanded #colLess {
+    display: block;
+}
+.CollapseColloc .colList li.second-row,
+.CollapseColloc #colLess,
+.CollapseColloc.expanded #colMore {
     display: none;
 }
 
@@ -1416,7 +1418,6 @@ button.close:focus {
 }
 
 .panel-category-heading {
-    /*background: rgba(66, 165, 245, 0.40);*/
     /*background-image: linear-gradient(90deg, #42A5F5 2%, #3082DE 100%);*/
     background: #42A5F5;
     padding: 10px 13px;
@@ -1434,11 +1435,10 @@ button.close:focus {
 }
 
 .panel-subheading {
-    background: rgba(66, 165, 245, 0.10);
+    background: #ECF6FE;
     padding: 6px 20px 6px 15px;
     text-align: justify;
     margin: 0 0px;
-    margin-top: 2px;
 }
 
 .panel-key {
@@ -1682,8 +1682,8 @@ button.close:focus {
     /*font-weight: bold;*/
     color: #ACACAC;
     font-size: 12px;
-    padding-bottom: 13px;
-    padding-right: 25px;
+    padding-bottom: 7px;
+    padding-right: 5px;
 }
 
 .result-warning a {
@@ -1735,13 +1735,20 @@ button.close:focus {
 }*/
 
 .result-example {
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05) inset;
+    /*box-shadow: 0 0 10px 0 rgba(0,0,0,0.05) inset;*/
     background-color: #fff;
     padding: 20px 0px 0px 0px;
     margin: 0px;
     margin-top: 0px !important;
     text-align: justify;
     width: 100%;
+    border-radius: 0px;
+}
+.result-example > .col-xs-11 {
+    padding-left: 5px;
+}
+.result-example > .col-xs-1 {
+    padding-right: 0px;
 }
 
 .example-box {
@@ -1798,19 +1805,9 @@ button.close:focus {
     font-size: 18px;
     margin-left: -45px;
 }
-
-.result-example > .col-xs-11 {
-    padding-left: 5px;
-}
-
-.result-example > .col-xs-1 {
-    padding-right: 0px;
-}
-
 .panel-heart > a {
     color: #63B7E6;
 }
-
 .panel-heart > span {
     color: #9b9b9b;
     font-size: 14px;
@@ -2088,6 +2085,7 @@ button.close:focus {
 .result-search {
     font-size: 20px;
     padding-top: 8px;
+    padding-bottom: 0px;
     width: 542px;
 }
 
