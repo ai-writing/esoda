@@ -33,7 +33,8 @@
    {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span></p>
    <span class="panel-icon glyphicon glyphicon-transfer"></span>
    <!-- <i class="fa fas fa-exchange-alt"></i> -->
-   <span class="colloc-heading">搭配替换</span><span class="synFilter">仅同义</span>
+   <span class="colloc-heading">搭配替换</span>
+   <span class="synFilter">仅同义</span>
 </div>
 <div class="colloc-result">
   {% for k in t_list %}
@@ -48,13 +49,25 @@
             </div>
             {% for v in value %}
               {% if forloop.counter < 6 %}
-                <li class="list-group-item"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-                  <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                  {% else %}({{ v.count }}){% endif %}</span></a></li>
+                {% if v.type == 1 %}
+                  <li class="list-group-item"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                    <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                    {% else %}({{ v.count }}){% endif %}</span></a></li>
+                {% else %}
+                  <li class="list-group-item not-syn"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                    <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                    {% else %}({{ v.count }}){% endif %}</span></a></li>
+                {% endif %}
               {% elif forloop.counter > 5 %}
-                <li class="list-group-item listHide listExpand"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-                  <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                  {% else %}({{ v.count }}){% endif %}</span></a></li>
+                {% if v.type == 1 %}
+                  <li class="list-group-item listHide listExpand"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                    <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                    {% else %}({{ v.count }}){% endif %}</span></a></li>
+                {% else %}
+                  <li class="list-group-item listHide listExpand not-syn"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                    <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                    {% else %}({{ v.count }}){% endif %}</span></a></li>
+                {% endif %}
               {% endif %}
             {% endfor %}
           {% endif %}
@@ -97,7 +110,8 @@
 
   $('.synFilter').click(function() {
     // console.log("syn");
-    // $('.list-group').toggleClass('hidden');
+    $('.not-syn').toggleClass('hidden');
+    $('.synFilter').toggleClass('synFilted');
   });
 
   var str = document.getElementsByClassName('list-group')[0].innerText;

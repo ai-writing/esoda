@@ -1498,6 +1498,18 @@ button.close:focus {
     padding-right: 3px;
     margin-left: 11px;
     margin-bottom: 3px;
+    cursor: pointer;
+}
+
+/*.synFilter:focus, */
+.synFilter:hover {
+    color: #42A5F5;
+    background-color: #fff;
+}
+
+.synFilted {
+    color: #42A5F5;
+    background-color: #fff;
 }
 
 .panel-icon {
