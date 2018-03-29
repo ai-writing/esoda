@@ -140,15 +140,15 @@ def get_synonyms_dict(t, ref, i, dt, dbs, cids):
     for tt in t_new:
         syn_dict[tt] = []
         for syn in synonyms(tt)[:6]:
-            lemma = ' '.join(t_new).replace(tt, syn)
-            reff = ' '.join(ref_new).replace(tt, syn)
+            lemma = ' '.join(t_new).replace(tt, syn[0])
+            reff = ' '.join(ref_new).replace(tt, syn[0])
             if dt == '0' or len(t_new) == 1:
                 cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
             else:
                 d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
                 cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
             if cnt:
-                syn_dict[tt].append({'ref': reff, 'lemma': lemma, 'content': syn, 'count': cnt, 'type': 1}) # type 1 for synonyms_word
+                syn_dict[tt].append({'ref': reff, 'lemma': lemma, 'content': syn[0], 'count': cnt, 'type': 1, 'weight': syn[1]}) # type 1 for synonyms_word
     return syn_dict
 
 
@@ -186,7 +186,6 @@ def syn_usageList_view(request):
     syn_usage_dict = {}
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
-        info['syn_dict'][tt] = sorted(syn_dict[tt], key=lambda x:x['count'], reverse=True)
 
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
