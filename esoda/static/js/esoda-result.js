@@ -22,6 +22,7 @@ $(function () {
       $('#SentenceResult').html(data);
       $('#SentenceResult').fadeIn("fast");
       $('#SidebarAffix').fadeIn("fast");
+      $(".CollapseColloc").fadeIn("fast");
       var exampleNum = Number($("#ExampleNumber").text());
       if (exampleNum <= 10 && exampleNum > 0) {
         $('#ExampleEnd').show();
@@ -132,31 +133,6 @@ $(function () {
   //   $(".uncover").css('z-index','0'); 
   // });
 
-  // $( window ).scroll( function () {
-  //   if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
-  //     if (loading == 1 || loaded == 1 ) return;
-  //     if ($('#Loading').is(':visible')) return;
-
-  //     var total = $("#ExampleNumber").html();
-  //     loading = 1;
-  //     $("#Loading").show();
-  //     setTimeout(function() {
-  //       $("#Loading").hide();
-  //       var i;
-  //       for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
-  //         $("#Example" + i).show();
-  //       }
-  //       loadCount++;
-  //       loading = 0;
-  //       if (i > total || loadCount >= 5) {
-  //         loaded = 1;
-  //         $("#ExampleEnd").show();
-  //         return;
-  //       }
-  //     }, 1000);
-  //   }
-  // });
-
   $(window).scroll(function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
       if (loading == 1 || loaded == 1) return;
@@ -170,9 +146,12 @@ $(function () {
     var total = $("#ExampleNumber").html();
     loading = 1;
     $("#ManualLoad").hide();
+    $(".result-table-cell").hide();
     $("#Loading2").show();
     setTimeout(function () {
       $("#Loading2").hide();
+      $("#Loadbox").show();
+      console.log('aa');
       var i;
       for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
         $("#Example" + i).show();

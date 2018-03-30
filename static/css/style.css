@@ -504,7 +504,8 @@ a {
 .navbar-default .navbar-nav > li > a:focus {
     outline: none;
     color: #63B7E6 !important;
-    background-color: transparent !important;
+    background-color: #F8F8F8 !important;
+    height: 45px;
 }
 
 .login, .dropdown, .dropup {
@@ -1229,19 +1230,16 @@ button.close:focus {
     text-align: center;
 }
 
-#Loading {
+#Loading, #Loading2 {
     display: none;
-}
-
-#Loading2 {
-    display: none;
+    height: 40px;
 }
 
 #ManualLoad {
     display: none;
     color: #9b9b9b;
     cursor: pointer;
-    padding-bottom: 20px;
+    height: 40px;
 }
 
 .result-page {
@@ -1315,6 +1313,7 @@ button.close:focus {
     background-color: #F1F7FD;
     padding-left: 28px;
     box-shadow: 0 -3px 5px 0 rgba(15,42,66,0.05);
+    display: none;
 }
 
 .CollapseColloc {
