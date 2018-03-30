@@ -27,10 +27,13 @@
 </div>
 {% endcomment %}
 
+<div class="collocation-panel">
 <div class="panel-category-heading">
-  <p><a href="#" class="colloc-usage" ref="{{ t_str }}" lemma="{{ t_str }}" >{{ type }}
-   {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</a></p>
-  搭配替换<span class="panel-icon glyphicon glyphicon-transfer"></span><span class="panel-heading-title">仅同义</span>
+  <p><a href="#" class="colloc-usage" ref="{{ t_dt.0|cut:"*" }}" lemma="{{ t_dt.0|cut:"*" }}" >{{ type }}</a><span class="total-cnt">
+   {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span></p>
+   <span class="panel-icon glyphicon glyphicon-transfer"></span>
+   <span class="colloc-heading">搭配替换</span>
+   <span class="synFilter">仅同义</span>
 </div>
 <div class="colloc-result">
   {% for k in t_list %}
@@ -39,17 +42,17 @@
         <ul class="list-group">
           {% if value %}
             <div class="panel-subheading click">
-              <span><div class="panel-key">{{ key }}</div></span>
-              <div class="list-btn more"><i class="fa fas fa-angle-down"></i></div>
-              <div class="list-btn less"><i class="fa fas fa-angle-up"></i></div>
+              <span class="panel-key">{{ key }}</span>
+              <span class="list-btn more"><i class="fa fas fa-angle-down"></i></span>
+              <span class="list-btn less"><i class="fa fas fa-angle-up"></i></span>
             </div>
             {% for v in value %}
               {% if forloop.counter < 6 %}
-                <li class="list-group-item"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                <li class="list-group-item {% if v.type != 1 %}not-syn{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                   <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
                   {% else %}({{ v.count }}){% endif %}</span></a></li>
               {% elif forloop.counter > 5 %}
-                <li class="list-group-item listHide listExpand"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                <li class="list-group-item listHide listExpand {% if v.type != 1 %}not-syn{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                   <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
                   {% else %}({{ v.count }}){% endif %}</span></a></li>
               {% endif %}
@@ -67,6 +70,8 @@
       <p>扩大搜索范围</p>
     </div>
   </div>
+</div>
+
 </div>
 
 <script type="text/javascript">
@@ -90,8 +95,14 @@
   //   $(this).toggleClass('loadMore');
   // });
 
+  $('.synFilter').click(function() {
+    // console.log("syn");
+    $('.not-syn').toggleClass('hidden');
+    $('.synFilter').toggleClass('synFiltered');
+  });
+
   var str = document.getElementsByClassName('list-group')[0].innerText;
-  if(str == "") {
+  if(str.trim().length === 0) {
     $(".collocation-hint").show();
   } else {
     $(".collocation-hint").hide();

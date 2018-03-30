@@ -4,6 +4,7 @@ import re
 import string
 import logging
 import difflib
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -47,13 +48,21 @@ def res_refine(res):
     res['sentence'] = r
     return res
 
-
-def get_defaulteColl(qlen, clist):
-    # Choose the default collocation
-    if qlen == 2 and len(clist) > 1 and clist[1]['count'] > 0.3 * clist[0]['count']:
-        return 2
-    else:
-        return 1
+def get_defaulteColl(head, dep, clist):
+    # TODO: Combine dep and count and poss
+    flag = 1
+    sec_head = []
+    if dep != '0':
+        flag = 2
+        for cl in clist:
+            if cl['t_dt'][1] == dep:
+                sec_head = [cl]
+                clist.remove(cl)
+    newlist = sorted(clist, key=lambda k: k['count'], reverse = True)
+    newlist = head + sec_head + newlist
+    if flag > len(newlist):
+        flag = 1
+    return newlist, flag
 
 
 def displayed_lemma(ref, lemma):
@@ -157,8 +166,10 @@ def papers_source_str(pids):
 
 def sort_syn_usageDict(syn_list, usage_list):
     for syn in syn_list:
-        syn['count'] += 200 # synonymous weight
-    weighted_list = sorted(syn_list + usage_list, key=lambda x:x['count'], reverse = True)
+        syn['weight'] = syn['weight'] + math.log(syn['count'])
+    for usa in usage_list:
+        usa['weight'] = math.log(usa['count'])
+    weighted_list = sorted(syn_list + usage_list, key=lambda x:x['weight'], reverse = True)
     return weighted_list
 
 

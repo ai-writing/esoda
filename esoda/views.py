@@ -72,7 +72,7 @@ def esoda_view(request):
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
     q = refine_query(q)
-    qt, ref = lemmatize(q)
+    qt, ref, poss, dep = lemmatize(q)
 
     r = {
         'domain': u'人机交互',
@@ -92,14 +92,8 @@ def esoda_view(request):
 
     dbs, cids = get_cids(request.user, r=r)
     r['tlen'] = len(qt)
-    cL, cL_index = collocation_list(qt, ref, dbs, cids)
+    cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
     r['collocationList'] = {'cL': cL, 'index': cL_index}
-    # r['synonymous'] = []
-    # r['hasSyn'] = False
-    # for i in xrange(len(qt)):
-    #     r['synonymous'].append({displayed_lemma(ref[i], qt[i]): synonyms(qt[i])[:10]})
-    #     if synonyms(qt[i])[:10] != []:
-    #         r['hasSyn'] = True
 
     suggestion = {
         'relatedList': [
@@ -140,14 +134,15 @@ def get_synonyms_dict(t, ref, i, dt, dbs, cids):
     for tt in t_new:
         syn_dict[tt] = []
         for syn in synonyms(tt)[:6]:
-            lemma = ' '.join(t_new).replace(tt, syn)
-            reff = ' '.join(ref_new).replace(tt, syn)
+            lemma = ' '.join(t_new).replace(tt, syn[0])
+            reff = ' '.join(ref_new).replace(tt, syn[0])
             if dt == '0' or len(t_new) == 1:
                 cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
             else:
                 d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
-                cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']        
-            syn_dict[tt].append({'ref': reff, 'lemma': lemma, 'content': syn, 'count': cnt})
+                cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+            if cnt:
+                syn_dict[tt].append({'ref': reff, 'lemma': lemma, 'content': syn[0], 'count': cnt, 'type': 1, 'weight': syn[1]}) # type 1 for synonyms_word
     return syn_dict
 
 
@@ -178,17 +173,17 @@ def syn_usageList_view(request):
         't_list': t_list,
         'count': ttcnt,
         'type': ' '.join(t_list),
-        'syn_dict': {}
+        'syn_dict': {},
+        't_dt': (' '.join(t), dt)
     }
 
     syn_usage_dict = {}
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
-        info['syn_dict'][tt] = sorted(syn_dict[tt], key=lambda x:x['count'], reverse=True)
 
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
-        t_str = t_str.strip('*')
+        t_str = t_str.strip('* ')
 
     info['t_str'] = t_str
     info['syn_usage_dict'] = syn_usage_dict
@@ -288,7 +283,8 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
                         'ref': ' '.join(nref),
                         'lemma': pat % (l1, l2), # for query
                         'content': con, # for display
-                        'count': j['doc_count']
+                        'count': j['doc_count'],
+                        'type': 2 # for usageword
                     })
             if k[0] == '*':
                 usageDict[t[i]] = ret
@@ -322,16 +318,16 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-            'title' : convert_type2title(pat % (displayed_lemma(ref[i], qt[i]), ALL_DEPS[j % 4], displayed_lemma(ref[i+1], qt[i+1]))),
+            't_dt' : (list(qt), str(j % 4 + 1)),
             'count' : cnt
             # 'usageList': [],
         })
 
 
-def collocation_list(t, ref, dbs, cids):
+def collocation_list(t, ref, poss, dep, dbs, cids):
     # return collocation_list, default_collocation index
     cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
-    head = [{'count': cnt, 'title': u'全部结果', 'type': ' '.join(t), 'label':  'Colloc0_0'}] # all results
+    head = [{'count': cnt, 't_dt': (t, '0'), 'type': ' '.join(t), 'label':  'Colloc0_0', 'title': u'全部结果'}] # all results
     clist = []
     if len(t) >= 3:
         return head, 1
@@ -342,15 +338,8 @@ def collocation_list(t, ref, dbs, cids):
         ref.append('*')
     for i in range(len(t) - 1):
         get_collocations(clist, t, ref, i, dbs, cids)
-    '''
-    for i in range(len(t)):
-        qt = list(t)
-        qt.insert(i, '*')
-        get_collocation(clist, qt, i, dbs, cids)
-    '''
-    newlist = sorted(clist, key=lambda k: k['count'], reverse = True)
-    newlist = head + newlist
-    return newlist, get_defaulteColl(len(t), newlist)
+    newlist, flag = get_defaulteColl(head, dep, clist)
+    return newlist, flag
 
 
 def sentence_query(t, ref, i, dt, dbs, cids):

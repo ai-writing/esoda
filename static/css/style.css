@@ -31,15 +31,11 @@ a {
     }
 
     .login {
-        margin-right: -100px;
-    }
-
-    .welback {
-        margin-right: -100px;
+        margin-right: 10px;
     }
 
     .full-width {
-        width: 145%;
+        width: 130%;
     }
 
     .navbar-brand {
@@ -67,11 +63,15 @@ a {
     .result-main {
         padding-left: 90px;
     }
+
+    .panel-category-heading {
+        padding: 10px 20px;
+    }
 }
 
 @media (max-width: 1200px) and (min-width: 992px) {
     .full-width {
-        width: 130%;
+        width: 135%;
     }
 
     .btn-index-search {
@@ -93,11 +93,7 @@ a {
     }
 
     .login {
-        margin-right: 0px;
-    }
-
-    .welback {
-        margin-right: 0px;
+        margin-right: 15px;
     }
 
     .result-main {
@@ -108,6 +104,10 @@ a {
     #SidebarAffix.affix {
         /*margin-left: 65px;*/
         width: 180px;
+    }
+
+    .panel-category-heading {
+        padding: 10px 15px;
     }
 }
 
@@ -134,14 +134,26 @@ a {
         width: 43% !important;
     }
 
+    .login {
+        margin-right: 15px;
+    }
+
     .result-main {
         /*padding-right: 65px;*/
-        padding-left: 0px;
+        padding-left: 15px;
     }
     
     #SidebarAffix.affix {
         /*margin-left: 65px;*/
-        width: 165px;
+        width: 180px;
+    }
+
+    .panel-category-heading {
+        padding: 10px 10px;
+    }
+
+    #ResultSearchBar {
+        margin-left: 15px;
     }
 }
 
@@ -183,12 +195,16 @@ a {
         width: 93% !important;
     }
 
+    .login {
+        margin-right: 10px;
+    }
+
     .result-main {
         /*padding-left: 15px;*/
     }
 
     #navbar.navbar-collapse {
-        width: 110%;
+        /*width: 110%;*/
     }
 
     .warning-page-circle {
@@ -236,7 +252,7 @@ a {
     font-size: 18px;
     padding-top: 10px;
     z-index: 1000;
-    background: #E6EDED;
+    background: #EBEBEB;
     border-top: 1px solid #CACACA;
 }
 
@@ -328,10 +344,6 @@ a {
     letter-spacing: 0;
 }
 
-.user-image {
-    width: 25px;
-}
-
 .navbar-default {
     background: #fff;
     border-color: #fff;
@@ -354,11 +366,13 @@ a {
     padding-bottom: 12.5px !important;
     padding-left: 30px !important;
     padding-right: 0px !important;
+    width: 25px;
 }
 
 #ResultSearchBar > #SearchBox {
     margin-left: -30px;
     padding-left: 40px;
+    padding-bottom: 8px;
     background-color: transparent;
     height: 44px;
 }
@@ -489,22 +503,20 @@ a {
 
 .navbar-default .navbar-nav > li > a:focus {
     outline: none;
+    color: #63B7E6 !important;
+    background-color: #F8F8F8 !important;
+    height: 45px;
 }
 
-.login {
+.login, .dropdown, .dropup {
     font-size: 12px;
-    margin-top: 13px;
+    margin-top: 14px;
     float: right;
-    /*color: #fff !important;*/
     /*font-family: PingFangSC-Regular;*/
 }
 
-.login .login-url {
+.login > li > a {
     color: #63B7E6 !important;
-}
-
-.login .login-url:hover {
-    text-decoration: underline;
 }
 
 .modal-login-sm {
@@ -751,8 +763,9 @@ button.close:focus {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 12px;
-    border-bottom: 2px solid #63B7E6;
+    margin-top: 15px;
+    background-color: #F8F8F8;
+    /*border-bottom: 2px solid #63B7E6;*/
 }
 
 .container-usage {
@@ -1217,19 +1230,16 @@ button.close:focus {
     text-align: center;
 }
 
-#Loading {
+#Loading, #Loading2 {
     display: none;
-}
-
-#Loading2 {
-    display: none;
+    height: 40px;
 }
 
 #ManualLoad {
     display: none;
     color: #9b9b9b;
     cursor: pointer;
-    padding-bottom: 20px;
+    height: 40px;
 }
 
 .result-page {
@@ -1243,11 +1253,7 @@ button.close:focus {
 #SidebarAffix {
     width: 214px;
     border-color: transparent;
-    /*background-color: #fff;*/
     z-index: 999;
-    max-height: 90%;
-    background: #FBFCFC;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
 
 #SidebarAffix .panel {
@@ -1270,6 +1276,12 @@ button.close:focus {
 
 #SidebarAffix .list-group-item:last-child {
     padding-bottom: 3px;
+}
+
+.collocation-panel {
+    height: 90vh;
+    background: #FBFCFC;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
 
 .hide-query {
@@ -1301,6 +1313,7 @@ button.close:focus {
     background-color: #F1F7FD;
     padding-left: 28px;
     box-shadow: 0 -3px 5px 0 rgba(15,42,66,0.05);
+    display: none;
 }
 
 .CollapseColloc {
@@ -1330,11 +1343,13 @@ button.close:focus {
 .CollapseColloc #colMore,
 .CollapseColloc.expanded #colLess {
     display: block;
+    /*margin-top: 5px;*/
 }
 .CollapseColloc .colList li.second-row,
 .CollapseColloc #colLess,
 .CollapseColloc.expanded #colMore {
     display: none;
+    /*margin-top: 5px;*/
 }
 
 .btn-navbar-search {
@@ -1419,8 +1434,8 @@ button.close:focus {
 
 .panel-category-heading {
     /*background-image: linear-gradient(90deg, #42A5F5 2%, #3082DE 100%);*/
-    background: #42A5F5;
-    padding: 10px 13px;
+    /*background: #42A5F5;*/
+    background: #63B7E6;
     text-align: justify;
     font-family: PingFangSC-Semibold;
     font-size: 16px;
@@ -1432,13 +1447,29 @@ button.close:focus {
     /*font-family: Helvetica-Bold;*/
     font-size: 16px;
     color: #FFFFFF !important;
+    font-family: Beirut;
+}
+
+.colloc-heading {
+    font-family: PingFangSC-Medium;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+.total-cnt {
+    margin-top: 3px;
+    float: right;
+    font-family: PingFangSC-Regular;
+    font-size: 10px;
+    color: #FFFFFF;
 }
 
 .panel-subheading {
-    background: #ECF6FE;
-    padding: 6px 20px 6px 15px;
+    padding: 6px 20px 2px 15px;
     text-align: justify;
     margin: 0 0px;
+    background: #F4F7FA;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05);
 }
 
 .panel-key {
@@ -1447,21 +1478,35 @@ button.close:focus {
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
-    width: 90%;
+    width: 80%;
 }
 
-.panel-heading-title {
-    background-color: #FFFFFF;
-    color: #42A5F5;
+.synFilter {
+    font-family: PingFangSC-Semibold;
+    font-size: 11px;
+    color: #FFFFFF;
+    /*color: #42A5F5;*/
+    border: 1px solid #FFFFFF;
     border-radius: 4px;
-    font-size: 12px;
     padding-left: 3px;
     padding-right: 3px;
-    margin-left: 8px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+/*.synFilter:focus, */
+.synFilter:hover {
+    color: #42A5F5;
+    background-color: #fff;
+}
+
+.synFiltered {
+    color: #42A5F5;
+    background-color: #fff;
 }
 
 .panel-icon {
-    margin-left: 8px;
+    margin-left: 0px;
     vertical-align: middle;
 }
 
@@ -1481,10 +1526,7 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding: 0px 10px 10px 10px;
     font-size: 12px;
 }
 
@@ -1615,9 +1657,15 @@ button.close:focus {
     margin-bottom: 0px;
 }
 
+.colloc-sub-btn > p {
+    font-size: 10px;
+    -webkit-transform: scale(0.8);
+    line-height: 11px;
+}
+
 .colloc-sub-btn {
     width: auto;
-    height: 40px;
+    height: 50px;
     /*margin-top: 5px;*/
     margin-right: 28px !important;
     padding-left: 0px !important;
@@ -1682,12 +1730,13 @@ button.close:focus {
     /*font-weight: bold;*/
     color: #ACACAC;
     font-size: 12px;
-    padding-bottom: 7px;
+    padding-bottom: 15px;
     padding-right: 5px;
 }
 
 .result-warning a {
     color: #63B7E6 !important;
+    margin-right: 12px;
 }
 
 .result-table-cell {
@@ -1737,7 +1786,7 @@ button.close:focus {
 .result-example {
     /*box-shadow: 0 0 10px 0 rgba(0,0,0,0.05) inset;*/
     background-color: #fff;
-    padding: 20px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     margin: 0px;
     margin-top: 0px !important;
     text-align: justify;
@@ -1751,13 +1800,17 @@ button.close:focus {
     padding-right: 0px;
 }
 
+.panel-group .panel {
+    border-radius: 0px;
+}
+
 .example-box {
     margin-left: 32px;
     margin-right: 32px; 
     margin-bottom: 0px;
-    border-top: 1px solid #D3D3D3;
-    padding-bottom: 4px;
-    padding-top: 10px;
+    border-bottom: 1px solid #D3D3D3;
+    padding-bottom: 0px;
+    padding-top: 15px;
 }
 
 .example-hint {
@@ -2094,21 +2147,6 @@ button.close:focus {
     margin-top: 50px;
     margin-bottom: 50px;
     font-size: 24px;
-}
-
-.welback {
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    margin-top: 13px;
-    float: right;
-}
-
-.indexback {
-    font-size: 12px;
-    margin-top: 13px;
-    display: flex;
-    align-items: center;
 }
 
 .glyphicon-chevron-down {

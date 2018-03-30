@@ -53,28 +53,29 @@
             </div>
 
             <div class="CollapseColloc row {% if not r.collocationList %}hidden{% endif %}" role="tabpanel" aria-labelledby="HeadingColloc">
-                <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
+              <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
                     role="tablist">
-                  {% for collocation in r.collocationList.cL %}
-                    <li class="second-row" role="presentation">
-                      {% if forloop.counter == r.collocationList.index %}
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id="first"
-                           data-toggle="tab" data="{{ collocation.title }}"
-                           type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      {% endif %}
-                      {% if forloop.counter != r.collocationList.index %}
-                        <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
-                           data-toggle="tab" data="{{ collocation.title }}"
-                           type="{{ collocation.type }}">{{ collocation.title }}</a>
-                      {% endif %}
-                    </li>
-                  {% endfor %}
-                </ul>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2">
-                  <div id="colMore"><i class="fa fas fa-angle-down"></i></div>
-                  <div id="colLess"><i class="fa fas fa-angle-up"></i></div>
-                </div>
+                {% for collocation in r.collocationList.cL %}
+                  <li class="second-row" role="presentation">
+                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
+                         {% if forloop.counter == r.collocationList.index %} id="first"{% endif %}
+                           data-toggle="tab" data="{{ collocation.t_dt.0 }}" type="{{ collocation.type }}">
+                        {% if collocation.t_dt.1 == '0' %}全部例句
+                        {% elif collocation.t_dt.1 == '1' %}主谓例句
+                        {% elif collocation.t_dt.1 == '2' %}动宾例句
+                        {% elif collocation.t_dt.1 == '3' %}修饰例句
+                        {% elif collocation.t_dt.1 == '4' %}介词例句
+                        {% endif %}
+                        <p>{% for word in collocation.t_dt.0 %}{{ word|cut:"*" }} {% endfor %}</p>
+                      </a>
+                  </li>
+                {% endfor %}
+              </ul>
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2">
+                <div id="colMore"><i class="fa fas fa-angle-down"></i></div>
+                <div id="colLess"><i class="fa fas fa-angle-up"></i></div>
               </div>
+            </div>
 
             <div id="Loading" class="result-table-cell center-align">
               <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
@@ -108,11 +109,9 @@
                   <div class="modal-body modal-login-body">
                     <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
                       {% csrf_token %}
-
                       <div>
                         <textarea form="FeedbackForm" name="comment" class="form-control"></textarea>
                       </div>
-
                       <input type="hidden" name="next" value="{{ next }}"/>
                       <input class="btn btn-primary" type="submit" value="提交反馈"/>
                     </form>
@@ -121,7 +120,7 @@
               </div>
             </div>
 
-            <div class="result-table-cell center-align">
+            <div id="Loadbox" class="result-table-cell center-align">
               <span id="ManualLoad">点击加载更多</span>
             </div>
 
