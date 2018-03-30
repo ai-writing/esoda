@@ -66,7 +66,7 @@
                         {% elif collocation.t_dt.1 == '3' %}修饰例句
                         {% elif collocation.t_dt.1 == '4' %}介词例句
                         {% endif %}
-                        <p>{% for word in collocation.t_dt.0 %}{{ word }} {% endfor %}</p>
+                        <p>{% for word in collocation.t_dt.0 %}{{ word|cut:"*" }} {% endfor %}</p>
                       </a>
                   </li>
                 {% endfor %}
