@@ -72,7 +72,7 @@ def esoda_view(request):
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
     q = refine_query(q)
-    qt, ref = lemmatize(q)
+    qt, ref, poss, dep = lemmatize(q)
 
     r = {
         'domain': u'人机交互',
@@ -92,14 +92,8 @@ def esoda_view(request):
 
     dbs, cids = get_cids(request.user, r=r)
     r['tlen'] = len(qt)
-    cL, cL_index = collocation_list(qt, ref, dbs, cids)
+    cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
     r['collocationList'] = {'cL': cL, 'index': cL_index}
-    # r['synonymous'] = []
-    # r['hasSyn'] = False
-    # for i in xrange(len(qt)):
-    #     r['synonymous'].append({displayed_lemma(ref[i], qt[i]): synonyms(qt[i])[:10]})
-    #     if synonyms(qt[i])[:10] != []:
-    #         r['hasSyn'] = True
 
     suggestion = {
         'relatedList': [
@@ -330,7 +324,7 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         })
 
 
-def collocation_list(t, ref, dbs, cids):
+def collocation_list(t, ref, poss, dep, dbs, cids):
     # return collocation_list, default_collocation index
     cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
     head = [{'count': cnt, 't_dt': (t, '0'), 'type': ' '.join(t), 'label':  'Colloc0_0', 'title': u'全部结果'}] # all results
@@ -344,15 +338,8 @@ def collocation_list(t, ref, dbs, cids):
         ref.append('*')
     for i in range(len(t) - 1):
         get_collocations(clist, t, ref, i, dbs, cids)
-    '''
-    for i in range(len(t)):
-        qt = list(t)
-        qt.insert(i, '*')
-        get_collocation(clist, qt, i, dbs, cids)
-    '''
-    newlist = sorted(clist, key=lambda k: k['count'], reverse = True)
-    newlist = head + newlist
-    return newlist, get_defaulteColl(len(t), newlist)
+    newlist, flag = get_defaulteColl(head, dep, clist)
+    return newlist, flag
 
 
 def sentence_query(t, ref, i, dt, dbs, cids):
