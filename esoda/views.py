@@ -180,7 +180,7 @@ def syn_usageList_view(request):
         'count': ttcnt,
         'type': ' '.join(t_list),
         'syn_dict': {},
-        't_dt': (t, dt)
+        't_dt': (' '.join(t), dt)
     }
 
     syn_usage_dict = {}
@@ -325,7 +325,6 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
             't_dt' : (list(qt), str(j % 4 + 1)),
-            'title': convert_type2title(pat % (displayed_lemma(ref[i], qt[i]), ALL_DEPS[j % 4], displayed_lemma(ref[i+1], qt[i+1]))), # todo delete
             'count' : cnt
             # 'usageList': [],
         })

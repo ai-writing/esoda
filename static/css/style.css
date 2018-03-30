@@ -31,20 +31,11 @@ a {
     }
 
     .login {
-        margin-right: 20px;
-    }
-
-    .welback {
-        margin-right: -15px;
+        margin-right: 10px;
     }
 
     .full-width {
         width: 130%;
-    }
-
-    .dropdown,
-    .dropup {
-        margin-right: 5px;
     }
 
     .navbar-brand {
@@ -72,6 +63,7 @@ a {
     .result-main {
         padding-left: 90px;
     }
+
     .panel-category-heading {
         padding: 10px 20px;
     }
@@ -80,11 +72,6 @@ a {
 @media (max-width: 1200px) and (min-width: 992px) {
     .full-width {
         width: 135%;
-    }
-
-    .dropdown,
-    .dropup {
-        margin-right: 15px;
     }
 
     .btn-index-search {
@@ -106,11 +93,7 @@ a {
     }
 
     .login {
-        margin-right: 30px;
-    }
-
-    .welback {
-        margin-right: -15px;
+        margin-right: 15px;
     }
 
     .result-main {
@@ -152,7 +135,7 @@ a {
     }
 
     .login {
-        margin-right: 25px;
+        margin-right: 15px;
     }
 
     .result-main {
@@ -167,6 +150,10 @@ a {
 
     .panel-category-heading {
         padding: 10px 10px;
+    }
+
+    #ResultSearchBar {
+        margin-left: 15px;
     }
 }
 
@@ -208,12 +195,16 @@ a {
         width: 93% !important;
     }
 
+    .login {
+        margin-right: 10px;
+    }
+
     .result-main {
         /*padding-left: 15px;*/
     }
 
     #navbar.navbar-collapse {
-        width: 110%;
+        /*width: 110%;*/
     }
 
     .warning-page-circle {
@@ -516,12 +507,15 @@ a {
     background-color: transparent !important;
 }
 
-.login {
+.login, .dropdown, .dropup {
     font-size: 12px;
-    margin-top: 13px;
+    margin-top: 14px;
     float: right;
-    color: #63B7E6 !important;
     /*font-family: PingFangSC-Regular;*/
+}
+
+.login > li > a {
+    color: #63B7E6 !important;
 }
 
 .modal-login-sm {
@@ -1350,11 +1344,13 @@ button.close:focus {
 .CollapseColloc #colMore,
 .CollapseColloc.expanded #colLess {
     display: block;
+    margin-top: 5px;
 }
 .CollapseColloc .colList li.second-row,
 .CollapseColloc #colLess,
 .CollapseColloc.expanded #colMore {
     display: none;
+    margin-top: 5px;
 }
 
 .btn-navbar-search {
@@ -1459,7 +1455,6 @@ button.close:focus {
     font-family: PingFangSC-Medium;
     font-size: 16px;
     color: #FFFFFF;
-    margin-left: 7px;
 }
 
 .total-cnt {
@@ -1496,8 +1491,7 @@ button.close:focus {
     border-radius: 4px;
     padding-left: 3px;
     padding-right: 3px;
-    margin-left: 11px;
-    margin-bottom: 3px;
+    margin-left: 3px;
     cursor: pointer;
 }
 
@@ -1533,7 +1527,7 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding: 0px 10px 0px 10px;
+    padding: 0px 10px 10px 10px;
     font-size: 12px;
 }
 
@@ -1664,9 +1658,15 @@ button.close:focus {
     margin-bottom: 0px;
 }
 
+.colloc-sub-btn > p {
+    font-size: 10px;
+    -webkit-transform: scale(0.8);
+    line-height: 11px;
+}
+
 .colloc-sub-btn {
     width: auto;
-    height: 40px;
+    height: 50px;
     /*margin-top: 5px;*/
     margin-right: 28px !important;
     padding-left: 0px !important;
@@ -1809,7 +1809,7 @@ button.close:focus {
     margin-left: 32px;
     margin-right: 32px; 
     margin-bottom: 0px;
-    border-top: 1px solid #D3D3D3;
+    border-bottom: 1px solid #D3D3D3;
     padding-bottom: 0px;
     padding-top: 15px;
 }
@@ -2148,21 +2148,6 @@ button.close:focus {
     margin-top: 50px;
     margin-bottom: 50px;
     font-size: 24px;
-}
-
-.welback {
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    margin-top: 13px;
-    float: right;
-}
-
-.indexback {
-    font-size: 12px;
-    margin-top: 13px;
-    display: flex;
-    align-items: center;
 }
 
 .glyphicon-chevron-down {

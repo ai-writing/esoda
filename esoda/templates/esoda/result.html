@@ -57,16 +57,17 @@
                     role="tablist">
                 {% for collocation in r.collocationList.cL %}
                   <li class="second-row" role="presentation">
-                    {% if forloop.counter == r.collocationList.index %}
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" id="first"
-                           data-toggle="tab" data="{{ collocation.title }}"
-                           type="{{ collocation.type }}">{{ collocation.title }}</a>
-                    {% endif %}
-                    {% if forloop.counter != r.collocationList.index %}
                       <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
-                           data-toggle="tab" data="{{ collocation.title }}"
-                           type="{{ collocation.type }}">{{ collocation.title }}</a>
-                    {% endif %}
+                         {% if forloop.counter == r.collocationList.index %} id="first"{% endif %}
+                           data-toggle="tab" data="{{ collocation.t_dt.0 }}" type="{{ collocation.type }}">
+                        {% if collocation.t_dt.1 == '0' %}全部例句
+                        {% elif collocation.t_dt.1 == '1' %}主谓例句
+                        {% elif collocation.t_dt.1 == '2' %}动宾例句
+                        {% elif collocation.t_dt.1 == '3' %}修饰例句
+                        {% elif collocation.t_dt.1 == '4' %}介词例句
+                        {% endif %}
+                        <p>{% for word in collocation.t_dt.0 %}{{ word }} {% endfor %}</p>
+                      </a>
                   </li>
                 {% endfor %}
               </ul>
@@ -108,11 +109,9 @@
                   <div class="modal-body modal-login-body">
                     <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
                       {% csrf_token %}
-
                       <div>
                         <textarea form="FeedbackForm" name="comment" class="form-control"></textarea>
                       </div>
-
                       <input type="hidden" name="next" value="{{ next }}"/>
                       <input class="btn btn-primary" type="submit" value="提交反馈"/>
                     </form>

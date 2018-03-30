@@ -1,6 +1,6 @@
 /*
-* Logic for esoda result page.
-*/
+ * Logic for esoda result page.
+ */
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
 var REF, SENTENCES_URL, COLLOCATION_URL;
@@ -20,8 +20,8 @@ $(function () {
       $('#Loading').hide();
       $('#ManualLoad').hide();
       $('#SentenceResult').html(data);
-      // $('#SentenceResult').css('visibility', 'visible');
-      $('#SentenceResult').animate({opacity: 1});
+      $('#SentenceResult').fadeIn("fast");
+      $('#SidebarAffix').fadeIn("fast");
       var exampleNum = Number($("#ExampleNumber").text());
       if (exampleNum <= 10 && exampleNum > 0) {
         $('#ExampleEnd').show();
@@ -43,26 +43,6 @@ $(function () {
     $('.result-main .CollapseColloc').toggleClass('expanded');
   });
 
-  $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
-    e.preventDefault();
-    if ($(this).attr('state') == 'selected') return;
-    $("#ExampleEnd").hide();
-    $('#ManualLoad').hide();
-    // $('#SentenceResult').css('visibility', 'hidden');
-    $('#SentenceResult').animate({opacity: 0}, function () {
-      if (loading) $('#Loading').show();
-    });
-
-    $('.colloc-usage').removeAttr('state');
-    $(this).attr('state', 'selected');
-
-    // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
-    var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
-    var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
-    var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
-    searchAndFillSentences({t: $(this).attr('lemma'), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
-  });
-
   // $('.not-limited').click(function (e) {
   //   e.preventDefault();
   //   if ($(this).attr('aria-expanded') == 'true') {
@@ -79,7 +59,6 @@ $(function () {
   // });
 
   // $('.not-limited').click();
-
   $('.colloc-sub-btn').click(function (e) {
     e.preventDefault();
     // Prevent click event propagation
@@ -87,6 +66,9 @@ $(function () {
     // if (e.stopPropagation) {    // standard
     //     e.stopPropagation();
     // }
+    $('#SentenceResult').fadeOut("fast");
+    $('#ExampleEnd').hide();
+    $('#SidebarAffix').fadeOut("fast");
     if ($(this).attr('aria-expanded') == 'true') {
       return;
     }
@@ -108,14 +90,11 @@ $(function () {
     if (i == 0) i = 1;
     dt = id.replace('#', '').split('_')[1];
 
-    // $('#SentenceResult').css('visibility', 'hidden');
-
     // $('#SentenceResult').animate({ opacity: 0 }, function () {
     //   $('#Loading').show();
     // });
     // $('#ManualLoad').hide();
     // $("#ExampleEnd").hide();
-
     $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
       $(id).html(data);
       $(id + ' .colloc-result').mCustomScrollbar({
@@ -128,9 +107,25 @@ $(function () {
     });
   });
 
-  // if ($('#Loading').is(':hidden')) {
-  //     searchAndFillSentences({t: $(this).attr('data'), ref: $(this).attr('ref'), dt: 0});
-  // }
+  $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
+    e.preventDefault();
+    if ($(this).attr('state') == 'selected') return;
+    $("#ExampleEnd").hide();
+    $('#ManualLoad').hide();
+    $('#SentenceResult').fadeOut("fast");
+    // $('#SentenceResult').animate({opacity: 0}, function () {
+    //   if (loading) $('#Loading').show();
+    // });
+
+    $('.colloc-usage').removeAttr('state');
+    $(this).attr('state', 'selected');
+
+    // var collocQ = $(this).text().split(' ')[0].replace('...', ' ');
+    var dt = $(this).parents('.tab-pane').attr('id').split('_')[1];
+    var type = $(this).attr('lemma').replace(/ \(.*\)/, '');
+    var i = type.replace('...', ' ... ').split(' ').indexOf('...') - 1;
+    searchAndFillSentences({t: $(this).attr('lemma'), ref: $(this).attr('ref'), i: i, dt: dt});  // TODO: move to after animation
+  });
 
   // $(".cover").click( function() {
   //   $(".cover").hide();
@@ -161,22 +156,22 @@ $(function () {
   //     }, 1000);
   //   }
   // });
-  
-  $( window ).scroll( function () {
+
+  $(window).scroll(function () {
     if ($(document).height() <= $(window).scrollTop() + $(window).height() + 300) {
-      if (loading == 1 || loaded == 1 ) return;
+      if (loading == 1 || loaded == 1) return;
       if ($('#Loading').is(':visible')) return;
       if ($('#ManualLoad').is(':visible')) return;
       $("#ManualLoad").show();
-    }; 
+    }
   });
 
-  $('#ManualLoad').click(function(e) {
+  $('#ManualLoad').click(function (e) {
     var total = $("#ExampleNumber").html();
     loading = 1;
     $("#ManualLoad").hide();
     $("#Loading2").show();
-    setTimeout(function() {
+    setTimeout(function () {
       $("#Loading2").hide();
       var i;
       for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
@@ -210,19 +205,10 @@ $(function () {
     textarea.focus();
   });
 
-  $(".back-to-top").click(function() {
+  $(".back-to-top").click(function () {
     $("html,body").animate({scrollTop: 0}, "fast");
     return false;
   });
-
-  // $("#SidebarAffix").affix({
-  //   offset: {
-  //     top: 20,
-  //     bottom: function () {
-  //       return $(".footer").outerHeight(true) + $("#BackToTopAffix").outerHeight(true) + 40;
-  //     }
-  //   }
-  // });
 
   $("#BackToTopAffix").affix({
     offset: {
@@ -244,19 +230,19 @@ $(function () {
     }
   });
 
-  $.clickStar = function(e) {
+  $.clickStar = function (e) {
     e.preventDefault();
     $(e.target).toggleClass("glyphicon-star-empty");
     $(e.target).toggleClass("glyphicon-star");
   };
 
-  $('#SearchBox').hover(function() {
+  $('#SearchBox').hover(function () {
     if ($('#SearchBox').is(':focus')) {
       return false;
     }
     $('#SearchBox').focus();
     $('#SearchBox').select();
-  }, function() {
+  }, function () {
     return false;
   });
 

@@ -82,11 +82,11 @@
 
         </form>
         {% if not user.is_authenticated %}
-          <ul class="nav navbar-nav navbar-right result-login">
-            <li><a href="#" data-toggle="modal" data-target="#ModalLogin" class="login">登录</a></li>
+          <ul class="nav navbar-nav navbar-right login">
+            <li><a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a></li>
           </ul>
         {% else %}
-          <ul class="nav navbar-nav navbar-right welback">
+          <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 {{ user.username|truncatechars:10 }}<span class="caret"></span>
