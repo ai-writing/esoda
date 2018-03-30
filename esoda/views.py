@@ -183,7 +183,7 @@ def syn_usageList_view(request):
 
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
-        t_str = t_str.strip('*')
+        t_str = t_str.strip('* ')
 
     info['t_str'] = t_str
     info['syn_usage_dict'] = syn_usage_dict
