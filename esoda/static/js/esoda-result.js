@@ -23,6 +23,9 @@ $(function () {
       $('#SentenceResult').fadeIn("fast");
       $('#SidebarAffix').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
+      var colNum = ($(".colList").width() > 500) ? 6 : 4;
+      $('.colList li').removeClass('second-row');
+      $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
       var exampleNum = Number($("#ExampleNumber").text());
       if (exampleNum <= 10 && exampleNum > 0) {
         $('#ExampleEnd').show();
@@ -32,11 +35,8 @@ $(function () {
     });
   }
 
-  var colNum = ($(".colList").width() > 590) ? 4 : 3;
-  $('.colList li').removeClass('second-row');
-  $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
   $(window).resize(function () {
-    colNum = ($(".colList").width() > 590) ? 4 : 3;
+    var colNum = ($(".colList").width() > 500) ? 6 : 4;
     $('.colList li').removeClass('second-row');
     $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
   });
@@ -151,7 +151,6 @@ $(function () {
     setTimeout(function () {
       $("#Loading2").hide();
       $("#Loadbox").show();
-      console.log('aa');
       var i;
       for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
         $("#Example" + i).show();

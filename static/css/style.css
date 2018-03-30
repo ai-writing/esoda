@@ -1343,13 +1343,13 @@ button.close:focus {
 .CollapseColloc #colMore,
 .CollapseColloc.expanded #colLess {
     display: block;
-    margin-top: 5px;
+    /*margin-top: 5px;*/
 }
 .CollapseColloc .colList li.second-row,
 .CollapseColloc #colLess,
 .CollapseColloc.expanded #colMore {
     display: none;
-    margin-top: 5px;
+    /*margin-top: 5px;*/
 }
 
 .btn-navbar-search {
