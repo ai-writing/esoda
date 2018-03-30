@@ -47,15 +47,21 @@
               <span class="list-btn less"><i class="fa fas fa-angle-up"></i></span>
             </div>
             {% for v in value %}
-              {% if forloop.counter < 6 %}
-                <li class="list-group-item {% if v.type != 1 %}not-syn{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-                  <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                  {% else %}({{ v.count }}){% endif %}</span></a></li>
-              {% elif forloop.counter > 5 %}
+              {% if not expand_exist %}
+                {% if forloop.counter < 6 %}
+                  <li class="list-group-item defalt-item {% if v.type != 1 %}not-syn{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                    <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                    {% else %}({{ v.count }}){% endif %}</span></a></li>
+                {% endif %}
                 <li class="list-group-item listHide listExpand {% if v.type != 1 %}not-syn{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                   <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
                   {% else %}({{ v.count }}){% endif %}</span></a></li>
+              {% else %}
+                <li class="list-group-item listExpand {% if not key in expand %}listHide{% endif %} {% if v.type != 1 %}not-syn{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                  <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                  {% else %}({{ v.count }}){% endif %}</span></a></li>
               {% endif %}
+
             {% endfor %}
           {% endif %}
         </ul>
@@ -77,6 +83,7 @@
 <script type="text/javascript">
   $('.click').click(function () {
     $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
+    $(this).parents('.list-group').children('.defalt-item').hide();
     if ($(this).children('.less').css('display') == 'none') {
       $(this).children('.more').hide();
       $(this).children('.less').show();

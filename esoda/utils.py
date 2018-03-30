@@ -82,6 +82,16 @@ def refine_query(q):
     return r
 
 
+def get_expand(q):
+    expand = []
+    r = q.strip().split()
+    for rr in r:
+        if rr[-1] == '?':
+            expand.append(rr[:-1])
+    return expand
+
+
+
 def convert_type2title(rr):
     rr_title = ''
     if '*' in rr:

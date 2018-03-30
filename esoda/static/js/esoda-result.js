@@ -76,6 +76,7 @@ $(function () {
     var id = $(this).attr('href');
     var type = $(this).attr('type');
     var type0 = type.replace(/ \(.*\) /g, ' ');
+    var expand = $(this).attr('expand');
     var i, dt;
     var ref = [];
     for (i = 0; i < type.split(' ').length; i++) {
@@ -96,7 +97,8 @@ $(function () {
     // });
     // $('#ManualLoad').hide();
     // $("#ExampleEnd").hide();
-    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
+
+    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, expand: expand}, function (data) {
       $(id).html(data);
       $(id + ' .colloc-result').mCustomScrollbar({
         theme: 'dark',
