@@ -91,7 +91,6 @@ def get_expand(q):
     return expand
 
 
-
 def convert_type2title(rr):
     rr_title = ''
     if '*' in rr:

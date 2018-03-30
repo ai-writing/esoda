@@ -97,7 +97,6 @@ $(function () {
     // });
     // $('#ManualLoad').hide();
     // $("#ExampleEnd").hide();
-
     $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, expand: expand}, function (data) {
       $(id).html(data);
       $(id + ' .colloc-result').mCustomScrollbar({

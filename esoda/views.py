@@ -79,6 +79,7 @@ def esoda_view(request):
     logger.info("before refine: %s", expand_str)
     q = refine_query(q)
     qt, ref, poss, dep = lemmatize(q)
+    
     r = {
         'domain': u'人机交互',
         'phrase': [
