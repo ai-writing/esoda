@@ -18,14 +18,6 @@ a {
 }
 
 @media (min-width: 1201px) {
-/*    .result-page > .container {
-        width: 950px;
-    }
-
-    .navbar-fixed-top > .container {
-        width: 950px;
-    }*/
-
     .container {
         width: 950px;
     }
@@ -57,7 +49,7 @@ a {
     }
 
     #ResultSearchBar {
-        margin-left: 35px;
+        margin-left: 33px;
     }
 
     .result-main {
@@ -65,7 +57,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 20px;
+        padding: 10px 16px;
     }
 }
 
@@ -80,8 +72,12 @@ a {
 
     .navbar-brand {
         margin-top: 20px;
-        width: 200px;
+        width: 180px;
         margin-left: 5px;
+    }
+
+    #ResultSearchBar {
+        margin-left: 16px;
     }
 
     .navbar-brand > img {
@@ -107,7 +103,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 15px;
+        padding: 10px 16px;
     }
 }
 
@@ -124,6 +120,7 @@ a {
         margin-top: 20px;
         width: 170px;
         margin-left: 5px;
+        padding-top: 10px;
     }
 
     .navbar-brand > img {
@@ -153,7 +150,7 @@ a {
     }
 
     #ResultSearchBar {
-        margin-left: 15px;
+        margin-left: 17px;
     }
 }
 
@@ -175,6 +172,7 @@ a {
         margin-top: 20px;
         width: 170px;
         margin-left: 5px;
+        padding-top: 10px;
     }
 
     .navbar-brand > img {
@@ -284,6 +282,7 @@ a {
     /*height: 50px;*/
     overflow: hidden;
     margin-left: 0px !important;
+    padding-left: 0px !important;
 }
 
 .navbar-brand > img {
@@ -1322,7 +1321,7 @@ button.close:focus {
 
 .list-btn2 {
     padding-left: 30px;
-    padding-top: 10px;
+    padding-top: 15px;
     font-size: 20px;
     cursor: pointer;
 }
@@ -1526,7 +1525,7 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding: 0px 10px 10px 10px;
+    padding: 0px 10px 10px 7px;
     font-size: 12px;
 }
 

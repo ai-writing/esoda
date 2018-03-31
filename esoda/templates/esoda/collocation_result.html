@@ -31,9 +31,9 @@
 <div class="panel-category-heading">
   <p><a href="#" class="colloc-usage" ref="{{ t_dt.0|cut:"*" }}" lemma="{{ t_dt.0|cut:"*" }}" >{{ type }}</a><span class="total-cnt">
    {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span></p>
-   <span class="panel-icon glyphicon glyphicon-transfer"></span>
-   <span class="colloc-heading">搭配替换</span>
-   <span class="synFilter">仅同义</span>
+   <div><i class="fa fa-exchange"></i>
+    <span class="colloc-heading">搭配替换</span>
+    <span class="synFilter">仅同义</span></div>
 </div>
 <div class="colloc-result">
   {% for k in t_list %}
