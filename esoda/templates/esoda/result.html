@@ -57,7 +57,7 @@
                     role="tablist">
                 {% for collocation in r.collocationList.cL %}
                   <li class="second-row" role="presentation">
-                      <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab" expand = "{{ expand }}"
+                    <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
                          {% if forloop.counter == r.collocationList.index %} id="first"{% endif %}
                            data-toggle="tab" data="{{ collocation.t_dt.0 }}" type="{{ collocation.type }}">
                         {% if collocation.t_dt.1 == '0' %}全部例句

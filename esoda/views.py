@@ -71,12 +71,6 @@ def esoda_view(request):
     # With query - render result.html
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
-    expand = get_expand(q)
-    expand_str = ''
-    for item in expand:
-        qt, ref, poss, dep = lemmatize(item)
-        expand_str += qt[0] + ' '
-    logger.info("before refine: %s", expand_str)
     q = refine_query(q)
     qt, ref, poss, dep = lemmatize(q)
     
@@ -122,7 +116,6 @@ def esoda_view(request):
         'suggestion': suggestion,
         'dictionary': trans,
         'cids': cids,
-        'expand': expand_str
     }
 
     request.session.save()
@@ -159,12 +152,6 @@ def syn_usageList_view(request):
     # }
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
-    expand_str = request.GET.get('expand', '')
-    if expand_str:
-        expand_exist = True
-    else:
-        expand_exist = False
-    expand_list = expand_str.split()
     if not ref:
         ref = t
     i = int(request.GET.get('i', '0'))
@@ -187,9 +174,7 @@ def syn_usageList_view(request):
         'count': ttcnt,
         'type': ' '.join(t_list),
         'syn_dict': {},
-        't_dt': (' '.join(t), dt),
-        'expand_exist': expand_exist,
-        'expand': expand_list,
+        't_dt': (' '.join(t), dt)
     }
 
     syn_usage_dict = {}
