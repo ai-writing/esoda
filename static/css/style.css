@@ -1246,7 +1246,7 @@ button.close:focus {
     /*background-color: #fff;*/
     background-color: #EEEFF1;
     padding-top: 70px;
-    padding-bottom: 40px;
+    padding-bottom: 0px;
 }
 
 #SidebarAffix {
@@ -1264,7 +1264,7 @@ button.close:focus {
 }
 
 #SidebarAffix .list-group{
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 #SidebarAffix .list-group-item {
@@ -1279,7 +1279,8 @@ button.close:focus {
 
 .collocation-panel {
     height: 90vh;
-    background: #FBFCFC;
+    /*background: #FBFCFC;*/
+    background: #fff;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
 
@@ -1525,7 +1526,7 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding: 0px 10px 10px 7px;
+    padding: 0px 10px 5px 7px;
     font-size: 12px;
 }
 
@@ -1809,7 +1810,7 @@ button.close:focus {
     margin-bottom: 0px;
     border-bottom: 1px solid #D3D3D3;
     padding-bottom: 0px;
-    padding-top: 15px;
+    padding-top: 10px;
 }
 
 .example-hint {
