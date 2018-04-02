@@ -6,7 +6,6 @@ html {
 }
 
 body {
-    font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
     margin-bottom: 50px;
 }
@@ -16,6 +15,7 @@ a {
     /*color: #404040;*/
     color: #2D557B;
 }
+
 
 @media (min-width: 1201px) {
     .container {
@@ -624,15 +624,19 @@ button.close:focus {
     width: 100%;
 }
 
-#RegisterFrom .btn-primary {
-    font-size: 16px;
-    padding: 10px 12px;
+#PasswordChangeForm .btn-primary {
+    font-size: 14px;
+    padding: 9px 21px 11px 21px;
     color: #fff;
-    border-bottom-left-radius: 25px;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 3px;
-    border-top-left-radius: 3px;
-    letter-spacing: 3px;
+    background: #42A5F5;
+    margin-top: 23px;
+}
+
+#RegisterFrom .btn-primary {
+    font-size: 14px;
+    padding: 9px 21px 11px 21px;
+    color: #fff;
+    background: #42A5F5;
 }
 
 .form-normal {
@@ -1994,13 +1998,9 @@ button.close:focus {
 }
 
 .form-text {
-    font-size: 12px;
-    color: #4a4a4a;
-    margin-top: 5px;
-}
-
-.personal-changepassword {
-    padding-top: 10px;
+    font-size: 14px;
+    color: #404040;
+    margin-top: 26px;
 }
 
 #submit-changepassword {
@@ -2173,4 +2173,26 @@ button.close:focus {
 .signup-page h4 {
     padding-top: 30px;
     color: #63b7e6;
+}
+
+.signup-title {
+    font-family: PingFangSC-Medium;
+    font-size: 20px;
+    color: #42A5F5;
+    padding-bottom: 12px;
+}
+
+.personal-subtitle {
+    color: #C0C0C0;
+}
+
+.signup-page a {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #42A5F5;
+    line-height: 20px;
+}
+
+.agreement {
+    margin-left: 6px;
 }
