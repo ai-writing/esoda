@@ -133,7 +133,7 @@ def get_synonyms_dict(t, ref, i, dt, dbs, cids):
         ref_new.remove('*')
     for tt in t_new:
         syn_dict[tt] = []
-        for syn in synonyms(tt)[:6]:
+        for syn in synonyms(tt)[:15]:
             lemma = ' '.join(t_new).replace(tt, syn[0])
             reff = ' '.join(ref_new).replace(tt, syn[0])
             if dt == '0' or len(t_new) == 1:
