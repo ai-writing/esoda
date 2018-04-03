@@ -32,11 +32,10 @@
   <p><a href="#" class="colloc-usage" ref="{{ t_dt.0|cut:"*" }}" lemma="{{ t_dt.0|cut:"*" }}" >{{ type }}</a><span class="total-cnt">
     {% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span></p>
     <div>
-      <i class="fa fa-exchange"></i>
+      <span class="exchange-icon"><i class="fa fa-exchange"></i></span>
       <span class="colloc-heading">搭配替换</span>
       <span class="synFilter">包含扩展词<input type="checkbox" class="syn-filter"></span>
     </div>
-    <!-- <span></span><input type="checkbox" name="mm" value="3000" onclick="chose(this)" /> -->
 </div>
 <div class="colloc-result">
   {% for k in t_list %}
@@ -44,21 +43,15 @@
       {% if k == key %}
         <ul class="list-group">
           {% if value %}
-            <div class="panel-subheading click">
+            <div class="panel-subheading">
               <span class="panel-key">{{ key }}</span>
-              <span class="list-btn more"><i class="fa fas fa-angle-down"></i></span>
-              <span class="list-btn less"><i class="fa fas fa-angle-up"></i></span>
+<!--               <span class="list-btn more"><i class="fa fas fa-angle-down"></i></span>
+              <span class="list-btn less"><i class="fa fas fa-angle-up"></i></span> -->
             </div>
             {% for v in value %}
-              {% if forloop.counter < 6 %}
-                <li class="list-group-item {% if v.type != 1 %}not-syn hidden{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-                  <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                  {% else %}({{ v.count }}){% endif %}</span></a></li>
-              {% elif forloop.counter > 5 %}
-                <li class="list-group-item listHide listExpand {% if v.type != 1 %}not-syn hidden{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-                  <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                  {% else %}({{ v.count }}){% endif %}</span></a></li>
-              {% endif %}
+              <li class="list-group-item {% if v.type != 1 %}not-syn hidden{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                {% else %}({{ v.count }}){% endif %}</span></a></li>
             {% endfor %}
           {% endif %}
         </ul>
@@ -78,34 +71,20 @@
 </div>
 
 <script type="text/javascript">
-  $('.click').click(function () {
-    $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-    // $(this).parents('.list-group').children('.defalt-item').hide();
-    if ($(this).children('.less').css('display') == 'none') {
-      $(this).children('.more').hide();
-      $(this).children('.less').show();
-    } else {
-      $(this).children('.less').hide();
-      $(this).children('.more').show();
-    }
-  });
-
-  // $('.showLess').click(function () {
-  //   console.log("see");
+  // $('.click').click(function () {
   //   $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-  //   $(this).children('.less').hide();
-  //   $(this).children('.more').show();
-  //   $(this).toggleClass('showLess');
-  //   $(this).toggleClass('loadMore');
+  //   // $(this).parents('.list-group').children('.defalt-item').hide();
+  //   if ($(this).children('.less').css('display') == 'none') {
+  //     $(this).children('.more').hide();
+  //     $(this).children('.less').show();
+  //   } else {
+  //     $(this).children('.less').hide();
+  //     $(this).children('.more').show();
+  //   }
   // });
 
   $('.syn-filter').click(function() {
     $('.not-syn').toggleClass('hidden');
-    // if(document.getElementById("check1").checked == true) {
-    //   document.getElementById("check1").checked = false;
-    // } else {
-    //   document.getElementById("check1").checked = true;
-    // }
     // $('.synFilter').toggleClass('synFiltered');
   });
 

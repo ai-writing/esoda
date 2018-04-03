@@ -152,6 +152,10 @@ a {
     #ResultSearchBar {
         margin-left: 17px;
     }
+    
+    .exchange-icon {
+        display: none;
+    }
 }
 
 @media (max-width: 767px) {
@@ -1278,7 +1282,7 @@ button.close:focus {
 }
 
 #SidebarAffix .list-group-item:last-child {
-    padding-bottom: 3px;
+    padding-bottom: 20px;
 }
 
 .collocation-panel {
@@ -1292,10 +1296,10 @@ button.close:focus {
     display: none !important;
 }
 
-.listHide {
+/*.listHide {
     display: none;
     list-style: none;
-}
+}*/
 
 .listShow {
     display: block;
