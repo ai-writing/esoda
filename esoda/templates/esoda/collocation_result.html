@@ -34,7 +34,7 @@
     <div>
       <i class="fa fa-exchange"></i>
       <span class="colloc-heading">搭配替换</span>
-      <span class="synFilter">包含扩展词<input type="checkbox" id="synFilter"></span>
+      <span class="synFilter">包含扩展词<input type="checkbox" class="syn-filter"></span>
     </div>
     <!-- <span></span><input type="checkbox" name="mm" value="3000" onclick="chose(this)" /> -->
 </div>
@@ -99,7 +99,7 @@
   //   $(this).toggleClass('loadMore');
   // });
 
-  $('#synFilter').click(function() {
+  $('.syn-filter').click(function() {
     $('.not-syn').toggleClass('hidden');
     // if(document.getElementById("check1").checked == true) {
     //   document.getElementById("check1").checked = false;

@@ -1484,7 +1484,7 @@ button.close:focus {
     width: 80%;
 }
 
-#synFilter {
+#syn-filter {
     cursor: pointer;
     /*margin-left: 5px;*/
 }
