@@ -79,16 +79,15 @@ def process_conll_file(text):
     # 1  Assimilation  assimilation  NN  _  3  nsubj
     # 1  3  nsubj  =  nsubj(noun-3, verb-1)
     poss, dep = ['NONE'] * len(text), '0'
-    if len(text) < 3:
-        tokens = [process_conll_line(l) for l in text]
-        dep = '0'
-        for i, t in enumerate(tokens):
-            assert t['i'] == i, 't[i] = %d, i = %d' % (t['_id'], i)
-            td = tokens[t['di']]
-            if is_esl_dep(t['dt'], td, t):
-                dep = convert_dep(t['dt'], td, t)['dt']
-            del t['dt'], t['di']
-        poss = [t['pt'] for t in tokens]
+    tokens = [process_conll_line(l) for l in text]
+    for i, t in enumerate(tokens):
+        assert t['i'] == i, 't[i] = %d, i = %d' % (t['_id'], i)
+        td = tokens[t['di']]
+        if is_esl_dep(t['dt'], td, t):
+            dep = convert_dep(t['dt'], td, t)['dt']
+        del t['dt'], t['di']
+    poss = [t['pt'] for t in tokens]
+    dep = dep if len(text) < 3 else '0'
     return poss, dep
 
 def process_conll_line(tt):
