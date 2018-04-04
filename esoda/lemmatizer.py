@@ -31,8 +31,7 @@ def lemmatize(s):
         logger.exception('Failed to lemmatize "%s"', s)
         ll = ref = s.split()
         ll = [l.lower() for l in ll]
-        poss, dep = [], '0'
-
+        poss, dep = ['NONE'] * len(ll), '0'
     return ll, ref, poss, dep
 
 lemmatize('checking')
@@ -102,7 +101,7 @@ def process_conll_file(text):
     # conll file format:
     # 1  Assimilation  assimilation  NN  _  3  nsubj
     # 1  3  nsubj  =  nsubj(noun-3, verb-1)
-    poss, dep = [], '0'
+    poss, dep = ['NONE'] * len(text), '0'
     if len(text) < 3:
         tokens = [process_conll_line(l) for l in text]
         dep = '0'

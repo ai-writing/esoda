@@ -226,8 +226,8 @@
               // });
               // $('#ManualLoad').hide();
               // $("#ExampleEnd").hide();
-              
-              $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
+
+              $.get("{% url 'collocation' %}", {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: '{{poss}}'}, function (data) {
                   $(id).html(data);
                   $(id + ' .colloc-result').mCustomScrollbar({
                       theme: 'dark',

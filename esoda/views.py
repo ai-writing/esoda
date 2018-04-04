@@ -113,6 +113,7 @@ def esoda_view(request):
         'q': ' '.join(qt),
         'q0': q0,
         'ref': ' '.join(ref),
+        'poss': ' '.join(poss),
         'suggestion': suggestion,
         'dictionary': trans,
         'cids': cids,
@@ -123,7 +124,7 @@ def esoda_view(request):
     return render(request, 'esoda/result.html', info)
 
 
-def get_synonyms_dict(t, ref, i, dt, dbs, cids):
+def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     syn_dict = {}
     t_new = t[:]
     ref_new = ref[:]
@@ -131,18 +132,18 @@ def get_synonyms_dict(t, ref, i, dt, dbs, cids):
         syn_dict['*'] = []
         t_new.remove('*')
         ref_new.remove('*')
-    for tt in t_new:
-        syn_dict[tt] = []
-        for syn in synonyms(tt)[:15]:
-            lemma = ' '.join(t_new).replace(tt, syn[0])
-            reff = ' '.join(ref_new).replace(tt, syn[0])
+    for j in xrange(len(t_new)):
+        syn_dict[t_new[j]] = []
+        for syn in synonyms(t_new[j], pos = poss[j])[:30]:
+            lemma = ' '.join(t_new).replace(t_new[j], syn[0])
+            reff = ' '.join(ref_new).replace(t_new[j], syn[0])
             if dt == '0' or len(t_new) == 1:
                 cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
             else:
                 d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
                 cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
             if cnt:
-                syn_dict[tt].append({'ref': reff, 'lemma': lemma, 'content': syn[0], 'count': cnt, 'type': 1, 'weight': syn[1]}) # type 1 for synonyms_word
+                syn_dict[t_new[j]].append({'ref': reff, 'lemma': lemma, 'content': syn[0], 'count': cnt, 'type': 1, 'weight': syn[1]}) # type 1 for synonyms_word
     return syn_dict
 
 
@@ -157,8 +158,9 @@ def syn_usageList_view(request):
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
+    poss = request.GET.get('pos', '').split()
     usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
-    syn_dict = get_synonyms_dict(t, ref, i, dt, dbs, cids)
+    syn_dict = get_synonyms_dict(t, ref, i, dt, poss, dbs, cids)
 
     ttcnt = 0
     if dt != '0' and '*' not in t:
