@@ -1339,10 +1339,6 @@ button.close:focus {
     color: #63B7E6;
 }
 
-.more {
-    display: none;
-}
-
 .click {
     cursor: pointer;
 }
