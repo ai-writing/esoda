@@ -160,6 +160,7 @@
   <script src="{% static 'js/esoda-result.js' %}?v={% now 'Ymd' %}"></script>
   <script>
     REF = '{{ ref }}';
+    POSS = '{{ poss }}';
     SENTENCES_URL = "{% url 'sentences' %}";
     COLLOCATION_URL = "{% url 'collocation' %}";
   </script>

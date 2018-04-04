@@ -3,7 +3,7 @@
  */
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
-var REF, SENTENCES_URL, COLLOCATION_URL;
+var REF, POSS, SENTENCES_URL, COLLOCATION_URL;
 // var keyword = window.location.search;
 
 $(function () {
@@ -96,7 +96,7 @@ $(function () {
     // });
     // $('#ManualLoad').hide();
     // $("#ExampleEnd").hide();
-    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt}, function (data) {
+    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS}, function (data) {
       $(id).html(data);
       $(id + ' .colloc-result').mCustomScrollbar({
         theme: 'dark',
