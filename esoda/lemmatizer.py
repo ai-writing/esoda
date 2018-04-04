@@ -13,29 +13,6 @@ ADV_TYPES = ['RB', 'RBR', 'RBS', 'RP']
 ADJ_TYPES = ['JJ', 'JJR', 'JJS']
 NOUN_TYPES = ['NN', 'NNP', 'NNPS', 'NNS']
 
-def lemmatize(s):
-    '''
-    s: a English string
-    return: a list of lower-cased lemmas
-    '''
-
-    try:
-        conll = requests.post(LEMMATIZER_URL, s, timeout=10).text  # may end with \r\n
-        lines = [line.strip() for line in conll.split('\n')]
-        tokens = [line.split('\t') for line in lines if line]
-        poss, dep = process_conll_file(tokens)
-        logger.info('conll: "%s" -> %s', s, tokens)
-        ll = [t[2].lower() for t in tokens]
-        ref = [t[1] for t in tokens]
-    except Exception as e:
-        logger.exception('Failed to lemmatize "%s"', s)
-        ll = ref = s.split()
-        ll = [l.lower() for l in ll]
-        poss, dep = ['NONE'] * len(ll), '0'
-    return ll, ref, poss, dep
-
-lemmatize('checking')
-
 def is_esl_dep(dt, t, td):
     return _is_esl_dep((dt, (None, t['l'], t['pt']), (None, td['l'], td['pt'])))
 
@@ -121,3 +98,26 @@ def process_conll_line(tt):
     dt = tt[6].upper()
 
     return {'i': int(tt[0])-1, 't': tt[1], 'l': tt[2], 'pt': pt, 'di': int(tt[5])-1, 'dt': dt}
+
+def lemmatize(s):
+    '''
+    s: a English string
+    return: a list of lower-cased lemmas
+    '''
+
+    try:
+        conll = requests.post(LEMMATIZER_URL, s, timeout=10).text  # may end with \r\n
+        lines = [line.strip() for line in conll.split('\n')]
+        tokens = [line.split('\t') for line in lines if line]
+        poss, dep = process_conll_file(tokens)
+        logger.info('conll: "%s" -> %s', s, tokens)
+        ll = [t[2].lower() for t in tokens]
+        ref = [t[1] for t in tokens]
+    except Exception as e:
+        logger.exception('Failed to lemmatize "%s"', s)
+        ll = ref = s.split()
+        ll = [l.lower() for l in ll]
+        poss, dep = ['NONE'] * len(ll), '0'
+    return ll, ref, poss, dep
+
+lemmatize('checking')
