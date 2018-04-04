@@ -1296,10 +1296,10 @@ button.close:focus {
     display: none !important;
 }
 
-/*.listHide {
+.listHide {
     display: none;
     list-style: none;
-}*/
+}
 
 .listShow {
     display: block;
@@ -1339,7 +1339,7 @@ button.close:focus {
     color: #63B7E6;
 }
 
-.less {
+.more {
     display: none;
 }
 

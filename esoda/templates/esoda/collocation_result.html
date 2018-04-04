@@ -43,10 +43,10 @@
       {% if k == key %}
         <ul class="list-group">
           {% if value %}
-            <div class="panel-subheading">
+            <div class="panel-subheading click">
               <span class="panel-key">{{ key }}</span>
-<!--               <span class="list-btn more"><i class="fa fas fa-angle-down"></i></span>
-              <span class="list-btn less"><i class="fa fas fa-angle-up"></i></span> -->
+              <span class="list-btn less"><i class="fa fas fa-angle-up"></i></span>
+              <span class="list-btn more"><i class="fa fas fa-angle-down"></i></span>
             </div>
             {% for v in value %}
               <li class="list-group-item {% if v.type != 1 %}not-syn hidden{% endif %}"><a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
@@ -71,17 +71,17 @@
 </div>
 
 <script type="text/javascript">
-  // $('.click').click(function () {
-  //   $(this).parents('.list-group').children('.listExpand').toggleClass('listHide');
-  //   // $(this).parents('.list-group').children('.defalt-item').hide();
-  //   if ($(this).children('.less').css('display') == 'none') {
-  //     $(this).children('.more').hide();
-  //     $(this).children('.less').show();
-  //   } else {
-  //     $(this).children('.less').hide();
-  //     $(this).children('.more').show();
-  //   }
-  // });
+  $('.click').click(function () {
+    $(this).parents('.list-group').children('.list-group-item').toggleClass('listHide');
+    // $(this).parents('.list-group').children('.defalt-item').hide();
+    if ($(this).children('.less').css('display') == 'none') {
+      $(this).children('.more').hide();
+      $(this).children('.less').show();
+    } else {
+      $(this).children('.less').hide();
+      $(this).children('.more').show();
+    }
+  });
 
   $('.syn-filter').click(function() {
     $('.not-syn').toggleClass('hidden');
