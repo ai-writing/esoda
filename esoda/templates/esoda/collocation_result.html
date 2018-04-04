@@ -34,7 +34,9 @@
     <div>
       <span class="exchange-icon"><i class="fa fa-exchange"></i></span>
       <span class="colloc-heading">搭配替换</span>
-      <span class="synFilter">包含扩展词<input type="checkbox" class="syn-filter"></span>
+      {% if t_dt.0|cut:"*"|wordcount > 1 %}
+        <span class="synFilter">包含扩展词<input type="checkbox" class="syn-filter"></span>
+      {% endif %}
     </div>
 </div>
 <div class="colloc-result">
