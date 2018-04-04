@@ -43,7 +43,7 @@
   {% for k in t_list %}
     {% for key, value in syn_usage_dict.items %}
       {% if k == key %}
-        <ul class="list-group {% if t_dt.1 != '0' %}{% if k != '动词' and k != '宾语' and k != '介词' and k != '修饰'  and k != '被修饰词' and k != '主语' %}hidden{% endif %}{% endif %}">
+        <ul class="list-group {% if t_dt.0|cut:"*"|wordcount <= 1 %}{% if t_dt.1 != '0' %}{% if k != '动词' and k != '宾语' and k != '介词' and k != '修饰'  and k != '被修饰词' and k != '主语' %}hidden{% endif %}{% endif %}{% endif %}">
           {% if value %}
             <div class="panel-subheading click">
               <span class="panel-key">{{ key }}</span>
