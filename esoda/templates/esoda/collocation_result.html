@@ -35,7 +35,7 @@
         <span class="synFilter"><input type="checkbox" class="syn-filter">其他搭配</span>
       {% endif %}
     </div>
-    <p>
+    <p class="back-btn">
       <span class="exchange-icon"><i class="fa fa-undo"></i></span>
       <a href="#" class="colloc-usage" ref="{{ t_dt.0|cut:"*" }}" lemma="{{ t_dt.0|cut:"*" }}">
         {% if t_dt.1 == '0' %}
@@ -66,9 +66,9 @@
     {% for k in t_list %}
       {% for key, value in syn_usage_dict.items %}
         {% if k == key %}
-          <ul class="list-group
-
-                  {% if t_dt.0|cut:"*"|wordcount <= 1 %}{% if t_dt.1 != '0' %}{% if k != '动词' and k != '宾语' and k != '介词' and k != '修饰'  and k != '被修饰词' and k != '主语' %}hidden{% endif %}{% endif %}{% endif %}">
+          <ul class="list-group {% if t_dt.0|cut:"*"|wordcount <= 1 %}{% if t_dt.1 != '0' %}
+              {% if k != '动词' and k != '宾语' and k != '介词' and k != '修饰'  and k != '被修饰词' and k != '主语' %}hidden
+            {% endif %}{% endif %}{% endif %}">
             {% if value %}
               <div class="panel-subheading click">
                 <span class="panel-key">{{ key }}</span>
@@ -95,7 +95,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <script type="text/javascript">
@@ -109,10 +108,25 @@
     $('.not-syn').toggleClass('hidden');
   });
 
-  var str = document.getElementsByClassName('list-group')[0].innerText;
-  if (str.trim().length === 0) {
+  var len = document.getElementsByClassName('list-group').length;
+  var list = document.getElementsByClassName('list-group');
+  for (var i = 0; i < len; i++) {
+    if (list[i].innerText.trim().length != 0) {
+      $(".collocation-hint").hide();
+      break;
+    }
     $(".collocation-hint").show();
-  } else {
-    $(".collocation-hint").hide();
   }
+
+  $('.list-group-item').click(function (e) {
+    $('.exchange-icon').show();
+    $('.panel-category-heading .colloc-usage').css('margin', '0 0 0 5px');
+    $('.panel-category-heading .colloc-usage').css('position', 'absolute');
+  });
+
+  $('.back-btn').click(function (e) {
+    $('.exchange-icon').hide();
+    $('.panel-category-heading .colloc-usage').css('margin', '0 0 -8px 0');
+    $('.panel-category-heading .colloc-usage').css('position', 'relative');
+  });
 </script>
