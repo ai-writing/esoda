@@ -23,7 +23,7 @@ $(function () {
       $('#SentenceResult').fadeIn("fast");
       $('#SidebarAffix').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
-      var colNum = ($(".colList").width() > 500) ? 5 : 4;
+      var colNum = ($(".colList").width() > 600) ? 4 : 3;
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
       var exampleNum = Number($("#ExampleNumber").text());
@@ -36,7 +36,7 @@ $(function () {
   }
 
   $(window).resize(function () {
-    var colNum = ($(".colList").width() > 500) ? 5 : 4;
+    var colNum = ($(".colList").width() > 600) ? 4 : 3;
     $('.colList li').removeClass('second-row');
     $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
   });

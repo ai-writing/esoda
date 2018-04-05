@@ -58,7 +58,12 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 16px;
+        padding: 10px 16px 15px;
+    }
+
+    .panel-category-heading .colloc-usage {
+        margin-left: 5px;
+        position: absolute;
     }
 }
 
@@ -103,7 +108,12 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 16px;
+        padding: 10px 16px 15px;
+    }
+
+    .panel-category-heading .colloc-usage {
+        margin-left: 5px;
+        position: absolute;
     }
 }
 
@@ -461,7 +471,7 @@ a {
 
 .nav > li > a:hover {
     background-color: transparent;
-    color: #63B7e6;
+    color: #63B7e6 !important;
 }
 
 .navbar-index .nav-pills > li.active > a,
@@ -507,13 +517,17 @@ a {
 .navbar-default .navbar-nav > li > a:focus {
     outline: none;
     color: #63B7E6 !important;
-    background-color: #F8F8F8 !important;
-    height: 45px;
+    background-color: transparent !important;
+}
+
+.navbar-default .navbar-nav > li > a {
+    background-color: transparent !important;
 }
 
 .login, .dropdown, .dropup {
     font-size: 12px;
     margin-top: 14px;
+    height: 44px;
     float: right;
     /*font-family: PingFangSC-Regular;*/
 }
@@ -1449,9 +1463,19 @@ button.close:focus {
 
 .panel-category-heading .colloc-usage {
     /*font-family: Helvetica-Bold;*/
-    font-size: 16px;
+    font-size: 14px;
     color: #FFFFFF !important;
     font-family: Beirut;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    padding-top: 5px;
+}
+
+.panel-category-heading > p {
+    margin: 5px 0 0 !important;
 }
 
 .colloc-heading {
@@ -1460,8 +1484,12 @@ button.close:focus {
     color: #FFFFFF;
 }
 
+.exchange-icon .fa {
+    font-size: 12px;
+}
+
 .total-cnt {
-    margin-top: 3px;
+    margin-top: 4px;
     float: right;
     font-family: PingFangSC-Regular;
     font-size: 10px;
@@ -1473,6 +1501,7 @@ button.close:focus {
     text-align: justify;
     margin: 0 0px;
     background: #F4F7FA;
+    border-bottom: 0.5px solid rgba(0,0,0,0.05);
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05);
 }
 
@@ -1489,6 +1518,7 @@ button.close:focus {
 
 .syn-filter {
     cursor: pointer;
+    margin-right: 3px !important;
 }
 
 .synFilter {
@@ -1665,13 +1695,17 @@ button.close:focus {
     font-size: 10px;
     -webkit-transform: scale(0.8);
     line-height: 11px;
+    text-overflow: ellipsis;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .colloc-sub-btn {
     width: auto;
     height: 50px;
     /*margin-top: 5px;*/
-    margin-right: 28px !important;
+    margin-right: 25px !important;
     padding-left: 0px !important;
     padding-right: 0px !important;
     background-color: transparent !important;
