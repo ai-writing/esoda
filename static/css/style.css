@@ -1286,7 +1286,7 @@ button.close:focus {
 }
 
 #SidebarAffix .list-group-item:last-child {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .collocation-panel {

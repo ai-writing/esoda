@@ -67,12 +67,12 @@ $(function () {
     // if (e.stopPropagation) {    // standard
     //     e.stopPropagation();
     // }
-    $('#SentenceResult').fadeOut("fast");
-    $('#ExampleEnd').hide();
-    $('#SidebarAffix').fadeOut("fast");
     if ($(this).attr('aria-expanded') == 'true') {
       return;
     }
+    $('#SentenceResult').fadeOut("fast");
+    $('#ExampleEnd').hide();
+    $('#SidebarAffix').fadeOut("fast");
     var id = $(this).attr('href');
     var type = $(this).attr('type');
     var type0 = type.replace(/ \(.*\) /g, ' ');

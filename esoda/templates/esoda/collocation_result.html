@@ -62,7 +62,7 @@
       <span class="total-cnt">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
     </p>
   </div>
-  <div class="colloc-result">
+  <div class="colloc-result" id="Collocation">
     {% for k in t_list %}
       {% for key, value in syn_usage_dict.items %}
         {% if k == key %}
@@ -86,7 +86,7 @@
         {% endif %}
       {% endfor %}
     {% endfor %}
-    <div class="collocation-hint">
+    <div class="collocation-hint {% if hint %}hidden{% endif %}">
       <h3>暂无可替换搭配。</h3>
       <div class="hint-content">
         <p>温馨提示：</p>
@@ -107,16 +107,6 @@
   $('.syn-filter').click(function () {
     $('.not-syn').toggleClass('hidden');
   });
-
-  var len = document.getElementsByClassName('list-group').length;
-  var list = document.getElementsByClassName('list-group');
-  for (var i = 0; i < len; i++) {
-    if (list[i].innerText.trim().length != 0) {
-      $(".collocation-hint").hide();
-      break;
-    }
-    $(".collocation-hint").show();
-  }
 
   $('.list-group-item').click(function (e) {
     $('.exchange-icon').show();

@@ -187,8 +187,17 @@ def syn_usageList_view(request):
         syn_usage_dict[star] = syn_usage_dict['*']
         t_str = t_str.strip('* ')
 
+    hint = False
+    for k in t_list:
+        for key in syn_usage_dict.keys():
+            if k == key:
+                if syn_usage_dict[key]:
+                    hint = True
+                    break
+
     info['t_str'] = t_str
     info['syn_usage_dict'] = syn_usage_dict
+    info['hint'] = hint
     return render(request, 'esoda/collocation_result.html', info)
 
 
