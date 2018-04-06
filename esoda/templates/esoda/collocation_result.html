@@ -62,7 +62,7 @@
       <span class="total-cnt">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
     </p>
   </div>
-  <div class="colloc-result" id="Collocation">
+  <div class="colloc-result">
     {% for k in t_list %}
       {% for key, value in syn_usage_dict.items %}
         {% if k == key %}

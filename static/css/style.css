@@ -156,6 +156,10 @@ a {
     .panel-category-heading .colloc-usage {
         max-width: 130px !important;
     }
+
+    .list-btn2 {
+        padding-left: 15px !important;
+    }
 }
 
 @media (max-width: 767px) {
@@ -1281,13 +1285,17 @@ button.close:focus {
 
 #SidebarAffix .list-group-item {
     border-width: 0;
-    padding: 5px 15px;
+    padding: 10px 15px 0;
     text-align: justify;
 }
 
 #SidebarAffix .list-group-item:last-child {
     padding-bottom: 10px;
 }
+
+/*#SidebarAffix .list-group-item:first-child {*/
+    /*padding-top: 10px;*/
+/*}*/
 
 .collocation-panel {
     height: 90vh;
@@ -1334,7 +1342,7 @@ button.close:focus {
 
 .list-btn2 {
     padding-left: 30px;
-    padding-top: 15px;
+    padding-top: 11px;
     font-size: 20px;
     cursor: pointer;
 }
@@ -1489,7 +1497,7 @@ button.close:focus {
 }
 
 .panel-subheading {
-    padding: 6px 20px 2px 15px;
+    padding: 6px 20px 0px 15px;
     text-align: justify;
     margin: 0 0px;
     background: #F4F7FA;
@@ -1556,15 +1564,12 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding: 0px 10px 0px 7px;
+    padding: 0px 10px 0px 0px;
     font-size: 12px;
 }
 
 .panel-body {
-    padding-left: 7px;
-    padding-top: 0px;
-    padding-bottom: 5px;
-    padding-right: 7px;
+    padding: 0 0 5px 0;
 }
 
 .dictionary-container {
@@ -1655,10 +1660,7 @@ button.close:focus {
 }
 
 .nav-tabs-collocation {
-    padding: 5px;
-    /*margin-left: 10px;*/
-    margin-bottom: 0px;
-    margin-right: -30px;
+    margin: 0 -30px 0 5px;
 }
 
 /*.nav-tabs-collocation>li>a {
@@ -1785,7 +1787,7 @@ button.close:focus {
 
 #ExampleEnd > h4 {
     border-top: 1px solid #D3D3D3;
-    margin: -10px 7px 5px 7px;
+    margin: -10px 14px 5px 14px;
     padding-top: 20px;
 }
 
@@ -1847,8 +1849,8 @@ button.close:focus {
 }
 
 .example-box {
-    margin-left: 32px;
-    margin-right: 32px; 
+    margin-left: 39px;
+    margin-right: 39px;
     margin-bottom: 0px;
     /*border-top: 1px solid #D3D3D3;*/
     padding-bottom: 5px;
