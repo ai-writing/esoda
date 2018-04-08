@@ -18,8 +18,8 @@
   {% for example in exampleList %}
     <div class="result-example row {% if forloop.counter > 10 %}collapse{% endif %}"
          id="Example{{ forloop.counter }}">
-      <div class="col-xs-12" style="padding: 0px 0px;">
-        <div class="example-box">
+      <div class="col-xs-12" style="padding: 0px 0px 0px 0px;">
+        <div class="example-box {% if forloop.counter > 1 %}box-separate{% endif %}">
           <div class="panel-body">
             <!-- <div class="display-inline example-list-label">
               {{ forloop.counter }}.

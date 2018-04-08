@@ -6,9 +6,9 @@ html {
 }
 
 body {
-    font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC;
     /* Margin bottom by footer height */
     margin-bottom: 50px;
+    font-family: PingFangSC-Regular, Microsoft Yahei, HeitiSC, Helvetica-Bold;
 }
 
 a {
@@ -17,15 +17,8 @@ a {
     color: #2D557B;
 }
 
+
 @media (min-width: 1201px) {
-/*    .result-page > .container {
-        width: 950px;
-    }
-
-    .navbar-fixed-top > .container {
-        width: 950px;
-    }*/
-
     .container {
         width: 950px;
     }
@@ -57,7 +50,7 @@ a {
     }
 
     #ResultSearchBar {
-        margin-left: 35px;
+        margin-left: 33px;
     }
 
     .result-main {
@@ -65,7 +58,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 20px;
+        padding: 10px 16px 15px;
     }
 }
 
@@ -80,8 +73,12 @@ a {
 
     .navbar-brand {
         margin-top: 20px;
-        width: 200px;
+        width: 180px;
         margin-left: 5px;
+    }
+
+    #ResultSearchBar {
+        margin-left: 37px;
     }
 
     .navbar-brand > img {
@@ -97,17 +94,16 @@ a {
     }
 
     .result-main {
-        /*padding-right: 65px;*/
-        padding-left: 50px;
+        padding-left: 70px;
     }
     
     #SidebarAffix.affix {
         /*margin-left: 65px;*/
-        width: 180px;
+        width: 210px;
     }
 
     .panel-category-heading {
-        padding: 10px 15px;
+        padding: 10px 16px 15px;
     }
 }
 
@@ -124,6 +120,7 @@ a {
         margin-top: 20px;
         width: 170px;
         margin-left: 5px;
+        padding-top: 10px;
     }
 
     .navbar-brand > img {
@@ -153,7 +150,15 @@ a {
     }
 
     #ResultSearchBar {
-        margin-left: 15px;
+        margin-left: 17px;
+    }
+
+    .panel-category-heading .colloc-usage {
+        max-width: 130px !important;
+    }
+
+    .list-btn2 {
+        padding-left: 15px !important;
     }
 }
 
@@ -175,6 +180,7 @@ a {
         margin-top: 20px;
         width: 170px;
         margin-left: 5px;
+        padding-top: 10px;
     }
 
     .navbar-brand > img {
@@ -284,6 +290,7 @@ a {
     /*height: 50px;*/
     overflow: hidden;
     margin-left: 0px !important;
+    padding-left: 0px !important;
 }
 
 .navbar-brand > img {
@@ -458,7 +465,7 @@ a {
 
 .nav > li > a:hover {
     background-color: transparent;
-    color: #63B7e6;
+    color: #63B7e6 !important;
 }
 
 .navbar-index .nav-pills > li.active > a,
@@ -504,13 +511,17 @@ a {
 .navbar-default .navbar-nav > li > a:focus {
     outline: none;
     color: #63B7E6 !important;
-    background-color: #F8F8F8 !important;
-    height: 45px;
+    background-color: transparent !important;
+}
+
+.navbar-default .navbar-nav > li > a {
+    background-color: transparent !important;
 }
 
 .login, .dropdown, .dropup {
     font-size: 12px;
     margin-top: 14px;
+    height: 44px;
     float: right;
     /*font-family: PingFangSC-Regular;*/
 }
@@ -626,15 +637,19 @@ button.close:focus {
     width: 100%;
 }
 
-#RegisterFrom .btn-primary {
-    font-size: 16px;
-    padding: 10px 12px;
+#PasswordChangeForm .btn-primary {
+    font-size: 14px;
+    padding: 9px 21px 11px 21px;
     color: #fff;
-    border-bottom-left-radius: 25px;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 3px;
-    border-top-left-radius: 3px;
-    letter-spacing: 3px;
+    background: #42A5F5;
+    margin-top: 23px;
+}
+
+#RegisterFrom .btn-primary {
+    font-size: 14px;
+    padding: 9px 21px 11px 21px;
+    color: #fff;
+    background: #42A5F5;
 }
 
 .form-normal {
@@ -1247,7 +1262,7 @@ button.close:focus {
     /*background-color: #fff;*/
     background-color: #EEEFF1;
     padding-top: 70px;
-    padding-bottom: 40px;
+    padding-bottom: 0px;
 }
 
 #SidebarAffix {
@@ -1265,22 +1280,27 @@ button.close:focus {
 }
 
 #SidebarAffix .list-group{
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 #SidebarAffix .list-group-item {
     border-width: 0;
-    padding: 5px 15px;
+    padding: 10px 15px 0;
     text-align: justify;
 }
 
 #SidebarAffix .list-group-item:last-child {
-    padding-bottom: 3px;
+    padding-bottom: 10px;
 }
+
+/*#SidebarAffix .list-group-item:first-child {*/
+    /*padding-top: 10px;*/
+/*}*/
 
 .collocation-panel {
     height: 90vh;
-    background: #FBFCFC;
+    /*background: #FBFCFC;*/
+    background: #fff;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
 
@@ -1311,7 +1331,7 @@ button.close:focus {
 .result-main .CollapseColloc {
     /*width: 95%;*/
     background-color: #F1F7FD;
-    padding-left: 28px;
+    padding-left: 34px;
     box-shadow: 0 -3px 5px 0 rgba(15,42,66,0.05);
     display: none;
 }
@@ -1322,17 +1342,13 @@ button.close:focus {
 
 .list-btn2 {
     padding-left: 30px;
-    padding-top: 10px;
+    padding-top: 11px;
     font-size: 20px;
     cursor: pointer;
 }
 
 .list-btn:hover {
     color: #63B7E6;
-}
-
-.less {
-    display: none;
 }
 
 .click {
@@ -1434,8 +1450,8 @@ button.close:focus {
 
 .panel-category-heading {
     /*background-image: linear-gradient(90deg, #42A5F5 2%, #3082DE 100%);*/
-    /*background: #42A5F5;*/
-    background: #63B7E6;
+    background: #42A5F5;
+    /*background: #63B7E6;*/
     text-align: justify;
     font-family: PingFangSC-Semibold;
     font-size: 16px;
@@ -1445,9 +1461,21 @@ button.close:focus {
 
 .panel-category-heading .colloc-usage {
     /*font-family: Helvetica-Bold;*/
-    font-size: 16px;
+    font-size: 14px;
     color: #FFFFFF !important;
     font-family: Beirut;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    padding-top: 5px;
+    margin-left: 5px;
+    position: absolute;
+}
+
+.panel-category-heading > p {
+    margin: 5px 0 0 !important;
 }
 
 .colloc-heading {
@@ -1456,8 +1484,12 @@ button.close:focus {
     color: #FFFFFF;
 }
 
+.exchange-icon .fa {
+    font-size: 12px;
+}
+
 .total-cnt {
-    margin-top: 3px;
+    margin-top: 4px;
     float: right;
     font-family: PingFangSC-Regular;
     font-size: 10px;
@@ -1465,10 +1497,11 @@ button.close:focus {
 }
 
 .panel-subheading {
-    padding: 6px 20px 2px 15px;
+    padding: 6px 20px 0px 15px;
     text-align: justify;
     margin: 0 0px;
     background: #F4F7FA;
+    border-bottom: 0.5px solid rgba(0,0,0,0.05);
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05);
 }
 
@@ -1479,31 +1512,36 @@ button.close:focus {
     white-space:nowrap;
     text-overflow:ellipsis;
     width: 80%;
+    font-family: Helvetica-Bold;
+    color: #22415E;
+}
+
+.syn-filter {
+    cursor: pointer;
+    margin-right: 3px !important;
 }
 
 .synFilter {
     font-family: PingFangSC-Semibold;
-    font-size: 11px;
+    font-size: 7px;
     color: #FFFFFF;
-    /*color: #42A5F5;*/
-    border: 1px solid #FFFFFF;
+    /*border: 1px solid #FFFFFF;*/
     border-radius: 4px;
     padding-left: 3px;
     padding-right: 3px;
     margin-left: 3px;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
-/*.synFilter:focus, */
-.synFilter:hover {
+/*.synFilter:hover {
     color: #42A5F5;
     background-color: #fff;
-}
-
+}*/
+/*
 .synFiltered {
     color: #42A5F5;
     background-color: #fff;
-}
+}*/
 
 .panel-icon {
     margin-left: 0px;
@@ -1526,15 +1564,12 @@ button.close:focus {
 .panel-footer {
     border: none;
     background-color: #fff;
-    padding: 0px 10px 10px 10px;
+    padding: 0px 10px 0px 0px;
     font-size: 12px;
 }
 
 .panel-body {
-    padding-left: 7px;
-    padding-top: 0px;
-    padding-bottom: 5px;
-    padding-right: 7px;
+    padding: 0 0 5px 0;
 }
 
 .dictionary-container {
@@ -1625,10 +1660,7 @@ button.close:focus {
 }
 
 .nav-tabs-collocation {
-    padding: 5px;
-    /*margin-left: 10px;*/
-    margin-bottom: 0px;
-    margin-right: -30px;
+    margin: 0 -30px 0 5px;
 }
 
 /*.nav-tabs-collocation>li>a {
@@ -1650,10 +1682,6 @@ button.close:focus {
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
-    /*color: #fff;*/
-    /*background: #42A5F5;*/
-    /*padding-top: 5px;*/
-    /*margin-top: 5px;*/
     margin-bottom: 0px;
 }
 
@@ -1661,13 +1689,17 @@ button.close:focus {
     font-size: 10px;
     -webkit-transform: scale(0.8);
     line-height: 11px;
+    text-overflow: ellipsis;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .colloc-sub-btn {
     width: auto;
     height: 50px;
     /*margin-top: 5px;*/
-    margin-right: 28px !important;
+    margin-right: 25px !important;
     padding-left: 0px !important;
     padding-right: 0px !important;
     background-color: transparent !important;
@@ -1747,9 +1779,20 @@ button.close:focus {
 }
 
 #ExampleEnd {
-    border-top: 1px solid #979797;
     color: #9b9b9b;
     display: none;
+    margin-top: -43px;
+    background-color: #fff;
+}
+
+#ExampleEnd > h4 {
+    border-top: 1px solid #D3D3D3;
+    margin: -10px 14px 5px 14px;
+    padding-top: 20px;
+}
+
+#ExampleEnd > p {
+    font-size: 10px;
 }
 
 #Synonymous > span {
@@ -1759,7 +1802,8 @@ button.close:focus {
 .colloc-result {
     margin: 0px 0px 5px 0px;
     padding: 0px 0px 0px 0px;
-    max-height: 570px;
+    /*max-height: 570px;*/
+    max-height: 70vh;
 }
 
 .pagination > li > a {
@@ -1805,12 +1849,16 @@ button.close:focus {
 }
 
 .example-box {
-    margin-left: 32px;
-    margin-right: 32px; 
+    margin-left: 39px;
+    margin-right: 39px;
     margin-bottom: 0px;
-    border-bottom: 1px solid #D3D3D3;
-    padding-bottom: 0px;
-    padding-top: 15px;
+    /*border-top: 1px solid #D3D3D3;*/
+    padding-bottom: 5px;
+    padding-top: 14px;
+}
+
+.box-separate {
+    border-top: 1px solid #D3D3D3;
 }
 
 .example-hint {
@@ -1991,13 +2039,9 @@ button.close:focus {
 }
 
 .form-text {
-    font-size: 12px;
-    color: #4a4a4a;
-    margin-top: 5px;
-}
-
-.personal-changepassword {
-    padding-top: 10px;
+    font-size: 14px;
+    color: #404040;
+    margin-top: 26px;
 }
 
 #submit-changepassword {
@@ -2170,4 +2214,26 @@ button.close:focus {
 .signup-page h4 {
     padding-top: 30px;
     color: #63b7e6;
+}
+
+.signup-title {
+    font-family: PingFangSC-Medium;
+    font-size: 20px;
+    color: #42A5F5;
+    padding-bottom: 12px;
+}
+
+.personal-subtitle {
+    color: #C0C0C0;
+}
+
+.signup-page a {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #42A5F5;
+    line-height: 20px;
+}
+
+.agreement {
+    margin-left: 6px;
 }
