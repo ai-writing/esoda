@@ -19,7 +19,7 @@ def synonyms(word, score = 0, pos = None, exp = None, max_count = None):
         l = []
         meanings = entry['meaning'] if entry.get('meaning') else entry['meaning_former']
         for m in meanings:
-            if pos == None or (m['pos'] in POS2POS and pos in POS2POS[m['pos']]):
+            if pos == None or (m['pos'] in POS2POS and pos in POS2POS[m['pos']]) or pos == 'NONE':
                 l.extend([(syn['w'], syn['s']) for syn in m['syn'] if (syn['s'] >= score and len(syn['w'].split()) < 2)]) # syn must be a word not a phrase for now
         # l.sort(cmp = lambda (w1, s1), (w2, s2): cmp(s1, s2), reverse = False)
         l = sorted(dict(l).iteritems(), key= lambda x: x[1], reverse=True)
