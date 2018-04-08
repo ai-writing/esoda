@@ -86,7 +86,7 @@ def process_conll_file(text):
         if is_esl_dep(t['dt'], td, t):
             dep = convert_dep(t['dt'], td, t)['dt']
         del t['dt'], t['di']
-    poss = [t['pt'] for t in tokens]
+    poss = [t['pt'] if t['pt'] else 'NONE' for t in tokens]
     dep = dep if len(text) < 3 else '0'
     return poss, dep
 
