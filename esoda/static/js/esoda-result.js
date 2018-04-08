@@ -23,6 +23,7 @@ $(function () {
       $('#SentenceResult').fadeIn("fast");
       $('#SidebarAffix').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
+      $("#Loadbox").fadeIn("fast");
       var colNum = ($(".colList").width() > 600) ? 4 : 3;
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
