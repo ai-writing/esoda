@@ -1302,7 +1302,7 @@ button.close:focus {
 }
 
 .collocation-panel {
-    height: 100vh;
+    height: calc(100vh - 70px);
     /*background: #FBFCFC;*/
     background: #fff;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
@@ -1814,7 +1814,7 @@ button.close:focus {
     margin: 0px 0px 5px 0px;
     padding: 0px 0px 0px 0px;
     /*max-height: 570px;*/
-    max-height: 70vh;
+    max-height: calc(100vh - 200px);
 }
 
 .pagination > li > a {

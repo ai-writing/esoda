@@ -29,7 +29,7 @@ $(function () {
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
       var exampleNum = Number($("#ExampleNumber").text());
       if (exampleNum <= 10 && exampleNum > 0) {
-        $('#ExampleEnd').show();
+        $('#ExampleEnd').fadeIn("fast");
         loaded = 1;
       }
       loading = 0;
@@ -72,8 +72,9 @@ $(function () {
       return;
     }
     $('#SentenceResult').fadeOut("fast");
-    $('#ExampleEnd').hide();
+    $('#ExampleEnd').fadeOut("fast");
     $('#SidebarAffix').fadeOut("fast");
+    $("#Loadbox").fadeOut("fast");
     var id = $(this).attr('href');
     var type = $(this).attr('type');
     var type0 = type.replace(/ \(.*\) /g, ' ');
@@ -112,9 +113,10 @@ $(function () {
   $('.CollapseColloc').on('click', '.colloc-usage', function (e) {
     e.preventDefault();
     if ($(this).attr('state') == 'selected') return;
-    $("#ExampleEnd").hide();
-    $('#ManualLoad').hide();
+    $("#ExampleEnd").fadeOut("fast");
+    $('#ManualLoad').fadeOut("fast");
     $('#SentenceResult').fadeOut("fast");
+    $("#Loadbox").fadeOut("fast");
     // $('#SentenceResult').animate({opacity: 0}, function () {
     //   if (loading) $('#Loading').show();
     // });
