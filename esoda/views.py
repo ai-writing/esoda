@@ -326,11 +326,13 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         else:
             dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
             cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
+        flag = qt.index('*') if '*' in qt else -1
         clist.append({
             'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
             'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
             't_dt' : (list(qt), str(j % 4 + 1)),
-            'count' : cnt
+            'count' : cnt,
+            'flag': (flag, str(j % 4 + 1))
             # 'usageList': [],
         })
 
@@ -349,7 +351,7 @@ def collocation_list(t, ref, poss, dep, dbs, cids):
         ref.append('*')
     for i in range(len(t) - 1):
         get_collocations(clist, t, ref, i, dbs, cids)
-    newlist, flag = get_defaulteColl(head, dep, clist)
+    newlist, flag = get_defaulteColl(head, poss, dep, clist)
     return newlist, flag
 
 

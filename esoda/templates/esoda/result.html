@@ -60,7 +60,6 @@
                     <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
                          {% if forloop.counter == r.collocationList.index %} id="first"{% endif %}
                            data-toggle="tab" data="{{ collocation.t_dt.0 }}" type="{{ collocation.type }}">
-{#                    <div class="tab-text">#}
                         {% if collocation.t_dt.1 == '0' %}全部例句
                           <p>{% for word in collocation.t_dt.0 %}{{ word|cut:"*" }} {% endfor %}</p>
                         {% elif collocation.t_dt.1 == '1' %}主谓例句
@@ -88,7 +87,6 @@
                             {% else %}{{ word|cut:"*" }} {% endif %}
                           {% endfor %}</p>
                         {% endif %}
-{#                    </div>#}
                     </a>
                   </li>
                 {% endfor %}
@@ -110,14 +108,8 @@
             </div>
 
             <div id="Loadbox" class="result-table-cell center-align">
-              <span id="ManualLoad">点击加载更多</span>
+              <p id="ManualLoad">点击加载更多</p>
             </div>
-
-            <div id="ExampleEnd" class="result-table-cell center-align">
-              <h4>您已浏览完全部结果</h4>
-              <p>已为您合并相似的10条结果</p>
-            </div>
-
             <div class="fix-right-xs">
               <div id="Feedback" class="affix feedback-affix" data-spy="affix">
                 <div class="btn feedback" data-toggle="modal" data-target="#FeedbackModal">反馈</div>
