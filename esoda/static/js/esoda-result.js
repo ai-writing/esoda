@@ -4,6 +4,7 @@
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
 var REF, POSS, SENTENCES_URL, COLLOCATION_URL;
+// var dep_count = 0, sen_count = 0;
 // var keyword = window.location.search;
 
 $(function () {
@@ -28,6 +29,7 @@ $(function () {
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
       var exampleNum = Number($("#ExampleNumber").text());
+      dep_count = $(".colloc-usage[state='selected']").next().text();
       if (exampleNum <= 10 && exampleNum > 0) {
         $('#ExampleEnd').fadeIn("fast");
         loaded = 1;
