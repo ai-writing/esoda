@@ -57,7 +57,6 @@
             {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 介词
             {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
         {% endif %}
-        {# {{ type }} #}
       </a>
       <span class="total-cnt">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
     </p>
@@ -75,6 +74,7 @@
                 <span class="list-btn"><i class="fa fas fa-angle-up"></i></span>
                 <div style="clear:both"></div>
               </div>
+              <div class="panel-collapse-body" style="max-height: calc(((100vh - 190px) / {{ hint }}) - 35px)">
               {% for v in value %}
                 <li class="list-group-item
                         {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %}">
@@ -82,6 +82,7 @@
                     <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
                     {% else %}({{ v.count }}){% endif %}</span></a></li>
               {% endfor %}
+              </div>
             {% endif %}
           </ul>
         {% endif %}
@@ -100,7 +101,7 @@
 
 <script type="text/javascript">
   $('.click').click(function () {
-    $(this).parents('.list-group').children('.list-group-item').toggleClass('listHide');
+    $(this).parents('.list-group').children('.panel-collapse-body').toggleClass('listHide');
     $(this).children('.list-btn').children('i').toggleClass('fa-angle-up');
     $(this).children('.list-btn').children('i').toggleClass('fa-angle-down');
   });

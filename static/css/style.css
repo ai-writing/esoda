@@ -253,14 +253,16 @@ a {
 
 .footer {
     position: absolute;
-    bottom: 0;
     width: 100%;
     /* Fixed height for body margin */
-    min-height: 50px;
+    height: 50px;
+    bottom: 0;
+    overflow: hidden;
     /*background: white;*/
     color: #9b9b9b;
     font-size: 18px;
-    padding-top: 10px;
+    line-height: 40px;
+    padding-top: 5px;
     z-index: 1000;
     background: #EBEBEB;
     border-top: 1px solid #CACACA;
@@ -1246,7 +1248,7 @@ button.close:focus {
 
 #Loading, #Loading2 {
     display: none;
-    margin-top: -20px;
+    margin-top: 2px;
     padding-bottom: 15px;
     background-color: #fff;
 }
@@ -1254,12 +1256,11 @@ button.close:focus {
 #Loading > p,
 #Loading2 > p {
     border-top: 1px solid #D3D3D3;
-    margin: -10px 14px 5px 14px;
+    margin: -9px 14px 5px 14px;
     padding-top: 20px;
 }
 
 #ManualLoad {
-    display: none;
     color: #9b9b9b;
     cursor: pointer;
     height: 40px;
@@ -1779,13 +1780,13 @@ button.close:focus {
 #ExampleEnd {
     color: #9b9b9b;
     display: none;
-    margin-top: -30px;
+    margin-top: 0;
     background-color: #fff;
 }
 
 #ExampleEnd > h4 {
     border-top: 1px solid #D3D3D3;
-    margin: -10px 14px 5px 14px;
+    margin: -7px 14px 5px 14px;
     padding-top: 20px;
 }
 
@@ -1798,23 +1799,22 @@ button.close:focus {
 }
 
 #Loadbox {
-    display: none;
-    margin-top: -20px;
+    margin-top: 2px;
     padding-bottom: 16px;
     background-color: #fff;
+    display: none;
 }
 
 #Loadbox > p {
     border-top: 1px solid #D3D3D3;
-    margin: -10px 14px 5px 14px;
+    margin: -9px 14px 5px 14px;
     padding-top: 21px;
 }
 
 .colloc-result {
     margin: 0px 0px 5px 0px;
     padding: 0px 0px 0px 0px;
-    /*max-height: 570px;*/
-    max-height: calc(100vh - 200px);
+    /*max-height: calc(100vh - 200px);*/
 }
 
 .pagination > li > a {
@@ -1859,6 +1859,10 @@ button.close:focus {
     border-radius: 0px;
 }
 
+.panel-group {
+    margin-bottom: -3px;
+}
+
 .example-box {
     margin-left: 39px;
     margin-right: 39px;
@@ -1879,7 +1883,7 @@ button.close:focus {
 
 .error-hint {
     background-color: #fff;
-    height: 693px;
+    height: calc(100vh - 170px);
     color: #666;
     padding-top: 10px;
 }
@@ -1961,7 +1965,7 @@ button.close:focus {
 }
 
 .back-to-top-affix.affix {
-    bottom: 65px;
+    bottom: 70px;
     right: 10px;
 }
 

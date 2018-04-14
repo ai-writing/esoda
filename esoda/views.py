@@ -180,34 +180,33 @@ def syn_usageList_view(request):
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
 
     t_list, star = star2collocation(t, dt)
-    t_str = ' '.join(t)
     if expand:
         t_list = expand
     info = {
         't_list': t_list,
         'count': ttcnt,
-        'type': ' '.join(t_list),
         'syn_dict': {},
         't_dt': (' '.join(t), dt)
     }
 
     syn_usage_dict = {}
+    count = 0
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
+        if tt != '*':
+            count += 1
 
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
-        t_str = t_str.strip('* ')
 
-    hint = False
+    hint = 0
     for k in t_list:
         for key in syn_usage_dict.keys():
             if k == key:
                 if syn_usage_dict[key]:
-                    hint = True
-                    break
+                    if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰', '被修饰词', '主语']:
+                        hint += 1
 
-    info['t_str'] = t_str
     info['syn_usage_dict'] = syn_usage_dict
     info['hint'] = hint
     return render(request, 'esoda/collocation_result.html', info)
