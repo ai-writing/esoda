@@ -65,7 +65,7 @@
                   <li class="second-row" role="presentation">
                     <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
                          {% if forloop.counter == r.collocationList.index %} id="first"{% endif %}
-                           data-toggle="tab" data="{{ collocation.t_dt.0 }}" type="{{ collocation.type }} " expand = "{{ expand }}">
+                           data-toggle="tab" data="{{ collocation.t_dt.0 }}" type="{{ collocation.type }}" expand="{{ expand }}">
                         {% if collocation.t_dt.1 == '0' %}全部例句
                           <p>{% for word in collocation.t_dt.0 %}{{ word|cut:"*" }} {% endfor %}</p>
                         {% elif collocation.t_dt.1 == '1' %}主谓例句

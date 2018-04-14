@@ -72,7 +72,7 @@ def esoda_view(request):
     # With query - render result.html
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
-    q, ques, aste= refine_query(q)# ques(aste) is the place of question mark(asterisk)
+    q, ques, aste = refine_query(q)# ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q)
     expand = []
     asteList = []
