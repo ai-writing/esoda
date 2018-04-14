@@ -1686,9 +1686,9 @@ button.close:focus {
 .colloc-sub-btn > p {
     font-size: 10px;
     -webkit-transform: scale(0.8);
-    line-height: 11px;
+    line-height: 15px;
     text-overflow: ellipsis;
-    max-width: 120px;
+    max-width: 130px;
     white-space: nowrap;
     overflow: hidden;
 }

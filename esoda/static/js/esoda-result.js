@@ -82,6 +82,7 @@ $(function () {
     var type0 = type.replace(/ \(.*\) /g, ' ');
     var i, dt;
     var ref = [];
+    var expand = $(this).attr('expand');
     for (i = 0; i < type.split(' ').length; i++) {
       if (type.split(' ')[i] != type0.split(' ')[i]) break;
     }
@@ -100,7 +101,7 @@ $(function () {
     // });
     // $('#ManualLoad').hide();
     // $("#ExampleEnd").hide();
-    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS}, function (data) {
+    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}, function (data) {
       $(id).html(data);
       $(id + ' .colloc-result').mCustomScrollbar({
         theme: 'dark',

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 import logging
 import time
 import re
+import ast
 
 from .utils import *
 from .youdao_query import youdao_suggest, suggest_new
@@ -71,8 +72,14 @@ def esoda_view(request):
     # With query - render result.html
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
-    q = refine_query(q)
+    q, ques, aste= refine_query(q)# ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q)
+    expand = []
+    asteList = []
+    for i in ques:
+        expand.append(qt[i])
+    for i in aste:
+        asteList.append(qt[i])
     
     r = {
         'domain': u'人机交互',
@@ -117,6 +124,7 @@ def esoda_view(request):
         'suggestion': suggestion,
         'dictionary': trans,
         'cids': cids,
+        'expand': expand
     }
 
     request.session.save()
@@ -153,6 +161,8 @@ def syn_usageList_view(request):
     # }
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
+    expand = request.GET.get('expand', '')
+    expand = ast.literal_eval(expand)
     if not ref:
         ref = t
     i = int(request.GET.get('i', '0'))
@@ -171,6 +181,8 @@ def syn_usageList_view(request):
 
     t_list, star = star2collocation(t, dt)
     t_str = ' '.join(t)
+    if expand:
+        t_list = expand
     info = {
         't_list': t_list,
         'count': ttcnt,
