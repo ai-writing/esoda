@@ -1505,7 +1505,8 @@ button.close:focus {
     padding: 6px 20px 6px 15px;
     text-align: justify;
     margin: 0 0px;
-    background: #F4F7FA;
+    /*background: #F4F7FA;*/
+    background-color: #F1F7FD;
     border-bottom: 0.5px solid rgba(0,0,0,0.05);
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05);
 }
