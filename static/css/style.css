@@ -1533,16 +1533,6 @@ button.close:focus {
     /*cursor: pointer;*/
 }
 
-/*.synFilter:hover {
-    color: #42A5F5;
-    background-color: #fff;
-}*/
-/*
-.synFiltered {
-    color: #42A5F5;
-    background-color: #fff;
-}*/
-
 .panel-icon {
     margin-left: 0px;
     vertical-align: middle;

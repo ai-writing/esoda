@@ -70,7 +70,7 @@
             {% endif %}{% endif %}{% endif %}">
             {% if value %}
               <div class="panel-subheading click">
-                <span class="panel-key">{{ key }}</span>
+                <span class="panel-key {% for v in value %}{% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type == 1 %}not-empty {% else %}panel-key2 {% endif %}{% endif %}{% endfor %}">{{ key }}</span>
                 <span class="list-btn"><i class="fa fas fa-angle-up"></i></span>
                 <div style="clear:both"></div>
               </div>
@@ -109,6 +109,15 @@
   $('.syn-filter').click(function () {
     $('.not-syn').toggleClass('hidden');
   });
+
+  if($('.panel-key2').length > $('.not-empty').length) {
+    $('.syn-filter').click();
+    $('.panel-key').removeClass('not-empty');
+    $('.panel-key').removeClass('panel-key2');
+  } else {
+    $('.panel-key').removeClass('not-empty');
+    $('.panel-key').removeClass('panel-key2');
+  }
 
   $('.list-group-item').click(function (e) {
     $('.exchange-icon').show();
