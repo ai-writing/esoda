@@ -79,7 +79,7 @@
               <div class="panel-collapse-body" style="max-height: calc(((100vh - 190px) / {{ hint }}) - 35px)">
               {% for v in value %}
                 <li class="list-group-item
-                        {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %}">
+                        {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %} {% if t_dt.0|cut:"*"|wordcount == 1 %}{% if v.type != 1 %}single-extend{% endif %}{% endif %}">
                   <a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                     <span class="usage-count" count = "{{v.count}}">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
                     {% else %}({{ v.count }}){% endif %}</span></a>

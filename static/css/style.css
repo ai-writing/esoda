@@ -235,6 +235,10 @@ a {
     #navbar.navbar-collapse {
         background-color: rgba(255, 255, 255, 0.9);
     }
+
+    .footer {
+        overflow: hidden;
+    }
 }
 
 #SearchBox {
@@ -257,8 +261,7 @@ a {
     /* Fixed height for body margin */
     height: 50px;
     bottom: 0;
-    overflow: hidden;
-    /*background: white;*/
+    /*overflow: hidden;*/
     color: #9b9b9b;
     font-size: 18px;
     line-height: 40px;
@@ -466,7 +469,7 @@ a {
 
 .nav > li > a:hover {
     background-color: transparent;
-    color: #63B7e6 !important;
+    /*color: #63B7e6 !important;*/
 }
 
 .nav > li > a:focus {
@@ -1315,7 +1318,7 @@ button.close:focus {
 }
 
 #SidebarAffix .list-group-item:last-child {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 .collocation-panel {
