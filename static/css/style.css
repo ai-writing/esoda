@@ -103,7 +103,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 16px 15px;
+        padding: 10px 16px 10px;
     }
 }
 
@@ -467,6 +467,11 @@ a {
 .nav > li > a:hover {
     background-color: transparent;
     color: #63B7e6 !important;
+}
+
+.nav > li > a:focus {
+    background-color: transparent;
+    outline: none;
 }
 
 .navbar-index .nav-pills > li.active > a,
@@ -1465,10 +1470,12 @@ button.close:focus {
 }
 
 .panel-category-heading .colloc-usage {
-    /*font-family: Helvetica-Bold;*/
     font-size: 14px;
     color: #FFFFFF !important;
     font-family: Beirut;
+}
+
+.colloc-usage-header {
     max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1479,14 +1486,14 @@ button.close:focus {
     position: absolute;
 }
 
-.panel-category-heading > p {
-    margin: 5px 0 0 !important;
-}
-
 .colloc-heading {
     font-family: PingFangSC-Medium;
     font-size: 16px;
     color: #FFFFFF;
+}
+
+.back-btn {
+    margin: 5px 0 0 !important;
 }
 
 .exchange-icon .fa {
