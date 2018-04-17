@@ -37,7 +37,7 @@
     </div>
     <p class="back-btn">
       <span class="exchange-icon"><i class="fa fa-undo"></i></span>
-      <a href="#" class="colloc-usage" ref="{{ t_dt.0|cut:"*" }}" lemma="{{ t_dt.0|cut:"*" }}">
+      <a href="#" class="colloc-usage" ref="{{ lemma }}" lemma="{{ lemma }}">
         {% if t_dt.1 == '0' %}
           {{ t_dt.0|cut:"*" }}
         {% elif t_dt.1 == '1' %}
@@ -57,9 +57,7 @@
             {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 介词
             {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
         {% endif %}
-        {# {{ type }} #}
-      </a>
-      <span class="total-cnt">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
+        <span class="total-cnt" count = "{{count}}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span></a>
     </p>
   </div>
   <div class="colloc-result">
@@ -71,17 +69,19 @@
             {% endif %}{% endif %}{% endif %}">
             {% if value %}
               <div class="panel-subheading click">
-                <span class="panel-key">{{ key }}</span>
+                <span class="panel-key {% for v in value %}{% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type == 1 %}not-empty {% else %}panel-key2 {% endif %}{% endif %}{% endfor %}">{{ key }}</span>
                 <span class="list-btn"><i class="fa fas fa-angle-up"></i></span>
                 <div style="clear:both"></div>
               </div>
+              <div class="panel-collapse-body" style="max-height: calc(((100vh - 190px) / {{ hint }}) - 35px)">
               {% for v in value %}
                 <li class="list-group-item
                         {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %}">
                   <a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-                    <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                    {% else %}({{ v.count }}){% endif %}</span></a></li>
+                    <span class="usage-count" count = "{{v.count}}">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                    {% else %}({{ v.count }}){% endif %}</span></li>
               {% endfor %}
+              </div>
             {% endif %}
           </ul>
         {% endif %}
@@ -100,7 +100,7 @@
 
 <script type="text/javascript">
   $('.click').click(function () {
-    $(this).parents('.list-group').children('.list-group-item').toggleClass('listHide');
+    $(this).parents('.list-group').children('.panel-collapse-body').toggleClass('listHide');
     $(this).children('.list-btn').children('i').toggleClass('fa-angle-up');
     $(this).children('.list-btn').children('i').toggleClass('fa-angle-down');
   });
@@ -108,6 +108,15 @@
   $('.syn-filter').click(function () {
     $('.not-syn').toggleClass('hidden');
   });
+
+  if($('.panel-key2').length > $('.not-empty').length) {
+    $('.syn-filter').click();
+    $('.panel-key').removeClass('not-empty');
+    $('.panel-key').removeClass('panel-key2');
+  } else {
+    $('.panel-key').removeClass('not-empty');
+    $('.panel-key').removeClass('panel-key2');
+  }
 
   $('.list-group-item').click(function (e) {
     $('.exchange-icon').show();

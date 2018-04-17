@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 import logging
 import time
 import re
+import ast
 
 from .utils import *
 from .youdao_query import youdao_suggest, suggest_new
@@ -71,8 +72,14 @@ def esoda_view(request):
     # With query - render result.html
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
-    q = refine_query(q)
+    q, ques, aste= refine_query(q)# ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q)
+    expand = []
+    asteList = []
+    for i in ques:
+        expand.append(qt[i])
+    for i in aste:
+        asteList.append(qt[i])
     
     r = {
         'domain': u'人机交互',
@@ -117,6 +124,7 @@ def esoda_view(request):
         'suggestion': suggestion,
         'dictionary': trans,
         'cids': cids,
+        'expand': expand
     }
 
     request.session.save()
@@ -153,6 +161,8 @@ def syn_usageList_view(request):
     # }
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
+    expand = request.GET.get('expand', '')
+    expand = ast.literal_eval(expand)
     if not ref:
         ref = t
     i = int(request.GET.get('i', '0'))
@@ -170,32 +180,36 @@ def syn_usageList_view(request):
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
 
     t_list, star = star2collocation(t, dt)
-    t_str = ' '.join(t)
+    if expand:
+        t_list = expand
     info = {
         't_list': t_list,
         'count': ttcnt,
-        'type': ' '.join(t_list),
         'syn_dict': {},
-        't_dt': (' '.join(t), dt)
+        't_dt': (' '.join(t), dt),
+        'lemma': ' '.join(t)
     }
 
     syn_usage_dict = {}
+    count = 0
     for tt in t:
         syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
+        if tt != '*':
+            count += 1
 
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
-        t_str = t_str.strip('* ')
+        if usage_dict.get('*'):
+            info['lemma'] = usage_dict['*'][0]['lemma']
 
-    hint = False
+    hint = 0
     for k in t_list:
         for key in syn_usage_dict.keys():
             if k == key:
                 if syn_usage_dict[key]:
-                    hint = True
-                    break
+                    if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰', '被修饰词', '主语']:
+                        hint += 1
 
-    info['t_str'] = t_str
     info['syn_usage_dict'] = syn_usage_dict
     info['hint'] = hint
     return render(request, 'esoda/collocation_result.html', info)
@@ -208,6 +222,7 @@ def sentence_view(request):
         ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
+    dep_count = request.GET.get('dep_count', '0')
     dbs, cids = get_cids(request.user)
     if len(t) == 1:
         dt = '0'
@@ -215,7 +230,8 @@ def sentence_view(request):
     info = {
         'example_number': len(sr['sentence']),
         'search_time': sr['time'],
-        'exampleList': sr['sentence']
+        'exampleList': sr['sentence'],
+        'similar_sen': abs(int(dep_count) - len(sr['sentence']))
     }
     return render(request, 'esoda/sentence_result.html', info)
 

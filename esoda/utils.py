@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 DEPS_VIEW = {u'(主谓) *': u' + 动词', u'* (主谓)': u'主语 + ', u'(动宾) *': u' + 宾语', u'* (动宾)': u'动词 + ',
     u'(修饰) *': u' + 被修饰词', u'* (修饰)': u'修饰 + ', u'(介词) *': u' + 介词', u'* (介词)': u'介词 + '}
-EN_PUNC = string.punctuation
+EN_PUNC = """!"#$%&'()+,-./:;<=>@[\]^_`{|}~"""
 CH_PUNC = u'《》（）&%￥#@！{}【】'
 PUNC = EN_PUNC + CH_PUNC
 TRANS_TABLE = dict((ord(c), u' ') for c in PUNC)
@@ -101,11 +101,20 @@ def displayed_lemma(ref, lemma):
 
 def refine_query(q):
     # Note the difference between str.translate and unicode.translate
+    ques = []
+    aste = []
     r = q.translate(TRANS_TABLE).strip()
     r = re.sub(' +', ' ', r)
+    wList = r.split()
+    for i in range(len(wList)):
+        if wList[i].endswith('?'):
+            ques.append(i)
+        elif wList[i].endswith('*'):
+            aste.append(i)
+    r = re.sub('\?|\*', '', r)
     if r != q:
         logger.info('refine_query: "%s" -> %s', q, r)
-    return r
+    return r, ques, aste
 
 
 def convert_type2title(rr):

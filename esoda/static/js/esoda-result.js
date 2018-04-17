@@ -4,7 +4,6 @@
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
 var REF, POSS, SENTENCES_URL, COLLOCATION_URL;
-// var dep_count = 0, sen_count = 0;
 // var keyword = window.location.search;
 
 $(function () {
@@ -17,29 +16,37 @@ $(function () {
     loadCount = 1;
     loading = 1;
     loaded = 0;
+    params['dep_count'] = $(".colloc-usage[state='selected']").children().attr('count');
     $.get(SENTENCES_URL, params, function (data) {
       $('#Loading').hide();
-      $('#ManualLoad').hide();
       $('#SentenceResult').html(data);
       $('#SentenceResult').fadeIn("fast");
       $('#SidebarAffix').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
-      $("#Loadbox").fadeIn("fast");
-      var colNum = ($(".colList").width() > 600) ? 4 : 3;
+      var colNum = 3;
+      // var colNum = ($(".colList").width() > 600) ? 4 : 3;
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
       var exampleNum = Number($("#ExampleNumber").text());
-      dep_count = $(".colloc-usage[state='selected']").next().text();
-      if (exampleNum <= 10 && exampleNum > 0) {
+      if (exampleNum === 0) {
+        $('#Loadbox').hide();
+      }
+      else if (exampleNum <= 10 && exampleNum > 0) {
+        console.log(exampleNum);
+        $('#Loadbox').hide();
         $('#ExampleEnd').fadeIn("fast");
         loaded = 1;
+      }
+      else {
+        $("#Loadbox").fadeIn("fast");
       }
       loading = 0;
     });
   }
 
   $(window).resize(function () {
-    var colNum = ($(".colList").width() > 600) ? 4 : 3;
+    var colNum = 3;
+    // var colNum = ($(".colList").width() > 600) ? 4 : 3;
     $('.colList li').removeClass('second-row');
     $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
   });
@@ -82,6 +89,7 @@ $(function () {
     var type0 = type.replace(/ \(.*\) /g, ' ');
     var i, dt;
     var ref = [];
+    var expand = $(this).attr('expand');
     for (i = 0; i < type.split(' ').length; i++) {
       if (type.split(' ')[i] != type0.split(' ')[i]) break;
     }
@@ -100,9 +108,9 @@ $(function () {
     // });
     // $('#ManualLoad').hide();
     // $("#ExampleEnd").hide();
-    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS}, function (data) {
+    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}, function (data) {
       $(id).html(data);
-      $(id + ' .colloc-result').mCustomScrollbar({
+      $(id + ' .panel-collapse-body').mCustomScrollbar({
         theme: 'dark',
         scrollInertia: 0,
         mouseWheel: {preventDefault: true},
@@ -116,7 +124,6 @@ $(function () {
     e.preventDefault();
     if ($(this).attr('state') == 'selected') return;
     $("#ExampleEnd").fadeOut("fast");
-    $('#ManualLoad').fadeOut("fast");
     $('#SentenceResult').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
     // $('#SentenceResult').animate({opacity: 0}, function () {
@@ -164,6 +171,7 @@ $(function () {
       loading = 0;
       if (i > total || loadCount >= 5) {
         loaded = 1;
+        $("#Loadbox").hide();
         $("#ExampleEnd").show();
         return;
       }
@@ -193,25 +201,25 @@ $(function () {
     return false;
   });
 
-  $("#BackToTopAffix").affix({
-    offset: {
-      top: 0,
-      bottom: function () {
-        // TODO: fix position bugs on change of window length
-        return $(".footer").outerHeight(true) + 20;
-      }
-    }
-  });
-
-  $("#Feedback").affix({
-    offset: {
-      top: 0,
-      bottom: function () {
-        // TODO: fix position bugs on change of window length
-        return $(".footer").outerHeight(true) + 100;
-      }
-    }
-  });
+  // $("#BackToTopAffix").affix({
+  //   offset: {
+  //     top: 0,
+  //     bottom: function () {
+  //       // TODO: fix position bugs on change of window length
+  //       return $(".footer").outerHeight(true) + 20;
+  //     }
+  //   }
+  // });
+  //
+  // $("#Feedback").affix({
+  //   offset: {
+  //     top: 0,
+  //     bottom: function () {
+  //       // TODO: fix position bugs on change of window length
+  //       return $(".footer").outerHeight(true) + 100;
+  //     }
+  //   }
+  // });
 
   $.clickStar = function (e) {
     e.preventDefault();
