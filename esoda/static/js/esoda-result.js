@@ -9,9 +9,6 @@ var REF, POSS, SENTENCES_URL, COLLOCATION_URL;
 $(function () {
   'use strict';
 
-  $("#SidebarAffix").height($(window).height());
-  // $("#SidebarAffix").height($(".result-page").height())
-
   function searchAndFillSentences(params) {
     loadCount = 1;
     loading = 1;
@@ -21,7 +18,8 @@ $(function () {
       $('#Loading').hide();
       $('#SentenceResult').html(data);
       $('#SentenceResult').fadeIn("fast");
-      $('#SidebarAffix').fadeIn("fast");
+      $("#SentenceLoading").hide();
+      $('#SidebarAffix .panel-group').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
       var colNum = 3;
       // var colNum = ($(".colList").width() > 600) ? 4 : 3;
@@ -82,8 +80,9 @@ $(function () {
     }
     $('#SentenceResult').fadeOut("fast");
     $('#ExampleEnd').fadeOut("fast");
-    $('#SidebarAffix').fadeOut("fast");
+    $('#SidebarAffix .panel-group').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
+    $("#SentenceLoading").show();
     var id = $(this).attr('href');
     var type = $(this).attr('type');
     var type0 = type.replace(/ \(.*\) /g, ' ');
@@ -126,6 +125,7 @@ $(function () {
     $("#ExampleEnd").fadeOut("fast");
     $('#SentenceResult').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
+    $("#SentenceLoading").show();
     // $('#SentenceResult').animate({opacity: 0}, function () {
     //   if (loading) $('#Loading').show();
     // });

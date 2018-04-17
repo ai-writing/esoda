@@ -39,25 +39,25 @@
       <span class="exchange-icon"><i class="fa fa-undo"></i></span>
       <a href="#" class="colloc-usage" ref="{{ lemma }}" lemma="{{ lemma }}">
         <div class="colloc-usage-header">
-        {% if t_dt.1 == '0' %}
-          {{ t_dt.0|cut:"*" }}
-        {% elif t_dt.1 == '1' %}
-          {% if t_dt.0|first == '*' %}主语 + {{ t_dt.0|cut:"*" }}
-            {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 动词
-            {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
-        {% elif t_dt.1 == '2' %}
-          {% if t_dt.0|first == '*' %}动词 + {{ t_dt.0|cut:"*" }}
-            {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 宾语
-            {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
-        {% elif t_dt.1 == '3' %}
-          {% if t_dt.0|first == '*' %}修饰词 + {{ t_dt.0|cut:"*" }}
-            {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 被修饰词
-            {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
-        {% elif t_dt.1 == '4' %}
-          {% if t_dt.0|first == '*' %}介词 + {{ t_dt.0|cut:"*" }}
-            {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 介词
-            {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
-        {% endif %}
+          {% if t_dt.1 == '0' %}
+            {{ t_dt.0|cut:"*" }}
+          {% elif t_dt.1 == '1' %}
+            {% if t_dt.0|first == '*' %}主语 + {{ t_dt.0|cut:"*" }}
+              {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 动词
+              {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
+          {% elif t_dt.1 == '2' %}
+            {% if t_dt.0|first == '*' %}动词 + {{ t_dt.0|cut:"*" }}
+              {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 宾语
+              {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
+          {% elif t_dt.1 == '3' %}
+            {% if t_dt.0|first == '*' %}修饰词 + {{ t_dt.0|cut:"*" }}
+              {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 被修饰词
+              {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
+          {% elif t_dt.1 == '4' %}
+            {% if t_dt.0|first == '*' %}介词 + {{ t_dt.0|cut:"*" }}
+              {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 介词
+              {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
+          {% endif %}
         </div>
         <span class="total-cnt" count = "{{count}}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
       </a>

@@ -486,7 +486,7 @@ a {
 }
 
 .nav-pills-index {
-    margin-top: 14px;
+    margin-top: 13px;
 }
 
 .nav-pills-index > li > a {
@@ -526,7 +526,7 @@ a {
 
 .login, .dropdown, .dropup {
     font-size: 12px;
-    margin-top: 14px;
+    margin-top: 13px;
     height: 44px;
     float: right;
     /*font-family: PingFangSC-Regular;*/
@@ -1262,6 +1262,13 @@ button.close:focus {
     padding-top: 20px;
 }
 
+#SentenceLoading {
+    background-color: #fff;
+    margin-top: 0px;
+    padding-top: 40vh;
+    height: calc(100vh - 70px);
+}
+
 #ManualLoad {
     color: #9b9b9b;
     cursor: pointer;
@@ -1279,7 +1286,14 @@ button.close:focus {
 #SidebarAffix {
     width: 214px;
     border-color: transparent;
+    background-color: #fff;
+    height: calc(100vh - 70px);
     z-index: 999;
+}
+
+#SidebarAffix .fa-spinner {
+    margin-left: 50%;
+    margin-top: 40vh;
 }
 
 #SidebarAffix .panel {
@@ -1306,7 +1320,6 @@ button.close:focus {
 
 .collocation-panel {
     height: calc(100vh - 70px);
-    /*background: #FBFCFC;*/
     background: #fff;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
@@ -1490,7 +1503,7 @@ button.close:focus {
 }
 
 .back-btn {
-    margin: 5px 0 0 !important;
+    margin: 5px 0 0;
 }
 
 .exchange-icon .fa {
