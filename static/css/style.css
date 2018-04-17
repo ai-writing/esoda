@@ -103,7 +103,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 16px 15px;
+        padding: 10px 16px 10px;
     }
 }
 
@@ -469,6 +469,11 @@ a {
     color: #63B7e6 !important;
 }
 
+.nav > li > a:focus {
+    background-color: transparent;
+    outline: none;
+}
+
 .navbar-index .nav-pills > li.active > a,
 .navbar-index .nav-pills > li.active > a:hover,
 .navbar-index .nav-pills > li.active > a:focus {
@@ -481,7 +486,7 @@ a {
 }
 
 .nav-pills-index {
-    margin-top: 14px;
+    margin-top: 13px;
 }
 
 .nav-pills-index > li > a {
@@ -521,7 +526,7 @@ a {
 
 .login, .dropdown, .dropup {
     font-size: 12px;
-    margin-top: 14px;
+    margin-top: 13px;
     height: 44px;
     float: right;
     /*font-family: PingFangSC-Regular;*/
@@ -1166,21 +1171,18 @@ button.close:focus {
     margin: 0 .5em;
 }
 
-.footer-shares {
-    margin-top: 20px;
-}
-
-.footer-shares .col-sm-6 > p {
-    margin-top: 10px;
-    font-size: 20px;
-}
-
 .footer-logo {
     width: 137px;
     margin-bottom: 9px;
 }
 
-.shares {
+.share-a {
+    cursor: pointer;
+}
+.share-a.disabled {
+    cursor: default;
+}
+.share-a img {
     width: 23px;
 }
 
@@ -1260,6 +1262,13 @@ button.close:focus {
     padding-top: 20px;
 }
 
+#SentenceLoading {
+    background-color: #fff;
+    margin-top: 0px;
+    padding-top: 40vh;
+    height: calc(100vh - 70px);
+}
+
 #ManualLoad {
     color: #9b9b9b;
     cursor: pointer;
@@ -1277,7 +1286,14 @@ button.close:focus {
 #SidebarAffix {
     width: 214px;
     border-color: transparent;
+    background-color: #fff;
+    height: calc(100vh - 70px);
     z-index: 999;
+}
+
+#SidebarAffix .fa-spinner {
+    margin-left: 50%;
+    margin-top: 40vh;
 }
 
 #SidebarAffix .panel {
@@ -1304,7 +1320,6 @@ button.close:focus {
 
 .collocation-panel {
     height: calc(100vh - 70px);
-    /*background: #FBFCFC;*/
     background: #fff;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
 }
@@ -1465,10 +1480,12 @@ button.close:focus {
 }
 
 .panel-category-heading .colloc-usage {
-    /*font-family: Helvetica-Bold;*/
     font-size: 14px;
     color: #FFFFFF !important;
     font-family: Beirut;
+}
+
+.colloc-usage-header {
     max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1479,14 +1496,14 @@ button.close:focus {
     position: absolute;
 }
 
-.panel-category-heading > p {
-    margin: 5px 0 0 !important;
-}
-
 .colloc-heading {
     font-family: PingFangSC-Medium;
     font-size: 16px;
     color: #FFFFFF;
+}
+
+.back-btn {
+    margin: 5px 0 0;
 }
 
 .exchange-icon .fa {

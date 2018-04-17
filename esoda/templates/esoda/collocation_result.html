@@ -35,30 +35,33 @@
         <span class="synFilter"><input type="checkbox" class="syn-filter">其他搭配</span>
       {% endif %}
     </div>
-    <p class="back-btn">
+    <div class="back-btn">
       <span class="exchange-icon"><i class="fa fa-undo"></i></span>
       <a href="#" class="colloc-usage" ref="{{ lemma }}" lemma="{{ lemma }}">
-        {% if t_dt.1 == '0' %}
-          {{ t_dt.0|cut:"*" }}
-        {% elif t_dt.1 == '1' %}
-          {% if t_dt.0|first == '*' %}主语 + {{ t_dt.0|cut:"*" }}
-            {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 动词
-            {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
-        {% elif t_dt.1 == '2' %}
-          {% if t_dt.0|first == '*' %}动词 + {{ t_dt.0|cut:"*" }}
-            {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 宾语
-            {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
-        {% elif t_dt.1 == '3' %}
-          {% if t_dt.0|first == '*' %}修饰词 + {{ t_dt.0|cut:"*" }}
-            {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 被修饰词
-            {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
-        {% elif t_dt.1 == '4' %}
-          {% if t_dt.0|first == '*' %}介词 + {{ t_dt.0|cut:"*" }}
-            {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 介词
-            {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
-        {% endif %}
-        <span class="total-cnt" count = "{{count}}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span></a>
-    </p>
+        <div class="colloc-usage-header">
+          {% if t_dt.1 == '0' %}
+            {{ t_dt.0|cut:"*" }}
+          {% elif t_dt.1 == '1' %}
+            {% if t_dt.0|first == '*' %}主语 + {{ t_dt.0|cut:"*" }}
+              {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 动词
+              {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
+          {% elif t_dt.1 == '2' %}
+            {% if t_dt.0|first == '*' %}动词 + {{ t_dt.0|cut:"*" }}
+              {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 宾语
+              {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
+          {% elif t_dt.1 == '3' %}
+            {% if t_dt.0|first == '*' %}修饰词 + {{ t_dt.0|cut:"*" }}
+              {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 被修饰词
+              {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
+          {% elif t_dt.1 == '4' %}
+            {% if t_dt.0|first == '*' %}介词 + {{ t_dt.0|cut:"*" }}
+              {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 介词
+              {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
+          {% endif %}
+        </div>
+        <span class="total-cnt" count = "{{count}}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
+      </a>
+    </div>
   </div>
   <div class="colloc-result">
     {% for k in t_list %}
@@ -79,7 +82,8 @@
                         {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %}">
                   <a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
                     <span class="usage-count" count = "{{v.count}}">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                    {% else %}({{ v.count }}){% endif %}</span></li>
+                    {% else %}({{ v.count }}){% endif %}</span></a>
+                </li>
               {% endfor %}
               </div>
             {% endif %}
@@ -120,13 +124,13 @@
 
   $('.list-group-item').click(function (e) {
     $('.exchange-icon').show();
-    $('.panel-category-heading .colloc-usage').css('margin', '0 0 0 5px');
-    $('.panel-category-heading .colloc-usage').css('position', 'absolute');
+    $('.panel-category-heading .colloc-usage-header').css('margin', '0 0 0 5px');
+    $('.panel-category-heading .colloc-usage-header').css('position', 'absolute');
   });
 
   $('.back-btn').click(function (e) {
     $('.exchange-icon').hide();
-    $('.panel-category-heading .colloc-usage').css('margin', '0 0 -8px 0');
-    $('.panel-category-heading .colloc-usage').css('position', 'relative');
+    $('.panel-category-heading .colloc-usage-header').css('margin', '0 0 -8px 0');
+    $('.panel-category-heading .colloc-usage-header').css('position', 'relative');
   });
 </script>

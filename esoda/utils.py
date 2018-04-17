@@ -76,6 +76,8 @@ def get_defaulteColl(head, poss, dep, clist):
             set1 = [c for c in clist if c['flag'] == (1 ,'3')]
             set2 = [c for c in clist if c['flag'] == (0 ,'3')]
             last = [c for c in clist if (c['flag'] != (1 ,'3') and c['flag'] != (0 ,'3'))]
+        else:
+            set1, set2, last = [], [], clist[:]
         newlist = set1 + set2 + last
 
     elif dep != '0':

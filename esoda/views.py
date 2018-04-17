@@ -72,7 +72,7 @@ def esoda_view(request):
     # With query - render result.html
     trans = youdao_translate(q0)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
-    q, ques, aste= refine_query(q)# ques(aste) is the place of question mark(asterisk)
+    q, ques, aste = refine_query(q)# ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q)
     expand = []
     asteList = []
@@ -161,7 +161,7 @@ def syn_usageList_view(request):
     # }
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
-    expand = request.GET.get('expand', '')
+    expand = request.GET.get('expand', '[]')
     expand = ast.literal_eval(expand)
     if not ref:
         ref = t
@@ -227,6 +227,15 @@ def sentence_view(request):
     if len(t) == 1:
         dt = '0'
     sr = sentence_query(t, ref, i, dt, dbs, cids)
+    source_set = set()
+    for i in sr['sentence']:
+        if len(i['content']) > 260:
+            sr['sentence'].remove(i)
+            continue
+        if i['source']['source'] in source_set:
+            sr['sentence'].remove(i)
+        else:
+            source_set.add(i['source']['source'])
     info = {
         'example_number': len(sr['sentence']),
         'search_time': sr['time'],
