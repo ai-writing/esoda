@@ -23,7 +23,6 @@ $(function () {
       $('#SentenceResult').fadeIn("fast");
       $('#SidebarAffix').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
-      $("#Loadbox").fadeIn("fast");
       var colNum = 3;
       // var colNum = ($(".colList").width() > 600) ? 4 : 3;
       $('.colList li').removeClass('second-row');
@@ -32,10 +31,14 @@ $(function () {
       if (exampleNum === 0) {
         $('#Loadbox').hide();
       }
-      if (exampleNum <= 10 && exampleNum > 0) {
+      else if (exampleNum <= 10 && exampleNum > 0) {
+        console.log(exampleNum);
         $('#Loadbox').hide();
         $('#ExampleEnd').fadeIn("fast");
         loaded = 1;
+      }
+      else {
+        $("#Loadbox").fadeIn("fast");
       }
       loading = 0;
     });
