@@ -1171,21 +1171,18 @@ button.close:focus {
     margin: 0 .5em;
 }
 
-.footer-shares {
-    margin-top: 20px;
-}
-
-.footer-shares .col-sm-6 > p {
-    margin-top: 10px;
-    font-size: 20px;
-}
-
 .footer-logo {
     width: 137px;
     margin-bottom: 9px;
 }
 
-.shares {
+.share-a {
+    cursor: pointer;
+}
+.share-a.disabled {
+    cursor: default;
+}
+.share-a img {
     width: 23px;
 }
 
