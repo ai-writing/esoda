@@ -37,7 +37,7 @@
     </div>
     <p class="back-btn">
       <span class="exchange-icon"><i class="fa fa-undo"></i></span>
-      <a href="#" class="colloc-usage" ref="{{ t_dt.0|cut:"*" }}" lemma="{{ t_dt.0|cut:"*" }}">
+      <a href="#" class="colloc-usage" ref="{{ lemma }}" lemma="{{ lemma }}">
         {% if t_dt.1 == '0' %}
           {{ t_dt.0|cut:"*" }}
         {% elif t_dt.1 == '1' %}
@@ -57,8 +57,7 @@
             {% elif t_dt.0|last == '*' %}{{ t_dt.0|cut:"*" }} + 介词
             {% else %}{{ t_dt.0|cut:"*" }} {% endif %}
         {% endif %}
-      </a>
-      <span class="total-cnt">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
+        <span class="total-cnt" count = "{{count}}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span></a>
     </p>
   </div>
   <div class="colloc-result">
@@ -79,8 +78,8 @@
                 <li class="list-group-item
                         {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %}">
                   <a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-                    <span class="usage-count">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                    {% else %}({{ v.count }}){% endif %}</span></a></li>
+                    <span class="usage-count" count = "{{v.count}}">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
+                    {% else %}({{ v.count }}){% endif %}</span></li>
               {% endfor %}
               </div>
             {% endif %}

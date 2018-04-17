@@ -186,7 +186,8 @@ def syn_usageList_view(request):
         't_list': t_list,
         'count': ttcnt,
         'syn_dict': {},
-        't_dt': (' '.join(t), dt)
+        't_dt': (' '.join(t), dt),
+        'lemma': ' '.join(t)
     }
 
     syn_usage_dict = {}
@@ -198,6 +199,8 @@ def syn_usageList_view(request):
 
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
+        if usage_dict.get('*'):
+            info['lemma'] = usage_dict['*'][0]['lemma']
 
     hint = 0
     for k in t_list:
@@ -219,6 +222,7 @@ def sentence_view(request):
         ref = t
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
+    dep_count = request.GET.get('dep_count', '0')
     dbs, cids = get_cids(request.user)
     if len(t) == 1:
         dt = '0'
@@ -226,7 +230,8 @@ def sentence_view(request):
     info = {
         'example_number': len(sr['sentence']),
         'search_time': sr['time'],
-        'exampleList': sr['sentence']
+        'exampleList': sr['sentence'],
+        'similar_sen': abs(int(dep_count) - len(sr['sentence']))
     }
     return render(request, 'esoda/sentence_result.html', info)
 

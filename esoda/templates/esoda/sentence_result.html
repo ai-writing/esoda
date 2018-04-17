@@ -48,8 +48,8 @@
   {% endfor %}
   <div id="ExampleEnd" class="result-table-cell center-align">
     <h4>您已浏览完全部结果</h4>
-    {% if 2 == 2 %}
-      <p>已为您合并相似的10条结果</p>
+    {% if similar_sen %}
+      <p>已为您合并相似的{{ similar_sen }}条结果</p>
     {% endif %}
   </div>
 </div> <!-- panel-group -->

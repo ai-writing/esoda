@@ -16,6 +16,7 @@ $(function () {
     loadCount = 1;
     loading = 1;
     loaded = 0;
+    params['dep_count'] = $(".colloc-usage[state='selected']").children().attr('count');
     $.get(SENTENCES_URL, params, function (data) {
       $('#Loading').hide();
       $('#SentenceResult').html(data);
