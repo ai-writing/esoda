@@ -144,7 +144,7 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
         syn_dict[t_new[j]] = []
         for syn in synonyms(t_new[j], pos = poss[j])[:30]:
             lemma = ' '.join(t_new).replace(t_new[j], syn[0])
-            reff = ' '.join(ref_new).replace(t_new[j], syn[0])
+            reff = ' '.join(ref_new).replace(ref_new[j], syn[0])
             if dt == '0' or len(t_new) == 1:
                 cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
             else:
@@ -187,7 +187,7 @@ def syn_usageList_view(request):
         'count': ttcnt,
         'syn_dict': {},
         't_dt': (' '.join(t), dt),
-        'lemma': ' '.join(t)
+        'ref': ' '.join(ref)
     }
 
     syn_usage_dict = {}
@@ -200,7 +200,7 @@ def syn_usageList_view(request):
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
         if usage_dict.get('*'):
-            info['lemma'] = usage_dict['*'][0]['lemma']
+            info['ref'] = usage_dict['*'][0]['ref']
             info['count'] = usage_dict['*'][0]['count']
 
     hint = 0

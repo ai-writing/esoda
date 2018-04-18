@@ -114,8 +114,8 @@ $(function () {
         mouseWheel: {preventDefault: true},
         autoHideScrollbar: true
       });
-      if (type0.indexOf('*') > -1) {$(id + " .single-extend:eq(0)").children().click();}
-      else {$(id + ' .colloc-usage:eq(0)').click();}
+      if (type0.indexOf('*') > -1) { $(id + " .single-extend:eq(0)").children().click(); }
+      else { $(id + ' .colloc-usage:eq(0)').click(); }
     });
   });
 
