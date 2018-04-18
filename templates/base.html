@@ -62,7 +62,7 @@
       </div>
       <div id="navbar" class="navbar-index navbar-collapse collapse result-index">
         <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search"
-              action="{% url 'esoda' %}">
+              action="{% url 'esoda' %}" onsubmit="return check()">
           <div id="ResultSearchBar" class="input-group full-width">
                 <span class="input-group-btn">
                   <button class="btn-navbar-search" type="submit">
@@ -220,6 +220,11 @@
       $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
     {% endif %}
   });
+  function check(){
+    if ($("#SearchBox").val().trim().length === 0) {
+      return false;
+    }
+  }
 </script>
 {% block script %}{% endblock %}
 

@@ -160,6 +160,10 @@ a {
     .list-btn2 {
         padding-left: 15px !important;
     }
+
+    .footer {
+        overflow: hidden;
+    }
 }
 
 @media (max-width: 767px) {

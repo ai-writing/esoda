@@ -30,7 +30,6 @@ $(function () {
         $('#Loadbox').hide();
       }
       else if (exampleNum <= 10 && exampleNum > 0) {
-        console.log(exampleNum);
         $('#Loadbox').hide();
         $('#ExampleEnd').fadeIn("fast");
         loaded = 1;
