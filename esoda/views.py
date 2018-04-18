@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 import logging
 import time
 import re
-import ast
+import json
 
 from .utils import *
 from .youdao_query import youdao_suggest, suggest_new
@@ -77,9 +77,9 @@ def esoda_view(request):
     expand = []
     asteList = []
     for i in ques:
-        expand.append(qt[i])
+        expand.append(i)
     for i in aste:
-        asteList.append(qt[i])
+        asteList.append(i)
     
     r = {
         'domain': u'人机交互',
@@ -124,7 +124,7 @@ def esoda_view(request):
         'suggestion': suggestion,
         'dictionary': trans,
         'cids': cids,
-        'expand': expand
+        'expand': json.dumps(expand)
     }
 
     request.session.save()
@@ -162,7 +162,7 @@ def syn_usageList_view(request):
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
     expand = request.GET.get('expand', '[]')
-    expand = ast.literal_eval(expand)
+    expand = json.loads(expand)
     if not ref:
         ref = t
     i = int(request.GET.get('i', '0'))
@@ -180,10 +180,12 @@ def syn_usageList_view(request):
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
 
     t_list, star = star2collocation(t, dt)
+    t_list0 = []
     if expand:
-        t_list = expand
+        for i in expand:
+            t_list0.append(t_list[i])
     info = {
-        't_list': t_list,
+        't_list': t_list0,
         'count': ttcnt,
         'syn_dict': {},
         't_dt': (' '.join(t), dt),
