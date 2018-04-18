@@ -437,7 +437,7 @@ a {
 
 .read .btn {
     margin-top: 15px;
-    margin-right: 5px;
+    margin-right: 53px;
     /*border-color: transparent;*/
     background-color: transparent !important;
     width: 84px !important;
@@ -502,23 +502,24 @@ a {
 }
 
 .nav-pills-feedback > li > a {
-    border-radius: 4px;
-    color: #63B7E6;
-    border: 2px solid #63B7E6;
+    border-radius: 0px;
+    color: #4A4A4A;
     margin: -4px;
     padding: 10px 30px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .nav-pills-feedback > li > a:hover {
     background: transparent;
+    color: #63B7E6;
 }
 
 .nav-pills-feedback > li.active > a,
 .nav-pills-feedback > li.active > a:hover,
 .nav-pills-feedback > li.active > a:focus {
-    color: #fff;
-    background-color: #63B7E6;
+    color: #63B7E6;
+    background-color: transparent;
+    border-bottom: 2px solid #63B7E6;
 }
 
 .navbar-default .navbar-nav > li > a:focus {
@@ -815,7 +816,7 @@ button.close:focus {
     padding-top: 51px;
     padding-bottom: 30px;
     font-size: 15px;
-    color: #63B7E6;
+    color: #9b9b9b;
 }
 
 .glyphicon-heart-empty {
@@ -841,16 +842,16 @@ button.close:focus {
     overflow-y: scroll;
     border-color: white;
     background: #F5F5F5;
-    box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, 0.20);
+    /*box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, 0.20);*/
     border-radius: 1px;
 }
 
 #MessageBtn {
-    width: 170px;
+    width: 150px;
     height: 35px;
     padding-top: 4px;
     margin-top: 15px;
-    border-radius: 5px;
+    border-radius: 0px;
     float: right;
     font-family: PingFangSC-Regular;
     font-size: 16px;
@@ -891,8 +892,8 @@ button.close:focus {
 }
 
 .back-feedback {
-    border-top: 2px solid #979797;
-    padding-top: 60px;
+    border-top: 1px solid #979797;
+    padding-top: 50px;
 }
 
 #feedback {
@@ -1024,10 +1025,9 @@ button.close:focus {
 }
 
 .feedback-title {
-    margin-bottom: 30px;
-    margin-top: 80px;
-    text-align: center;
-    font-size: 24px;
+    margin: 80px 0 50px 30px;
+    font-size: 16px;
+    color: #9b9b9b;
 }
 
 .usage-title {
@@ -1143,12 +1143,17 @@ button.close:focus {
     padding-right: 30px;
 }
 
+.pager {
+    text-align: right;
+}
+
 .pager li > span {
     color: #9b9b9b;
     cursor: pointer;
     background: #f5f5f9;
     border: transparent;
     font-size: 18px;
+    border-radius: 0;
 }
 
 .pager li > span:hover {
@@ -1199,8 +1204,6 @@ button.close:focus {
 
 #FeedbackTab {
     position: absolute;
-    left: 50%;
-    margin-left: -150px;
     margin-bottom: 40px;
 }
 
