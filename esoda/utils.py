@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 DEPS_VIEW = {u'(主谓) *': u' + 动词', u'* (主谓)': u'主语 + ', u'(动宾) *': u' + 宾语', u'* (动宾)': u'动词 + ',
     u'(修饰) *': u' + 被修饰词', u'* (修饰)': u'修饰 + ', u'(介词) *': u' + 介词', u'* (介词)': u'介词 + '}
-EN_PUNC = """!"#$%&'()+,-./:;<=>@[\]^_`{|}~"""
+EN_PUNC = """!"#$%&'()+,-./:;<=>@[\]^_`{|}~""" # string.punctuation去掉问号和星号
 CH_PUNC = u'《》（）&%￥#@！{}【】'
 PUNC = EN_PUNC + CH_PUNC
 TRANS_TABLE = dict((ord(c), u' ') for c in PUNC)
@@ -105,6 +105,10 @@ def refine_query(q):
     # Note the difference between str.translate and unicode.translate
     ques = []
     aste = []
+    q = q.replace(u'？', '?')   # 替换中文问号
+    q = re.sub('\s+\?', '?', q) # 去掉问号前空格
+    q = re.sub('\?+', '?', q)   # 去掉多个问号
+    q = re.sub('^\?', '', q)    # 去掉问号开头
     r = q.translate(TRANS_TABLE).strip()
     r = re.sub(' +', ' ', r)
     wList = r.split()
