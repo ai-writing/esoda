@@ -99,7 +99,7 @@
                   </li>
                 {% endfor %}
               </ul>
-              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2 {% if 7 <= 2 or not r.collocationList %}hidden{% endif %}">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2 {% if r.collocationList.cL|length <= 3 or not r.collocationList %}hidden{% endif %}">
                 <div id="colMore"><i class="fa fas fa-angle-down"></i></div>
                 <div id="colLess"><i class="fa fas fa-angle-up"></i></div>
               </div>

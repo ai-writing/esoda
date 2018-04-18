@@ -201,6 +201,7 @@ def syn_usageList_view(request):
         syn_usage_dict[star] = syn_usage_dict['*']
         if usage_dict.get('*'):
             info['lemma'] = usage_dict['*'][0]['lemma']
+            info['count'] = usage_dict['*'][0]['count']
 
     hint = 0
     for k in t_list:

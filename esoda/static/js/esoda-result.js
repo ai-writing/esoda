@@ -13,7 +13,7 @@ $(function () {
     loadCount = 1;
     loading = 1;
     loaded = 0;
-    params['dep_count'] = $(".colloc-usage[state='selected']").children().attr('count');
+    params['dep_count'] = $(".colloc-usage[state='selected']").children('span').attr('count');
     $.get(SENTENCES_URL, params, function (data) {
       $('#Loading').hide();
       $('#SentenceResult').html(data);
@@ -114,7 +114,8 @@ $(function () {
         mouseWheel: {preventDefault: true},
         autoHideScrollbar: true
       });
-      $(id + ' .colloc-usage:eq(0)').click();
+      if (type0.indexOf('*') > -1) {$(id + " .single-extend:eq(0)").children().click();}
+      else {$(id + ' .colloc-usage:eq(0)').click();}
     });
   });
 
