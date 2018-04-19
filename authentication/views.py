@@ -29,7 +29,7 @@ def domain_view(request):
         else:
             messages.error(request, _(u'请先登录'))
     else:
-        corpus_ids = user.userprofile.getid() if user.is_authenticated() else UserProfile.DEFAULT_CIDS
+        corpus_ids = user.userprofile.getid() if user.is_authenticated() else UserProfile.DEFAULT_CIDS[:]
     node_tree = tree(corpus_ids)
     return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 

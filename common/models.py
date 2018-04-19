@@ -20,6 +20,7 @@ class Comment(models.Model):
     def get_latest_comments(cls, limit=10):
         return list(cls.objects.filter(display=True).order_by('-date')[:limit])
 
+# In order to be compatible with ESLWriter
 class UserCorpus(models.Model):
     user = models.ForeignKey(User)
     # db = models.IntegerField(default=0)
@@ -28,4 +29,3 @@ class UserCorpus(models.Model):
     name = models.CharField(max_length=64)  #unique=True
     description = models.CharField(max_length=256, blank=True)
     # ispublic = models.BooleanField(default=True)
-

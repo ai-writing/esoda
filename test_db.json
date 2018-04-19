@@ -1,0 +1,1 @@
+[{"model": "sites.site", "pk": 1, "fields": {"domain": "localhost:8000", "name": "ESODA"}}, {"model": "auth.user", "pk": 1, "fields": {"password": "pbkdf2_sha256$36000$6EwoGu9Hy5nI$9huGSMibvIfsXPQs1/feDXirm9T/fscrI/23X7VztGo=", "is_superuser": true, "username": "test", "email": "test@test.com", "is_active": true}}]
