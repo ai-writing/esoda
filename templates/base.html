@@ -59,7 +59,7 @@
       </div>
       <div id="navbar" class="navbar-index navbar-collapse collapse result-index">
         <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search"
-              action="{% url 'esoda' %}" onsubmit="return check()">
+              action="{% url 'esoda' %}">
           <div id="ResultSearchBar" class="input-group full-width">
                 <span class="input-group-btn">
                   <button class="btn-navbar-search" type="submit">
@@ -72,7 +72,7 @@
             <!-- <span>test</span> -->
             <div class="result-warning">
               {% if not user.is_authenticated %}
-                <span class="oneline">默认搜索: 计算机全部领域</span>
+                <span class="oneline">默认搜索: 计算机全部领域 <a href="{% url 'authentication:domain' %}">修改</a></span>
               {% else %}
                 {% if r.domain|upper %}
                   <span class="oneline">当前个人领域为“{{ r.domain|upper }}” <a href="{% url 'authentication:domain' %}">修改</a></span>
@@ -220,11 +220,6 @@
       $('#ModalLogin').load('{% url "auth_login" %}', onLoginFormLoaded);
     {% endif %}
   });
-  function check(){
-    if ($("#SearchBox").val().trim().length === 0) {
-      return false;
-    }
-  }
 </script>
 {% block script %}{% endblock %}
 

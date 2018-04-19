@@ -240,14 +240,18 @@ $(function () {
     //   }, 250);
     // });
 
-  $("#SearchForm").on("submit", storeHistory);
+  $('#SearchForm').submit(function () {
+      storeHistory();
+      if ($("#SearchBox").val().trim().length === 0) {
+        return false;
+      }
+  });
 
   $.clickHeart = function (e) {
     e.preventDefault();
     $(e.target).toggleClass("glyphicon-heart-empty");
     $(e.target).toggleClass("glyphicon-heart");
   };
-
 
   $("#AddBookmark").click(function (e) {
     e.preventDefault();

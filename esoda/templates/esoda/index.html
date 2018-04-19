@@ -22,7 +22,7 @@
         </div>
         <!-- <div class="col-xs-10 col-xs-offset-1"> -->
         <div class="col-xs-10 col-md-8 col-md-offset-2 col-xs-offset-1">
-          <form id="SearchForm" class="form-horizontal" role="search" action="{% url 'esoda' %}" onsubmit="return check()">
+          <form id="SearchForm" class="form-horizontal" role="search" action="{% url 'esoda' %}">
             <div id="IndexSearchBar" class="input-group input-group-lg">
               <input id="SearchBox" type="text" class="form-control" placeholder="英文写作新体验" name="q" onfocus="this.placeholder = ''" onblur="this.placeholder = '英文写作新体验'"/>
               <span class="input-group-btn">
@@ -232,12 +232,5 @@
   <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
   <script src="{% static 'js/esoda-index.js' %}?v={% now 'Ymd' %}"></script>
   <script src="{% static 'js/esoda-icon.js' %}?v={% now 'Ymd' %}"></script>
-  <script type="text/javascript">
-    function check(){
-      if ($("#SearchBox").val().trim().length === 0) {
-        return false;
-      }
-    }
-  </script>
 
 {% endblock script %}

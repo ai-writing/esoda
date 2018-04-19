@@ -12,25 +12,29 @@ from esoda.utils import FIELD_NAME
 # Create your views here.
 
 # Views for profile urls
-@login_required
 def domain_view(request):
-    user = User.objects.get(id=request.user.pk)
-    corpus_id = user.userprofile.getid()
-    if request.method == 'POST':
-        cids=request.POST.getlist('ids')
-        corpus_id=[0]*1000
-        empty=True
-        for i in cids:
-            corpus_id[int(i)]=1
-            empty=False
-        if empty==True:
-            messages.error(request, u'选中领域为空，领域更新失败')
-        else:
-            user.userprofile.setid(corpus_id)
-            user.userprofile.save()
-            messages.success(request, u'领域更新成功')
-    node_tree=tree(corpus_id)
-    return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
+    if not request.user.is_authenticated():
+        if request.method == 'POST':
+            messages.error(request, u'请登录后更新领域')
+        return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': tree([0]*1000)})
+    else:
+        user = User.objects.get(id=request.user.pk)
+        corpus_id = user.userprofile.getid()
+        if request.method == 'POST':
+            cids=request.POST.getlist('ids')
+            corpus_id=[0]*1000
+            empty=True
+            for i in cids:
+                corpus_id[int(i)]=1
+                empty=False
+            if empty==True:
+                messages.error(request, u'选中领域为空，领域更新失败')
+            else:
+                user.userprofile.setid(corpus_id)
+                user.userprofile.save()
+                messages.success(request, u'领域更新成功')
+        node_tree=tree(corpus_id)
+        return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
 @login_required
 def search_domain_tree_view(request):

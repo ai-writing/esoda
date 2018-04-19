@@ -60,6 +60,10 @@ a {
     .panel-category-heading {
         padding: 10px 16px 15px;
     }
+
+     .footer {
+        padding-top: 10px;
+    }
 }
 
 @media (max-width: 1200px) and (min-width: 992px) {
@@ -104,6 +108,10 @@ a {
 
     .panel-category-heading {
         padding: 10px 16px 10px;
+    }
+
+     .footer {
+        padding-top: 10px;
     }
 }
 
@@ -163,6 +171,8 @@ a {
 
     .footer {
         overflow: hidden;
+        line-height: 40px;
+        padding-top: 5px;
     }
 }
 
@@ -242,6 +252,8 @@ a {
 
     .footer {
         overflow: hidden;
+        line-height: 40px;
+        padding-top: 5px;
     }
 }
 
@@ -265,11 +277,8 @@ a {
     /* Fixed height for body margin */
     height: 50px;
     bottom: 0;
-    /*overflow: hidden;*/
     color: #9b9b9b;
     font-size: 18px;
-    line-height: 40px;
-    padding-top: 5px;
     z-index: 1000;
     background: #EBEBEB;
     border-top: 1px solid #CACACA;
@@ -437,7 +446,7 @@ a {
 
 .read .btn {
     margin-top: 15px;
-    margin-right: 53px;
+    margin-right: 45px;
     /*border-color: transparent;*/
     background-color: transparent !important;
     width: 84px !important;
@@ -1199,7 +1208,7 @@ button.close:focus {
 }
 
 .message-notepad {
-    height: 70px;
+    height: 65px;
 }
 
 #FeedbackTab {
