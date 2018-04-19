@@ -71,15 +71,8 @@
                    onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
             <!-- <span>test</span> -->
             <div class="result-warning">
-              {% if not user.is_authenticated %}
-                <span class="oneline">默认搜索: 计算机全部领域 <a href="{% url 'authentication:domain' %}">修改</a></span>
-              {% else %}
-                {% if r.domain|upper %}
-                  <span class="oneline">当前个人领域为“{{ r.domain|upper }}” <a href="{% url 'authentication:domain' %}">修改</a></span>
-                {% else %}
-                  <span class="oneline">您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加</a></span>
-                {% endif %}
-              {% endif %}
+              <span class="oneline">搜索领域: {{ r.domain|upper }}</span>
+              <a href="{% url 'authentication:domain' %}">修改</a>
             </div>
           </div>
 

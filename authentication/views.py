@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
 import json
+from .models import UserProfile
 from esoda.utils import CORPUS
 from esoda.utils import SECOND_LEVEL_FIELD
 from esoda.utils import FIELD_NAME
@@ -13,28 +14,24 @@ from esoda.utils import FIELD_NAME
 
 # Views for profile urls
 def domain_view(request):
-    if not request.user.is_authenticated():
-        if request.method == 'POST':
-            messages.error(request, u'请登录后更新领域')
-        return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': tree([0]*1000)})
-    else:
-        user = User.objects.get(id=request.user.pk)
-        corpus_id = user.userprofile.getid()
-        if request.method == 'POST':
-            cids=request.POST.getlist('ids')
-            corpus_id=[0]*1000
-            empty=True
-            for i in cids:
-                corpus_id[int(i)]=1
-                empty=False
-            if empty==True:
-                messages.error(request, u'选中领域为空，领域更新失败')
+    user = request.user
+    if request.method == 'POST':
+        corpus_ids = UserProfile.DEFAULT_CIDS[:]
+        cids = request.POST.getlist('ids')
+        for i in cids:
+            corpus_ids[int(i)] = 1
+        if user.is_authenticated():
+            if cids:
+                user.userprofile.setid(corpus_ids)
+                messages.success(request, _(u'保存成功'))
             else:
-                user.userprofile.setid(corpus_id)
-                user.userprofile.save()
-                messages.success(request, u'领域更新成功')
-        node_tree=tree(corpus_id)
-        return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
+                messages.error(request, _(u'请至少选择一个领域'))
+        else:
+            messages.error(request, _(u'请先登录'))
+    else:
+        corpus_ids = user.userprofile.getid() if user.is_authenticated() else UserProfile.DEFAULT_CIDS
+    node_tree = tree(corpus_ids)
+    return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
 @login_required
 def search_domain_tree_view(request):
@@ -57,7 +54,6 @@ def search_domain_tree_view(request):
                             expand.append(i["id"])
                     if not k["id"] in big:
                         big.append(k["id"])
-    print result
     return JsonResponse({"expand":expand,"result":result,"big":big}, safe=False)
 
 def personal_view(request):

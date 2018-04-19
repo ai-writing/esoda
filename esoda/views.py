@@ -22,13 +22,12 @@ from .EsAdaptor import EsAdaptor
 from .utils import FIELD_NAME
 from common.models import Comment
 from authentication.views import tree_first
-from common.mongodb import MONGODB
 
 
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
-PERP_TOKENS = [r['_id'] for r in MONGODB.common.prep_tokens.find()]
+PERP_TOKENS = set(['vs', 're', 'contra', 'concerning', 'neath', 'skyward', 'another', 'near', 'howbeit', 'apropos', 'betwixt', 'alongside', 'amidst', 'outside', 'heavenward', 'notwithstanding', 'withal', 'epithetical', 'anent', 'continuously', 'transversely', 'amongst', 'circa', 'unto', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'around', 'as', 'at', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'but', 'by', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'for', 'from', 'in', 'inside', 'into', 'like', 'of', 'off', 'on', 'onto', 'over', 'per', 'since', 'than', 'through', 'to', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without',])
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
-DEFAULT_DBS = ['dblp']
+DEFAULT_DBS = ['dblp'] # TODO: move into setting.py and .env
 DEFAULT_CIDS = ['_all']
 logger = logging.getLogger(__name__)
 
@@ -46,7 +45,7 @@ def get_cids(user, r=None):
             count += 1
         name = name[0:-2]
     else:
-        name = u'计算机全部领域'
+        name = u'通用英语'
     if r:
         r['domain'] = name
     dbs = dbs or DEFAULT_DBS
@@ -71,7 +70,7 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
-    trans = youdao_translate(q0)
+    trans = youdao_translate(q0, timeout=3)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
     q, ques, aste = refine_query(q)# ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q)
@@ -123,7 +122,7 @@ def esoda_view(request):
         'ref': ' '.join(ref),
         'poss': ' '.join(poss),
         'suggestion': suggestion,
-        'dictionary': trans,
+        # 'dictionary': trans,
         'cids': cids,
         'expand': json.dumps(expand)
     }

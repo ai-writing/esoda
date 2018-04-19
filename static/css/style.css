@@ -1769,32 +1769,28 @@ button.close:focus {
 }
 
 .oneline {
-    display: block;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .result-warning {
-    padding: 0px 0px;
-    margin-bottom: -15px;
-    color: #666;
-    font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
-    text-align: left;
-}
-
-.result-warning span {
-    /*font-weight: bold;*/
+    margin-top: 2px;
+    padding-right: 15px;
     color: #ACACAC;
+    font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
     font-size: 12px;
-    padding-bottom: 15px;
-    padding-right: 5px;
+    word-break: keep-all;
+    display: inherit;
+    white-space: nowrap;
+    text-align: right;
 }
-
+.result-warning span {
+    width: 110px;
+    margin-right: 5px;
+}
 .result-warning a {
-    color: #63B7E6 !important;
-    margin-right: 12px;
+    color: #63B7E6;
 }
 
 .result-table-cell {
