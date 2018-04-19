@@ -7,6 +7,7 @@ import logging
 import time
 import re
 import json
+import random
 
 from .utils import *
 from .youdao_query import youdao_suggest, suggest_new
@@ -231,15 +232,10 @@ def sentence_view(request):
     if len(t) == 1:
         dt = '0'
     sr = sentence_query(t, ref, i, dt, dbs, cids)
-    source_set = set()
-    for i in sr['sentence']:
-        if len(i['content']) > 260:
-            sr['sentence'].remove(i)
-            continue
-        if i['source']['source'] in source_set:
-            sr['sentence'].remove(i)
-        else:
-            source_set.add(i['source']['source'])
+    for i in xrange(0, len(sr['sentence']), 10):
+        temp = sr['sentence'][i:i+10]
+        random.shuffle(temp)
+        sr['sentence'][i:i+10] = temp
     info = {
         'example_number': len(sr['sentence']),
         'search_time': sr['time'],
