@@ -27,8 +27,8 @@ from authentication.views import tree_first
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 PERP_TOKENS = set(['vs', 're', 'contra', 'concerning', 'neath', 'skyward', 'another', 'near', 'howbeit', 'apropos', 'betwixt', 'alongside', 'amidst', 'outside', 'heavenward', 'notwithstanding', 'withal', 'epithetical', 'anent', 'continuously', 'transversely', 'amongst', 'circa', 'unto', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'around', 'as', 'at', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'but', 'by', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'for', 'from', 'in', 'inside', 'into', 'like', 'of', 'off', 'on', 'onto', 'over', 'per', 'since', 'than', 'through', 'to', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without',])
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
-DEFAULT_DBS = ['dblp'] # TODO: move into setting.py and .env
-DEFAULT_CIDS = ['_all']
+DEFAULT_ES_DBS = ['dblp'] # TODO: move into setting.py and .env
+DEFAULT_ES_CIDS = ['_all']
 logger = logging.getLogger(__name__)
 
 def get_cids(user, r=None):
@@ -48,8 +48,8 @@ def get_cids(user, r=None):
         name = u'通用英语'
     if r:
         r['domain'] = name
-    dbs = dbs or DEFAULT_DBS
-    cids = cids or DEFAULT_CIDS
+    dbs = dbs or DEFAULT_ES_DBS
+    cids = cids or DEFAULT_ES_CIDS
     return dbs, cids
 
 

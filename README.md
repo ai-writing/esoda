@@ -39,10 +39,11 @@ DATABASE_URL='sqlite:////path/to/project/db.sqlite3'
 
 Ask team Slack for other sensitive settings marked with `???`. **(You should NEVER commit setting files containing passwords to Github, of course.)**
 
-### 3. Syncdb
+### 3. Syncdb and Load Test Data
 
 ```shell 
 python manage.py migrate
+python manage.py loaddata test_db.json
 ```
 
 If `syncdb` fails, check the `DATABASE_URL` in your `.env` file.

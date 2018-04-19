@@ -14,7 +14,7 @@ import json
 #         return self.name
 
 class UserProfile(models.Model):
-    DEFAULT_CIDS = [0]*2000
+    DEFAULT_CIDS = [1, 1] + [0]*1998
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     corpus_id = models.CharField(max_length=10000, default=json.dumps(DEFAULT_CIDS, separators=(',', ':')))
 
@@ -26,7 +26,9 @@ class UserProfile(models.Model):
         try:
             ids = json.loads(self.corpus_id)
         except ValueError, e:
-            ids = DEFAULT_CIDS
+            ids = []
+        if not sum(ids):
+            ids = self.DEFAULT_CIDS
             self.corpus_id = json.dumps(ids, separators=(',', ':'))
             self.save()
         return ids
