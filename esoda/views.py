@@ -184,8 +184,9 @@ def syn_usageList_view(request):
     if expand:
         for i in expand:
             t_list0.append(t_list[i])
+        t_list = t_list0
     info = {
-        't_list': t_list0,
+        't_list': t_list,
         'count': ttcnt,
         'syn_dict': {},
         't_dt': (' '.join(t), dt),
