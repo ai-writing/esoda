@@ -211,7 +211,7 @@ def syn_usageList_view(request):
         for key in syn_usage_dict.keys():
             if k == key:
                 if syn_usage_dict[key]:
-                    if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰', '被修饰词', '主语']:
+                    if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
                         hint += 1
 
     info['syn_usage_dict'] = syn_usage_dict
@@ -297,6 +297,8 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
     #     })
     con = ''
     for k in (('*', t[i + 1]), (t[i], '*')):
+        if k == ('*', '*'):
+            continue
         d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
         lst = EsAdaptor.group(nt, d, dbs, cids)
         try:
