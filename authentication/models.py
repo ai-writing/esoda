@@ -14,7 +14,8 @@ import json
 #         return self.name
 
 class UserProfile(models.Model):
-    DEFAULT_CIDS = [1, 1] + [0]*1998
+    EMPTY_CIDS = [0]*2000
+    DEFAULT_CIDS = [1, 1] + EMPTY_CIDS[2:]
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     corpus_id = models.CharField(max_length=10000, default=json.dumps(DEFAULT_CIDS, separators=(',', ':')))
 

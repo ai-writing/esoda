@@ -18,7 +18,7 @@ from esoda.utils import FIELD_NAME
 def domain_view(request):
     user = request.user
     if request.method == 'POST':
-        corpus_ids = UserProfile.DEFAULT_CIDS[:]
+        corpus_ids = UserProfile.EMPTY_CIDS[:]
         cids = request.POST.getlist('ids')
         for i in cids:
             corpus_ids[int(i)] = 1
