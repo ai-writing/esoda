@@ -58,7 +58,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 16px 15px;
+        padding: 10px 16px 5px;
     }
 
      .footer {
@@ -107,7 +107,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 16px 10px;
+        padding: 10px 16px 5px;
     }
 
      .footer {
@@ -154,7 +154,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 15px;
+        padding: 10px 15px 5px;
     }
 
     #ResultSearchBar {
@@ -566,9 +566,6 @@ a {
 
 .modal-header {
     border-bottom: none;
-}
-
-.modal-header {
     text-align: center;
     padding: 0px;
     color: #63B7E6;
@@ -1302,6 +1299,11 @@ button.close:focus {
     padding-bottom: 0px;
 }
 
+.SentenceContent {
+    background-color: #fff; 
+    min-height: calc(100vh - 170px);
+}
+
 #SidebarAffix {
     width: 214px;
     border-color: transparent;
@@ -1317,10 +1319,6 @@ button.close:focus {
 
 #SidebarAffix .panel {
     margin-top: 0px;
-}
-
-#SidebarAffix a:hover {
-    color: #63b7e6;
 }
 
 #SidebarAffix .list-group{
@@ -1341,6 +1339,10 @@ button.close:focus {
     height: calc(100vh - 70px);
     background: #fff;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
+}
+
+.panel-collapse-body a:hover {
+    color: #63b7e6;
 }
 
 .hide-query {
@@ -1498,35 +1500,22 @@ button.close:focus {
     box-shadow: 0 5px 10px 0 rgba(19,65,116,0.15);
 }
 
-.panel-category-heading .colloc-usage {
+.colloc-usage-header {
     font-size: 14px;
     color: #FFFFFF !important;
     font-family: Beirut;
-}
-
-.colloc-usage-header {
     max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     display: inline-block;
-    padding-top: 5px;
-    margin-left: 5px;
-    position: absolute;
+    margin-top: 5px;
 }
 
 .colloc-heading {
     font-family: PingFangSC-Medium;
     font-size: 16px;
     color: #FFFFFF;
-}
-
-.back-btn {
-    margin: 5px 0 0;
-}
-
-.exchange-icon .fa {
-    font-size: 12px;
 }
 
 .total-cnt {
@@ -1548,7 +1537,8 @@ button.close:focus {
 }
 
 .panel-key {
-    font-family: Helvetica-Bold;
+    font-family: Helvetica;
+    font-weight: bold;
     color: #22415E;
 }
 

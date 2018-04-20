@@ -228,14 +228,15 @@ class EsAdaptor():
             ret += EsAdaptor.__checkResult(action, dbs, cids)
         else:
             ret = []
+            action['query']['bool']['must'] += mst
             for ps in ('d.l1', 'd.l2'):
                 ddq = {'term': {ps: d[0]}}
-                action['query'] = {
+                action['query']['bool']['must'].append({
                     "nested": {
                         "path": "d",
                         "query": ddq
                     }
-                }
+                })
                 action['aggs']['d']['aggs']['d']['filter'] = ddq
                 ret += EsAdaptor.__checkResult(action, dbs, cids)
 
