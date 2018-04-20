@@ -21,7 +21,7 @@
 <div class="domain-body">
   <div class="container">
     <form action="/domain/" method="post">
-      <div class="row domain-main domain-full">      
+      <div class="row domain-main domain-full">
         {% csrf_token %}
         <div class="col-xs-4 col-sm-3 col-md-3 domain-tab-pane">
           <ul id="myTab" class="nav nav-pills nav-stacked ">
@@ -51,6 +51,7 @@
                       </div>
                     </li>
                   {% endfor %}
+                  </ul>
                 </div>
                 <div class="col-xs-7 col-sm-7 col-md-7 domain-menu">
                   <div id="myTabContent" class="tab-content ">
@@ -66,7 +67,7 @@
                                 <span class="glyphicon glyphicon-book domain-icon" title="journal"></span>
                               {% endifequal %}
                               <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
-                            </label>                           
+                            </label>
                             <input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}>
                           </label>
                         {% endfor %}
@@ -110,10 +111,7 @@
 {% block script %}
 <!-- <script src="{% static 'js/bootstrap-treeview.min.js' %}"></script> -->
 <script>
-  var last_result=[];
-  var last_expand=[];
-  var last_big=[];
-  var flag_click=false;
+
   function aa(id){
     var temp =$("#check"+id).prop("checked");
     var items = document.getElementsByClassName("checkchild"+id);
@@ -128,72 +126,77 @@
     });
     document.getElementById("check"+id).checked = childStatus;
   }
-  var search = function(e) {
-    var pattern = $('#input-search').val();
-    $.getJSON("{% url 'authentication:search_domain_tree' %}", {'target':pattern }, function(data){
-      for(var i=0;i<last_expand.length;i++){ 
-        $("#secondleveltext"+last_expand[i]).css('font-weight', "400");
-      } 
-      for(var i=0;i<last_result.length;i++){
-        $("#checktext"+last_result[i]).css('color', "#000000");
-      }
-      for(var i=0;i<last_big.length;i++){ 
-        if($.inArray(last_big[i], data.big)==-1){
-          $("#firstleveltext"+last_big[i]).css('font-weight', "400");
+  $(function () {
+    var last_result=[];
+    var last_expand=[];
+    var last_big=[];
+    var flag_click=false;
+    var search = function(e) {
+      var pattern = $('#input-search').val();
+      $.getJSON("{% url 'authentication:search_domain_tree' %}", {'target':pattern }, function(data){
+        for(var i=0;i<last_expand.length;i++){
+          $("#secondleveltext"+last_expand[i]).css('font-weight', "400");
         }
-      }
-      for(var i=0;i<data.expand.length;i++){ 
-        $("#secondleveltext"+data.expand[i]).css('font-weight', "600");
-      } 
-      for(var i=0;i<data.result.length;i++){ 
-        $("#checktext"+data.result[i]).css('color', "red");
-      }
-      $("#myTab a[href=\""+"#firstlevel"+data.big[0]+"\"]").tab('show');
-      $("#myTab a[href=\"#secondlevel"+data.expand[0]+"\"]").tab('show');
-      for(var i=0;i<data.big.length;i++){ 
-        $("#firstleveltext"+data.big[i]).css('font-weight', "600");
-      }
-      last_result=data.result;
-      last_expand=data.expand;
-      last_big=data.big;
-    });
-  }
-
-  $('#btn-search').on('click', search);
-  $('#input-search').bind('keypress',function(event){
-      if(event.keyCode == "13") search();   
-  });
-  $("#firstleveltext3").click(function(){
-    flag_click=true;　
-　});
-  $("#domain-checkbox").click(function(){
-    flag_click=true;　
-　});
-  $(".domain-tab-level1").click(function(){
-    $(this).children("a").tab('show');
-    $("#myTab a[href=\"#secondlevel4\"]").tab('show');
-  });
-  $(".domain-tab-level2").click(function(){
-    $(this).children("a").tab('show');
-  });
-  $("#myTab a[href=\"#firstlevel3\"]").on('shown.bs.tab', function (e) {
-    if(flag_click==true){
-      flag_click=false;
-      $("#myTab a[href=\"#secondlevel4\"]").tab('show');
+        for(var i=0;i<last_result.length;i++){
+          $("#checktext"+last_result[i]).css('color', "#000000");
+        }
+        for(var i=0;i<last_big.length;i++){
+          if($.inArray(last_big[i], data.big)==-1){
+            $("#firstleveltext"+last_big[i]).css('font-weight', "400");
+          }
+        }
+        for(var i=0;i<data.expand.length;i++){
+          $("#secondleveltext"+data.expand[i]).css('font-weight', "600");
+        }
+        for(var i=0;i<data.result.length;i++){
+          $("#checktext"+data.result[i]).css('color', "red");
+        }
+        $("#myTab a[href=\""+"#firstlevel"+data.big[0]+"\"]").tab('show');
+        $("#myTab a[href=\"#secondlevel"+data.expand[0]+"\"]").tab('show');
+        for(var i=0;i<data.big.length;i++){
+          $("#firstleveltext"+data.big[i]).css('font-weight', "600");
+        }
+        last_result=data.result;
+        last_expand=data.expand;
+        last_big=data.big;
+      });
     }
+
+    $('#btn-search').on('click', search);
+    $('#input-search').bind('keypress',function(event){
+        if(event.keyCode == "13") search();
+    });
+    $("#firstleveltext3").click(function(){
+      flag_click=true;　
+  　});
+    $("#domain-checkbox").click(function(){
+      flag_click=true;　
+  　});
+    $(".domain-tab-level1").click(function(){
+      $(this).children("a").tab('show');
+      $("#myTab a[href=\"#secondlevel4\"]").tab('show');
+    });
+    $(".domain-tab-level2").click(function(){
+      $(this).children("a").tab('show');
+    });
+    $("#myTab a[href=\"#firstlevel3\"]").on('shown.bs.tab', function (e) {
+      if(flag_click==true){
+        flag_click=false;
+        $("#myTab a[href=\"#secondlevel4\"]").tab('show');
+      }
+    });
+    {% if not user.is_authenticated %}
+      $('#ModalLogin').modal({ backdrop: 'static', keyboard: false });
+    {% endif %}
+    {% if messages %}
+      {% for message in messages %}
+        {% ifequal message.tags "success"%}
+          toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
+        {% else %}
+          toastr.warning('{{ message }}');
+        {% endifequal %}
+      {% endfor %}
+    {% endif %}
   });
 </script>
-  {% if messages %}
-    <script>
-    $(document).ready(function () {
-    {% for message in messages %}
-      {% ifequal message.tags "success"%}
-        toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
-      {% else %}
-        toastr.warning('{{ message }}');
-      {% endifequal %}
-    {% endfor %}
-    });
-    </script>
-  {% endif %}
 {% endblock %}

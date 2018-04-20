@@ -7,11 +7,8 @@
 
 {% block head %}
   <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> -->
-{% if debug %}
-  <link href="//cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-{% else %}
-  <link href="//apps.bdimg.com/libs/fontawesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-{% endif %}
+  <!-- <link href="//apps.bdimg.com/libs/fontawesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"> -->
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="{% static 'css/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -46,19 +43,20 @@
               {% include "esoda/dictionary_result.html" %}
             {% endif %}
 
-            <div class="result-warning hidden">
+          {% comment %}
+            <div class="result-warning">
               {% if not user.is_authenticated %}
                 默认搜索领域为"<span>计算机全部领域</span>"，您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>
                 进行个性化搜索
               {% else %}
-                {% if r.domain|upper %}
+                {% if r.domain %}
                   当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a href="{% url 'authentication:domain' %}">其他个人领域</a>中搜索
                 {% else %}
                   您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加个人领域</a>进行个性化搜索
                 {% endif %}
               {% endif %}
             </div>
-
+          {% endcomment %}
             <div class="CollapseColloc row {% if r.tlen > 2 or not r.collocationList %}hidden{% endif %}" role="tabpanel" aria-labelledby="HeadingColloc">
               <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
                     role="tablist">
@@ -99,7 +97,7 @@
                   </li>
                 {% endfor %}
               </ul>
-              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2">
+              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 list-btn2 {% if r.collocationList.cL|length <= 3 or not r.collocationList %}hidden{% endif %}">
                 <div id="colMore"><i class="fa fas fa-angle-down"></i></div>
                 <div id="colLess"><i class="fa fas fa-angle-up"></i></div>
               </div>
@@ -113,15 +111,18 @@
               <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
             </div>
 
-            <div id="SentenceResult"></div>
+            <div class="SentenceContent">
+              <div id="SentenceResult"></div>
 
-            <div id="Loading2" class="result-table-cell center-align">
-              <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
+              <div id="Loading2" class="result-table-cell center-align">
+                <p><i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i><span>正在加载</span></p>
+              </div>
+
+              <div id="Loadbox" class="result-table-cell center-align">
+                <p id="ManualLoad">点击加载更多</p>
+              </div>
             </div>
 
-            <div id="Loadbox" class="result-table-cell center-align">
-              <p id="ManualLoad">点击加载更多</p>
-            </div>
             <div class="fix-right-xs">
               <div id="Feedback" class="affix feedback-affix" data-spy="affix">
                 <div class="btn feedback" data-toggle="modal" data-target="#FeedbackModal">反馈</div>

@@ -106,10 +106,10 @@ def youdao_search(q0, q):
 
 YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key=205873295&type=data&doctype=json&version=1.2&q=%s'
 
-def youdao_translate_old(q):
+def youdao_translate_old(q, timeout=10):
     r = {}
     try:
-        r = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=10).json()
+        r = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=timeout).json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
     translated = {
@@ -133,11 +133,11 @@ def generate_translate_url(q):
     translate_url = YOUDAO_API_URL + '?appKey=' + settings.YOUDAO_APP_KEY + '&q=' + q + '&from=' + fromLang + '&to=' + toLang + '&salt=' + str(salt) + '&sign=' + sign
     return translate_url
 
-def youdao_translate_new(q):
+def youdao_translate_new(q, timeout=10):
     r = {}
     try:
         translate_url = generate_translate_url(q)
-        r = requests.get(translate_url, timeout=10).json()
+        r = requests.get(translate_url, timeout=timeout).json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
     translated = {

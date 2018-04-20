@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 import logging
 import time
 import re
-import ast
+import json
+import random
 
 from .utils import *
 from .youdao_query import youdao_suggest, suggest_new
@@ -21,14 +22,13 @@ from .EsAdaptor import EsAdaptor
 from .utils import FIELD_NAME
 from common.models import Comment
 from authentication.views import tree_first
-from common.mongodb import MONGODB
 
 
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
-PERP_TOKENS = [r['_id'] for r in MONGODB.common.prep_tokens.find()]
+PERP_TOKENS = set(['vs', 're', 'contra', 'concerning', 'neath', 'skyward', 'another', 'near', 'howbeit', 'apropos', 'betwixt', 'alongside', 'amidst', 'outside', 'heavenward', 'notwithstanding', 'withal', 'epithetical', 'anent', 'continuously', 'transversely', 'amongst', 'circa', 'unto', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'around', 'as', 'at', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'but', 'by', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'for', 'from', 'in', 'inside', 'into', 'like', 'of', 'off', 'on', 'onto', 'over', 'per', 'since', 'than', 'through', 'to', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without',])
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
-DEFAULT_DBS = ['dblp']
-DEFAULT_CIDS = ['_all']
+DEFAULT_ES_DBS = ['dblp'] # TODO: move into setting.py and .env
+DEFAULT_ES_CIDS = ['_all']
 logger = logging.getLogger(__name__)
 
 def get_cids(user, r=None):
@@ -45,11 +45,11 @@ def get_cids(user, r=None):
             count += 1
         name = name[0:-2]
     else:
-        name = u'计算机全部领域'
+        name = u'通用英语'
     if r:
         r['domain'] = name
-    dbs = dbs or DEFAULT_DBS
-    cids = cids or DEFAULT_CIDS
+    dbs = dbs or DEFAULT_ES_DBS
+    cids = cids or DEFAULT_ES_CIDS
     return dbs, cids
 
 
@@ -70,16 +70,16 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
-    trans = youdao_translate(q0)
+    trans = youdao_translate(q0, timeout=3)
     q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
     q, ques, aste = refine_query(q)# ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q)
     expand = []
     asteList = []
     for i in ques:
-        expand.append(qt[i])
+        expand.append(i)
     for i in aste:
-        asteList.append(qt[i])
+        asteList.append(i)
     
     r = {
         'domain': u'人机交互',
@@ -122,9 +122,9 @@ def esoda_view(request):
         'ref': ' '.join(ref),
         'poss': ' '.join(poss),
         'suggestion': suggestion,
-        'dictionary': trans,
+        # 'dictionary': trans,
         'cids': cids,
-        'expand': expand
+        'expand': json.dumps(expand)
     }
 
     request.session.save()
@@ -144,7 +144,7 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
         syn_dict[t_new[j]] = []
         for syn in synonyms(t_new[j], pos = poss[j])[:30]:
             lemma = ' '.join(t_new).replace(t_new[j], syn[0])
-            reff = ' '.join(ref_new).replace(t_new[j], syn[0])
+            reff = ' '.join(ref_new).replace(ref_new[j], syn[0])
             if dt == '0' or len(t_new) == 1:
                 cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
             else:
@@ -162,7 +162,7 @@ def syn_usageList_view(request):
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
     expand = request.GET.get('expand', '[]')
-    expand = ast.literal_eval(expand)
+    expand = json.loads(expand)
     if not ref:
         ref = t
     i = int(request.GET.get('i', '0'))
@@ -180,14 +180,17 @@ def syn_usageList_view(request):
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
 
     t_list, star = star2collocation(t, dt)
+    t_list0 = []
     if expand:
-        t_list = expand
+        for i in expand:
+            t_list0.append(t_list[i])
+        t_list = t_list0
     info = {
         't_list': t_list,
         'count': ttcnt,
         'syn_dict': {},
         't_dt': (' '.join(t), dt),
-        'lemma': ' '.join(t)
+        'ref': ' '.join(ref)
     }
 
     syn_usage_dict = {}
@@ -200,14 +203,15 @@ def syn_usageList_view(request):
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
         if usage_dict.get('*'):
-            info['lemma'] = usage_dict['*'][0]['lemma']
+            info['ref'] = usage_dict['*'][0]['ref']
+            info['count'] = usage_dict['*'][0]['count']
 
     hint = 0
     for k in t_list:
         for key in syn_usage_dict.keys():
             if k == key:
                 if syn_usage_dict[key]:
-                    if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰', '被修饰词', '主语']:
+                    if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
                         hint += 1
 
     info['syn_usage_dict'] = syn_usage_dict
@@ -227,15 +231,10 @@ def sentence_view(request):
     if len(t) == 1:
         dt = '0'
     sr = sentence_query(t, ref, i, dt, dbs, cids)
-    source_set = set()
-    for i in sr['sentence']:
-        if len(i['content']) > 260:
-            sr['sentence'].remove(i)
-            continue
-        if i['source']['source'] in source_set:
-            sr['sentence'].remove(i)
-        else:
-            source_set.add(i['source']['source'])
+    for i in xrange(0, len(sr['sentence']), 10):
+        temp = sr['sentence'][i:i+10]
+        random.shuffle(temp)
+        sr['sentence'][i:i+10] = temp
     info = {
         'example_number': len(sr['sentence']),
         'search_time': sr['time'],
@@ -298,6 +297,8 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
     #     })
     con = ''
     for k in (('*', t[i + 1]), (t[i], '*')):
+        if k == ('*', '*'):
+            continue
         d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
         lst = EsAdaptor.group(nt, d, dbs, cids)
         try:

@@ -13,7 +13,7 @@ $(function () {
     loadCount = 1;
     loading = 1;
     loaded = 0;
-    params['dep_count'] = $(".colloc-usage[state='selected']").children().attr('count');
+    params['dep_count'] = $(".colloc-usage[state='selected']").children('span').attr('count');
     $.get(SENTENCES_URL, params, function (data) {
       $('#Loading').hide();
       $('#SentenceResult').html(data);
@@ -30,7 +30,6 @@ $(function () {
         $('#Loadbox').hide();
       }
       else if (exampleNum <= 10 && exampleNum > 0) {
-        console.log(exampleNum);
         $('#Loadbox').hide();
         $('#ExampleEnd').fadeIn("fast");
         loaded = 1;
@@ -115,7 +114,11 @@ $(function () {
         mouseWheel: {preventDefault: true},
         autoHideScrollbar: true
       });
-      $(id + ' .colloc-usage:eq(0)').click();
+      if (type0.indexOf('*') > -1) { $(id + ' .single-extend:eq(0) .colloc-usage:eq(0)').click(); }
+      else {
+        if ($(id + ' .colloc-usage:eq(0)').length) { $(id + ' .colloc-usage:eq(0)').click(); }
+        else { searchAndFillSentences({t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}); }
+      }
     });
   });
 

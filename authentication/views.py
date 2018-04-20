@@ -6,55 +6,58 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
 import json
+from .models import UserProfile
 from esoda.utils import CORPUS
 from esoda.utils import SECOND_LEVEL_FIELD
 from esoda.utils import FIELD_NAME
+
+
 # Create your views here.
 
 # Views for profile urls
-@login_required
 def domain_view(request):
-    user = User.objects.get(id=request.user.pk)
-    corpus_id = user.userprofile.getid()
+    user = request.user
     if request.method == 'POST':
-        cids=request.POST.getlist('ids')
-        corpus_id=[0]*1000
-        empty=True
+        corpus_ids = UserProfile.EMPTY_CIDS[:]
+        cids = request.POST.getlist('ids')
         for i in cids:
-            corpus_id[int(i)]=1
-            empty=False
-        if empty==True:
-            messages.error(request, u'选中领域为空，领域更新失败')
+            corpus_ids[int(i)] = 1
+        if user.is_authenticated():
+            if cids:
+                user.userprofile.setid(corpus_ids)
+                messages.success(request, _(u'保存成功'))
+            else:
+                messages.error(request, _(u'请至少选择一个领域'))
         else:
-            user.userprofile.setid(corpus_id)
-            user.userprofile.save()
-            messages.success(request, u'领域更新成功')
-    node_tree=tree(corpus_id)
+            messages.error(request, _(u'请先登录'))
+    else:
+        corpus_ids = user.userprofile.getid() if user.is_authenticated() else UserProfile.DEFAULT_CIDS[:]
+    node_tree = tree(corpus_ids)
     return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
 @login_required
 def search_domain_tree_view(request):
-    result=[]
-    expand=[]
-    big=[]
-    target=request.GET['target']
-    if target=="":
-        return JsonResponse({"expand":expand,"result":result,"big":big}, safe=False)
+    result = []
+    expand = []
+    big = []
+    target = request.GET['target']
+    if target == "":
+        return JsonResponse({"expand": expand, "result": result, "big": big}, safe=False)
     user = User.objects.get(id=request.user.pk)
     corpus_id = user.userprofile.getid()
-    node_tree=tree(corpus_id)
+    node_tree = tree(corpus_id)
     for k in node_tree:
         for i in k["nodes"]:
             for j in i["nodes"]:
                 if target.lower() in j["text"].lower():
                     result.append(j["id"])
-                    if k["level"]==3:
+                    if k["level"] == 3:
                         if not i["id"] in expand:
                             expand.append(i["id"])
                     if not k["id"] in big:
                         big.append(k["id"])
-    print result
-    return JsonResponse({"expand":expand,"result":result,"big":big}, safe=False)
+    return JsonResponse({"expand": expand, "result": result, "big": big}, safe=False)
+
 
 def personal_view(request):
     info = {
@@ -81,85 +84,89 @@ def favorites_view(request):
     return render(request, 'profile/favorites.html', info)
 
 
-tree_first=[0, 3, 323, 326, 329, 332, 335, 338, 342, 346, 349, 352]
+tree_first = [0, 3, 323, 326, 329, 332, 335, 338, 342, 346, 349, 352]
+
 
 def get_dept_tree(corpus_id):
-    tree_first=[]
+    tree_first = []
     display_tree = []
-    c_id=0;
-    a_id=0;
+    c_id = 0
+    a_id = 0
     for k in range(len(FIELD_NAME)):
-        node0=TreeNode()
-        node0.id=c_id
+        node0 = TreeNode()
+        node0.id = c_id
         tree_first.append(c_id)
-        c_id+=1
-        node0.text=FIELD_NAME[k]
-        field_tree=[]
-        if k==1:
-            node0.level=3
+        c_id += 1
+        node0.text = FIELD_NAME[k]
+        field_tree = []
+        if k == 1:
+            node0.level = 3
             for i in range(len(SECOND_LEVEL_FIELD[k])):
                 node = TreeNode()
                 node.id = c_id
                 node.text = SECOND_LEVEL_FIELD[k][i]
-                c_id+=1
+                c_id += 1
                 children = CORPUS[str(a_id)]
-                a_id+=1
+                a_id += 1
                 for i in children:
                     node1 = TreeNode()
                     node1.id = c_id
                     node1.text = i['n']
-                    c_id+=1
+                    c_id += 1
                     if 'conf' in i['i']:
-                        node1.type='conf'
+                        node1.type = 'conf'
                     else:
-                        node1.type='jour'
+                        node1.type = 'jour'
                     node.nodes.append(node1.to_dict(corpus_id[node1.id]))
-                field_tree.append(node.to_dict(corpus_id[node.id],(len(node.nodes)>5)))
-        else:       
+                field_tree.append(node.to_dict(corpus_id[node.id], (len(node.nodes) > 5)))
+        else:
             node = TreeNode()
             node.id = c_id
             node.text = SECOND_LEVEL_FIELD[k][0]
-            c_id+=1
+            c_id += 1
             children = CORPUS[str(a_id)]
-            a_id+=1
+            a_id += 1
             for i in children:
                 node1 = TreeNode()
                 node1.id = c_id
                 node1.text = i['n']
-                c_id+=1
+                c_id += 1
                 node.nodes.append(node1.to_dict(corpus_id[node1.id]))
             field_tree.append(node.to_dict(corpus_id[node.id]))
-        node0.nodes=field_tree
+        node0.nodes = field_tree
         display_tree.append(node0.to_dict(corpus_id[node0.id]))
     # print tree_first
     return display_tree
 
+
 def tree(corpus_id):
     tree = get_dept_tree(corpus_id)
     return tree
+
 
 class TreeNode():
     def __init__(self):
         self.id = 0
         self.text = "Node 1"
         self.state = {
-             'checked': False,
+            'checked': False,
         }
         self.nodes = []
-        self.level=2
-        self.type=''
-    def to_dict(self,checked,expand=False):
-        if checked==0:
-            check=False
+        self.level = 2
+        self.type = ''
+
+    def to_dict(self, checked, expand=False):
+        if checked == 0:
+            check = False
         else:
-            check=True
-        temp={
+            check = True
+        temp = {
             'id': self.id,
             'text': self.text,
-            'state': {'checked': checked, 'expand':expand},
+            'state': {'checked': checked, 'expand': expand},
             'level': self.level,
-            'type':self.type
+            'type': self.type
         }
-        if not len(self.nodes)==0:
-            temp['nodes']=self.nodes
+        if not len(self.nodes) == 0:
+            temp['nodes'] = self.nodes
         return temp

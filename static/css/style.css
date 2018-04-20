@@ -58,7 +58,11 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 16px 15px;
+        padding: 10px 16px 5px;
+    }
+
+     .footer {
+        padding-top: 10px;
     }
 }
 
@@ -103,7 +107,11 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 16px 10px;
+        padding: 10px 16px 5px;
+    }
+
+     .footer {
+        padding-top: 10px;
     }
 }
 
@@ -146,7 +154,7 @@ a {
     }
 
     .panel-category-heading {
-        padding: 10px 15px;
+        padding: 10px 15px 5px;
     }
 
     #ResultSearchBar {
@@ -159,6 +167,12 @@ a {
 
     .list-btn2 {
         padding-left: 15px !important;
+    }
+
+    .footer {
+        overflow: hidden;
+        line-height: 40px;
+        padding-top: 5px;
     }
 }
 
@@ -235,6 +249,12 @@ a {
     #navbar.navbar-collapse {
         background-color: rgba(255, 255, 255, 0.9);
     }
+
+    .footer {
+        overflow: hidden;
+        line-height: 40px;
+        padding-top: 5px;
+    }
 }
 
 #SearchBox {
@@ -257,12 +277,8 @@ a {
     /* Fixed height for body margin */
     height: 50px;
     bottom: 0;
-    overflow: hidden;
-    /*background: white;*/
     color: #9b9b9b;
     font-size: 18px;
-    line-height: 40px;
-    padding-top: 5px;
     z-index: 1000;
     background: #EBEBEB;
     border-top: 1px solid #CACACA;
@@ -430,7 +446,7 @@ a {
 
 .read .btn {
     margin-top: 15px;
-    margin-right: 5px;
+    margin-right: 45px;
     /*border-color: transparent;*/
     background-color: transparent !important;
     width: 84px !important;
@@ -466,7 +482,7 @@ a {
 
 .nav > li > a:hover {
     background-color: transparent;
-    color: #63B7e6 !important;
+    /*color: #63B7e6 !important;*/
 }
 
 .nav > li > a:focus {
@@ -495,23 +511,24 @@ a {
 }
 
 .nav-pills-feedback > li > a {
-    border-radius: 4px;
-    color: #63B7E6;
-    border: 2px solid #63B7E6;
+    border-radius: 0px;
+    color: #4A4A4A;
     margin: -4px;
     padding: 10px 30px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .nav-pills-feedback > li > a:hover {
     background: transparent;
+    color: #63B7E6;
 }
 
 .nav-pills-feedback > li.active > a,
 .nav-pills-feedback > li.active > a:hover,
 .nav-pills-feedback > li.active > a:focus {
-    color: #fff;
-    background-color: #63B7E6;
+    color: #63B7E6;
+    background-color: transparent;
+    border-bottom: 2px solid #63B7E6;
 }
 
 .navbar-default .navbar-nav > li > a:focus {
@@ -549,9 +566,6 @@ a {
 
 .modal-header {
     border-bottom: none;
-}
-
-.modal-header {
     text-align: center;
     padding: 0px;
     color: #63B7E6;
@@ -808,7 +822,7 @@ button.close:focus {
     padding-top: 51px;
     padding-bottom: 30px;
     font-size: 15px;
-    color: #63B7E6;
+    color: #9b9b9b;
 }
 
 .glyphicon-heart-empty {
@@ -834,16 +848,16 @@ button.close:focus {
     overflow-y: scroll;
     border-color: white;
     background: #F5F5F5;
-    box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, 0.20);
+    /*box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, 0.20);*/
     border-radius: 1px;
 }
 
 #MessageBtn {
-    width: 170px;
+    width: 150px;
     height: 35px;
     padding-top: 4px;
     margin-top: 15px;
-    border-radius: 5px;
+    border-radius: 0px;
     float: right;
     font-family: PingFangSC-Regular;
     font-size: 16px;
@@ -884,8 +898,8 @@ button.close:focus {
 }
 
 .back-feedback {
-    border-top: 2px solid #979797;
-    padding-top: 60px;
+    border-top: 1px solid #979797;
+    padding-top: 50px;
 }
 
 #feedback {
@@ -1017,10 +1031,9 @@ button.close:focus {
 }
 
 .feedback-title {
-    margin-bottom: 30px;
-    margin-top: 80px;
-    text-align: center;
-    font-size: 24px;
+    margin: 80px 0 50px 30px;
+    font-size: 16px;
+    color: #9b9b9b;
 }
 
 .usage-title {
@@ -1136,12 +1149,17 @@ button.close:focus {
     padding-right: 30px;
 }
 
+.pager {
+    text-align: right;
+}
+
 .pager li > span {
     color: #9b9b9b;
     cursor: pointer;
     background: #f5f5f9;
     border: transparent;
     font-size: 18px;
+    border-radius: 0;
 }
 
 .pager li > span:hover {
@@ -1187,13 +1205,11 @@ button.close:focus {
 }
 
 .message-notepad {
-    height: 70px;
+    height: 65px;
 }
 
 #FeedbackTab {
     position: absolute;
-    left: 50%;
-    margin-left: -150px;
     margin-bottom: 40px;
 }
 
@@ -1283,6 +1299,11 @@ button.close:focus {
     padding-bottom: 0px;
 }
 
+.SentenceContent {
+    background-color: #fff; 
+    min-height: calc(100vh - 170px);
+}
+
 #SidebarAffix {
     width: 214px;
     border-color: transparent;
@@ -1300,10 +1321,6 @@ button.close:focus {
     margin-top: 0px;
 }
 
-#SidebarAffix a:hover {
-    color: #63b7e6;
-}
-
 #SidebarAffix .list-group{
     margin-bottom: 0px;
 }
@@ -1315,13 +1332,17 @@ button.close:focus {
 }
 
 #SidebarAffix .list-group-item:last-child {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 .collocation-panel {
     height: calc(100vh - 70px);
     background: #fff;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.05);
+}
+
+.panel-collapse-body a:hover {
+    color: #63b7e6;
 }
 
 .hide-query {
@@ -1479,35 +1500,22 @@ button.close:focus {
     box-shadow: 0 5px 10px 0 rgba(19,65,116,0.15);
 }
 
-.panel-category-heading .colloc-usage {
+.colloc-usage-header {
     font-size: 14px;
     color: #FFFFFF !important;
     font-family: Beirut;
-}
-
-.colloc-usage-header {
     max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     display: inline-block;
-    padding-top: 5px;
-    margin-left: 5px;
-    position: absolute;
+    margin-top: 5px;
 }
 
 .colloc-heading {
     font-family: PingFangSC-Medium;
     font-size: 16px;
     color: #FFFFFF;
-}
-
-.back-btn {
-    margin: 5px 0 0;
-}
-
-.exchange-icon .fa {
-    font-size: 12px;
 }
 
 .total-cnt {
@@ -1529,7 +1537,8 @@ button.close:focus {
 }
 
 .panel-key {
-    font-family: Helvetica-Bold;
+    font-family: Helvetica;
+    font-weight: bold;
     color: #22415E;
 }
 
@@ -1750,32 +1759,28 @@ button.close:focus {
 }
 
 .oneline {
-    display: block;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .result-warning {
-    padding: 0px 0px;
-    margin-bottom: -15px;
-    color: #666;
-    font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
-    text-align: left;
-}
-
-.result-warning span {
-    /*font-weight: bold;*/
+    margin-top: 2px;
+    padding-right: 15px;
     color: #ACACAC;
+    font-family: PingFangSC-Light, Microsoft Yahei, HeitiSC;
     font-size: 12px;
-    padding-bottom: 15px;
-    padding-right: 5px;
+    word-break: keep-all;
+    display: inherit;
+    white-space: nowrap;
+    text-align: right;
 }
-
+.result-warning span {
+    width: 114px;
+    margin-right: 5px;
+}
 .result-warning a {
-    color: #63B7E6 !important;
-    margin-right: 12px;
+    color: #63B7E6;
 }
 
 .result-table-cell {
