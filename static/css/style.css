@@ -1302,6 +1302,11 @@ button.close:focus {
     padding-bottom: 0px;
 }
 
+.SentenceContent {
+    background-color: #fff; 
+    min-height: calc(100vh - 170px);
+}
+
 #SidebarAffix {
     width: 214px;
     border-color: transparent;
@@ -1535,7 +1540,8 @@ button.close:focus {
 }
 
 .panel-key {
-    font-family: Helvetica-Bold;
+    font-family: Helvetica;
+    font-weight: bold;
     color: #22415E;
 }
 
