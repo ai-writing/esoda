@@ -3,7 +3,7 @@
  */
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
-var REF, POSS, SENTENCES_URL, COLLOCATION_URL;
+var QUERY_PARAMS, REF, POSS, SENTENCES_URL, COLLOCATION_URL;
 // var keyword = window.location.search;
 
 $(function () {
@@ -229,6 +229,8 @@ $(function () {
     $(e.target).toggleClass("glyphicon-star-empty");
     $(e.target).toggleClass("glyphicon-star");
   };
+
+  $('.domain-link').attr('href', $('.domain-link').attr('href') + '?' + QUERY_PARAMS);
 
   $('#SearchBox').hover(function () {
     if ($('#SearchBox').is(':focus')) {

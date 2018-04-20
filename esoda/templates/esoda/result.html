@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load add_tense %}
 
-{% block title %}ESODA | search result{% endblock %}
+{% block title %}{% trans "ESODA" %} | {% trans "search result" %}{% endblock %}
 
 {% block head %}
   <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> -->
@@ -167,6 +167,7 @@
   <script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
   <script src="{% static 'js/esoda-result.js' %}?v={% now 'Ymd' %}"></script>
   <script>
+    QUERY_PARAMS = '{{ request.GET.urlencode }}';
     REF = '{{ ref }}';
     POSS = '{{ poss }}';
     SENTENCES_URL = "{% url 'sentences' %}";
