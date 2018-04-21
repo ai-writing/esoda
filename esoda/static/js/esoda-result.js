@@ -17,7 +17,7 @@ $(function () {
     $.get(SENTENCES_URL, params, function (data) {
       $('#Loading').hide();
       $('#SentenceResult').html(data);
-      $('#SentenceResult').fadeIn("fast");
+      $('.SentenceContent').fadeIn("fast");
       $("#SentenceLoading").hide();
       $('#SidebarAffix .panel-group').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
@@ -77,7 +77,7 @@ $(function () {
     if ($(this).attr('aria-expanded') == 'true') {
       return;
     }
-    $('#SentenceResult').fadeOut("fast");
+    $('.SentenceContent').fadeOut("fast");
     $('#ExampleEnd').fadeOut("fast");
     $('#SidebarAffix .panel-group').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
@@ -126,7 +126,7 @@ $(function () {
     e.preventDefault();
     if ($(this).attr('state') == 'selected') return;
     $("#ExampleEnd").fadeOut("fast");
-    $('#SentenceResult').fadeOut("fast");
+    $('.SentenceContent').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
     $("#SentenceLoading").show();
     // $('#SentenceResult').animate({opacity: 0}, function () {
