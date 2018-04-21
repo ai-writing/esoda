@@ -1,7 +1,7 @@
 html {
     position: relative;
     min-height: 100%;
-    min-width: 360px;
+    min-width: 500px;
     background-color: #EEEFF1;
 }
 
@@ -272,6 +272,10 @@ a {
         line-height: 40px;
         padding-top: 5px;
     }
+
+    .navbar-index .nav-pills > li > a {
+        padding-top: 10px !important;
+    }
 }
 
 #SearchBox {
@@ -495,7 +499,7 @@ a {
 
 .nav > li > a:hover {
     background-color: transparent;
-    /*color: #63B7e6 !important;*/
+    color: #63B7e6;
 }
 
 .nav > li > a:focus {
@@ -2036,10 +2040,10 @@ button.close:focus {
 }
 
 .back-to-top {
-    background-color: #fff;
+    background-color: #fff !important;
     border: solid 1px #ddd;
-    opacity: 0.5;
-    color: #787878;
+    opacity: 0.6;
+    color: #787878 !important;
     width: 82px;
 }
 
@@ -2071,7 +2075,6 @@ button.close:focus {
 
 .warning-page-icon-500 {
     width: 400px;
-    /*float: right;*/
     position: relative;
     margin-left: 40px;
 }
@@ -2079,7 +2082,6 @@ button.close:focus {
 .warning-page-icon-404 {
     width: 400px;
     margin-top: 22px;
-    /*float: right;*/
     position: relative;
     margin-left: 40px;
 }
