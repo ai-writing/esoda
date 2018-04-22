@@ -2,7 +2,7 @@ html {
     position: relative;
     min-height: 100%;
     min-width: 500px;
-    background-color: #EEEFF1;
+    background-color: #FAFAFA;
 }
 
 body {
@@ -1358,8 +1358,8 @@ button.close:focus {
 
 .result-page {
     /*background-color: #f5f5f9;*/
-    /*background-color: #fff;*/
-    background-color: #EEEFF1;
+    /*background-color: #EEEFF1;*/
+    background-color: #FAFAFA;
     padding-bottom: 0px;
 }
 
