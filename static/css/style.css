@@ -30,7 +30,7 @@ a {
     }
 
     .full-width {
-        width: 130%;
+        width: 195%;
     }
 
     .navbar-brand {
@@ -52,7 +52,7 @@ a {
     }
 
     #ResultSearchBar {
-        margin-left: 33px;
+        margin-left: 30px;
     }
 
     .result-main {
@@ -75,7 +75,7 @@ a {
 
 @media (max-width: 1200px) and (min-width: 992px) {
     .full-width {
-        width: 135%;
+        width: 210%;
     }
 
     .btn-index-search {
@@ -89,7 +89,7 @@ a {
     }
 
     #ResultSearchBar {
-        margin-left: 26px;
+        margin-left: 24px;
     }
 
     .navbar-brand > img {
@@ -129,7 +129,7 @@ a {
 
 @media (max-width: 992px) and (min-width: 767px) {
     .full-width {
-        width: 160%;
+        width: 195%;
     }
 
     .btn-index-search {
@@ -170,7 +170,7 @@ a {
     }
 
     #ResultSearchBar {
-        margin-left: 17px;
+        margin-left: 15px;
     }
 
     .panel-category-heading .colloc-usage {
@@ -225,6 +225,7 @@ a {
     #SearchForm {
         width: 96%;
         margin: 0 !important;
+        padding-top: 15px;
         display: inline-block;
         max-width: 767px !important;
     }
@@ -234,7 +235,7 @@ a {
     }
 
     .navbar-search {
-        width: 100% !important;
+        width: 87% !important;
     }
 
     .login {
@@ -569,12 +570,6 @@ a {
     display: inline-flex;
     margin-top: 10px;
     margin-right: 20px;
-}
-
-.result-index .dropdown-small {
-    margin-top: -10px !important;
-    font-size: 12px;
-    float: right;
 }
 
 .dropdown-small a {
