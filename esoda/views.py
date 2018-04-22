@@ -169,6 +169,9 @@ def syn_usageList_view(request):
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
     poss = request.GET.get('pos', '').split()
+    if dt !='0' and len(t) == 1: # Assure the length of word when dep != '0'
+        t.append('*')
+        ref.append('*')
     usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
     syn_dict = get_synonyms_dict(t, ref, i, dt, poss, dbs, cids)
 
