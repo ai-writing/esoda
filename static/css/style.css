@@ -219,17 +219,22 @@ a {
     }
 
     .navbar-index {
-        margin-top: 0px !important;
+        margin-top: 0 !important;
     }
 
     #SearchForm {
         width: 96%;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        margin: 0 !important;
+        display: inline-block;
+        max-width: 767px !important;
+    }
+
+    #ResultSearchBar {
+        margin-top: 0 !important;
     }
 
     .navbar-search {
-        width: 93% !important;
+        width: 100% !important;
     }
 
     .login {
@@ -459,6 +464,7 @@ a {
 
 .esoda-tips .btn-link {
     color: white;
+    padding-left: 0;
 }
 
 .read .btn {
@@ -557,6 +563,23 @@ a {
 
 .navbar-default .navbar-nav > li > a {
     background-color: transparent !important;
+}
+
+.dropdown-small {
+    display: inline-flex;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.result-index .dropdown-small {
+    margin-top: -10px !important;
+    font-size: 12px;
+    float: right;
+}
+
+.dropdown-small a {
+    color: #777;
+    margin-right: 10px;
 }
 
 .login, .dropdown, .dropup {
@@ -2140,8 +2163,7 @@ button.close:focus {
 }
 
 .guide-group {
-    padding-top: 30px;
-    padding-bottom: 20px;
+    padding: 20px;
 }
 
 .guide-intro {
@@ -2187,7 +2209,8 @@ button.close:focus {
 .example-image {
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 40px
+    margin-bottom: 40px;
+    text-align: center;
 }
 
 .example-image img {

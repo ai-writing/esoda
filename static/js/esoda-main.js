@@ -113,8 +113,7 @@ $(function () {
       this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
     },
     _renderMenu: function (ul, items) {
-      var that = this,
-        currentCategory = "";
+      var that = this, currentCategory = "";
       $.each(items, function (index, item) {
         var li;
         if (item.category !== currentCategory) {
@@ -144,6 +143,9 @@ $(function () {
     _closeOnClickOutside: function (event) {
       if (!this._isEventTargetInWidget(event)) {
         this.close();
+        if ($("#SearchBox").val().trim().length === 0) {
+          $("#SearchBox").val('');
+        }
       }
     }
   });
@@ -317,8 +319,5 @@ $(function () {
   $(window).on('click', function (e){
     $('.jumbotron').css("padding-top", "171px");
     auto = 0;
-    if ($("#SearchBox").val().trim().length === 0) {
-      $("#SearchBox").val('');
-    }
   });
 });
