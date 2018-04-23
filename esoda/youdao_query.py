@@ -9,7 +9,9 @@ import re
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
-# TODO: install requests_cache
+if not settings.DEBUG:
+    import requests_cache
+    requests_cache.install_cache('youdao_cache', backend='memory', expire_after=86400)
 
 
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
@@ -109,13 +111,15 @@ YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key
 def youdao_translate_old(q, timeout=10):
     r = {}
     try:
-        r = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=timeout).json()
+        response = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=timeout)
+        r = response.json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
     translated = {
         'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
-        'cn': has_cn(q)
+        'cn': has_cn(q),
+        'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
     logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
     return translated
@@ -137,13 +141,15 @@ def youdao_translate_new(q, timeout=10):
     r = {}
     try:
         translate_url = generate_translate_url(q)
-        r = requests.get(translate_url, timeout=timeout).json()
+        response = requests.get(translate_url, timeout=timeout)
+        r = response.json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
     translated = {
         'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
-        'cn': has_cn(q)
+        'cn': has_cn(q),
+        'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
     logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
     return translated
