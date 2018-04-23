@@ -291,6 +291,10 @@ a {
     .result-main .CollapseColloc {
         padding-left: 15px !important;
     }
+    .modal-login-sm {
+        max-width: 445px;
+        width: auto !important;
+    }
 }
 
 #SearchBox {
