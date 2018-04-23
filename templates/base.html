@@ -15,8 +15,8 @@
   <meta name="description"
         content="易搜搭(ESODA)是一款适合国人英语写作的信息助手,由清华大学人机交互实验室出品,它广泛收录了各学科领域的海量论文作为数据库,通过智能语言分析等算法,供您通过各种方式查询地道的英语搭配和例句.从今以后像老外一样写作,再也不用担心自己的语言问题了!">
   <meta name="author" content="清华大学人机交互实验室; Tsinghua Pervasive Interaction Group; Tsinghua PI Group">
-  <link rel="shortcut icon" href="{% static 'img/favicon1.ico' %}"/>
-  <link rel="bookmark" href="{% static 'img/favicon1.ico' %}"/>
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}"/>
+  <link rel="bookmark" href="{% static 'img/favicon.ico' %}"/>
 
   <title>{% block title %}易搜搭 {% trans "ESODA" %}{% endblock %}</title>
 
@@ -40,13 +40,13 @@
 </head>
 
 <body>
-{% if debug %}
-  <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">
-    NOTE: You are running in DEBUG mode.
-  </div>
-{% endif %}
-{% block header %}
   <nav class="navbar navbar-default navbar-fixed-top">
+  {% if debug %}
+    <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">
+      NOTE: You are running in DEBUG mode.
+    </div>
+  {% endif %}
+{% block header %}
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -114,9 +114,8 @@
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
-  </nav>
-
 {% endblock %}
+  </nav>
 
 <div class="modal fade" id="ModalLogin"></div>
 
