@@ -24,7 +24,8 @@
   <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
   <!-- <link href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"> -->
-  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <!-- <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"> -->
   <link href="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
 
@@ -39,13 +40,13 @@
 </head>
 
 <body>
-{% if debug %}
-  <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">
-    NOTE: You are running in DEBUG mode.
-  </div>
-{% endif %}
-{% block header %}
   <nav class="navbar navbar-default navbar-fixed-top">
+  {% if debug %}
+    <div style="padding-left: 1%; background: cornsilk; opacity: 0.7; position: absolute; z-index: 100;">
+      NOTE: You are running in DEBUG mode.
+    </div>
+  {% endif %}
+{% block header %}
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -55,9 +56,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"></a>
-      </div>
-      <div id="navbar" class="navbar-index navbar-collapse collapse result-index">
+        <a class="navbar-brand hidden-xs" href="{% url 'esoda' %}"><img src="{% static 'img/logo.png' %}"></a>
         <form class="navbar-form navbar-left navbar-search" id="SearchForm" role="search"
               action="{% url 'esoda' %}">
           <div id="ResultSearchBar" class="input-group full-width">
@@ -72,18 +71,19 @@
             <!-- <span>test</span> -->
             <div class="result-warning">
               <span class="oneline">搜索领域: {{ r.domain|upper }}</span>
-              <a href="{% url 'authentication:domain' %}">修改</a>
+              <a class="domain-link" href="{% url 'authentication:domain' %}">修改</a>
             </div>
           </div>
-
         </form>
+      </div>
+      <div id="navbar" class="navbar-index navbar-collapse collapse">
         {% if not user.is_authenticated %}
           <ul class="nav navbar-nav navbar-right login">
             <li><a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a></li>
           </ul>
         {% else %}
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
+          <ul class="nav navbar-nav navbar-right dropdown">
+            <li class="hidden-xs">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 {{ user.username|truncatechars:10 }}<span class="caret"></span>
               </a>
@@ -94,17 +94,28 @@
                 <li><a href="{% url 'auth_logout' %}">登出</a></li>
               </ul>
             </li>
-            <!--             <li><a href="{% url 'auth_password_change' %}">欢迎回来，{{ user.username|truncatechars:12 }}</a>
-            </li> -->
-            {#              <a href="{% url 'auth_logout' %}">登出</a>#}
-{#           <img src="{% static 'img/user.png' %}" class="navbar-avatar">#}
+            <div class="hidden-sm hidden-md hidden-lg dropdown-small">
+              <li><a href="#">{{ user.username|truncatechars:10 }}</a></li>
+              <li><a href="{% url 'auth_password_change' %}">修改密码</a></li>
+              <li><a href="{% url 'auth_logout' %}">登出</a></li>
+            </div>
           </ul>
         {% endif %}
+        <ul class="nav nav-pills navbar-right nav-pills-index hidden-sm hidden-md hidden-lg" role="tablist">
+          <li role="presentation" {% if tab == "index" %}class="active"{% endif %}>
+            <a role="tab" href="{% url 'esoda' %}">主页</a>
+          </li>
+          <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}>
+            <a role="tab" href="{% url 'guide' %}">搜搭教程</a>
+          </li>
+          <li role="presentation" {% if tab == "profile" %}class="active"{% endif %}>
+            <a role="tab" href="{% url 'authentication:domain' %}">个人领域</a>
+          </li>
+        </ul>
       </div><!--/.navbar-collapse -->
     </div>
-  </nav>
-
 {% endblock %}
+  </nav>
 
 <div class="modal fade" id="ModalLogin"></div>
 
@@ -114,7 +125,8 @@
   <div class="container">
     <div class="row">
       <ul class="col-md-9">
-        <li class="copyright">Copyright &copy; 2017 清华大学 · <a href="http://pi.cs.tsinghua.edu.cn/">人机交互实验室</a> · <a href="http://www.miitbeian.gov.cn/">京ICP备17037838号-1</a>
+        <li class="copyright">Copyright &copy; 2017 清华大学 · <a href="http://pi.cs.tsinghua.edu.cn/">人机交互实验室</a> · <a
+                href="http://www.miitbeian.gov.cn/">京ICP备17037838号-1</a>
         </li>
         <li><a href="http://pi.cs.tsinghua.edu.cn/contact/">联系我们</a></li>
         {#                <li><a href="#">PCG工作室</a></li>#}
@@ -145,8 +157,9 @@
 <!-- <script src="//code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script> -->
 <!-- <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> -->
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
 <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script> -->

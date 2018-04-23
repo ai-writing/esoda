@@ -3,7 +3,7 @@
  */
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
-var REF, POSS, SENTENCES_URL, COLLOCATION_URL;
+var QUERY_PARAMS, REF, POSS, SENTENCES_URL, COLLOCATION_URL;
 // var keyword = window.location.search;
 
 $(function () {
@@ -17,7 +17,7 @@ $(function () {
     $.get(SENTENCES_URL, params, function (data) {
       $('#Loading').hide();
       $('#SentenceResult').html(data);
-      $('#SentenceResult').fadeIn("fast");
+      $('.SentenceContent').fadeIn("fast");
       $("#SentenceLoading").hide();
       $('#SidebarAffix .panel-group').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
@@ -77,7 +77,7 @@ $(function () {
     if ($(this).attr('aria-expanded') == 'true') {
       return;
     }
-    $('#SentenceResult').fadeOut("fast");
+    $('.SentenceContent').fadeOut("fast");
     $('#ExampleEnd').fadeOut("fast");
     $('#SidebarAffix .panel-group').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
@@ -126,7 +126,7 @@ $(function () {
     e.preventDefault();
     if ($(this).attr('state') == 'selected') return;
     $("#ExampleEnd").fadeOut("fast");
-    $('#SentenceResult').fadeOut("fast");
+    $('.SentenceContent').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
     $("#SentenceLoading").show();
     // $('#SentenceResult').animate({opacity: 0}, function () {
@@ -229,6 +229,8 @@ $(function () {
     $(e.target).toggleClass("glyphicon-star-empty");
     $(e.target).toggleClass("glyphicon-star");
   };
+
+  $('.domain-link').attr('href', $('.domain-link').attr('href') + '?' + QUERY_PARAMS);
 
   $('#SearchBox').hover(function () {
     if ($('#SearchBox').is(':focus')) {

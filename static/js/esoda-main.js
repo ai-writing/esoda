@@ -8,10 +8,10 @@ $(function () {
   // TODO: Initialize autocomplete etc.
   Storage.prototype.setObj = function (key, obj) {
     return this.setItem(key, JSON.stringify(obj))
-  }
+  };
   Storage.prototype.getObj = function (key) {
     return JSON.parse(this.getItem(key))
-  }
+  };
   function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -25,10 +25,10 @@ $(function () {
     var ca = decodedCookie.split(';');
     for (var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) === ' ') {
         c = c.substring(1);
       }
-      if (c.indexOf(name) == 0) {
+      if (c.indexOf(name) === 0) {
         return c.substring(name.length, c.length);
       }
     }
@@ -52,33 +52,32 @@ $(function () {
     } else {
       setCookie("history", "[]", 365);
     }
-  }
+  };
 
   function storeHistory() {
-    if ($("#SearchBox").val().trim().length === 0) {
-      return;
-    }
+    var history;
     if (("localStorage" in window) && window.localStorage !== null) {
-      var history = localStorage.getObj("history");
+      history = localStorage.getObj("history");
       history = insertHistory(history, $("#SearchBox").val());
       localStorage.setObj("history", history);
     } else {
-      var history = JSON.parse(getCookie("history"));
+      history = JSON.parse(getCookie("history"));
       history = insertHistory(history, $("#SearchBox").val());
       setCookie("history", JSON.stringify(history), 365);
     }
   }
 
   function readHistory() {
+    var history;
     if (("localStorage" in window) && window.localStorage !== null) {
-      var history = localStorage.getObj("history");
-      if (history == null) {
+      history = localStorage.getObj("history");
+      if (history === null) {
         history = [];
         localStorage.setObj("history", history);
       }
     } else {
-      var history = JSON.parse(getCookie("history"));
-      if (history == "") {
+      history = JSON.parse(getCookie("history"));
+      if (history === "") {
         history = [];
         setCookie("history", JSON.stringify(history), 365);
       }
@@ -114,11 +113,10 @@ $(function () {
       this.widget().menu("option", "items", "> :not(.ui-autocomplete-category)");
     },
     _renderMenu: function (ul, items) {
-      var that = this,
-        currentCategory = "";
+      var that = this, currentCategory = "";
       $.each(items, function (index, item) {
         var li;
-        if (item.category != currentCategory) {
+        if (item.category !== currentCategory) {
           ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
           currentCategory = item.category;
         }
@@ -145,6 +143,9 @@ $(function () {
     _closeOnClickOutside: function (event) {
       if (!this._isEventTargetInWidget(event)) {
         this.close();
+        if ($("#SearchBox").val().trim().length === 0) {
+          $("#SearchBox").val('');
+        }
       }
     }
   });
@@ -197,7 +198,7 @@ $(function () {
       });
     },
     search: function () {
-      if (this.value.length == 0) {
+      if (this.value.length === 0) {
         return true;
       }
       var term = extractLast(this.value);
@@ -206,7 +207,7 @@ $(function () {
       }
     },
     focus: function (event, ui) {
-      if (event.keyCode == $.ui.keyCode.UP || event.keyCode == $.ui.keyCode.DOWN) this.value = extractPrefix(ui.item.value);
+      if (event.keyCode === $.ui.keyCode.UP || event.keyCode === $.ui.keyCode.DOWN) this.value = extractPrefix(ui.item.value);
       return false;
     },
     select: function (event, ui) {
@@ -241,10 +242,12 @@ $(function () {
     // });
 
   $('#SearchForm').submit(function () {
+    if ($("#SearchBox").val().trim().length === 0) {
+      return false;
+    }
+    else {
       storeHistory();
-      if ($("#SearchBox").val().trim().length === 0) {
-        return false;
-      }
+    }
   });
 
   $.clickHeart = function (e) {
@@ -274,7 +277,7 @@ $(function () {
       window.external.AddFavorite(bookmarkUrl, bookmarkTitle);
     } else { // for other browsers which does not support (Chrome/Safari/Opera15+)
       alert("您的浏览器不支持该操作。\n请按 " +
-        (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Command/Cmd' : 'CTRL') +
+        (navigator.userAgent.toLowerCase().indexOf('mac') !== -1 ? 'Command/Cmd' : 'CTRL') +
         "+D 添加收藏。");
     }
     return false;
@@ -310,13 +313,10 @@ $(function () {
   });
 
   $('.input-group-btn').on('click', function (e) {
-    if ($("#SearchBox").val().trim().length !== 0) {
-        e.stopPropagation();
-    }
+    e.stopPropagation();
   });
 
   $(window).on('click', function (e){
-    $('.ui.autocomplete').hide();
     $('.jumbotron').css("padding-top", "171px");
     auto = 0;
   });

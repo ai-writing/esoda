@@ -70,9 +70,16 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
-    trans = youdao_translate(q0, timeout=3)
-    q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip() if trans['cn'] and trans['explanationList'] else q0
-    q, ques, aste = refine_query(q)# ques(aste) is the place of question mark(asterisk)
+    q = q0
+    if has_cn(q0):
+        trans = youdao_translate(q0, timeout=3)
+        if trans['explanationList']:
+            try:
+                q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip()
+            except Exception as e:
+                logger.exception('Failed to parse youdao_translate result: "%s"', repr(e))
+
+    q, ques, aste = refine_query(q) # ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q)
     expand = []
     asteList = []
