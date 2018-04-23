@@ -1,7 +1,7 @@
 html {
     position: relative;
     min-height: 100%;
-    min-width: 500px;
+    min-width: 310px;
     background-color: #FAFAFA;
 }
 
@@ -228,6 +228,7 @@ a {
         padding-top: 15px;
         display: inline-block;
         max-width: 767px !important;
+        min-width: 220px;
     }
 
     #ResultSearchBar {
@@ -235,7 +236,7 @@ a {
     }
 
     .navbar-search {
-        width: 87% !important;
+        width: calc(100vw - 90px) !important;
     }
 
     .login {
@@ -281,6 +282,14 @@ a {
 
     .navbar-index .nav-pills > li > a {
         padding-top: 10px !important;
+    }
+
+    .example-box {
+        margin-left: 20px !important;
+        margin-right: 20px !important;
+    }
+    .result-main .CollapseColloc {
+        padding-left: 15px !important;
     }
 }
 
@@ -1441,7 +1450,7 @@ button.close:focus {
 }
 
 .list-btn2 {
-    padding-left: 30px;
+    padding-left: 25px;
     padding-top: 11px;
     font-size: 20px;
     cursor: pointer;

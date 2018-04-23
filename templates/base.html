@@ -69,7 +69,7 @@
                    placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}"
                    onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
             <!-- <span>test</span> -->
-            <div class="result-warning">
+            <div class="result-warning hidden-xs">
               <span class="oneline">搜索领域: {{ r.domain|upper }}</span>
               <a class="domain-link" href="{% url 'authentication:domain' %}">修改</a>
             </div>
