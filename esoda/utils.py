@@ -206,12 +206,16 @@ def papers_source_str(pids):
 
 
 def sort_syn_usageDict(syn_list, usage_list):
+    unique = []
+    new_usagelist = []
     for syn in syn_list:
         syn['weight'] = math.log(syn['count']) # syn['weight'] +
+        unique.append(syn['content'])
     for usa in usage_list:
-        usa['weight'] = math.log(usa['count'])
-    total_list = [dict(y) for y in set(tuple(x.items()) for x in (syn_list + usage_list))] # Remove duplicate resluts
-    weighted_list = sorted(total_list, key=lambda x:x['weight'], reverse = True)
+        if usa['content'] not in unique:
+            usa['weight'] = math.log(usa['count'])
+            new_usagelist.append(usa)
+    weighted_list = sorted(syn_list + new_usagelist, key=lambda x:x['weight'], reverse = True)
     return weighted_list
 
 
