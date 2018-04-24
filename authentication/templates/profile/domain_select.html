@@ -229,12 +229,10 @@
     var textarea = $(this).find('[name="comment"]');
     var msg = textarea.val().trim();
     if (msg) {
-      $.post($(this).attr('action'), $(this).serialize(), function (r) {
-        toastr.remove();
-        toastr.success('提交成功');
-        textarea.val('');
-        $('#DomainModal').modal('hide');
-      });
+      toastr.remove();
+      toastr.success('提交成功');
+      textarea.val('');
+      $('#DomainModal').modal('hide');
     } else {
       toastr.remove();
       toastr.warning('请输入提交内容');
