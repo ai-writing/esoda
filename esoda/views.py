@@ -238,10 +238,10 @@ def sentence_view(request):
     if len(t) == 1:
         dt = '0'
     sr = sentence_query(t, ref, i, dt, dbs, cids)
-    for i in xrange(0, len(sr['sentence']), 10):
-        temp = sr['sentence'][i:i+10]
-        random.shuffle(temp)
-        sr['sentence'][i:i+10] = temp
+    # for i in xrange(0, len(sr['sentence']), 10):
+    #     temp = sr['sentence'][i:i+10]
+    #     random.shuffle(temp)
+    #     sr['sentence'][i:i+10] = temp
     info = {
         'example_number': len(sr['sentence']),
         'search_time': sr['time'],
