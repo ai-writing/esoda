@@ -2,6 +2,7 @@ import requests, logging
 
 logger = logging.getLogger(__name__)
 
+from common.utils import timeit
 from django.conf import settings
 
 LEMMATIZER_URL = settings.STANFORD_CORENLP_SERVER + '?properties={"outputFormat":"conll"}'
@@ -98,6 +99,7 @@ def process_conll_line(tt):
 
     return {'i': int(tt[0])-1, 't': tt[1], 'l': tt[2], 'pt': pt, 'di': int(tt[5])-1, 'dt': dt}
 
+@timeit
 def lemmatize(s):
     '''
     s: a English string

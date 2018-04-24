@@ -158,10 +158,15 @@ LOGGING = {
             'encoding': 'utf-8',
             'formatter': 'verbose',
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+        },
     },
     'root': {
         'level': 'INFO',
-        'handlers': ['console', 'file'],
+        'handlers': ['console', 'file', 'mail_admins'],
     },
 }
 
@@ -259,3 +264,7 @@ STANFORD_CORENLP_SERVER = config('STANFORD_CORENLP_SERVER', default='http://core
 # Youdao API configuration
 YOUDAO_APP_KEY = config('YOUDAO_APP_KEY', default='')
 YOUDAO_SECRET_KEY = config('YOUDAO_SECRET_KEY', default='')
+
+
+# Slack Webhook URL
+SLACK_WEBHOOK_URL = config('SLACK_WEBHOOK_URL', default='')

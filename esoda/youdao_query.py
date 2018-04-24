@@ -1,6 +1,7 @@
 import xml.dom.minidom
 import requests, logging, random, hashlib
 from .utils import has_cn
+from common.utils import timeit
 import heapq
 from common.mongodb import MONGODB
 import math
@@ -16,6 +17,7 @@ if not settings.DEBUG:
 
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
 
+@timeit
 def youdao_suggest(q):
     r = {}
     suggests = []
@@ -52,6 +54,7 @@ def rank(item, len_q):
     # return mul * math.log(item['tf'])
     return mul * item['tf']
 
+@timeit
 def suggest_new(q):
     r = {}
     suggests = []
@@ -108,6 +111,7 @@ def youdao_search(q0, q):
 
 YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key=205873295&type=data&doctype=json&version=1.2&q=%s'
 
+@timeit
 def youdao_translate_old(q, timeout=10):
     r = {}
     try:
@@ -137,6 +141,7 @@ def generate_translate_url(q):
     translate_url = YOUDAO_API_URL + '?appKey=' + settings.YOUDAO_APP_KEY + '&q=' + q + '&from=' + fromLang + '&to=' + toLang + '&salt=' + str(salt) + '&sign=' + sign
     return translate_url
 
+@timeit
 def youdao_translate_new(q, timeout=10):
     r = {}
     try:

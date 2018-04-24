@@ -10,6 +10,7 @@ import json
 import random
 
 from .utils import *
+from common.utils import timeit
 from .youdao_query import youdao_suggest, suggest_new
 if settings.DEBUG:
     from .youdao_query import youdao_translate_old as youdao_translate
@@ -19,7 +20,6 @@ else:
 from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
-from .utils import FIELD_NAME
 from common.models import Comment
 from authentication.views import tree_first
 
@@ -61,6 +61,7 @@ def get_feedback():
     return info
 
 
+@timeit
 def esoda_view(request):
     q0 = request.GET.get('q', '').strip()
 
@@ -139,6 +140,7 @@ def esoda_view(request):
     return render(request, 'esoda/result.html', info)
 
 
+@timeit
 def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     syn_dict = {}
     t_new = t[:]
@@ -162,6 +164,7 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     return syn_dict
 
 
+@timeit
 def syn_usageList_view(request):
     # info = {
     #    'syn_usage_dict': {'word1':[{'ref': '', 'lemma': '', 'content': '', 'count': 10},……],'word2' ……}
@@ -223,6 +226,7 @@ def syn_usageList_view(request):
 
     info['syn_usage_dict'] = syn_usage_dict
     info['hint'] = hint
+    logger.info('%s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, info)
     return render(request, 'esoda/collocation_result.html', info)
 
 
@@ -274,12 +278,7 @@ def dict_suggest_view(request):
     return JsonResponse(r)
 
 
-def guide_view(request):
-    info = {
-    }
-    return render(request, 'esoda/guide.html', info)
-
-
+@timeit
 def get_usage_dict(t, ref, i, dt, dbs, cids):
     usageDict = {}
     nt = list(t)
@@ -339,6 +338,7 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
     return usageDict
 
 
+@timeit
 def get_collocations(clist, qt, ref, i, dbs, cids):
     t, d = list(qt), (qt[i], qt[i + 1])
     cnt = 0
@@ -370,6 +370,7 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         })
 
 
+@timeit
 def collocation_list(t, ref, poss, dep, dbs, cids):
     # return collocation_list, default_collocation index
     cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
@@ -388,6 +389,7 @@ def collocation_list(t, ref, poss, dep, dbs, cids):
     return newlist, flag
 
 
+@timeit
 def sentence_query(t, ref, i, dt, dbs, cids):
     if not t:
         return {'time': 0.00, 'total': 0, 'sentence': []}
@@ -415,15 +417,3 @@ def sentence_query(t, ref, i, dt, dbs, cids):
             'heart_number': 129})
     sr = res_refine(sr)
     return sr
-
-
-def refresh_synList(t, syn_list, index, dt, dbs, cids):
-    # return a synonymous_list of every word
-    synonymous_list = []
-    for syn in syn_list:
-        t_syn = (t, syn) if index == 1 else (syn, t)
-        d = [{'dt': dt, 'l1': t_syn[0], 'l2': t_syn[1]}]
-        cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
-        if cnt != 0:
-            synonymous_list.append({'ref': ' '.join(t_syn), 'lemma': ' '.join(t_syn), 'content': syn, 'count': cnt})
-    return synonymous_list
