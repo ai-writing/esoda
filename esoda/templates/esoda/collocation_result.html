@@ -32,7 +32,9 @@
     <div>
       <span class="colloc-heading">可替换词</span>
       {% if t_dt.0|cut:"*"|wordcount == 2 %}
-        <span class="synFilter"><input type="checkbox" class="syn-filter">其他搭配</span>
+        {% if t_dt.1 != '0' %}
+          <span class="synFilter"><input type="checkbox" class="syn-filter">其他搭配</span>
+        {% endif %}
       {% endif %}
     </div>
     <div class="colloc-usage-header">
@@ -68,7 +70,7 @@
             {% if value %}
               <div class="panel-subheading">
                 <a href="#" class="colloc-usage" ref="{{ ref }}" lemma="{{ t_dt.0 }}">
-                  <span class="panel-key {% for v in value %}{% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type == 1 %}not-empty {% else %}panel-key2 {% endif %}{% endif %}{% endfor %}">{{ key }}</span>
+                  <span class="panel-key {% for v in value %}{% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type == 1 %}not-empty {% else %}panel-key2 {% endif %}{% endif %}{% endfor %}" count = "{{count}}">{{ key }}</span>
                 </a>
                 <span class="list-btn"><i class="fa fas fa-angle-up"></i></span>
                 <div style="clear:both"></div>

@@ -1,3 +1,9 @@
+@media (max-width: 370px) {
+    .domain-tab-pane div {
+        padding: 5px 5px 10px 5px !important;
+    }
+}
+
 .domain-main {
     padding-top: 30px;
 }
@@ -104,6 +110,38 @@
     height: 40px;
     font-size:20px;
 }
+
+.no-domain-btn {
+    position: absolute; 
+    top: 18px; 
+    right: 0; 
+    bottom: 0; 
+    left: 440px; 
+    margin: auto; 
+    border-radius: 0px;
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#DomainForm .btn-primary {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-size: 20px;
+    padding: 10px 12px;
+    width: 100%;
+}
+
+#DomainForm .form-control {
+    margin-top: 15px;
+    padding: 10px 12px;
+    font-size: 18px;
+    height: 100px;
+    color: #242424;
+    resize: none;
+}
+
 .domain-checkbox input:checked {
     background: #42A5F5;
     border: none;

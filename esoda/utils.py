@@ -46,7 +46,7 @@ def res_refine(res):
         for i in res['sentence']:
             diff_ratio = difflib.SequenceMatcher(None,r[-1]['content'],i['content']).ratio()
             if diff_ratio < 0.7:
-            	r.append(i)
+                r.append(i)
     res['sentence'] = r
     return res
 

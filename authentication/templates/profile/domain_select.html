@@ -100,10 +100,31 @@
         <div class="col-xs-12 col-sm-12 col-md-12 ">
           <div class="domain-btn-div">
             <input class="btn domain-btn" type="submit" value="提交"/>
+            <span class="no-domain-btn hidden-xs" data-toggle="modal" data-target="#DomainModal">未找到个人领域？>></span>
           </div>
         </div>
       </div>
     </form>
+    <div class="modal fade" id="DomainModal">
+      <div class="modal-dialog modal-sm modal-login-sm" id="domain-modal">
+        <div class="modal-content">
+          <div class="modal-header modal-login-header">
+            <img src="{% static 'img/logo.png' %}" class="modal-logo">
+            <h4>请输入您需要的领域</h4>
+          </div>
+          <div class="modal-body modal-login-body">
+            <form id="DomainForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
+              {% csrf_token %}
+              <div>
+                <textarea form="DomainForm" name="comment" class="form-control"></textarea>
+              </div>
+              <input type="hidden" name="next" value="{{ next }}"/>
+              <input class="btn btn-primary" type="submit" value="提交"/>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
@@ -202,5 +223,22 @@
       {% endfor %}
     {% endif %}
   });
+
+  $('#DomainForm').submit(function (e) {
+    e.preventDefault();
+    var textarea = $(this).find('[name="comment"]');
+    var msg = textarea.val().trim();
+    if (msg) {
+      toastr.remove();
+      toastr.success('提交成功');
+      textarea.val('');
+      $('#DomainModal').modal('hide');
+    } else {
+      toastr.remove();
+      toastr.warning('请输入提交内容');
+    }
+    textarea.focus();
+  });
+
 </script>
 {% endblock %}
