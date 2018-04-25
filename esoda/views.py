@@ -90,19 +90,17 @@ def esoda_view(request):
         asteList.append(i)
     
     r = {
-        'domain': u'人机交互',
-        'phrase': [
-            'improve quality',
-            'standard quality',
-            'best quality'
-        ],
-        'commonColloc': [
-            u'quality (主谓)*',
-            u'quality (修饰)*',
-            u'quality (介词)*'
-        ],
-        'collocationList': [
-        ]
+        # 'domain': u'人机交互',
+        # 'phrase': [
+        #     'improve quality',
+        #     'standard quality',
+        #     'best quality'
+        # ],
+        # 'commonColloc': [
+        #     u'quality (主谓)*',
+        #     u'quality (修饰)*',
+        #     u'quality (介词)*'
+        # ],
     }
 
     dbs, cids = get_cids(request.user, r=r)
@@ -129,7 +127,7 @@ def esoda_view(request):
         'q0': q0,
         'ref': ' '.join(ref),
         'poss': ' '.join(poss),
-        'suggestion': suggestion,
+        # 'suggestion': suggestion,
         # 'dictionary': trans,
         'cids': cids,
         'expand': json.dumps(expand)

@@ -268,3 +268,5 @@ YOUDAO_SECRET_KEY = config('YOUDAO_SECRET_KEY', default='')
 
 # Slack Webhook URL
 SLACK_WEBHOOK_URL = config('SLACK_WEBHOOK_URL', default='')
+SLOW_RESPONSE_LOG_TIME = config('SLOW_RESPONSE_LOG_TIME', default=0.5, cast=float)
+SLOW_RESPONSE_WARNING_TIME = config('SLOW_RESPONSE_WARNING_TIME', default=5.0, cast=float)

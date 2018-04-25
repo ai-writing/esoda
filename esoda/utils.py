@@ -48,7 +48,7 @@ def refine_dep(dep_dict):
 
 
 def res_refine(res):
-    # Delete the one of the sentences that similarity > 0.7 and the length of sentence < 60
+    # Delete the sentences that similarity >= 0.7 and length >= 60
     r = []
     if res['sentence']:
         r.append(res['sentence'][0])
