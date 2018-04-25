@@ -38,14 +38,32 @@ for i in range(21):
         CORPUS2ID.append(j)
 
 
+def refine_dep(dep_dict, t_list, poss):
+    # Only return the English word dep
+    bad_case = [u'be']
+    refined_dep = {}
+    if len(dep_dict) == len(poss):
+        for x in xrange(len(poss)):
+            if poss[x] not in pt2pt:
+                dep_dict[t_list[x]] = []
+
+    for key, value in dep_dict.items():
+        if key in bad_case:
+            dep_dict[key] = []
+        else:
+            for v in value:
+                if not v['content'].isalpha():
+                    value.remove(v)
+    return dep_dict
+
+
 def res_refine(res):
-    # Delete the one of the sentences that similarity > 0.7
+    # Delete the sentences that similarity >= 0.7 and length >= 60
     r = []
     if res['sentence']:
         r.append(res['sentence'][0])
         for i in res['sentence']:
-            diff_ratio = difflib.SequenceMatcher(None,r[-1]['content'],i['content']).ratio()
-            if diff_ratio < 0.7:
+            if len(i['content'].split()) < 60 and difflib.SequenceMatcher(None, r[-1]['content'], i['content']).ratio() < 0.7:
                 r.append(i)
     res['sentence'] = r
     return res

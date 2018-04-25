@@ -90,19 +90,17 @@ def esoda_view(request):
         asteList.append(i)
     
     r = {
-        'domain': u'人机交互',
-        'phrase': [
-            'improve quality',
-            'standard quality',
-            'best quality'
-        ],
-        'commonColloc': [
-            u'quality (主谓)*',
-            u'quality (修饰)*',
-            u'quality (介词)*'
-        ],
-        'collocationList': [
-        ]
+        # 'domain': u'人机交互',
+        # 'phrase': [
+        #     'improve quality',
+        #     'standard quality',
+        #     'best quality'
+        # ],
+        # 'commonColloc': [
+        #     u'quality (主谓)*',
+        #     u'quality (修饰)*',
+        #     u'quality (介词)*'
+        # ],
     }
 
     dbs, cids = get_cids(request.user, r=r)
@@ -129,7 +127,7 @@ def esoda_view(request):
         'q0': q0,
         'ref': ' '.join(ref),
         'poss': ' '.join(poss),
-        'suggestion': suggestion,
+        # 'suggestion': suggestion,
         # 'dictionary': trans,
         'cids': cids,
         'expand': json.dumps(expand)
@@ -224,7 +222,7 @@ def syn_usageList_view(request):
                     if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
                         hint += 1
 
-    info['syn_usage_dict'] = syn_usage_dict
+    info['syn_usage_dict'] = refine_dep(syn_usage_dict, t_list, poss)
     info['hint'] = hint
     logger.info('%s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, info)
     return render(request, 'esoda/collocation_result.html', info)
