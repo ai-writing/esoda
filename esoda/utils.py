@@ -38,12 +38,22 @@ for i in range(21):
         CORPUS2ID.append(j)
 
 
-def refine_dep(dep_dict):
+def refine_dep(dep_dict, t_list, poss):
     # Only return the English word dep
-    for value in dep_dict.itervalues():
-        for v in value:
-            if not v['content'].isalpha():
-                value.remove(v)
+    bad_case = [u'be']
+    refined_dep = {}
+    if len(dep_dict) == len(poss):
+        for x in xrange(len(poss)):
+            if poss[x] not in pt2pt:
+                dep_dict[t_list[x]] = []
+
+    for key, value in dep_dict.items():
+        if key in bad_case:
+            dep_dict[key] = []
+        else:
+            for v in value:
+                if not v['content'].isalpha():
+                    value.remove(v)
     return dep_dict
 
 
