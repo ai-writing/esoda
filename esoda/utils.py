@@ -38,14 +38,22 @@ for i in range(21):
         CORPUS2ID.append(j)
 
 
+def refine_dep(dep_dict):
+    # Only return the English word dep
+    for value in dep_dict.itervalues():
+        for v in value:
+            if not v['content'].isalpha():
+                value.remove(v)
+    return dep_dict
+
+
 def res_refine(res):
-    # Delete the one of the sentences that similarity > 0.7
+    # Delete the one of the sentences that similarity > 0.7 and the length of sentence < 60
     r = []
     if res['sentence']:
         r.append(res['sentence'][0])
         for i in res['sentence']:
-            diff_ratio = difflib.SequenceMatcher(None,r[-1]['content'],i['content']).ratio()
-            if diff_ratio < 0.7:
+            if len(i['content'].split()) < 60 and difflib.SequenceMatcher(None, r[-1]['content'], i['content']).ratio() < 0.7:
                 r.append(i)
     res['sentence'] = r
     return res
