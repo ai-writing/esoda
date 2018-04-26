@@ -212,7 +212,12 @@ $(function () {
       }
     },
     focus: function (event, ui) {
-      if (event.keyCode === $.ui.keyCode.UP || event.keyCode === $.ui.keyCode.DOWN) this.value = extractPrefix(ui.item.value);
+      if (event.keyCode === $.ui.keyCode.UP || event.keyCode === $.ui.keyCode.DOWN) {
+        var terms = split(this.value);
+        terms.pop();
+        terms.push(extractPrefix(ui.item.value));
+        this.value = terms.join(" ");
+      }
       return false;
     },
     select: function (event, ui) {
