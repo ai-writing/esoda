@@ -249,7 +249,7 @@ def sentence_view(request):
         'example_number': len(sr['sentence']),
         'search_time': sr['time'],
         'exampleList': sr['sentence'],
-        'similar_sen': abs(int(dep_count) - len(sr['sentence']))
+        'similar_sen': abs(min(int(dep_count), 50) - len(sr['sentence']))
     }
     return render(request, 'esoda/sentence_result.html', info)
 
