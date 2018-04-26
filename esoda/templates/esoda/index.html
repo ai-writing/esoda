@@ -161,7 +161,8 @@
     </div>
   </div>
 
-  <div class="back-message hidden">
+{% comment %}
+  <div class="back-message">
     <div class="container container-message">
       <div class="row">
         <div class="col-xs-2 col-sm-1">
@@ -170,11 +171,11 @@
         <div class="col-xs-7">
           为我们的工作点赞<br><br>留言帮助我们改进易搜搭
         </div>
-        <div class="col-xs-6 col-message-right hidden">
+        <!-- <div class="col-xs-6 col-message-right">
           <span id="CountOfFavorite">{{ count_of_favorite }}</span>
           &nbsp;&nbsp;
           <a href="#"><span id="LikeOurSite" onclick="$.clickHeart(event)" class="glyphicon glyphicon-heart-empty"></span></a>
-        </div>
+        </div> -->
       </div>
       <form id="MsgForm" class="message-content" method="post" action="{% url 'common:comment' %}">
         {% csrf_token %}
@@ -190,6 +191,7 @@
     </div>
     <br>
   </div>
+{% endcomment %}
 
   <div class="back-feedback" id="feedback">
     <div class="container">
