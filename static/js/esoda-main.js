@@ -106,7 +106,6 @@ $(function () {
    });
    */
 
-  var auto = 0;
   $.widget("custom.catcomplete", $.ui.autocomplete, {
     _create: function () {
       this._super();
@@ -147,9 +146,11 @@ $(function () {
       this.menu.element.outerWidth($(".ui-autocomplete-input").outerWidth());
     },
     _closeOnClickOutside: function (event) {
-      this.close();
-      if ($("#SearchBox").val().trim().length === 0) {
-        $("#SearchBox").val('');
+      if (!this._isEventTargetInWidget(event)) {
+        this.close();
+        if ($("#SearchBox").val().trim().length === 0) {
+          $("#SearchBox").val('');
+        }
       }
     }
   });
@@ -310,7 +311,6 @@ $(function () {
     e.stopPropagation();
     $('.jumbotron').css("padding-top", "64px");
     $('.jumbotron').css("transition","250ms");
-    auto = 1;
     setTimeout(function(){
       $('#SearchBox').catcomplete('search');
     }, 250);
@@ -322,6 +322,5 @@ $(function () {
 
   $(window).on('click', function (e){
     $('.jumbotron').css("padding-top", "150px");
-    auto = 0;
   });
 });
