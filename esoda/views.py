@@ -21,7 +21,7 @@ from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
 from common.models import Comment
-from authentication.views import tree_first
+from authentication.models import TREE_FIRST, corpus_id2cids, FIELD_NAME
 
 
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
@@ -39,7 +39,7 @@ def get_cids(user, r=None):
         # TODO: name = get_name(dbs, cids)
         name = u''
         count = 0
-        for i in tree_first:
+        for i in TREE_FIRST:
             if corpus_id[i] == 1:
                 name = name + FIELD_NAME[count] + u', '
             count += 1

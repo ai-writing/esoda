@@ -83,7 +83,14 @@
                     {% for j in i.nodes %}
                       <label class="domain-item domain-checkbox domain-item-span">
                         <input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}>
-                        <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                        <label class="domain-item-text">
+                          {% ifequal j.type "conf"%}
+                            <span class="glyphicon glyphicon-file domain-icon" title="conference"></span>
+                          {%else%}
+                            <span class="glyphicon glyphicon-book domain-icon" title="journal"></span>
+                          {% endifequal %}
+                          <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                        </label>
                       </label>
                     {% endfor %}
                     {% endfor %}
