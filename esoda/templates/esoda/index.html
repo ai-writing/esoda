@@ -213,7 +213,7 @@
 {#          <h4 class="feedback-title">用户这样评价易搜搭</h4>#}
           <div id="UserFeedback" class="user-feedback">
             {% for comment in comments %}
-              <div {% if forloop.counter > 2 %}class="collapse"{% endif %}>
+              <div class="collapse">
                 <p>"{{ comment.text }}"</p>
               </div>
             {% endfor %}
