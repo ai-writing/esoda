@@ -35,10 +35,10 @@
             </div>
             <div class="esoda-tips">
               搜搭示范：
-              <button type="button" value="efficient" class="btn-link example-btn-link">同义表达</button>
-              <button type="button" value="wait" class="btn-link example-btn-link">不同搭配</button>
-              <button type="button" value="减少 the demand of" class="btn-link example-btn-link">中英混搜</button>
-              <button type="button" value="make effort" class="btn-link example-btn-link">短语查找</button>
+              <button type="button" value="precise" class="btn-link example-btn-link">选词优化</button>
+              <button type="button" value="improve quality" class="btn-link example-btn-link">搭配推荐</button>
+              <button type="button" value="result有重大意义" class="btn-link example-btn-link">中英混搜</button>
+              <button type="button" value="come to conclusion" class="btn-link example-btn-link">词组搜搭</button>
             </div>
           </form>
         </div>
@@ -210,16 +210,16 @@
 {#          <h4 class="feedback-title">清华HCI Lab出品，目前最好用的英语论文写作工具！</h4>#}
 {#        </div>#}
         <div id="Users" role="tabpanel" class="tab-pane fade active in">
-          <h4 class="feedback-title">用户这样评价易搜搭</h4>
-          <div>
-            <div id="UserFeedback" class="user-feedback">
+          <div id="UserFeedback" class="user-feedback">
+            {% if comments|length == 0 %}
+              <p>用户这样评价易搜搭</p>
+            {% else %}
               {% for comment in comments %}
-              <div {% if forloop.counter > 2 %}class="collapse"{% endif %}>
-                <p>"{{ comment.text }}"</p>
-                <h5>{{ comment.user.username|default:'匿名用户' }}</h5>
-              </div>
+                <div class="collapse">
+                  <p>"{{ comment.text }}"</p>
+                </div>
               {% endfor %}
-            </div>
+            {% endif %}
           </div>
           <nav aria-label="...">
             <ul class="pager">

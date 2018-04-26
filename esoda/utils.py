@@ -205,7 +205,8 @@ def sort_syn_usageDict(syn_list, usage_list):
         if usa['content'] not in unique:
             usa['weight'] = math.log(usa['count'])
             new_usagelist.append(usa)
-    weighted_list = sorted(syn_list + new_usagelist, key=lambda x:x['weight'], reverse = True)
+    new_synList = syn_list[:14] if not usage_list else syn_list
+    weighted_list = sorted(new_synList + new_usagelist, key=lambda x:x['weight'], reverse = True)
     return weighted_list
 
 

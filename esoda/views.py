@@ -27,7 +27,7 @@ from authentication.models import TREE_FIRST, corpus_id2cids, FIELD_NAME
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
 PERP_TOKENS = set(['vs', 're', 'contra', 'concerning', 'neath', 'skyward', 'another', 'near', 'howbeit', 'apropos', 'betwixt', 'alongside', 'amidst', 'outside', 'heavenward', 'notwithstanding', 'withal', 'epithetical', 'anent', 'continuously', 'transversely', 'amongst', 'circa', 'unto', 'aboard', 'about', 'above', 'across', 'after', 'against', 'along', 'amid', 'among', 'around', 'as', 'at', 'before', 'behind', 'below', 'beneath', 'beside', 'besides', 'between', 'beyond', 'but', 'by', 'despite', 'down', 'during', 'except', 'excepting', 'excluding', 'for', 'from', 'in', 'inside', 'into', 'like', 'of', 'off', 'on', 'onto', 'over', 'per', 'since', 'than', 'through', 'to', 'toward', 'towards', 'under', 'underneath', 'unlike', 'until', 'up', 'upon', 'versus', 'via', 'with', 'within', 'without',])
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
-DEFAULT_ES_DBS = ['dblp'] # TODO: move into setting.py and .env
+DEFAULT_ES_DBS = ['bnc', 'wikipedia'] # TODO: move into setting.py and .env
 DEFAULT_ES_CIDS = ['_all']
 logger = logging.getLogger(__name__)
 
@@ -150,16 +150,16 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
         ref_new.remove('*')
     for j in xrange(len(t_new)):
         syn_dict[t_new[j]] = []
-        for syn in synonyms(t_new[j], pos = poss[j])[:30]:
-            lemma = ' '.join(t_new).replace(t_new[j], syn[0])
-            reff = ' '.join(ref_new).replace(ref_new[j], syn[0])
+        for syn in synonyms(t_new[j], pos = poss[j]):
+            lemma = ' '.join(t_new).replace(t_new[j], syn)
+            reff = ' '.join(ref_new).replace(ref_new[j], syn)
             if dt == '0' or len(t_new) == 1:
                 cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
             else:
                 d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
                 cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
             if cnt:
-                syn_dict[t_new[j]].append({'ref': reff, 'lemma': lemma, 'content': syn[0], 'count': cnt, 'type': 1, 'weight': syn[1]}) # type 1 for synonyms_word
+                syn_dict[t_new[j]].append({'ref': reff, 'lemma': lemma, 'content': syn, 'count': cnt, 'type': 1}) # type 1 for synonyms_word
     return syn_dict
 
 
@@ -197,7 +197,6 @@ def syn_usageList_view(request):
     info = {
         't_list': t_list,
         'count': ttcnt,
-        'syn_dict': {},
         't_dt': (' '.join(t), dt),
         'ref': ' '.join(ref)
     }

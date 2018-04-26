@@ -106,7 +106,6 @@ $(function () {
    });
    */
 
-  var auto = 0;
   $.widget("custom.catcomplete", $.ui.autocomplete, {
     _create: function () {
       this._super();
@@ -213,7 +212,12 @@ $(function () {
       }
     },
     focus: function (event, ui) {
-      if (event.keyCode === $.ui.keyCode.UP || event.keyCode === $.ui.keyCode.DOWN) this.value = extractPrefix(ui.item.value);
+      if (event.keyCode === $.ui.keyCode.UP || event.keyCode === $.ui.keyCode.DOWN) {
+        var terms = split(this.value);
+        terms.pop();
+        terms.push(extractPrefix(ui.item.value));
+        this.value = terms.join(" ");
+      }
       return false;
     },
     select: function (event, ui) {
@@ -227,16 +231,8 @@ $(function () {
       if (event.keyCode !== $.ui.keyCode.TAB) {
         $("#SearchForm").submit();
       }
-      else
-        this.value = extractPrefix(ui.item.value);
 
       return false;
-
-      /*
-       this.value = ui.item.value;
-       $( "#SearchForm" ).submit();
-       return false;
-       */
     }
   });
 
@@ -312,7 +308,6 @@ $(function () {
     e.stopPropagation();
     $('.jumbotron').css("padding-top", "64px");
     $('.jumbotron').css("transition","250ms");
-    auto = 1;
     setTimeout(function(){
       $('#SearchBox').catcomplete('search');
     }, 250);
@@ -324,6 +319,5 @@ $(function () {
 
   $(window).on('click', function (e){
     $('.jumbotron').css("padding-top", "150px");
-    auto = 0;
   });
 });
