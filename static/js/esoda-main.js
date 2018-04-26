@@ -323,7 +323,7 @@ $(function () {
   });
 
   $(window).on('click', function (e){
-    $('.jumbotron').css("padding-top", "171px");
+    $('.jumbotron').css("padding-top", "150px");
     auto = 0;
   });
 });

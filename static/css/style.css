@@ -462,7 +462,7 @@ a {
 
 .jumbotron {
     height: 650px;
-    padding-top: 171px;
+    padding-top: 150px;
     /*    padding-bottom: 263px;*/
 }
 
@@ -2181,15 +2181,30 @@ button.close:focus {
 .guide-page {
     background-color: #FAFAFA;
     padding-bottom: 40px;
-    font-size: 20px;
+    font-size: 22px;
 }
 
 .guide-group {
-    padding: 20px;
+    padding: 20px 15px;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.guide-group h5 {
+    margin-top: -1px;
+    text-align: justify;
+    line-height: 1.67;
 }
 
 .guide-intro {
     padding-top: 10px;
+}
+
+.guide-intro > div{
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .guide-intro p {
@@ -2198,11 +2213,10 @@ button.close:focus {
 }
 
 .guide-block {
-    margin-top: 60px
+    margin-top: 50px
 }
 
 .guide-title1 {
-    margin-bottom: 30px;
     text-align: center;
     color: #63b7e6;
 }
@@ -2210,10 +2224,26 @@ button.close:focus {
 .guide-title2 {
     font-weight: 600;
     float: left;
+    font-size: 20px;
+    padding-left: 0;
+    margin-bottom: 5px;
+}
+
+.guide-title2 > img {
+    width: 22px;
+    margin-top: -6px;
+}
+
+.guide-text {
+    padding-right: 0;
+    padding-left: 0;
 }
 
 .guide-content {
     color: #9b9b9b;
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .guide-btn:focus,
@@ -2231,7 +2261,6 @@ button.close:focus {
 .example-image {
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 40px;
     text-align: center;
 }
 
