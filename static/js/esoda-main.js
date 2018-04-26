@@ -147,11 +147,9 @@ $(function () {
       this.menu.element.outerWidth($(".ui-autocomplete-input").outerWidth());
     },
     _closeOnClickOutside: function (event) {
-      if (!this._isEventTargetInWidget(event)) {
-        this.close();
-        if ($("#SearchBox").val().trim().length === 0) {
-          $("#SearchBox").val('');
-        }
+      this.close();
+      if ($("#SearchBox").val().trim().length === 0) {
+        $("#SearchBox").val('');
       }
     }
   });
