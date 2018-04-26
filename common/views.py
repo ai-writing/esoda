@@ -11,9 +11,10 @@ logger = logging.getLogger(__name__)
 
 def comment_view(request):
     msg = request.POST.get('message', '').strip()
+    from_page = request.POST.get('from', '').strip()
     if msg:
         request.session.save()
-        comment = Comment(text=msg, display=settings.DEBUG, session=request.session.session_key)
+        comment = Comment(text=from_page + ' ' + msg, display=settings.DEBUG, session=request.session.session_key)
         if request.user.is_authenticated:
             comment.user = request.user
         comment.save()

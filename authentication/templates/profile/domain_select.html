@@ -14,13 +14,13 @@
 {% block content %}
 <div class="search-header hidden-xs">
   <div class="search-bar">
-    <input type="text" id="input-search" placeholder="Type to search...">
+    <input type="text" id="input-search" placeholder="搜索期刊/会议名称">
     <button type="button" id="btn-search" ><span class="glyphicon glyphicon-search"></span></button>
   </div>
 </div>
 <div class="domain-body">
   <div class="container">
-    <form action="/domain/" method="post">
+    <form id="DomainForm" action="{% url 'authentication:domain' %}" method="post">
       <div class="row domain-main domain-full">
         {% csrf_token %}
         <div class="col-xs-5 col-sm-3 col-md-3 domain-tab-pane">
@@ -83,7 +83,14 @@
                     {% for j in i.nodes %}
                       <label class="domain-item domain-checkbox domain-item-span">
                         <input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}>
-                        <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                        <label class="domain-item-text">
+                          {% ifequal j.type "conf"%}
+                            <span class="glyphicon glyphicon-file domain-icon" title="conference"></span>
+                          {%else%}
+                            <span class="glyphicon glyphicon-book domain-icon" title="journal"></span>
+                          {% endifequal %}
+                          <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                        </label>
                       </label>
                     {% endfor %}
                     {% endfor %}
@@ -100,24 +107,25 @@
         <div class="col-xs-12 col-sm-12 col-md-12 ">
           <div class="domain-btn-div">
             <input class="btn domain-btn" type="submit" value="提交"/>
-            <span class="no-domain-btn hidden-xs" data-toggle="modal" data-target="#DomainModal">未找到个人领域？>></span>
+            <span class="no-domain-btn hidden-xs" data-toggle="modal" data-target="#FeedbackModal">未找到个人领域？>></span>
           </div>
         </div>
       </div>
     </form>
-    <div class="modal fade" id="DomainModal">
-      <div class="modal-dialog modal-sm modal-login-sm" id="domain-modal">
+    <div class="modal fade" id="FeedbackModal">
+      <div class="modal-dialog modal-sm modal-login-sm">
         <div class="modal-content">
           <div class="modal-header modal-login-header">
             <img src="{% static 'img/logo.png' %}" class="modal-logo">
             <h4>请输入您需要的领域</h4>
           </div>
           <div class="modal-body modal-login-body">
-            <form id="DomainForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
+            <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
               {% csrf_token %}
               <div>
-                <textarea form="DomainForm" name="comment" class="form-control"></textarea>
+                <textarea form="FeedbackForm" name="message" class="form-control"></textarea>
               </div>
+              <input type="hidden" name="from" value="#Domain"/>
               <input type="hidden" name="next" value="{{ next }}"/>
               <input class="btn btn-primary" type="submit" value="提交"/>
             </form>
@@ -207,8 +215,12 @@
       }
     });
     var current_url = window.location.href;
-    var query_params = current_url.substr(current_url.lastIndexOf('?'))
-    $('form').attr('action', $('form').attr('action') + query_params);
+    var param_index = current_url.lastIndexOf('?');
+    var query_params = '';
+    if (param_index >= 0) {
+      query_params = current_url.substr(param_index);
+      $('#DomainForm').attr('action', $('#DomainForm').attr('action') + query_params);
+    }
     {% if not user.is_authenticated %}
       // $('#ModalLogin').modal({ backdrop: 'static', keyboard: false });
       $('#ModalLogin').modal();
@@ -224,20 +236,22 @@
     {% endif %}
   });
 
-  $('#DomainForm').submit(function (e) {
+  $('#FeedbackForm').submit(function (e) {
     e.preventDefault();
-    var textarea = $(this).find('[name="comment"]');
+    var textarea = $(this).find('[name="message"]');
     var msg = textarea.val().trim();
     if (msg) {
-      toastr.remove();
-      toastr.success('提交成功');
-      textarea.val('');
-      $('#DomainModal').modal('hide');
+      $.post($(this).attr('action'), $(this).serialize(), function (r) {
+        toastr.remove();
+        toastr.success('提交成功');
+        textarea.val('');
+        $('#FeedbackModal').modal('hide');
+      });
     } else {
       toastr.remove();
       toastr.warning('请输入提交内容');
+      textarea.focus();
     }
-    textarea.focus();
   });
 
 </script>

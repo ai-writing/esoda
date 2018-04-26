@@ -43,7 +43,7 @@ $(function () {
         $('#btn-unread').hide();
         $('#btn-read').show();
       });
-
+/*
   $('#MsgForm').submit(function (e) {
     e.preventDefault();
     var textarea = $(this).find('[name="message"]');
@@ -60,7 +60,7 @@ $(function () {
     }
     textarea.focus();
   });
-
+*/
   // $('#SearchBox').click(function (e) {
   //   $('.jumbotron').css("padding-top","64px");
   //   $('#SearchBox').catcomplete('search'); 
