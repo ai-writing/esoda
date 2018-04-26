@@ -48,6 +48,7 @@ def get_cids(user, r=None):
         name = u'通用英语'
     if r:
         r['domain'] = name
+
     dbs = dbs or DEFAULT_ES_DBS
     cids = cids or DEFAULT_ES_CIDS
     return dbs, cids
@@ -103,8 +104,8 @@ def esoda_view(request):
         # ],
     }
 
-    dbs, cids = get_cids(request.user, r=r)
     r['tlen'] = len(qt)
+    dbs, cids = get_cids(request.user, r=r)
     cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
     r['collocationList'] = {'cL': cL, 'index': cL_index}
 
