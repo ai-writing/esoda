@@ -210,13 +210,16 @@
 {#          <h4 class="feedback-title">清华HCI Lab出品，目前最好用的英语论文写作工具！</h4>#}
 {#        </div>#}
         <div id="Users" role="tabpanel" class="tab-pane fade active in">
-{#          <h4 class="feedback-title">用户这样评价易搜搭</h4>#}
           <div id="UserFeedback" class="user-feedback">
-            {% for comment in comments %}
-              <div class="collapse">
-                <p>"{{ comment.text }}"</p>
-              </div>
-            {% endfor %}
+            {% if comments|length == 0 %}
+              <p>用户这样评价易搜搭</p>
+            {% else %}
+              {% for comment in comments %}
+                <div class="collapse">
+                  <p>"{{ comment.text }}"</p>
+                </div>
+              {% endfor %}
+            {% endif %}
           </div>
           <nav aria-label="...">
             <ul class="pager">

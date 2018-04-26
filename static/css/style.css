@@ -976,10 +976,6 @@ button.close:focus {
     background-color: #fff;
 }
 
-/*#feedback {*/
-    /*display: none;*/
-/*}*/
-
 .wechat-qr {
     width: 100px;
     height: 100px;
@@ -1126,12 +1122,6 @@ button.close:focus {
     color: #9B9B9B;
     letter-spacing: 0;
     max-width: 300px;
-}
-
-.feedback-title {
-    margin: 80px 0 10px 15px;
-    font-size: 16px;
-    color: #9b9b9b;
 }
 
 .usage-title {
@@ -2380,4 +2370,8 @@ button.close:focus {
 
 .agreement {
     margin-left: 6px;
+}
+
+.toast-success {
+    background-color: #42A5F5;
 }
