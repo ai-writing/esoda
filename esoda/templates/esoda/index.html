@@ -212,13 +212,9 @@
         <div id="Users" role="tabpanel" class="tab-pane fade active in">
 {#          <h4 class="feedback-title">用户这样评价易搜搭</h4>#}
           <div id="UserFeedback" class="user-feedback">
-            <p>"清华HCI Lab出品，目前最好用的英语论文写作工具！"</p>
-            <p>"挽救了我蹩脚的英语！"</p>
-            <p>"写论文全靠它！"</p>
             {% for comment in comments %}
               <div {% if forloop.counter > 2 %}class="collapse"{% endif %}>
                 <p>"{{ comment.text }}"</p>
-                <h5>{{ comment.user.username|default:'匿名用户' }}</h5>
               </div>
             {% endfor %}
           </div>
