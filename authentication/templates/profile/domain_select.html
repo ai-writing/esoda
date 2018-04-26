@@ -26,7 +26,7 @@
         <div class="col-xs-5 col-sm-3 col-md-3 domain-tab-pane">
           <ul id="myTab" class="nav nav-pills nav-stacked ">
             {% for k in corpus %}
-              <li class="mydomain domain-checkbox domain-level-1 {%ifequal k.level 3 %}active{% endifequal %}">
+              <li class="mydomain domain-checkbox domain-level-1">
                 <div class="domain-tab-level1">
                   <a href="#firstlevel{{k.id}}" id="firstleveltext{{k.id}}" class="checktext{{k.id}}" data-toggle="tab">{{k.text}}</a>
                   <input type="checkbox" value="{{k.id}}" id="check{{k.id}}" name="ids" onclick="aa({{k.id}})" {% if k.state.checked %} checked="checked" {% endif %} />
@@ -38,7 +38,7 @@
         <div class="col-xs-6 col-sm-9 col-md-9 ">
           <div id="myTabContent" class="tab-content ">
           {% for k in corpus %}
-            <div class="tab-pane fade in {%ifequal k.level 3 %}active{% endifequal %}" id="firstlevel{{k.id}}">
+            <div class="tab-pane fade in" id="firstlevel{{k.id}}">
               <div class="row domain-full">
                 {%ifequal k.level 3 %}
                 <div class="col-xs-12 col-sm-4 col-md-3 domain-checkbox domain-tab-pane" >
@@ -140,7 +140,6 @@
 {% block script %}
 <!-- <script src="{% static 'js/bootstrap-treeview.min.js' %}"></script> -->
 <script>
-
   function aa(id){
     var temp =$("#check"+id).prop("checked");
     var items = document.getElementsByClassName("checkchild"+id);
@@ -155,6 +154,7 @@
     });
     document.getElementById("check"+id).checked = childStatus;
   }
+
   $(function () {
     var last_result=[];
     var last_expand=[];
@@ -234,24 +234,26 @@
         {% endifequal %}
       {% endfor %}
     {% endif %}
-  });
 
-  $('#FeedbackForm').submit(function (e) {
-    e.preventDefault();
-    var textarea = $(this).find('[name="message"]');
-    var msg = textarea.val().trim();
-    if (msg) {
-      $.post($(this).attr('action'), $(this).serialize(), function (r) {
+    $('#FeedbackForm').submit(function (e) {
+      e.preventDefault();
+      var textarea = $(this).find('[name="message"]');
+      var msg = textarea.val().trim();
+      if (msg) {
+        $.post($(this).attr('action'), $(this).serialize(), function (r) {
+          toastr.remove();
+          toastr.success('提交成功');
+          textarea.val('');
+          $('#FeedbackModal').modal('hide');
+        });
+      } else {
         toastr.remove();
-        toastr.success('提交成功');
-        textarea.val('');
-        $('#FeedbackModal').modal('hide');
-      });
-    } else {
-      toastr.remove();
-      toastr.warning('请输入提交内容');
-      textarea.focus();
-    }
+        toastr.warning('请输入提交内容');
+        textarea.focus();
+      }
+    });
+
+    $('#firstleveltext0').click();
   });
 
 </script>
