@@ -231,16 +231,8 @@ $(function () {
       if (event.keyCode !== $.ui.keyCode.TAB) {
         $("#SearchForm").submit();
       }
-      else
-        this.value = extractPrefix(ui.item.value);
 
       return false;
-
-      /*
-       this.value = ui.item.value;
-       $( "#SearchForm" ).submit();
-       return false;
-       */
     }
   });
 
