@@ -17,6 +17,7 @@ $(function () {
   for (var i = 0; i < numDisplay; i++) {
     $("#UserFeedback > div:eq(" + (curDisplay + i) + ')').show();
   }
+  if (feedbackElements.length <= numDisplay) $('.pager').hide();
   $(".pager li .glyphicon-chevron-right").click(function (e) {
     e.preventDefault();
     feedbackElements.hide();
