@@ -32,17 +32,20 @@ def domain_view(request):
     node_tree = tree(corpus_ids)
     return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
-@login_required
+
 def search_domain_tree_view(request):
     result = []
     expand = []
     big = []
-    target = request.GET['target']
-    if target == "":
+    target = request.GET.get('target', '')
+    if not target:
         return JsonResponse({"expand": expand, "result": result, "big": big}, safe=False)
-    user = User.objects.get(id=request.user.pk)
-    corpus_id = user.userprofile.getid()
-    node_tree = tree(corpus_id)
+    if request.user.is_authenticated():
+        user = User.objects.get(id=request.user.pk)
+        corpus_ids = user.userprofile.getid()
+    else:
+        corpus_ids = UserProfile.EMPTY_CIDS[:]
+    node_tree = tree(corpus_ids)
     for k in node_tree:
         for i in k["nodes"]:
             for j in i["nodes"]:
