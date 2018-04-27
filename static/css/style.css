@@ -2345,6 +2345,9 @@ button.close:focus {
     display: block;
 }
 
+.signup-page {
+    margin-top: 20px
+}
 .signup-page h4 {
     padding-top: 30px;
     color: #63b7e6;
@@ -2369,7 +2372,8 @@ button.close:focus {
 }
 
 .agreement {
-    margin-left: 6px;
+    color: #777;
+    font-size: 12px;
 }
 
 .toast-success {

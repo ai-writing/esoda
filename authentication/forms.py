@@ -33,5 +33,3 @@ class RegistrationFormEmailAsUsername(RegistrationFormUniqueEmail):
             kwargs.update({'data': query_dict})
         super(RegistrationFormUniqueEmail, self).__init__(*args, **kwargs)
         self.fields['email'].widget.attrs.update({'autofocus': True})
-
-

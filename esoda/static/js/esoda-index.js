@@ -31,7 +31,7 @@ $(function () {
     e.preventDefault();
     $('#UserFeedback div').hide();
     curDisplay -= numDisplay;
-    if (curDisplay < 0) curDisplay = feedbackElements.length - feedbackElements.length % numDisplay;
+    if (curDisplay < 0) curDisplay = feedbackElements.length - 1 - (feedbackElements.length - 1) % numDisplay;
     for (var i = 0; i < numDisplay; i++) {
         $("#UserFeedback > div:eq(" + (curDisplay + i) + ')').show();
     }
