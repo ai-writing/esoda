@@ -81,7 +81,7 @@ $(function () {
     $("#Loadbox").fadeOut("fast");
     $("#SentenceLoading").show();
     var id = $(this).attr('href');
-    var type = $(this).attr('type');
+    var type = $(this).attr('type');  // TODO: get query tokens from {{ q0 }}
     var type0 = type.replace(/ \(.*\) /g, ' ');
     var i, dt;
     var ref = [];

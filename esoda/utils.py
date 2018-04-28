@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 DEPS_VIEW = {u'(主谓) *': u' + 动词', u'* (主谓)': u'主语 + ', u'(动宾) *': u' + 宾语', u'* (动宾)': u'动词 + ',
     u'(修饰) *': u' + 被修饰词', u'* (修饰)': u'修饰 + ', u'(介词) *': u' + 介词', u'* (介词)': u'介词 + '}
 EN_PUNC = """!"#$%&'()+,-./:;<=>@[\]^_`{|}~""" # string.punctuation去掉问号和星号
-CH_PUNC = u'《》（）&%￥#@！{}【】'
+CH_PUNC = u'《》（）&%￥#@！{}【】，。'
 PUNC = EN_PUNC + CH_PUNC
 TRANS_TABLE = dict((ord(c), u' ') for c in PUNC)
 pt2pt = {'VB': 'v', 'VBD': 'v', 'VBG': 'v', 'VBN': 'v', 'VBP': 'v', 'VBZ': 'v',
@@ -19,6 +19,19 @@ pt2pt = {'VB': 'v', 'VBD': 'v', 'VBG': 'v', 'VBN': 'v', 'VBP': 'v', 'VBZ': 'v',
     'JJ': 'adj', 'JJR': 'adj', 'JJS': 'adj', 'NN': 'n', 'NNP': 'n', 'NNPS': 'n', 'NNS': 'n' }
 EXCEPT = {u'her': u'she', u'him': u'he', u'his': u'he', u'its': u'its', u'me': u'I', u'others': u'other', u'our': u'we', u'their': u'they', 
     u'them': u'they', u'us': u'we', u'your': u'you', u'yourselves': u'yourselve', u'data': 'datum'}
+
+
+def strQ2B(ustring):
+    rstring = ""
+    for uchar in ustring:
+        inside_code=ord(uchar)
+        if inside_code == 12288:
+            inside_code = 32
+        elif (inside_code >= 65281 and inside_code <= 65374):
+            inside_code -= 65248
+        rstring += unichr(inside_code)
+    return rstring
+
 
 def refine_dep(dep_dict, t_list, poss):
     # Only return the English word dep
@@ -101,11 +114,12 @@ def displayed_lemma(ref, lemma):
        return lemma
 
 
-def refine_query(q):
+def refine_query(q0):
     # Note the difference between str.translate and unicode.translate
     ques = []
     aste = []
-    q = q.replace(u'？', '?')   # 替换中文问号
+    q = strQ2B(q0)  # 全角转半角
+    # q = q.replace(u'？', '?')   # 替换中文问号
     q = re.sub('\s+\?', '?', q) # 去掉问号前空格
     q = re.sub('\?+', '?', q)   # 去掉多个问号
     q = re.sub('^\?', '', q)    # 去掉问号开头
@@ -119,7 +133,7 @@ def refine_query(q):
             aste.append(i)
     r = re.sub('\?|\*', '', r)
     if r != q:
-        logger.info('refine_query: "%s" -> %s', q, r)
+        logger.info('refine_query: "%s" -> %s', q0, r)
     return r, ques, aste
 
 
@@ -196,17 +210,18 @@ def papers_source_str(pids):
 
 
 def sort_syn_usageDict(syn_list, usage_list):
-    unique = []
+    unique = set(syn['content'] for syn in syn_list)
     new_usagelist = []
-    for syn in syn_list:
-        syn['weight'] = math.log(syn['count']) # syn['weight'] +
-        unique.append(syn['content'])
+    # for syn in syn_list:
+    #     syn['weight'] = math.log(syn['count']) # syn['weight'] +
     for usa in usage_list:
         if usa['content'] not in unique:
-            usa['weight'] = math.log(usa['count'])
+            # usa['weight'] = math.log(usa['count'])
             new_usagelist.append(usa)
     new_synList = syn_list[:14] if not usage_list else syn_list
-    weighted_list = sorted(new_synList + new_usagelist, key=lambda x:x['weight'], reverse = True)
+    weighted_list = sorted(new_synList + new_usagelist, key=lambda x:x['count'], reverse = True)
+    if len(weighted_list) > 1 and weighted_list[0]['count'] >= 100:
+        weighted_list = [x for x in weighted_list if x['count'] >= 10]
     return weighted_list
 
 

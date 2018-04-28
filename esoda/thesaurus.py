@@ -25,7 +25,7 @@ def synonyms(word, score = 0, pos = None, exp = None, max_count = None):
                 temp.sort(cmp = lambda (w1, s1), (w2, s2): cmp(s1, s2), reverse = True)
                 max_score_list_length = [t[1] for t in temp].count(max(t[1] for t in temp))
                 l += temp[:15] if max_score_list_length < 15 else temp[:max_score_list_length]
-        # l = sorted(dict(l).iteritems(), key= lambda x: x[1], reverse=True)
+        l.sort(key=lambda x: x[1], reverse=True)
         l = list(set([w for (w,s) in l if w != word]))
         if max_count== None or max_count <= 0:
             return l
