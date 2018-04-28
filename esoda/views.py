@@ -29,7 +29,7 @@ PERP_TOKENS = set(['vs', 're', 'contra', 'concerning', 'neath', 'skyward', 'anot
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
 # DEFAULT_ES_DBS = ['bnc', 'wikipedia'] # TODO: move into setting.py and .env
 DEFAULT_ES_DBS = ['dblp'] # TODO: move into setting.py and .env
-DEFAULT_ES_CIDS = ['_all']
+DEFAULT_ES_CIDS = ['conf_aaai', 'conf_acl', 'conf_asplos', 'conf_cav', 'conf_ccs', 'conf_chi', 'conf_cnhpca', 'conf_crypto', 'conf_cscw', 'conf_cvpr', 'conf_eurocrypt', 'conf_fast', 'conf_focs', 'conf_huc', 'conf_iccv', 'conf_icde', 'conf_icml', 'conf_icse', 'conf_ijcai', 'conf_infocom', 'conf_isca', 'conf_kbse', 'conf_kdd', 'conf_lics', 'conf_mm', 'conf_mobicom', 'conf_nips', 'conf_oopsla', 'conf_osdi', 'conf_pldi', 'conf_popl', 'conf_ppopp', 'conf_rtss', 'conf_sc', 'conf_sigcomm', 'conf_siggraph', 'conf_sigir', 'conf_sigmod', 'conf_sigsoft', 'conf_sosp', 'conf_sp', 'conf_stoc', 'conf_usenix', 'conf_uss', 'conf_visualization', 'conf_vldb', 'conf_www', 'journals_ai', 'journals_iandc', 'journals_ijcv', 'journals_ijmms', 'journals_jacm', 'journals_jmlr', 'journals_joc', 'journals_jsac', 'journals_pami', 'journals_pieee', 'journals_siamcomp', 'journals_tc', 'journals_tcad', 'journals_tdsc', 'journals_tifs', 'journals_tip', 'journals_tit', 'journals_tkde', 'journals_tmc', 'journals_tochi', 'journals_tocs', 'journals_tods', 'journals_tog', 'journals_tois', 'journals_ton', 'journals_toplas', 'journals_tos', 'journals_tosem', 'journals_tpds', 'journals_tse', 'journals_tvcg', 'journals_vldb', 'journals_micro', 'conf_vr',]
 # DEFAULT_DOMAIN_NAME = u'通用英语'
 DEFAULT_DOMAIN_NAME = u'计算机'
 logger = logging.getLogger(__name__)
@@ -117,18 +117,18 @@ def esoda_view(request):
     cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
     r['collocationList'] = {'cL': cL, 'index': cL_index}
 
-    suggestion = {
-        'relatedList': [
-            'high quality',
-            'improve quality',
-            'ensure quality',
-        ],
-        'hotList': [
-            'interaction',
-            'algorithm',
-            'application'
-        ]
-    }
+    # suggestion = {
+    #     'relatedList': [
+    #         'high quality',
+    #         'improve quality',
+    #         'ensure quality',
+    #     ],
+    #     'hotList': [
+    #         'interaction',
+    #         'algorithm',
+    #         'application'
+    #     ]
+    # }
 
     info = {
         'r': r,
@@ -152,6 +152,7 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     syn_dict = {}
     t_new = t[:]
     ref_new = ref[:]
+    MAX_COUNT = 15  # TODO: deeply fix synonyms too many es queries bug
     if '*' in t:
         syn_dict['*'] = []
         t_new.remove('*')
@@ -159,7 +160,7 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     for j in xrange(len(t_new)):
         syn_dict[t_new[j]] = []
         pos = 'NONE' if len(t) == 1 else poss[j]
-        for syn in synonyms(t_new[j], pos=pos):
+        for syn in synonyms(t_new[j], pos=pos, max_count=MAX_COUNT/len(t)):
             lemma = ' '.join(t_new).replace(t_new[j], syn)
             reff = ' '.join(ref_new).replace(ref_new[j], syn)
             if dt == '0' or len(t_new) == 1:
@@ -172,7 +173,6 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     return syn_dict
 
 
-@timeit
 def syn_usageList_view(request):
     # info = {
     #    'syn_usage_dict': {'word1':[{'ref': '', 'lemma': '', 'content': '', 'count': 10},……],'word2' ……}
@@ -187,6 +187,7 @@ def syn_usageList_view(request):
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
     poss = request.GET.get('pos', '').split()
+    dt = '0' if len(t) == 1 else dt   # TODO: deeply fix this bug
     usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
     syn_dict = get_synonyms_dict(t, ref, i, dt, poss, dbs, cids)
 
