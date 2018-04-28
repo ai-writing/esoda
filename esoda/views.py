@@ -380,7 +380,7 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
                 'flag': (flag, str(j % 4 + 1))
                 # 'usageList': [],
             })
-        except Exception as e:
+    except Exception as e:
             logger.exception('Failed to get collocations: "%s"', repr(e))
 
 
