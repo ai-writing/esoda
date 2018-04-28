@@ -114,6 +114,7 @@ YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key
 @timeit
 def youdao_translate_old(q, timeout=10):
     r = {}
+    response = None
     try:
         response = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=timeout)
         r = response.json()
@@ -144,6 +145,7 @@ def generate_translate_url(q):
 @timeit
 def youdao_translate_new(q, timeout=10):
     r = {}
+    response = None
     try:
         translate_url = generate_translate_url(q)
         response = requests.get(translate_url, timeout=timeout)
