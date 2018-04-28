@@ -17,7 +17,7 @@ def synonyms(word, score = 0, pos = None, exp = None, max_count = None):
     entry = MONGODB.common.thesaurus_mix_asin.find_one({'_id': word})
     if entry:
         l = []
-        meanings = entry['meaning_former'] if entry.get('meaning_former') else entry['meaning']
+        meanings = entry.get('meaning_former', []) or entry.get('meaning', [])
         for m in meanings:
             temp = []
             if (m['pos'] in POS2POS and pos in POS2POS[m['pos']]) or pos == 'NONE':

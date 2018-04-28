@@ -74,6 +74,11 @@ def esoda_view(request):
         info = get_feedback()
         return render(request, 'esoda/index.html', info)
 
+    # Ignore too long query
+    if len(q0.split()) > 20 or (has_cn(q0) and len(q0) > 20):
+        info = get_feedback()
+        return render(request, 'esoda/index.html', info)
+
     # With query - render result.html
     q = q0
     if has_cn(q0):
