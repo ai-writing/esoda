@@ -141,7 +141,6 @@ def esoda_view(request):
 
 @timeit
 def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
-    MAX_COUNT = 15
     syn_dict = {}
     t_new = t[:]
     ref_new = ref[:]
@@ -152,7 +151,7 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     for j in xrange(len(t_new)):
         syn_dict[t_new[j]] = []
         pos = 'NONE' if len(t) == 1 else poss[j]
-        for syn in synonyms(t_new[j], pos=pos)[:MAX_COUNT/len(t)]:
+        for syn in synonyms(t_new[j], pos=pos):
             lemma = ' '.join(t_new).replace(t_new[j], syn)
             reff = ' '.join(ref_new).replace(ref_new[j], syn)
             if dt == '0' or len(t_new) == 1:
