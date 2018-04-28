@@ -320,7 +320,7 @@ $(function () {
     e.stopPropagation();
   });
 
-  $(window).on('click', function (e){
+  $(".section-blue").on('click', function (e){
     $('.jumbotron').css("padding-top", "150px");
   });
 });
