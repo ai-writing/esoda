@@ -1,6 +1,7 @@
-import time, logging
+import time, logging, requests, json
 
 from django.conf import settings
+from django.utils.log import AdminEmailHandler
 
 logger = logging.getLogger(__name__)
 
@@ -18,3 +19,24 @@ def timeit(func):
                 logging.warning('timeit: %s %d ms\n(%s)', func.__name__, span * 1000, ', '.join(args_strs))
         return result        #return to caller
     return __decorator
+
+
+class AdminSlackHandler(AdminEmailHandler):
+    def send_mail(self, subject, message, *args, **kwargs):
+        if not settings.SLACK_WEBHOOK_URL:
+            return
+        html_message = kwargs.get('html_message')
+        data = {
+            'attachments': [
+                {
+                    'fallback': message,
+                    'color': 'danger',
+                    'pretext': subject,
+                    'text': html_message,
+                }
+            ]
+        }
+        try:
+            requests.post(settings.SLACK_WEBHOOK_URL, {'payload': json.dumps(data)}, timeout=10)
+        except Exception as e:
+            logger.warning('AdminSlackHandler Error: %s', repr(e))
