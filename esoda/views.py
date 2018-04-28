@@ -180,10 +180,10 @@ def syn_usageList_view(request):
     # info = {
     #    'syn_usage_dict': {'word1':[{'ref': '', 'lemma': '', 'content': '', 'count': 10},……],'word2' ……}
     # }
+    # TODO: add try...catch...
     t = request.GET.get('t', '').split()
     ref = request.GET.get('ref', '').split()
-    expand = request.GET.get('expand', '[]')
-    expand = json.loads(expand)
+    expand = json.loads(request.GET.get('expand', '[]'))
     if not ref:
         ref = t
     i = int(request.GET.get('i', '0'))
@@ -217,7 +217,7 @@ def syn_usageList_view(request):
     syn_usage_dict = {}
     count = 0
     for tt in t:
-        syn_usage_dict[tt] = sort_syn_usageDict(syn_dict[tt], usage_dict[tt])
+        syn_usage_dict[tt] = sort_syn_usageDict(syn_dict.get(tt, []), usage_dict.get(tt, []))
         if tt != '*':
             count += 1
 
@@ -262,6 +262,7 @@ def sentence_view(request):
         'search_time': sr['time'],
         'exampleList': sr['sentence'],
         'similar_sen': abs(min(int(dep_count), 50) - len(sr['sentence']))
+        # TODO: sr['total'] unused
     }
     return render(request, 'esoda/sentence_result.html', info)
 
@@ -291,6 +292,7 @@ def dict_suggest_view(request):
 
 @timeit
 def get_usage_dict(t, ref, i, dt, dbs, cids):
+    # TODO: add try...catch...
     usageDict = {}
     nt = list(t)
     for tt in t:
@@ -316,9 +318,9 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
     for k in (('*', t[i + 1]), (t[i], '*')):
         if k == ('*', '*'):
             continue
-        d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
-        lst = EsAdaptor.group(nt, d, dbs, cids)
         try:
+            d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
+            lst = EsAdaptor.group(nt, d, dbs, cids)
             ret = []
             for j in lst['aggregations']['d']['d']['d']['buckets']:
                 l1 = notstar(d[0]['l1'], j['key'])
@@ -351,15 +353,15 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
 
 @timeit
 def get_collocations(clist, qt, ref, i, dbs, cids):
-    t, d = list(qt), (qt[i], qt[i + 1])
-    cnt = 0
-    del t[i]
-    del t[i]
-    resList = EsAdaptor.collocation(t, d, dbs, cids)
-    nt = list(t)
-    t.insert(i, '%s %s %s')
-    pat = ' '.join(t)
     try:
+        t, d = list(qt), (qt[i], qt[i + 1])
+        cnt = 0
+        del t[i]
+        del t[i]
+        resList = EsAdaptor.collocation(t, d, dbs, cids)
+        nt = list(t)
+        t.insert(i, '%s %s %s')
+        pat = ' '.join(t)
         for j, p in enumerate(resList):
             if j == 4:
                 qt[i], qt[i + 1] = qt[i + 1], qt[i]
@@ -381,12 +383,13 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
                 # 'usageList': [],
             })
     except Exception as e:
-            logger.exception('Failed to get collocations: "%s"', repr(e))
+        logger.exception('Failed to get collocations: "%s"', repr(e))
 
 
 @timeit
 def collocation_list(t, ref, poss, dep, dbs, cids):
     # return collocation_list, default_collocation index
+    # TODO: add try..catch...
     cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
     head = [{'count': cnt, 't_dt': (t, '0'), 'type': ' '.join(t), 'label':  'Colloc0_0', 'title': u'全部结果'}] # all results
     clist = []
@@ -412,15 +415,17 @@ def sentence_query(t, ref, i, dt, dbs, cids):
     else:  # Search user input
         d = []
 
-    time1 = time.time()
-    res = EsAdaptor.search(t, d, ref, dbs, cids, 50)
-    time2 = time.time()
+    sr = {'time': 0, 'sentence': []}
 
-    sr = {'time': round(time2 - time1, 2), 'total': res['total'], 'sentence': []}
-    rlen = min(50, len(res['hits']) if 'hits' in res else 0)
-
-    papers = set()
     try:
+        time1 = time.time()
+        res = EsAdaptor.search(t, d, ref, dbs, cids, 50)
+        time2 = time.time()
+
+        sr.update({'time': round(time2 - time1, 2), 'total': res['total']})
+        rlen = min(50, len(res['hits']) if 'hits' in res else 0)
+
+        papers = set()
         for i in xrange(rlen):
             papers.add(res['hits'][i]['_source']['p'])
         sources = papers_source_str(list(papers))
