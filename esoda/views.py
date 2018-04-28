@@ -157,19 +157,22 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
         syn_dict['*'] = []
         t_new.remove('*')
         ref_new.remove('*')
-    for j in xrange(len(t_new)):
-        syn_dict[t_new[j]] = []
-        pos = 'NONE' if len(t) == 1 else poss[j]
-        for syn in synonyms(t_new[j], pos=pos, max_count=MAX_COUNT/len(t)):
-            lemma = ' '.join(t_new).replace(t_new[j], syn)
-            reff = ' '.join(ref_new).replace(ref_new[j], syn)
-            if dt == '0' or len(t_new) == 1:
-                cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
-            else:
-                d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
-                cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
-            if cnt:
-                syn_dict[t_new[j]].append({'ref': reff, 'lemma': lemma, 'content': syn, 'count': cnt, 'type': 1}) # type 1 for synonyms_word
+    try:
+        for j in xrange(len(t_new)):
+            syn_dict[t_new[j]] = []
+            pos = 'NONE' if len(t) == 1 else poss[j]
+            for syn in synonyms(t_new[j], pos=pos, max_count=MAX_COUNT/len(t)):
+                lemma = ' '.join(t_new).replace(t_new[j], syn)
+                reff = ' '.join(ref_new).replace(ref_new[j], syn)
+                if dt == '0' or len(t_new) == 1:
+                    cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
+                else:
+                    d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
+                    cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+                if cnt:
+                    syn_dict[t_new[j]].append({'ref': reff, 'lemma': lemma, 'content': syn, 'count': cnt, 'type': 1}) # type 1 for synonyms_word
+    except Exception as e:
+        logger.exception('Failed in get_synonyms_dict: "%s"', repr(e))
     return syn_dict
 
 
@@ -356,26 +359,29 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
     nt = list(t)
     t.insert(i, '%s %s %s')
     pat = ' '.join(t)
-    for j, p in enumerate(resList):
-        if j == 4:
-            qt[i], qt[i + 1] = qt[i + 1], qt[i]
-        if not p:
-            continue
-        if '*' in qt:
-            dd = []
-            cnt = 10 # one word query set a default number of coll
-        else:
-            dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
-            cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
-        flag = qt.index('*') if '*' in qt else -1
-        clist.append({
-            'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
-            'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-            't_dt' : (list(qt), str(j % 4 + 1)),
-            'count' : cnt,
-            'flag': (flag, str(j % 4 + 1))
-            # 'usageList': [],
-        })
+    try:
+        for j, p in enumerate(resList):
+            if j == 4:
+                qt[i], qt[i + 1] = qt[i + 1], qt[i]
+            if not p:
+                continue
+            if '*' in qt:
+                dd = []
+                cnt = 10 # one word query set a default number of coll
+            else:
+                dd = [{'dt': j % 4 + 1, 'l1': qt[i], 'l2': qt[i + 1]}]
+                cnt = EsAdaptor.count(nt, dd, dbs, cids)['hits']['total']
+            flag = qt.index('*') if '*' in qt else -1
+            clist.append({
+                'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
+                'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
+                't_dt' : (list(qt), str(j % 4 + 1)),
+                'count' : cnt,
+                'flag': (flag, str(j % 4 + 1))
+                # 'usageList': [],
+            })
+        except Exception as e:
+            logger.exception('Failed to get collocations: "%s"', repr(e))
 
 
 @timeit
@@ -414,14 +420,17 @@ def sentence_query(t, ref, i, dt, dbs, cids):
     rlen = min(50, len(res['hits']) if 'hits' in res else 0)
 
     papers = set()
-    for i in xrange(rlen):
-        papers.add(res['hits'][i]['_source']['p'])
-    sources = papers_source_str(list(papers))
-    for i in xrange(rlen):
-        sentence = res['hits'][i]
-        sr['sentence'].append({
-            'content': cleaned_sentence(sentence['fields']['sentence'][0]),
-            'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
-            'heart_number': 129})
-    sr = res_refine(sr)
+    try:
+        for i in xrange(rlen):
+            papers.add(res['hits'][i]['_source']['p'])
+        sources = papers_source_str(list(papers))
+        for i in xrange(rlen):
+            sentence = res['hits'][i]
+            sr['sentence'].append({
+                'content': cleaned_sentence(sentence['fields']['sentence'][0]),
+                'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
+                'heart_number': 129})
+        sr = res_refine(sr)
+    except Exception as e:
+        logger.exception('Failed in sentence_query: "%s"', repr(e))
     return sr
