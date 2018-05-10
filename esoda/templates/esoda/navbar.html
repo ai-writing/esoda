@@ -41,7 +41,8 @@
       </li>
       <li role="presentation" {% if tab == "guide" %}class="active"{% endif %}><a role="tab" href="{% url 'guide' %}">搜搭教程</a>
       </li>
-      <li role="presentation" class="hidden-xs"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏我们</a></li>
+      <li role="presentation" class="hidden-xs"><a role="tab" id="AddBookmark" href="#" title="Bookmark this page">收藏</a></li>
+      <li role="presentation" class="hidden-xs" data-toggle="modal" data-target="#FeedbackModal"><a role="tab" id="Feedback" href="#">反馈</a></li>
       <li role="presentation" {% if tab == "profile" %}class="active"{% endif %}><a role="tab" href="{% url 'authentication:domain' %}">个人领域</a>
       </li>
     </ul>
