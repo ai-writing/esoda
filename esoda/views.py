@@ -235,7 +235,7 @@ def syn_usageList_view(request):
                     if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
                         hint += 1
 
-    info['syn_usage_dict'] = refine_dep(syn_usage_dict, t_list, poss)
+    info['syn_usage_dict'] = refine_dep(syn_usage_dict, t, poss)
     info['hint'] = hint
     logger.info('%s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, info)
     return render(request, 'esoda/collocation_result.html', info)
@@ -282,7 +282,7 @@ def sentence_view(request):
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {'suggest': []}
-    reMatch = re.compile('^[a-zA-Z0-9\s\'\-\.]*$')
+    reMatch = re.compile(r'^[a-zA-Z0-9\s\'\-\.]*$')
     if reMatch.match(q):
         r = suggest_new(q)
     elif not has_cn(q):

@@ -2,6 +2,7 @@ import time, logging, requests, json
 
 from django.conf import settings
 from django.utils.log import AdminEmailHandler
+from django.utils.text import Truncator
 
 logger = logging.getLogger(__name__)
 
@@ -11,8 +12,8 @@ def timeit(func):
         start = time.time()
         result = func(*args, **kwags)  #recevie the native function call result
         span = time.time() - start
-        args_strs = [repr(arg) for arg in args] + [k + '=' + repr(w) for k, w in kwags.iteritems()]
         if span > settings.SLOW_RESPONSE_LOG_TIME:
+            args_strs = [Truncator(arg).words(10) for arg in args] + [k + '=' + Truncator(w).words(10) for k, w in kwags.iteritems()]
             if not settings.DEBUG and span > settings.SLOW_RESPONSE_WARNING_TIME:
                 logging.exception('timeit: %s %d ms\n(%s)', func.__name__, span * 1000, ', '.join(args_strs))
             else:
@@ -25,14 +26,12 @@ class AdminSlackHandler(AdminEmailHandler):
     def send_mail(self, subject, message, *args, **kwargs):
         if not settings.SLACK_WEBHOOK_URL:
             return
-        html_message = kwargs.get('html_message')
         data = {
             'attachments': [
                 {
-                    'fallback': message,
                     'color': 'danger',
                     'pretext': subject,
-                    'text': html_message,
+                    'text': message,
                 }
             ]
         }

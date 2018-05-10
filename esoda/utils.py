@@ -120,9 +120,9 @@ def refine_query(q0):
     aste = []
     q = strQ2B(q0)  # 全角转半角
     # q = q.replace(u'？', '?')   # 替换中文问号
-    q = re.sub('\s+\?', '?', q) # 去掉问号前空格
-    q = re.sub('\?+', '?', q)   # 去掉多个问号
-    q = re.sub('^\?', '', q)    # 去掉问号开头
+    q = re.sub(r'\s+\?', '?', q) # 去掉问号前空格
+    q = re.sub(r'\?+', '?', q)   # 去掉多个问号
+    q = re.sub(r'^\?', '', q)    # 去掉问号开头
     r = q.translate(TRANS_TABLE).strip()
     r = re.sub(' +', ' ', r)
     wList = r.split()
@@ -131,7 +131,7 @@ def refine_query(q0):
             ques.append(i)
         elif wList[i].endswith('*'):
             aste.append(i)
-    r = re.sub('\?|\*', '', r)
+    r = re.sub(r'\?|\*', '', r)
     if r != q:
         logger.info('refine_query: "%s" -> %s', q0, r)
     return r, ques, aste
