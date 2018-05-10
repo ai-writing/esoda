@@ -23,7 +23,7 @@ def synonyms(word, score = 0, pos = None, exp = None, max_count = None):
             if (m['pos'] in POS2POS and pos in POS2POS[m['pos']]) or pos == 'NONE':
                 temp = [(syn['w'], syn['s']) for syn in m['syn'] if len(syn['w'].split()) < 2] # syn must be a word not a phrase for now
                 temp.sort(cmp = lambda (w1, s1), (w2, s2): cmp(s1, s2), reverse = True)
-                max_score_list_length = [t[1] for t in temp].count(max(t[1] for t in temp))
+                max_score_list_length = [t[1] for t in temp].count(max(t[1] for t in temp) if temp else 0)
                 l += temp[:15] if max_score_list_length < 15 else temp[:max_score_list_length]
         l.sort(key=lambda x: x[1], reverse=True)
         l = list(set([w for (w,s) in l if w != word]))

@@ -313,6 +313,10 @@ a {
         margin-left: -5px !important;
         margin-right: -5px !important;
     }
+
+    .btn-navbar-search {
+        margin-left: -3px !important;
+    }
 }
 
 #SearchBox {
