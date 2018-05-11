@@ -113,20 +113,17 @@ YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key
 
 @timeit
 def youdao_translate_old(q, timeout=10):
-    r = {}
-    response = None
     try:
         response = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=timeout)
         r = response.json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
+        return {}
     translated = {
-        'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
-        'cn': has_cn(q),
         'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
-    logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
+    logger.info('youdao_translate: "%s" -> %s', r.get('query', q), repr(translated))
     return translated
 
 YOUDAO_API_URL = 'http://openapi.youdao.com/api'
@@ -144,19 +141,16 @@ def generate_translate_url(q):
 
 @timeit
 def youdao_translate_new(q, timeout=10):
-    r = {}
-    response = None
     try:
         translate_url = generate_translate_url(q)
         response = requests.get(translate_url, timeout=timeout)
         r = response.json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
+        return {}
     translated = {
-        'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
-        'cn': has_cn(q),
         'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
-    logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
+    logger.info('youdao_translate: "%s" -> %s', r.get('query', q), repr(translated))
     return translated
