@@ -2076,6 +2076,7 @@ button.close:focus {
 
 .guide-affix a {
     color: #fff;
+    text-decoration: none;
 }
 
 .feedback-affix.affix {
