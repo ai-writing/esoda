@@ -75,7 +75,8 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # Ignore too long query
-    if len(q0.split()) > 20 or (has_cn(q0) and len(q0) > 20):
+    # TODO: better user experience
+    if len(q0.split()) > 20 or (has_cn(q0) and (len(q0.split()) + sum([1 for c in q0 if is_cn_char(c)])) > 20):
         info = get_feedback()
         logger.warning('User too long query: "%s"', q0)
         return render(request, 'esoda/index.html', info)
@@ -91,7 +92,7 @@ def esoda_view(request):
                 logger.exception('Failed to parse youdao_translate result: "%s"', trans['explanationList'])
 
     q, ques, aste = refine_query(q) # ques(aste) is the place of question mark(asterisk)
-    qt, ref, poss, dep = lemmatize(q)
+    qt, ref, poss, dep = lemmatize(q, timeout=5)
     expand = []
     asteList = []
     for i in ques:

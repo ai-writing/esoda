@@ -18,11 +18,11 @@ if not settings.DEBUG:
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
 
 @timeit
-def youdao_suggest(q):
+def youdao_suggest(q, timeout=10):
     r = {}
     suggests = []
     try:
-        xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=10).text
+        xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=timeout).text
         DOMTree = xml.dom.minidom.parseString(xmlstring.encode('utf-8')).getElementsByTagName('suggest');
         items = DOMTree[0].getElementsByTagName('item')
         for item in items:
@@ -87,10 +87,10 @@ def suggest_new(q):
 
 YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
 
-def youdao_search(q0, q):
+def youdao_search(q0, q, timeout=10):
     dictionary = {}
     try:
-        jsonObj = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).json()
+        jsonObj = requests.get(YOUDAO_SEARCH_URL % q, timeout=timeout).json()
         cn = has_cn(q0)
         q = q0 if cn else q
 
