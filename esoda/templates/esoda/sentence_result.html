@@ -1,9 +1,11 @@
 <div id="ExampleList" class="panel-group">
   {% if example_number %}
-    <div class="example-hint hidden">
+  {% comment %}
+    <div class="example-hint">
       找到<span id="ExampleNumber">{{ example_number }}</span>句例句，为您提供前{% if example_number > 50 %}50{% else %}
       {{ example_number }}{% endif %}个，排序根据点赞和相关度自动生成，耗时{{ search_time }}秒
     </div>
+  {% endcomment %}
   {% else %}
     <div class="error-hint">
       <p>很抱歉，没有找到相关的例句。</p>
@@ -37,13 +39,15 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-1 hidden">
+    {% comment %}
+      <div class="col-xs-1">
         <div class="panel-heading panel-heart">
           <a href="" onclick="$.clickHeart(event);"><span class="glyphicon glyphicon-heart-empty"></span></a>
           <span>{{ example.heart_number }}&nbsp;&nbsp;</span>
           <a href="" onclick="$.clickStar(event);"><span class="glyphicon glyphicon-star-empty"></span></a>
         </div>
       </div>
+    {% endcomment %}
     </div>
   {% endfor %}
   <div id="ExampleEnd" class="result-table-cell center-align">

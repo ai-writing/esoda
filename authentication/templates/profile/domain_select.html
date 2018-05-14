@@ -12,21 +12,21 @@
 {% endblock %}
 
 {% block content %}
-<div class="search-header">
+<div class="search-header hidden-xs">
   <div class="search-bar">
-    <input type="text" id="input-search" placeholder="Type to search...">
+    <input type="text" id="input-search" placeholder="搜索期刊/会议名称">
     <button type="button" id="btn-search" ><span class="glyphicon glyphicon-search"></span></button>
   </div>
 </div>
 <div class="domain-body">
   <div class="container">
-    <form action="/domain/" method="post">
+    <form id="DomainForm" action="{% url 'authentication:domain' %}" method="post">
       <div class="row domain-main domain-full">
         {% csrf_token %}
-        <div class="col-xs-4 col-sm-3 col-md-3 domain-tab-pane">
+        <div class="col-xs-5 col-sm-3 col-md-3 domain-tab-pane">
           <ul id="myTab" class="nav nav-pills nav-stacked ">
             {% for k in corpus %}
-              <li class="mydomain domain-checkbox domain-level-1 {%ifequal k.level 3 %}active{% endifequal %}">
+              <li class="mydomain domain-checkbox domain-level-1">
                 <div class="domain-tab-level1">
                   <a href="#firstlevel{{k.id}}" id="firstleveltext{{k.id}}" class="checktext{{k.id}}" data-toggle="tab">{{k.text}}</a>
                   <input type="checkbox" value="{{k.id}}" id="check{{k.id}}" name="ids" onclick="aa({{k.id}})" {% if k.state.checked %} checked="checked" {% endif %} />
@@ -35,13 +35,13 @@
             {% endfor %}
           </ul>
         </div>
-        <div class="col-xs-8 col-sm-9 col-md-9 ">
+        <div class="col-xs-6 col-sm-9 col-md-9 ">
           <div id="myTabContent" class="tab-content ">
           {% for k in corpus %}
-            <div class="tab-pane fade in {%ifequal k.level 3 %}active{% endifequal %}" id="firstlevel{{k.id}}">
+            <div class="tab-pane fade in" id="firstlevel{{k.id}}">
               <div class="row domain-full">
                 {%ifequal k.level 3 %}
-                <div class="col-xs-4 col-sm-4 col-md-4 domain-checkbox domain-tab-pane" >
+                <div class="col-xs-12 col-sm-4 col-md-3 domain-checkbox domain-tab-pane" >
                   <ul id="myTab" class="nav nav-pills nav-stacked ">
                   {% for i in k.nodes %}
                     <li class="mydomain domain-checkbox domain-level-2 {%ifequal i.id 4 %}active{% endifequal %}">
@@ -53,7 +53,7 @@
                   {% endfor %}
                   </ul>
                 </div>
-                <div class="col-xs-7 col-sm-7 col-md-7 domain-menu">
+                <div class="col-xs-7 col-sm-8 col-md-9 domain-menu hidden-xs">
                   <div id="myTabContent" class="tab-content ">
                   {% for i in k.nodes %}
                     <div class="tab-pane fade in {%ifequal i.id 4 %}active{% endifequal %}" id="secondlevel{{i.id}}">
@@ -78,12 +78,19 @@
                 </div>
                 {% else %}
                 <div class="col-xs-12 col-sm-12 col-md-12 domain-menu">
-                  <div id="field{{i.id}}" class="domain-level-3 domain-level-23" name="unexpand" style="max-height:40px; overflow:hidden;">
+                  <div id="field{{i.id}}" class="domain-level-3 domain-level-23" name="unexpand">
                     {% for i in k.nodes %}
                     {% for j in i.nodes %}
                       <label class="domain-item domain-checkbox domain-item-span">
                         <input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{k.id}}" name="ids" onclick="cc({{k.id}})" {% if j.state.checked %} checked="checked" {% endif %}>
-                        <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                        <label class="domain-item-text">
+                          {% ifequal j.type "conf"%}
+                            <span class="glyphicon glyphicon-file domain-icon" title="conference"></span>
+                          {%else%}
+                            <span class="glyphicon glyphicon-book domain-icon" title="journal"></span>
+                          {% endifequal %}
+                          <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                        </label>
                       </label>
                     {% endfor %}
                     {% endfor %}
@@ -100,10 +107,32 @@
         <div class="col-xs-12 col-sm-12 col-md-12 ">
           <div class="domain-btn-div">
             <input class="btn domain-btn" type="submit" value="提交"/>
+            <span class="no-domain-btn hidden-xs" data-toggle="modal" data-target="#FeedbackModal">未找到个人领域？>></span>
           </div>
         </div>
       </div>
     </form>
+    <div class="modal fade" id="FeedbackModal">
+      <div class="modal-dialog modal-sm modal-login-sm">
+        <div class="modal-content">
+          <div class="modal-header modal-login-header">
+            <img src="{% static 'img/logo.png' %}" class="modal-logo">
+            <h4>请输入您需要的领域</h4>
+          </div>
+          <div class="modal-body modal-login-body">
+            <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
+              {% csrf_token %}
+              <div>
+                <textarea form="FeedbackForm" name="message" class="form-control"></textarea>
+              </div>
+              <input type="hidden" name="from" value="#Domain"/>
+              <input type="hidden" name="next" value="{{ next }}"/>
+              <input class="btn btn-primary" type="submit" value="提交"/>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
@@ -111,7 +140,6 @@
 {% block script %}
 <!-- <script src="{% static 'js/bootstrap-treeview.min.js' %}"></script> -->
 <script>
-
   function aa(id){
     var temp =$("#check"+id).prop("checked");
     var items = document.getElementsByClassName("checkchild"+id);
@@ -126,6 +154,7 @@
     });
     document.getElementById("check"+id).checked = childStatus;
   }
+
   $(function () {
     var last_result=[];
     var last_expand=[];
@@ -185,18 +214,47 @@
         $("#myTab a[href=\"#secondlevel4\"]").tab('show');
       }
     });
+    var current_url = window.location.href;
+    var param_index = current_url.lastIndexOf('?');
+    var query_params = '';
+    if (param_index >= 0) {
+      query_params = current_url.substr(param_index);
+      $('#DomainForm').attr('action', $('#DomainForm').attr('action') + query_params);
+    }
     {% if not user.is_authenticated %}
-      $('#ModalLogin').modal({ backdrop: 'static', keyboard: false });
+      // $('#ModalLogin').modal({ backdrop: 'static', keyboard: false });
+      $('#ModalLogin').modal();
     {% endif %}
     {% if messages %}
       {% for message in messages %}
         {% ifequal message.tags "success"%}
-          toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'esoda' %}">开始搜搭</a>');
+          toastr.success('{{ message }}. &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url "esoda" %}' + query_params + '">开始搜搭</a>');
         {% else %}
           toastr.warning('{{ message }}');
         {% endifequal %}
       {% endfor %}
     {% endif %}
+
+    $('#FeedbackForm').submit(function (e) {
+      e.preventDefault();
+      var textarea = $(this).find('[name="message"]');
+      var msg = textarea.val().trim();
+      if (msg) {
+        $.post($(this).attr('action'), $(this).serialize(), function (r) {
+          toastr.remove();
+          toastr.success('提交成功');
+          textarea.val('');
+          $('#FeedbackModal').modal('hide');
+        });
+      } else {
+        toastr.remove();
+        toastr.warning('请输入提交内容');
+        textarea.focus();
+      }
+    });
+
+    $('#firstleveltext0').click();
   });
+
 </script>
 {% endblock %}

@@ -12,26 +12,32 @@ $(function () {
   // $( "#SearchBox" ).val("");
 
   var curDisplay = 0;
+  var numDisplay = 3;
+  var feedbackElements = $('#UserFeedback > div');
+  for (var i = 0; i < numDisplay; i++) {
+    $("#UserFeedback > div:eq(" + (curDisplay + i) + ')').show();
+  }
+  if (feedbackElements.length <= numDisplay) $('.pager').hide();
   $(".pager li .glyphicon-chevron-right").click(function (e) {
     e.preventDefault();
-    $('#UserFeedback div:eq(' + curDisplay + ')').hide();
-    $('#UserFeedback div:eq(' + (curDisplay + 1) + ')').hide();
-    curDisplay += 2;
-    if (curDisplay >= $('#UserFeedback').children('div').length) curDisplay = 0;
-    $("#UserFeedback div:eq(" + curDisplay + ')').show();
-    $("#UserFeedback div:eq(" + (curDisplay + 1) + ')').show();
+    feedbackElements.hide();
+    curDisplay += numDisplay;
+    if (curDisplay >= feedbackElements.length) curDisplay = 0;
+    for (var i = 0; i < numDisplay; i++) {
+        $("#UserFeedback > div:eq(" + (curDisplay + i) + ')').show();
+    }
   });
 
   $(".pager li .glyphicon-chevron-left").click(function(e){
     e.preventDefault();
-    $('#UserFeedback div:eq(' + curDisplay + ')').hide();
-    $('#UserFeedback div:eq(' + (curDisplay + 1) + ')').hide();
-    curDisplay -= 2;
-    if (curDisplay < 0) curDisplay = $('#UserFeedback').children('div').length - 2;
-    $("#UserFeedback div:eq(" + curDisplay + ")").show();
-    $("#UserFeedback div:eq(" + (curDisplay + 1) + ")").show();
+    $('#UserFeedback div').hide();
+    curDisplay -= numDisplay;
+    if (curDisplay < 0) curDisplay = feedbackElements.length - 1 - (feedbackElements.length - 1) % numDisplay;
+    for (var i = 0; i < numDisplay; i++) {
+        $("#UserFeedback > div:eq(" + (curDisplay + i) + ')').show();
+    }
   });
-
+/*
     $('#btn-read').click(function() {
         $('#feedback').show();
         $('#btn-read').hide();
@@ -60,7 +66,7 @@ $(function () {
     }
     textarea.focus();
   });
-
+*/
   // $('#SearchBox').click(function (e) {
   //   $('.jumbotron').css("padding-top","64px");
   //   $('#SearchBox').catcomplete('search'); 

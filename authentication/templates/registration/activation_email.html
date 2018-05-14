@@ -1,6 +1,7 @@
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!doctype html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
 
 <head>
     <title>{{ site.name }} {% trans "registration" %}</title>

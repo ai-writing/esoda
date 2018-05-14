@@ -75,6 +75,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -98,8 +99,10 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -158,10 +161,16 @@ LOGGING = {
             'encoding': 'utf-8',
             'formatter': 'verbose',
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            # 'class': 'django.utils.log.AdminEmailHandler',
+            'class': 'common.utils.AdminSlackHandler',
+        },
     },
     'root': {
         'level': 'INFO',
-        'handlers': ['console', 'file'],
+        'handlers': ['console', 'file', 'mail_admins'],
     },
 }
 
@@ -222,6 +231,12 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+if os.path.isdir(STATIC_ROOT):
+    CSS_STYLE_VERSION = '%d' % (os.path.getmtime(os.path.join(STATIC_ROOT, 'css', 'style.css')) / 1000)
+    JS_ESODA_INDEX_VERSION = '%d' % os.path.getmtime(os.path.join(STATIC_ROOT, 'js', 'esoda-index.js'))
+    JS_ESODA_RESULT_VERSION = '%d' % os.path.getmtime(os.path.join(STATIC_ROOT, 'js', 'esoda-result.js'))
+    JS_ESODA_MAIN_VERSION = '%d' % os.path.getmtime(os.path.join(STATIC_ROOT, 'js', 'esoda-main.js'))
+
 
 # Email configuration
 
@@ -234,7 +249,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'Esoda <%s>' % EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'ESODA <%s>' % EMAIL_HOST_USER
 
 
 # Esoda esearch configuration
@@ -259,3 +274,9 @@ STANFORD_CORENLP_SERVER = config('STANFORD_CORENLP_SERVER', default='http://core
 # Youdao API configuration
 YOUDAO_APP_KEY = config('YOUDAO_APP_KEY', default='')
 YOUDAO_SECRET_KEY = config('YOUDAO_SECRET_KEY', default='')
+
+
+# Slack Webhook URL
+SLACK_WEBHOOK_URL = config('SLACK_WEBHOOK_URL', default='')
+SLOW_RESPONSE_LOG_TIME = config('SLOW_RESPONSE_LOG_TIME', default=0.5, cast=float)
+SLOW_RESPONSE_WARNING_TIME = config('SLOW_RESPONSE_WARNING_TIME', default=5.0, cast=float)

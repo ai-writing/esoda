@@ -1,6 +1,7 @@
 import xml.dom.minidom
 import requests, logging, random, hashlib
 from .utils import has_cn
+from common.utils import timeit
 import heapq
 from common.mongodb import MONGODB
 import math
@@ -9,16 +10,19 @@ import re
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
-# TODO: install requests_cache
+if not settings.DEBUG:
+    import requests_cache
+    requests_cache.install_cache('youdao_cache', backend='memory', expire_after=86400)
 
 
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
 
-def youdao_suggest(q):
+@timeit
+def youdao_suggest(q, timeout=10):
     r = {}
     suggests = []
     try:
-        xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=10).text
+        xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=timeout).text
         DOMTree = xml.dom.minidom.parseString(xmlstring.encode('utf-8')).getElementsByTagName('suggest');
         items = DOMTree[0].getElementsByTagName('item')
         for item in items:
@@ -50,6 +54,7 @@ def rank(item, len_q):
     # return mul * math.log(item['tf'])
     return mul * item['tf']
 
+@timeit
 def suggest_new(q):
     r = {}
     suggests = []
@@ -82,10 +87,10 @@ def suggest_new(q):
 
 YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
 
-def youdao_search(q0, q):
+def youdao_search(q0, q, timeout=10):
     dictionary = {}
     try:
-        jsonObj = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).json()
+        jsonObj = requests.get(YOUDAO_SEARCH_URL % q, timeout=timeout).json()
         cn = has_cn(q0)
         q = q0 if cn else q
 
@@ -106,18 +111,19 @@ def youdao_search(q0, q):
 
 YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key=205873295&type=data&doctype=json&version=1.2&q=%s'
 
+@timeit
 def youdao_translate_old(q, timeout=10):
-    r = {}
     try:
-        r = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=timeout).json()
+        response = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=timeout)
+        r = response.json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
+        return {}
     translated = {
-        'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
-        'cn': has_cn(q)
+        'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
-    logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
+    logger.info('youdao_translate: "%s" -> %s', r.get('query', q), repr(translated))
     return translated
 
 YOUDAO_API_URL = 'http://openapi.youdao.com/api'
@@ -133,17 +139,18 @@ def generate_translate_url(q):
     translate_url = YOUDAO_API_URL + '?appKey=' + settings.YOUDAO_APP_KEY + '&q=' + q + '&from=' + fromLang + '&to=' + toLang + '&salt=' + str(salt) + '&sign=' + sign
     return translate_url
 
+@timeit
 def youdao_translate_new(q, timeout=10):
-    r = {}
     try:
         translate_url = generate_translate_url(q)
-        r = requests.get(translate_url, timeout=timeout).json()
+        response = requests.get(translate_url, timeout=timeout)
+        r = response.json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
+        return {}
     translated = {
-        'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
-        'cn': has_cn(q)
+        'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
-    logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
+    logger.info('youdao_translate: "%s" -> %s', r.get('query', q), repr(translated))
     return translated

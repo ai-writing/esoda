@@ -3,7 +3,7 @@
  */
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
-var REF, POSS, SENTENCES_URL, COLLOCATION_URL;
+var QUERY_PARAMS, REF, POSS, SENTENCES_URL, COLLOCATION_URL;
 // var keyword = window.location.search;
 
 $(function () {
@@ -17,12 +17,11 @@ $(function () {
     $.get(SENTENCES_URL, params, function (data) {
       $('#Loading').hide();
       $('#SentenceResult').html(data);
-      $('#SentenceResult').fadeIn("fast");
+      $('.SentenceContent').fadeIn("fast");
       $("#SentenceLoading").hide();
       $('#SidebarAffix .panel-group').fadeIn("fast");
       $(".CollapseColloc").fadeIn("fast");
-      var colNum = 3;
-      // var colNum = ($(".colList").width() > 600) ? 4 : 3;
+      var colNum = ($(".colList").width() > 380) ? 3 : 2;
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
       var exampleNum = Number($("#ExampleNumber").text());
@@ -42,8 +41,7 @@ $(function () {
   }
 
   $(window).resize(function () {
-    var colNum = 3;
-    // var colNum = ($(".colList").width() > 600) ? 4 : 3;
+    var colNum = ($(".colList").width() > 380) ? 3 : 2;
     $('.colList li').removeClass('second-row');
     $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
   });
@@ -77,13 +75,13 @@ $(function () {
     if ($(this).attr('aria-expanded') == 'true') {
       return;
     }
-    $('#SentenceResult').fadeOut("fast");
+    $('.SentenceContent').fadeOut("fast");
     $('#ExampleEnd').fadeOut("fast");
     $('#SidebarAffix .panel-group').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
     $("#SentenceLoading").show();
     var id = $(this).attr('href');
-    var type = $(this).attr('type');
+    var type = $(this).attr('type');  // TODO: get query tokens from {{ q0 }}
     var type0 = type.replace(/ \(.*\) /g, ' ');
     var i, dt;
     var ref = [];
@@ -126,7 +124,7 @@ $(function () {
     e.preventDefault();
     if ($(this).attr('state') == 'selected') return;
     $("#ExampleEnd").fadeOut("fast");
-    $('#SentenceResult').fadeOut("fast");
+    $('.SentenceContent').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
     $("#SentenceLoading").show();
     // $('#SentenceResult').animate({opacity: 0}, function () {
@@ -183,7 +181,7 @@ $(function () {
 
   $('#FeedbackForm').submit(function (e) {
     e.preventDefault();
-    var textarea = $(this).find('[name="comment"]');
+    var textarea = $(this).find('[name="message"]');
     var msg = textarea.val().trim();
     if (msg) {
       $.post($(this).attr('action'), $(this).serialize(), function (r) {
@@ -195,8 +193,8 @@ $(function () {
     } else {
       toastr.remove();
       toastr.warning('请输入反馈内容');
+      textarea.focus();
     }
-    textarea.focus();
   });
 
   $(".back-to-top").click(function () {
@@ -229,6 +227,8 @@ $(function () {
     $(e.target).toggleClass("glyphicon-star-empty");
     $(e.target).toggleClass("glyphicon-star");
   };
+
+  $('.domain-link').attr('href', $('.domain-link').attr('href') + '?' + QUERY_PARAMS);
 
   $('#SearchBox').hover(function () {
     if ($('#SearchBox').is(':focus')) {

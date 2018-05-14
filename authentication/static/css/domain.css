@@ -1,6 +1,22 @@
-.domain-main{
-    padding-top: 40px;
+@media (max-width: 420px) {
+    .domain-tab-pane {
+        margin: 0 0 0 20px !important;
+    }
+
+    .domain-tab-pane div {
+        padding: 5px 5px 10px 5px !important;
+    }
+
+    .domain-level-23 {
+        padding-left: 0 !important;
+    }
 }
+
+.domain-main {
+    padding-top: 30px;
+    padding-right: 15px;
+}
+
 .domain-main .nav-pills a {
     color: #000;
     font-weight: 400;
@@ -8,9 +24,10 @@
 }
 
 .domain-tab-pane {
-    padding: 20px 20px 20px 20px;
+    padding: 20px 5px 20px 5px;
     margin: 0px 0px 0px 15px;
     background: #FFF;
+    box-shadow: 0 0 20px #ddd;
 }
 .domain-tab-level1 {
     cursor: pointer;
@@ -19,12 +36,13 @@
     cursor: pointer;
 }
 .domain-menu{
-    padding: 30px 20px 20px 20px;
+    padding: 30px 0px 20px 10px;
     margin: 0px 0px 0px 15px;
     background: #FFF;
+    box-shadow: 0 0 20px #ddd;
 }
 .domain-tab-pane div {
-    padding: 5px 20px 10px 20px;
+    padding: 5px 15px 10px 15px;
 }
 .domain-tab-pane .active input{
     background-color: #42A5F5;
@@ -101,6 +119,38 @@
     height: 40px;
     font-size:20px;
 }
+
+.no-domain-btn {
+    position: absolute; 
+    top: 18px; 
+    right: 0; 
+    bottom: 0; 
+    left: 440px; 
+    margin: auto; 
+    border-radius: 0px;
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#DomainForm .btn-primary {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-size: 20px;
+    padding: 10px 12px;
+    width: 100%;
+}
+
+#DomainForm .form-control {
+    margin-top: 15px;
+    padding: 10px 12px;
+    font-size: 18px;
+    height: 100px;
+    color: #242424;
+    resize: none;
+}
+
 .domain-checkbox input:checked {
     background: #42A5F5;
     border: none;
@@ -123,8 +173,8 @@
     color:#b5b5b5;
 }
 .domain-item {
-    padding:5px 30px 5px 30px;
-    width:180px;
+    padding:5px 10px 5px 10px;
+    width:150px;
 }
 .domain-item-text {
     width: 100px;
@@ -133,7 +183,7 @@
     white-space:nowrap;
 }
 .domain-item input{
-    top:-3px;
+    top: -2px;
 }
 .domain-item-span span{
     padding-left: 5px;
@@ -142,9 +192,7 @@
 .toast-success {
     background-color: #42A5F5;
 }
-.toast-warning {
-    background-color: "red";
-}
+
 .toast-success a {
     text-decoration: underline;
 }
@@ -160,14 +208,13 @@
 .search-header {
     /*margin-top: -2px;*/
     width: 100%;
-    height: 100px;
+    height: 80px;
     position: relative;
-    background-color: #6D6D6D;
+    /*background-color: #6D6D6D;*/
     opacity: 80;
 }
 .search-bar {
-    position: absolute; 
-    top: 0; 
+    position: absolute;
     right: 0; 
     bottom: 0; 
     left: 0; 
@@ -182,6 +229,7 @@
     font-size:20px;
     width: 100%;
     height: 100%;
+    box-shadow: 0 0 20px #ddd;
 }
 .search-bar button {
     position: absolute;
@@ -197,5 +245,6 @@
     font-size: 20px;
 }
 .domain-body {
-    background-color: #F5F7F9;
+    /*background-color: #F5F7F9;*/
+    background-color: #FAFAFA;
 }

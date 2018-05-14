@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-{% load add_tense %}
+{% load add_tense get_settings %}
 
-{% block title %}ESODA | search result{% endblock %}
+{% block title %}{% trans "ESODA" %} | {% trans "search result" %}{% endblock %}
 
 {% block head %}
   <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> -->
@@ -124,8 +124,11 @@
             </div>
 
             <div class="fix-right-xs">
+              <div id="Guide" class="affix guide-affix" data-spy="affix">
+                <div class="btn float-btn"><a href="{% url 'guide' %}">搜搭教程</a></div>
+              </div>
               <div id="Feedback" class="affix feedback-affix" data-spy="affix">
-                <div class="btn feedback" data-toggle="modal" data-target="#FeedbackModal">反馈</div>
+                <div class="btn float-btn" data-toggle="modal" data-target="#FeedbackModal">反馈</div>
               </div>
               <div id="BackToTopAffix" class="affix back-to-top-affix" data-spy="affix">
                 <div class="btn back-to-top">
@@ -146,7 +149,7 @@
                     <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
                       {% csrf_token %}
                       <div>
-                        <textarea form="FeedbackForm" name="comment" class="form-control"></textarea>
+                        <textarea form="FeedbackForm" name="message" class="form-control"></textarea>
                       </div>
                       <input type="hidden" name="next" value="{{ next }}"/>
                       <input class="btn btn-primary" type="submit" value="提交反馈"/>
@@ -165,8 +168,9 @@
 {% block script %}
   <script src="{% static 'js/jquery.mousewheel.min.js' %}"></script>
   <script src="{% static 'js/jquery.mCustomScrollbar.min.js' %}"></script>
-  <script src="{% static 'js/esoda-result.js' %}?v={% now 'Ymd' %}"></script>
+  <script src="{% static 'js/esoda-result.js' %}?v={% get_settings 'JS_ESODA_RESULT_VERSION' %}"></script>
   <script>
+    QUERY_PARAMS = '{{ request.GET.urlencode }}';
     REF = '{{ ref }}';
     POSS = '{{ poss }}';
     SENTENCES_URL = "{% url 'sentences' %}";
