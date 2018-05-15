@@ -134,7 +134,7 @@
     cursor: pointer;
 }
 
-#DomainForm .btn-primary {
+#DomainFeedbackForm .btn-primary {
     margin-top: 15px;
     margin-bottom: 25px;
     font-size: 20px;
@@ -142,7 +142,7 @@
     width: 100%;
 }
 
-#DomainForm .form-control {
+#DomainFeedbackForm .form-control {
     margin-top: 15px;
     padding: 10px 12px;
     font-size: 18px;

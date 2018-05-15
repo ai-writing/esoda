@@ -337,7 +337,7 @@ $(function () {
       });
     } else {
       toastr.remove();
-      toastr.warning('请输入内容');
+      toastr.warning('请输入反馈内容');
       textarea.focus();
     }
   });

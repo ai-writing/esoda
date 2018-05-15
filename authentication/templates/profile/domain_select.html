@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+{% include "esoda/feedback.html" with feedback_id="FeedbackModal" feedbackmodal_id="feedback-modal" FeedbackForm_id="FeedbackForm" tip="请提供您的意见与反馈" submit_btn="提交反馈" %}
 <div class="search-header hidden-xs">
   <div class="search-bar">
     <input type="text" id="input-search" placeholder="搜索期刊/会议名称">
@@ -107,33 +108,12 @@
         <div class="col-xs-12 col-sm-12 col-md-12 ">
           <div class="domain-btn-div">
             <input class="btn domain-btn" type="submit" value="提交"/>
-            <span class="no-domain-btn hidden-xs" data-toggle="modal" data-target="#FeedbackModal">未找到个人领域？>></span>
+            <span class="no-domain-btn hidden-xs" data-toggle="modal" data-target="#DomainModal">未找到个人领域？>></span>
           </div>
         </div>
       </div>
     </form>
-<!--     <div class="modal fade" id="FeedbackModal">
-      <div class="modal-dialog modal-sm modal-login-sm">
-        <div class="modal-content">
-          <div class="modal-header modal-login-header">
-            <img src="{% static 'img/logo.png' %}" class="modal-logo">
-            <h4>请输入您需要的领域</h4>
-          </div>
-          <div class="modal-body modal-login-body">
-            <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
-              {% csrf_token %}
-              <div>
-                <textarea form="FeedbackForm" name="message" class="form-control"></textarea>
-              </div>
-              <input type="hidden" name="from" value="#Domain"/>
-              <input type="hidden" name="next" value="{{ next }}"/>
-              <input class="btn btn-primary" type="submit" value="提交"/>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    {% include "esoda/feedback.html" with value1="请输入您需要的领域" value2="提交" %}
+    {% include "esoda/feedback.html" with feedback_id="DomainModal" feedbackmodal_id="domain-modal" FeedbackForm_id="DomainFeedbackForm" tip="请输入您需要的领域" submit_btn="提交" %}
   </div>
 </div>
 {% endblock %}
@@ -236,23 +216,23 @@
       {% endfor %}
     {% endif %}
 
-    // $('#FeedbackForm').submit(function (e) {
-    //   e.preventDefault();
-    //   var textarea = $(this).find('[name="message"]');
-    //   var msg = textarea.val().trim();
-    //   if (msg) {
-    //     $.post($(this).attr('action'), $(this).serialize(), function (r) {
-    //       toastr.remove();
-    //       toastr.success('提交成功');
-    //       textarea.val('');
-    //       $('#FeedbackModal').modal('hide');
-    //     });
-    //   } else {
-    //     toastr.remove();
-    //     toastr.warning('请输入提交内容');
-    //     textarea.focus();
-    //   }
-    // });
+    $('#DomainFeedbackForm').submit(function (e) {
+      e.preventDefault();
+      var textarea = $(this).find('[name="message"]');
+      var msg = textarea.val().trim();
+      if (msg) {
+        $.post($(this).attr('action'), $(this).serialize(), function (r) {
+          toastr.remove();
+          toastr.success('提交成功');
+          textarea.val('');
+          $('#DomainModal').modal('hide');
+        });
+      } else {
+        toastr.remove();
+        toastr.warning('请输入提交内容');
+        textarea.focus();
+      }
+    });
 
     $('#firstleveltext0').click();
   });

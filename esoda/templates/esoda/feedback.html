@@ -1,20 +1,20 @@
 {% load static %}
 {% load i18n %}  
-<div class="modal fade" id="FeedbackModal">
-  <div class="modal-dialog modal-sm modal-login-sm" id="feedback-modal">
+<div class="modal fade" id="{{ feedback_id }}">
+  <div class="modal-dialog modal-sm modal-login-sm" id="{{ feedbackmodal_id }}">
     <div class="modal-content">
       <div class="modal-header modal-login-header">
         <img src="{% static 'img/logo.png' %}" class="modal-logo">
-        <h4>{{ value1 }}</h4>
+        <h4>{{ tip }}</h4>
       </div>
       <div class="modal-body modal-login-body">
-        <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
+        <form id="{{ FeedbackForm_id }}" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
           {% csrf_token %}
           <div>
             <textarea form="FeedbackForm" name="message" class="form-control"></textarea>
           </div>
           <input type="hidden" name="next" value="{{ next }}"/>
-          <input class="btn btn-primary" type="submit" value="{{ value2 }}"/>
+          <input class="btn btn-primary" type="submit" value="{{ submit_btn }}"/>
         </form>
       </div>
     </div>
