@@ -130,7 +130,7 @@ YOUDAO_API_URL = 'http://openapi.youdao.com/api'
 
 def generate_translate_url(q):
     fromLang = 'auto'
-    toLang = 'auto'
+    toLang = 'en'
     salt = random.randint(1, 65536)
     sign = settings.YOUDAO_APP_KEY + q + str(salt) + settings.YOUDAO_SECRET_KEY
     m1 = hashlib.md5()

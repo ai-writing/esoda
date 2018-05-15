@@ -83,6 +83,52 @@ class EsAdaptor():
         #     return EsAdaptor.es.search(index=index, doc_type=doc_type, body=body, filter_path=filter_path)
 
     @staticmethod
+    def get_action(t, d, cids):
+        mst = EsAdaptor.check_type(cids)
+        for tt in t:
+            mst.append({
+                "nested": {
+                    "path": "t",
+                    "query": {
+                        "term": {'t.l': tt}
+                    },
+                }
+            })
+        for dd in d:
+            lst = []
+            if 'dt' in dd:
+                lst.append({'term': {'d.dt': dd['dt']}})
+            if 'l1' in dd:
+                lst.append({'term': {'d.l1': dd['l1']}})
+            if 'l2' in dd:
+                lst.append({'term': {'d.l2': dd['l2']}})
+            mst.append({
+                "nested": {
+                    "path": "d",
+                    "query": {
+                        "bool": {
+                            "must": lst
+                        }
+                    }
+                }
+            })
+        action = {
+            "size": 0,
+            "query": {
+                "bool": {
+                    "must": mst
+                }
+            }
+        }
+        return action
+        
+
+    @staticmethod
+    def msearch(action):
+        resp = EsAdaptor.es.msearch(body = action)
+        return resp['responses']
+
+    @staticmethod
     def check_type(cids):
         if cids in ('_all', ['_all']):
             return []
