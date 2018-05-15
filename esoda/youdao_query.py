@@ -144,7 +144,10 @@ def youdao_translate_new(q, timeout=10):
     try:
         translate_url = generate_translate_url(q)
         response = requests.get(translate_url, timeout=timeout)
-        r = response.json()
+        if response:
+            r = response.json()
+        else:
+            return {}
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
         return {}

@@ -125,8 +125,11 @@ class EsAdaptor():
 
     @staticmethod
     def msearch(action):
-        resp = EsAdaptor.es.msearch(body = action)
-        return resp['responses']
+        if action:
+            resp = EsAdaptor.es.msearch(body = action)
+            return resp['responses']
+        else:
+            return []
 
     @staticmethod
     def check_type(cids):
