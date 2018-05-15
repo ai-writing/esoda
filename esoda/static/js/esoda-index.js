@@ -9,8 +9,6 @@ $(function () {
     $(this).tab("show");
   });
 
-  // $( "#SearchBox" ).val("");
-
   var curDisplay = 0;
   var numDisplay = 3;
   var feedbackElements = $('#UserFeedback > div');

@@ -112,7 +112,7 @@
         </div>
       </div>
     </form>
-    <div class="modal fade" id="FeedbackModal">
+<!--     <div class="modal fade" id="FeedbackModal">
       <div class="modal-dialog modal-sm modal-login-sm">
         <div class="modal-content">
           <div class="modal-header modal-login-header">
@@ -132,7 +132,8 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+    {% include "esoda/feedback.html" with value1="请输入您需要的领域" value2="提交" %}
   </div>
 </div>
 {% endblock %}
@@ -235,23 +236,23 @@
       {% endfor %}
     {% endif %}
 
-    $('#FeedbackForm').submit(function (e) {
-      e.preventDefault();
-      var textarea = $(this).find('[name="message"]');
-      var msg = textarea.val().trim();
-      if (msg) {
-        $.post($(this).attr('action'), $(this).serialize(), function (r) {
-          toastr.remove();
-          toastr.success('提交成功');
-          textarea.val('');
-          $('#FeedbackModal').modal('hide');
-        });
-      } else {
-        toastr.remove();
-        toastr.warning('请输入提交内容');
-        textarea.focus();
-      }
-    });
+    // $('#FeedbackForm').submit(function (e) {
+    //   e.preventDefault();
+    //   var textarea = $(this).find('[name="message"]');
+    //   var msg = textarea.val().trim();
+    //   if (msg) {
+    //     $.post($(this).attr('action'), $(this).serialize(), function (r) {
+    //       toastr.remove();
+    //       toastr.success('提交成功');
+    //       textarea.val('');
+    //       $('#FeedbackModal').modal('hide');
+    //     });
+    //   } else {
+    //     toastr.remove();
+    //     toastr.warning('请输入提交内容');
+    //     textarea.focus();
+    //   }
+    // });
 
     $('#firstleveltext0').click();
   });

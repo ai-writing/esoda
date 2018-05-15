@@ -323,4 +323,23 @@ $(function () {
   $(".section-blue").on('click', function (e){
     $('.jumbotron').css("padding-top", "150px");
   });
+
+  $('#FeedbackForm').submit(function (e) {
+    e.preventDefault();
+    var textarea = $(this).find('[name="message"]');
+    var msg = textarea.val().trim();
+    if (msg) {
+      $.post($(this).attr('action'), $(this).serialize(), function (r) {
+        toastr.remove();
+        toastr.success('反馈成功');
+        textarea.val('');
+        $('#FeedbackModal').modal('hide');
+      });
+    } else {
+      toastr.remove();
+      toastr.warning('请输入内容');
+      textarea.focus();
+    }
+  });
+
 });

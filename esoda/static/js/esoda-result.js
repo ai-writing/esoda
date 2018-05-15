@@ -179,24 +179,6 @@ $(function () {
     }, 1000);
   });
 
-  $('#FeedbackForm').submit(function (e) {
-    e.preventDefault();
-    var textarea = $(this).find('[name="message"]');
-    var msg = textarea.val().trim();
-    if (msg) {
-      $.post($(this).attr('action'), $(this).serialize(), function (r) {
-        toastr.remove();
-        toastr.success('反馈成功');
-        textarea.val('');
-        $('#FeedbackModal').modal('hide');
-      });
-    } else {
-      toastr.remove();
-      toastr.warning('请输入反馈内容');
-      textarea.focus();
-    }
-  });
-
   $(".back-to-top").click(function () {
     $("html,body").animate({scrollTop: 0}, "fast");
     return false;
