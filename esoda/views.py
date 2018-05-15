@@ -155,24 +155,35 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     t_new = t[:]
     ref_new = ref[:]
     MAX_COUNT = 15  # TODO: deeply fix synonyms too many es queries bug
+    req_head = {'index': dbs}
+    
     if '*' in t:
         syn_dict['*'] = []
         t_new.remove('*')
         ref_new.remove('*')
     try:
         for j in xrange(len(t_new)):
-            syn_dict[t_new[j]] = []
+            syn_list = []
+            action = []
             pos = 'NONE' if len(t) == 1 else poss[j]
             for syn in synonyms(t_new[j], pos=pos, max_count=MAX_COUNT/len(t)):
                 lemma = ' '.join(t_new).replace(t_new[j], syn)
                 reff = ' '.join(ref_new).replace(ref_new[j], syn)
                 if dt == '0' or len(t_new) == 1:
-                    cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
+                    # cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
+                    req_body = EsAdaptor.get_action(lemma.split(' '), [], cids)
                 else:
                     d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
-                    cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
-                if cnt:
-                    syn_dict[t_new[j]].append({'ref': reff, 'lemma': lemma, 'content': syn, 'count': cnt, 'type': 1}) # type 1 for synonyms_word
+                    req_body = EsAdaptor.get_action([], d, cids)
+                    # cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+                # if cnt:
+                action.extend([req_head, req_body])
+                syn_list.append({'ref': reff, 'lemma': lemma, 'content': syn, 'type': 1, 'count': 0}) # type 1 for synonyms_word
+            res = EsAdaptor.msearch(action)
+            if len(syn_list) == len(res):
+                for i in xrange(len(syn_list)):
+                    syn_list[i]['count'] = res[i]['hits'].get('total')
+            syn_dict[t_new[j]] = syn_list
     except Exception as e:
         logger.exception('Failed in get_synonyms_dict: "%s"', ' '.join(t))
     return syn_dict
