@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-{% include "esoda/feedback.html" with feedback_id="FeedbackModal" feedbackmodal_id="feedback-modal" FeedbackForm_id="FeedbackForm" tip="请提供您的意见与反馈" submit_btn="提交反馈" %}
+{% include "esoda/feedback.html" with feedback_id="FeedbackModal" FeedbackForm_id="FeedbackForm" tip="请提供您的意见与反馈" submit_btn="提交反馈" %}
 <div class="search-header hidden-xs">
   <div class="search-bar">
     <input type="text" id="input-search" placeholder="搜索期刊/会议名称">
@@ -113,7 +113,7 @@
         </div>
       </div>
     </form>
-    {% include "esoda/feedback.html" with feedback_id="DomainModal" feedbackmodal_id="domain-modal" FeedbackForm_id="DomainFeedbackForm" tip="请输入您需要的领域" submit_btn="提交" %}
+    {% include "esoda/feedback.html" with feedback_id="DomainModal" FeedbackForm_id="DomainFeedbackForm" tip="请输入您需要的领域" submit_btn="提交" %}
   </div>
 </div>
 {% endblock %}

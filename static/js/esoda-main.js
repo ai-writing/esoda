@@ -323,6 +323,9 @@ $(function () {
   $(".section-blue").on('click', function (e){
     $('.jumbotron').css("padding-top", "150px");
   });
+  $(".navbar").on('click', function (e){
+    $('.jumbotron').css("padding-top", "150px");
+  });
 
   $('#FeedbackForm').submit(function (e) {
     e.preventDefault();
