@@ -107,7 +107,7 @@ def lemmatize(s, timeout=10):  # TODO: rename to nlp_parse
     '''
 
     try:
-        conll = requests.post(LEMMATIZER_URL, s, timeout=timeout).text  # may end with \r\n
+        conll = requests.post(LEMMATIZER_URL, s.encode('utf-8'), timeout=timeout).text  # may end with \r\n
         lines = [line.strip() for line in conll.split('\n')]
         tokens = [line.split('\t') for line in lines if line]
         poss, dep = process_conll_file(tokens)
