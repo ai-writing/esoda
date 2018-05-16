@@ -234,6 +234,12 @@ $(function () {
       if (event.keyCode !== $.ui.keyCode.TAB) {
         $("#SearchForm").submit();
       }
+      if (event.keyCode === $.ui.keyCode.TAB) {
+        console.log("testtab");
+        var result = $( "#SearchBox" ).val();
+        var newResult = result + " ";
+        $( "#SearchBox" ).val(newResult);
+      }
 
       return false;
     }
