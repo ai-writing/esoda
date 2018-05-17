@@ -36,10 +36,10 @@ logger = logging.getLogger(__name__)
 
 def get_cids(user, r=None):
     dbs, cids = [], []
-    if user.is_authenticated:
+    if user.is_authenticated and hasattr(user, 'userprofile'):  # TODO: create userprofile if none
         corpus_id = user.userprofile.getid()  # user.userprofile.getid() get a list
         dbs, cids = corpus_id2cids(corpus_id)
-        # TODO: name = get_name(dbs, cids)
+        # TODO: name = get_display_name(dbs, cids)
         name = u''
         count = 0
         for i in TREE_FIRST:
