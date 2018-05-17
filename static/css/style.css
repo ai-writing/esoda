@@ -2069,6 +2069,16 @@ button.close:focus {
     right: 10px;
 }
 
+.guide-affix.affix {
+    bottom: 190px;
+    right: 10px;
+}
+
+.guide-affix a {
+    color: #fff;
+    text-decoration: none;
+}
+
 .feedback-affix.affix {
     bottom: 150px;
     right: 10px;
@@ -2094,14 +2104,14 @@ button.close:focus {
     width: 82px;
 }
 
-.feedback {
+.float-btn {
     background-color: #42A5F5;
     border: solid 1px #ddd;
     color: #fff;
     width: 82px;
 }
 
-.feedback:hover {
+.float-btn:hover {
     color: #fff;
 }
 

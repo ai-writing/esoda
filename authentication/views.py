@@ -5,11 +5,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.http import JsonResponse
-import json
+import json, logging
 from .models import UserProfile, CORPUS, SECOND_LEVEL_FIELD, FIELD_NAME
 
 
-# Create your views here.
+logger = logging.getLogger(__name__)
 
 # Views for profile urls
 def domain_view(request):
@@ -19,7 +19,7 @@ def domain_view(request):
         cids = request.POST.getlist('ids')
         for i in cids:
             corpus_ids[int(i)] = 1
-        if user.is_authenticated():
+        if user.is_authenticated:
             if cids:
                 user.userprofile.setid(corpus_ids)
                 messages.success(request, _(u'保存成功'))
@@ -28,7 +28,11 @@ def domain_view(request):
         else:
             messages.error(request, _(u'请先登录'))
     else:
-        corpus_ids = user.userprofile.getid() if user.is_authenticated() else UserProfile.DEFAULT_CIDS[:]
+        if user.is_authenticated:  # Create userprofile for users from ESLWriter
+            if not hasattr(user, 'userprofile'):
+                UserProfile.create_user_profile(User, user, True)
+                logger.warning('UserProfile created for ESLWriter user: "%s"', user.username)
+        corpus_ids = user.userprofile.getid() if user.is_authenticated else UserProfile.DEFAULT_CIDS[:]
     node_tree = tree(corpus_ids)
     return render(request, "profile/domain_select.html", {'menu_index': 1, 'profileTab': 'domain','corpus': node_tree})
 
@@ -40,7 +44,7 @@ def search_domain_tree_view(request):
     target = request.GET.get('target', '')
     if not target:
         return JsonResponse({"expand": expand, "result": result, "big": big}, safe=False)
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = User.objects.get(id=request.user.pk)
         corpus_ids = user.userprofile.getid()
     else:

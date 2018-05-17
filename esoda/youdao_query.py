@@ -18,11 +18,11 @@ if not settings.DEBUG:
 YOUDAO_SUGGEST_URL = 'http://dict.youdao.com/suggest?ver=2.0&le=en&num=10&q=%s'
 
 @timeit
-def youdao_suggest(q):
+def youdao_suggest(q, timeout=10):
     r = {}
     suggests = []
     try:
-        xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=10).text
+        xmlstring = requests.get(YOUDAO_SUGGEST_URL % q, timeout=timeout).text
         DOMTree = xml.dom.minidom.parseString(xmlstring.encode('utf-8')).getElementsByTagName('suggest');
         items = DOMTree[0].getElementsByTagName('item')
         for item in items:
@@ -87,10 +87,10 @@ def suggest_new(q):
 
 YOUDAO_SEARCH_URL = 'http://dict.youdao.com/jsonapi?dicts={count:1,dicts:[[\"ec\"]]}&q=%s'
 
-def youdao_search(q0, q):
+def youdao_search(q0, q, timeout=10):
     dictionary = {}
     try:
-        jsonObj = requests.get(YOUDAO_SEARCH_URL % q, timeout=10).json()
+        jsonObj = requests.get(YOUDAO_SEARCH_URL % q, timeout=timeout).json()
         cn = has_cn(q0)
         q = q0 if cn else q
 
@@ -113,27 +113,24 @@ YOUDAO_TRANSLATE_URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=ESLWriter&key
 
 @timeit
 def youdao_translate_old(q, timeout=10):
-    r = {}
-    response = None
     try:
         response = requests.get(YOUDAO_TRANSLATE_URL % q, timeout=timeout)
         r = response.json()
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
+        return {}
     translated = {
-        'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
-        'cn': has_cn(q),
         'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
-    logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
+    logger.info('youdao_translate: "%s" -> %s', r.get('query', q), repr(translated))
     return translated
 
 YOUDAO_API_URL = 'http://openapi.youdao.com/api'
 
 def generate_translate_url(q):
     fromLang = 'auto'
-    toLang = 'auto'
+    toLang = 'en'
     salt = random.randint(1, 65536)
     sign = settings.YOUDAO_APP_KEY + q + str(salt) + settings.YOUDAO_SECRET_KEY
     m1 = hashlib.md5()
@@ -144,19 +141,19 @@ def generate_translate_url(q):
 
 @timeit
 def youdao_translate_new(q, timeout=10):
-    r = {}
-    response = None
     try:
         translate_url = generate_translate_url(q)
         response = requests.get(translate_url, timeout=timeout)
-        r = response.json()
+        if response:
+            r = response.json()
+        else:
+            return {}
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
+        return {}
     translated = {
-        'query': r.get('query', q),
         'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
-        'cn': has_cn(q),
         'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
-    logger.info('youdao_translate: "%s" -> %s', q, repr(translated))
+    logger.info('youdao_translate: "%s" -> %s', r.get('query', q), repr(translated))
     return translated

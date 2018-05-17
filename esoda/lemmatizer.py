@@ -100,14 +100,14 @@ def process_conll_line(tt):
     return {'i': int(tt[0])-1, 't': tt[1], 'l': tt[2], 'pt': pt, 'di': int(tt[5])-1, 'dt': dt}
 
 @timeit
-def lemmatize(s):  # TODO: rename to nlp_parse
+def lemmatize(s, timeout=10):  # TODO: rename to nlp_parse
     '''
     s: a English string
     return: a list of lower-cased lemmas
     '''
 
     try:
-        conll = requests.post(LEMMATIZER_URL, s, timeout=10).text  # may end with \r\n
+        conll = requests.post(LEMMATIZER_URL, s.encode('utf-8'), timeout=timeout).text  # may end with \r\n
         lines = [line.strip() for line in conll.split('\n')]
         tokens = [line.split('\t') for line in lines if line]
         poss, dep = process_conll_file(tokens)

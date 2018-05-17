@@ -36,10 +36,10 @@ logger = logging.getLogger(__name__)
 
 def get_cids(user, r=None):
     dbs, cids = [], []
-    if user.is_authenticated:
+    if user.is_authenticated and hasattr(user, 'userprofile'):  # TODO: create userprofile if none
         corpus_id = user.userprofile.getid()  # user.userprofile.getid() get a list
         dbs, cids = corpus_id2cids(corpus_id)
-        # TODO: name = get_name(dbs, cids)
+        # TODO: name = get_display_name(dbs, cids)
         name = u''
         count = 0
         for i in TREE_FIRST:
@@ -75,22 +75,24 @@ def esoda_view(request):
         return render(request, 'esoda/index.html', info)
 
     # Ignore too long query
-    if len(q0.split()) > 20 or (has_cn(q0) and len(q0) > 20):
+    # TODO: better user experience
+    if len(q0.split()) > 20 or (has_cn(q0) and (len(q0.split()) + sum([1 for c in q0 if is_cn_char(c)])) > 20):
         info = get_feedback()
+        logger.warning('User too long query: "%s"', q0)
         return render(request, 'esoda/index.html', info)
 
     # With query - render result.html
     q = q0
     if has_cn(q0):
-        trans = youdao_translate(q0, timeout=3)
-        if trans['explanationList']:
+        trans = youdao_translate(q0, timeout=5)
+        if trans.get('explanationList'):
             try:
                 q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip()
             except Exception as e:
-                logger.exception('Failed to parse youdao_translate result: "%s"', repr(e))
+                logger.exception('Failed to parse youdao_translate result: "%s"', trans['explanationList'])
 
     q, ques, aste = refine_query(q) # ques(aste) is the place of question mark(asterisk)
-    qt, ref, poss, dep = lemmatize(q)
+    qt, ref, poss, dep = lemmatize(q, timeout=5)
     expand = []
     asteList = []
     for i in ques:
@@ -153,26 +155,37 @@ def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
     t_new = t[:]
     ref_new = ref[:]
     MAX_COUNT = 15  # TODO: deeply fix synonyms too many es queries bug
+    req_head = {'index': dbs}
+    
     if '*' in t:
         syn_dict['*'] = []
         t_new.remove('*')
         ref_new.remove('*')
     try:
         for j in xrange(len(t_new)):
-            syn_dict[t_new[j]] = []
+            syn_list = []
+            action = []
             pos = 'NONE' if len(t) == 1 else poss[j]
             for syn in synonyms(t_new[j], pos=pos, max_count=MAX_COUNT/len(t)):
                 lemma = ' '.join(t_new).replace(t_new[j], syn)
                 reff = ' '.join(ref_new).replace(ref_new[j], syn)
                 if dt == '0' or len(t_new) == 1:
-                    cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
+                    # cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
+                    req_body = EsAdaptor.get_action(lemma.split(' '), [], cids)
                 else:
                     d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
-                    cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
-                if cnt:
-                    syn_dict[t_new[j]].append({'ref': reff, 'lemma': lemma, 'content': syn, 'count': cnt, 'type': 1}) # type 1 for synonyms_word
+                    req_body = EsAdaptor.get_action([], d, cids)
+                    # cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+                # if cnt:
+                action.extend([req_head, req_body])
+                syn_list.append({'ref': reff, 'lemma': lemma, 'content': syn, 'type': 1, 'count': 0}) # type 1 for synonyms_word
+            res = EsAdaptor.msearch(action)
+            if len(syn_list) == len(res):
+                for i in xrange(len(syn_list)):
+                    syn_list[i]['count'] = res[i]['hits'].get('total')
+            syn_dict[t_new[j]] = syn_list
     except Exception as e:
-        logger.exception('Failed in get_synonyms_dict: "%s"', repr(e))
+        logger.exception('Failed in get_synonyms_dict: "%s"', ' '.join(t))
     return syn_dict
 
 
@@ -347,12 +360,13 @@ def get_usage_dict(t, ref, i, dt, dbs, cids):
             else:
                 usageDict[t[i+1]] = ret
         except Exception:
-            logger.exception('In get_usage_list')
+            logger.exception('Failed in get_usage_list: "%s"', ' '.join(t))
     return usageDict
 
 
 @timeit
 def get_collocations(clist, qt, ref, i, dbs, cids):
+    # TODO: make clist as a return result
     try:
         t, d = list(qt), (qt[i], qt[i + 1])
         cnt = 0
@@ -383,7 +397,7 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
                 # 'usageList': [],
             })
     except Exception as e:
-        logger.exception('Failed to get collocations: "%s"', repr(e))
+        logger.exception('Failed in get_collocations: "%s"', ' '.join(qt))
 
 
 @timeit
@@ -408,6 +422,7 @@ def collocation_list(t, ref, poss, dep, dbs, cids):
 
 @timeit
 def sentence_query(t, ref, i, dt, dbs, cids):
+    # TODO: remove i, which is negative & never used
     if not t:
         return {'time': 0.00, 'total': 0, 'sentence': []}
     if dt != '0':  # Search specific tag
@@ -419,7 +434,7 @@ def sentence_query(t, ref, i, dt, dbs, cids):
 
     try:
         time1 = time.time()
-        res = EsAdaptor.search(t, d, ref, dbs, cids, 50)
+        res = EsAdaptor.search(t, d, ref, dbs, cids, 50)    # TODO: set 50 as parameters, the same in rlen
         time2 = time.time()
 
         sr.update({'time': round(time2 - time1, 2), 'total': res['total']})
@@ -437,5 +452,5 @@ def sentence_query(t, ref, i, dt, dbs, cids):
                 'heart_number': 129})
         sr = res_refine(sr)
     except Exception as e:
-        logger.exception('Failed in sentence_query: "%s"', repr(e))
+        logger.exception('Failed in sentence_query: "%s"', {'t': ' '.join(t), 'd': d})
     return sr
