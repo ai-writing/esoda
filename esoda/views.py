@@ -150,7 +150,7 @@ def esoda_view(request):
 
 
 @timeit
-def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
+def get_synonyms_dict(t, ref, dt, poss, dbs, cids):
     syn_dict = {}
     t_new = t[:]
     ref_new = ref[:]
@@ -199,17 +199,15 @@ def syn_usageList_view(request):
     expand = json.loads(request.GET.get('expand', '[]'))
     if not ref:
         ref = t
-    i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     dbs, cids = get_cids(request.user)
     poss = request.GET.get('pos', '').split()
     dt = '0' if len(t) == 1 else dt   # TODO: deeply fix this bug
-    usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
-    syn_dict = get_synonyms_dict(t, ref, i, dt, poss, dbs, cids)
-
+    usage_dict = get_usage_dict(t, ref, dt, dbs, cids)
+    syn_dict = get_synonyms_dict(t, ref, dt, poss, dbs, cids)
     ttcnt = 0
     if dt != '0' and '*' not in t:
-        d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
+        d = [{'dt': dt, 'l1': t[0], 'l2': t[1]}]
         ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
     else:
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
@@ -280,18 +278,6 @@ def sentence_view(request):
     return render(request, 'esoda/sentence_result.html', info)
 
 
-# def usagelist_view(request):
-#     t = request.GET.get('t', '').split()
-#     ref = request.GET.get('ref', '').split()
-#     if not ref:
-#         ref = t
-#     i = int(request.GET.get('i', '0'))
-#     dt = request.GET.get('dt', '0')
-#     dbs, cids = get_cids(request.user)
-#     r = {'usageList': get_usage_list(t, ref, i, dt, dbs, cids)}
-#     return render(request, 'esoda/collocation_result.html', r)
-
-
 def dict_suggest_view(request):
     q = request.GET.get('term', '')
     r = {'suggest': []}
@@ -304,61 +290,45 @@ def dict_suggest_view(request):
 
 
 @timeit
-def get_usage_dict(t, ref, i, dt, dbs, cids):
+def get_usage_dict(t, ref, dt, dbs, cids):
     # TODO: add try...catch...
     usageDict = {}
-    nt = list(t)
     for tt in t:
         usageDict[tt] = []
-    if dt == '0':
+    if dt == '0' or len(t) > 2:
         return usageDict
-    del nt[i]
-    del nt[i]
-    nnt = list(nt)
-    nnt.insert(i, '%s %s')
-    pat = ' '.join(nnt)
-
-    # if '*' not in t:
-    #     d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-    #     cnt = EsAdaptor.count(nt, d, dbs, cids)
-    #     usageList.append({
-    #         'ref': ' '.join(ref),
-    #         'lemma': pat % (t[i], t[i + 1]),
-    #         'content': pat % (displayed_lemma(ref[i], t[i]), displayed_lemma(ref[i + 1], t[i + 1])),
-    #         'count': cnt['hits']['total']
-    #     })
     con = ''
-    for k in (('*', t[i + 1]), (t[i], '*')):
+    for k in (('*', t[1]), (t[0], '*')):
         if k == ('*', '*'):
             continue
         try:
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
-            lst = EsAdaptor.group(nt, d, dbs, cids)
+            lst = EsAdaptor.group([], d, dbs, cids)
             ret = []
             for j in lst['aggregations']['d']['d']['d']['buckets']:
                 l1 = notstar(d[0]['l1'], j['key'])
                 l2 = notstar(d[0]['l2'], j['key'])
-                t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[i], k[0])]
-                t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[i + 1], k[1])]
-                if (l1, l2) != (t[i], t[i + 1]):
+                t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[0], k[0])]
+                t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[1], k[1])]
+                if (l1, l2) != (t[0], t[1]):
                     nref = list(ref)
-                    if l1 != t[i]:
+                    if l1 != t[0]:
                         con = l1
-                        nref[i] = l1
+                        nref[0] = l1
                     else:
                         con = l2
-                        nref[i + 1] = l2
+                        nref[1] = l2
                     ret.append({
                         'ref': ' '.join(nref),
-                        'lemma': pat % (l1, l2), # for query
+                        'lemma': '%s %s' % (l1, l2), # for query
                         'content': con, # for display
                         'count': j['doc_count'],
                         'type': 2 # for usageword
                     })
             if k[0] == '*':
-                usageDict[t[i]] = ret
+                usageDict[t[0]] = ret
             else:
-                usageDict[t[i+1]] = ret
+                usageDict[t[1]] = ret
         except Exception:
             logger.exception('Failed in get_usage_list: "%s"', ' '.join(t))
     return usageDict

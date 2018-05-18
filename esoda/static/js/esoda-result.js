@@ -104,7 +104,10 @@ $(function () {
     // });
     // $('#ManualLoad').hide();
     // $("#ExampleEnd").hide();
-    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}, function (data) {
+    if (type0.indexOf('*') < 0){
+      searchAndFillSentences({t: type0.replace('*', ''), ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand});
+    }
+    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), dt: dt, pos: POSS, expand: expand}, function (data) {
       $(id).html(data);
       $(id + ' .panel-collapse-body').mCustomScrollbar({
         theme: 'dark',
@@ -113,10 +116,10 @@ $(function () {
         autoHideScrollbar: true
       });
       if (type0.indexOf('*') > -1) { $(id + ' .single-extend:eq(0) .colloc-usage:eq(0)').click(); }
-      else {
-        if ($(id + ' .colloc-usage:eq(0)').length) { $(id + ' .colloc-usage:eq(0)').click(); }
-        else { searchAndFillSentences({t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}); }
-      }
+      // else {
+      //   if ($(id + ' .colloc-usage:eq(0)').length) { $(id + ' .colloc-usage:eq(0)').click(); }
+      //   else { searchAndFillSentences({t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}); }
+      // }
     });
   });
 
