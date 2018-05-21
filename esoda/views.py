@@ -8,6 +8,7 @@ import time
 import re
 import json
 import random
+from django.core.cache import cache
 
 from .utils import *
 from common.utils import timeit
@@ -303,7 +304,14 @@ def get_usage_dict(t, ref, dt, dbs, cids):
             continue
         try:
             d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
-            lst = EsAdaptor.group([], d, dbs, cids)
+            attrs = [d, dbs, cids]
+            key = get_key(attrs)
+            mem_lst = json_deserializer(cache.get(key))
+            if mem_lst == None:
+                lst = EsAdaptor.group([], d, dbs, cids)
+                cache.set(key, json_serializer(lst))
+            else:
+                lst = mem_lst
             ret = []
             for j in lst['aggregations']['d']['d']['d']['buckets']:
                 l1 = notstar(d[0]['l1'], j['key'])
@@ -404,7 +412,14 @@ def sentence_query(t, ref, i, dt, dbs, cids):
 
     try:
         time1 = time.time()
-        res = EsAdaptor.search(t, d, ref, dbs, cids, 50)    # TODO: set 50 as parameters, the same in rlen
+        attrs = [t, dt, dbs, cids]
+        key = get_key(attrs)
+        mem_res = json_deserializer(cache.get(key))
+        if mem_res == None:
+            res = EsAdaptor.search(t, d, ref, dbs, cids, 50)    # TODO: set 50 as parameters, the same in rlen
+            cache.set(key, json_serializer(res))
+        else:
+            res = mem_res
         time2 = time.time()
 
         sr.update({'time': round(time2 - time1, 2), 'total': res['total']})

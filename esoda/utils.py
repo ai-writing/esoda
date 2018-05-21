@@ -5,6 +5,7 @@ import string
 import logging
 import difflib
 import math
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -234,3 +235,35 @@ def star2collocation(t, dt):
         star = star2coll_dict.get(dt).get(str(i))
         t = [star2coll_dict.get(dt).get(str(i)) if tt =='*' else tt for tt in t]
     return t, star
+
+
+def bkdr_hash(str):
+    seed = 131
+    hash = 0
+    for ch in str:
+        hash = hash * seed + ord(ch)
+    return hash & 0x7FFFFFFF
+
+
+def get_key(attrs):
+    key = ''
+    for attr in attrs:
+        if type(attr) == str:
+            key += attr
+        else:
+            key += json.dumps(attr)
+    key = bkdr_hash(key.replace(' ', ''))
+    return str(key)
+
+
+def json_serializer(value):
+    if type(value) == str:
+     return value
+    return json.dumps(value)
+
+
+def json_deserializer(value):
+    try:
+        return json.loads(value)
+    except:
+        return value
