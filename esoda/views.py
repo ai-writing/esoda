@@ -151,6 +151,26 @@ def esoda_view(request):
 
 
 @timeit
+def collocation_list(t, ref, poss, dep, dbs, cids):
+    # return collocation_list, default_collocation index
+    # TODO: add try..catch...
+    cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
+    head = [{'count': cnt, 't_dt': (t, '0'), 'type': ' '.join(t), 'label':  'Colloc0_0', 'title': u'全部结果'}] # all results
+    clist = []
+    if len(t) >= 3:
+        return head, 1
+    if len(t) == 1:
+        if t[0] in PERP_TOKENS:
+            return head, 1
+        t.append('*')
+        ref.append('*')
+    for i in range(len(t) - 1):
+        get_collocations(clist, t, ref, i, dbs, cids)
+    newlist, flag = get_defaulteColl(head, poss, dep, clist)
+    return newlist, flag
+
+
+@timeit
 def get_synonyms_dict(t, ref, dt, poss, dbs, cids):
     syn_dict = {}
     t_new = t[:]
@@ -307,7 +327,7 @@ def get_usage_dict(t, ref, dt, dbs, cids):
             attrs = [d, dbs, cids]
             key = get_key(attrs)
             mem_lst = json_deserializer(cache.get(key))
-            if mem_lst == None:
+            if mem_lst is None:
                 lst = EsAdaptor.group([], d, dbs, cids)
                 cache.set(key, json_serializer(lst))
             else:
@@ -379,26 +399,6 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
 
 
 @timeit
-def collocation_list(t, ref, poss, dep, dbs, cids):
-    # return collocation_list, default_collocation index
-    # TODO: add try..catch...
-    cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
-    head = [{'count': cnt, 't_dt': (t, '0'), 'type': ' '.join(t), 'label':  'Colloc0_0', 'title': u'全部结果'}] # all results
-    clist = []
-    if len(t) >= 3:
-        return head, 1
-    if len(t) == 1:
-        if t[0] in PERP_TOKENS:
-            return head, 1
-        t.append('*')
-        ref.append('*')
-    for i in range(len(t) - 1):
-        get_collocations(clist, t, ref, i, dbs, cids)
-    newlist, flag = get_defaulteColl(head, poss, dep, clist)
-    return newlist, flag
-
-
-@timeit
 def sentence_query(t, ref, i, dt, dbs, cids):
     # TODO: remove i, which is negative & never used
     if not t:
@@ -415,7 +415,7 @@ def sentence_query(t, ref, i, dt, dbs, cids):
         attrs = [t, dt, dbs, cids]
         key = get_key(attrs)
         mem_res = json_deserializer(cache.get(key))
-        if mem_res == None:
+        if mem_res is None:
             res = EsAdaptor.search(t, d, ref, dbs, cids, 50)    # TODO: set 50 as parameters, the same in rlen
             cache.set(key, json_serializer(res))
         else:

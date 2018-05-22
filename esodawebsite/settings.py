@@ -283,9 +283,11 @@ SLOW_RESPONSE_WARNING_TIME = config('SLOW_RESPONSE_WARNING_TIME', default=5.0, c
 
 
 # Memcached
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
+MEMCACHED_LOCATION = config('MEMCACHED_LOCATION', default='', cast=Csv())
+if MEMCACHED_LOCATION:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': MEMCACHED_LOCATION
+        },
     }
-}
