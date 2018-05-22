@@ -292,13 +292,14 @@ def dict_suggest_view(request):
 @timeit
 def get_usage_dict(t, ref, dt, dbs, cids):
     # TODO: add try...catch...
+    i = 0
     usageDict = {}
     for tt in t:
         usageDict[tt] = []
     if dt == '0' or len(t) > 2:
         return usageDict
     con = ''
-    for k in (('*', t[1]), (t[0], '*')):
+    for k in (('*', t[i + 1]), (t[i], '*')):
         if k == ('*', '*'):
             continue
         try:
@@ -308,16 +309,16 @@ def get_usage_dict(t, ref, dt, dbs, cids):
             for j in lst['aggregations']['d']['d']['d']['buckets']:
                 l1 = notstar(d[0]['l1'], j['key'])
                 l2 = notstar(d[0]['l2'], j['key'])
-                t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[0], k[0])]
-                t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[1], k[1])]
-                if (l1, l2) != (t[0], t[1]):
+                t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[i], k[0])]
+                t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[i + 1], k[1])]
+                if (l1, l2) != (t[i], t[i + 1]):
                     nref = list(ref)
-                    if l1 != t[0]:
+                    if l1 != t[i]:
                         con = l1
-                        nref[0] = l1
+                        nref[i] = l1
                     else:
                         con = l2
-                        nref[1] = l2
+                        nref[i + 1] = l2
                     ret.append({
                         'ref': ' '.join(nref),
                         'lemma': '%s %s' % (l1, l2), # for query
@@ -326,9 +327,9 @@ def get_usage_dict(t, ref, dt, dbs, cids):
                         'type': 2 # for usageword
                     })
             if k[0] == '*':
-                usageDict[t[0]] = ret
+                usageDict[t[i]] = ret
             else:
-                usageDict[t[1]] = ret
+                usageDict[t[i + 1]] = ret
         except Exception:
             logger.exception('Failed in get_usage_list: "%s"', ' '.join(t))
     return usageDict
