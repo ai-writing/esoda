@@ -67,7 +67,7 @@
                               {%else%}
                                 <span class="glyphicon glyphicon-book domain-icon" title="journal"></span>
                               {% endifequal %}
-                              <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                              <span id="checktext{{j.id}}" title="{{j.title}}">{{j.text}}</span>
                             </label>
                             <input type="checkbox" value="{{j.id}}" id="check{{j.id}}" class="checkchild{{i.id}} checkchild{{k.id}}" onclick="cc({{i.id}});cc({{k.id}})" name="ids" {% if j.state.checked %} checked="checked" {% endif %}>
                           </label>
@@ -90,7 +90,7 @@
                           {%else%}
                             <span class="glyphicon glyphicon-book domain-icon" title="journal"></span>
                           {% endifequal %}
-                          <span id="checktext{{j.id}}" title="{{j.text}}">{{j.text}}</span>
+                          <span id="checktext{{j.id}}" title="{{j.title}}">{{j.text}}</span>
                         </label>
                       </label>
                     {% endfor %}
