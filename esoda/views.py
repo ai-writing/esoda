@@ -292,7 +292,7 @@ def dict_suggest_view(request):
 @timeit
 def get_usage_dict(t, ref, dt, dbs, cids):
     # TODO: add try...catch...
-    i = 0
+    i = 0 # 之前多个单词的query可以查询任意两个词之前的关系，i用来表示选中的单词的下标，现在多个单词不查找关系，所以i暂时不用，默认为0
     usageDict = {}
     for tt in t:
         usageDict[tt] = []
