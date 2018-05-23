@@ -38,6 +38,9 @@ count = 0
 count1 = 0
 count2 = 0
 TREE_FIRST=[]
+id2no = {}
+for r in MONGODB.common.journal_id_temp.find():
+    id2no[r['_id']] = r['No']
 for i in range(len(CORPUS)):
     if count == 0:
         count = len(SECOND_LEVEL_FIELD[count1])
@@ -55,6 +58,7 @@ for i in range(len(CORPUS)):
         if j['d'] == 'dblp' and MONGODB.dblp.venues.find_one({'_id': j['i']}):
             j['l'] = MONGODB.dblp.venues.find_one({'_id': j['i']}).get('fullName')
         j['c'] = EsAdaptor.count([], [], [j['d']], [j['i'].replace('/', '_')])['hits']['total']
+        j['s'] = id2no.get(j['i']) # s for search number
 
 def corpus_id2cids(corpus_id):
     dbs, cids = set(), set()
@@ -62,12 +66,12 @@ def corpus_id2cids(corpus_id):
         if corpus_id[i]!=0:
             if CORPUS2ID[i]!="":
                 dbs.add(CORPUS2ID[i]['d'])
-                cids.add(CORPUS2ID[i]["i"].replace('/', '_'))
+                cids.add(CORPUS2ID[i]["s"])
     return list(dbs), list(cids)
 
 class UserProfile(models.Model):
     EMPTY_CIDS = [0]*2000
-    DEFAULT_CIDS = [1, 1] + EMPTY_CIDS[2:]
+    DEFAULT_CIDS = [1, 1, 1] + EMPTY_CIDS[3:]
     user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     corpus_id = models.CharField(max_length=10000, default=json.dumps(DEFAULT_CIDS, separators=(',', ':')))
 
