@@ -340,13 +340,13 @@ $(function () {
     if (msg) {
       $.post($(this).attr('action'), $(this).serialize(), function (r) {
         toastr.remove();
-        toastr.success('反馈成功');
+        toastr.success('提交成功');
         textarea.val('');
         $('#FeedbackModal').modal('hide');
       });
     } else {
       toastr.remove();
-      toastr.warning('请输入反馈内容');
+      toastr.warning('请输入提交内容');
       textarea.focus();
     }
   });

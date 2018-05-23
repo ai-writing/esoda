@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-  {% include "esoda/feedback.html" with feedback_id="FeedbackModal" FeedbackForm_id="FeedbackForm" tip="请提供您的意见与反馈" submit_btn="提交反馈" %}
+  {% include "esoda/feedback.html" with title="请提供您的意见与反馈" %}
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron section-blue">
     <div class="container">
@@ -224,6 +224,7 @@
           </div>
           <nav aria-label="...">
             <ul class="pager">
+              <li class="btn btn-primary pull-left" data-toggle="modal" data-target="#FeedbackModal">我要反馈</li>
               <li><span class="glyphicon glyphicon-chevron-left"></span></li>
               <li><span class="glyphicon glyphicon-chevron-right"></span></li>
             </ul>
