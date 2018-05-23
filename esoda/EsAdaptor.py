@@ -126,7 +126,7 @@ class EsAdaptor():
     @staticmethod
     def msearch(action):
         if action:
-            resp = EsAdaptor.es.msearch(body = action)
+            resp = EsAdaptor.es.msearch(body=action)
             return resp['responses']
         else:
             return []

@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from esoda.EsAdaptor import EsAdaptor
+from common.mongodb import MONGODB
 import json
 
 # class Corpus(models.Model):
@@ -25,9 +27,9 @@ CORPUS = {"0": [{"i": "bnc", "d": "bnc",'n':"BNC"}, {"i": "wikipedia", "d": "wik
     "18":[{"i": "energy", "d": "energy","n":"Energy"}, {"i": "international_journal_of_hydrogen_energy", "d": "energy","n":"Int. J. Hydrog. Energy"}],
     "19":[{"i": "ijms", "d": "medicine_and_health_care","n":"Int. J. Med. Sci."}, {"i": "cardiovascular_diabetology", "d": "medicine_and_health_care","n":"Cardiovasc. Diabetol."}],
     "20":[{"i": "animal_cognition", "d": "zoology","n":"Animal Cogn."}, {"i": "zoolgy", "d": "zoology","n":"Zoolgy"}]}
-CORPUS2ID=[]
+CORPUS2ID = []
 FIELD_NAME = [u'通用语料库',u'计算机', u"工程学",u"物理学",u"天文学",u"生物学",u"生态学",u"神经科学",u"地球科学",u"能源科学",u"医疗卫生",u"动物学"]
-SECOND_LEVEL_FIELD=[[u'BNC'],
+SECOND_LEVEL_FIELD = [[u'BNC'],
     [u'高性能计算', u'计算机网络', u'网络安全', u'软件工程', u'数据挖掘',u'计算机理论', u'计算机图形学', u'人工智能', u'人机交互',  u'交叉综合'],
     [u"工程学"],
     [u"物理学"],[u"天文学"],[u"生物学"],[u"生态学"],[u"神经科学"],[u"地球科学"],[u"能源科学"],[u"医疗卫生"],[u"动物学"]]
@@ -36,10 +38,10 @@ count = 0
 count1 = 0
 count2 = 0
 TREE_FIRST=[]
-for i in range(21):
+for i in range(len(CORPUS)):
     if count == 0:
         count = len(SECOND_LEVEL_FIELD[count1])
-        count1 +=1
+        count1 += 1
         CORPUS2ID.append("")
         TREE_FIRST.append(count2)
         count2 += 1
@@ -48,7 +50,11 @@ for i in range(21):
     count -= 1
     for j in CORPUS[str(i)]:
         CORPUS2ID.append(j)
-        count2+=1
+        count2 += 1
+        j['l'], j['c'] = j['n'], 0 # j['l'] for journal/conf full name, j['c'] for total sentences number in a journal/conf
+        if j['d'] == 'dblp' and MONGODB.dblp.venues.find_one({'_id': j['i']}):
+            j['l'] = MONGODB.dblp.venues.find_one({'_id': j['i']}).get('fullName')
+        j['c'] = EsAdaptor.count([], [], [j['d']], [j['i'].replace('/', '_')])['hits']['total']
 
 def corpus_id2cids(corpus_id):
     dbs, cids = set(), set()
