@@ -5,6 +5,7 @@ import string
 import logging
 import difflib
 import math
+from authentication.models import id2no
 
 logger = logging.getLogger(__name__)
 
@@ -185,13 +186,18 @@ def generate_source(year, title, authList, conference):
     return source
 
 
-def gen_source_url(p):
-    year = int(p.get('year'))
-    title = p.get('title', '')
-    authList = p.get('authors', '').split(';')
-    conference = p.get('venue', '/').split('/')[-1].upper()
-    source = generate_source(year, title, authList, conference)
-    return {'source': source, 'url': p['ee']}
+def gen_source_url(p_list):
+    res = {}
+    # print p_list
+    for p in p_list:
+        year = int(p['_source'].get('y'))
+        title = p['_source'].get('tl', '')
+        authList = p['_source'].get('a', [])
+        no2id = {v:k for k,v in id2no.items()}
+        conference = no2id.get(p['_source'].get('c', '0')).split('/')[-1].upper()
+        source = generate_source(year, title, authList, conference)
+        res[p['_source']['p']] = {'source': source, 'url': p['_source'].get('ee')}
+    return res
 
 
 def papers_source_str(pids):

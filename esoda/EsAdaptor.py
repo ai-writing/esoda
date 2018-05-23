@@ -169,9 +169,9 @@ class EsAdaptor():
                 }
             })
         action = {
-            "_source": ["p", "c"],
+            "_source": ["p", "c", "a", "tl", "y", "ee"],
             "size": sp,
-            "terminate_after": 10000,
+            "terminate_after": 1000,
             "query": {
                 "function_score": {
                     "query": {

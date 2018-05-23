@@ -440,10 +440,11 @@ def sentence_query(t, ref, i, dt, dbs, cids):
         sr.update({'time': round(time2 - time1, 2), 'total': res['total']})
         rlen = min(50, len(res['hits']) if 'hits' in res else 0)
 
-        papers = set()
-        for i in xrange(rlen):
-            papers.add(res['hits'][i]['_source']['p'])
-        sources = papers_source_str(list(papers))
+        # papers = set()
+        # for i in xrange(rlen):
+        #     papers.add(res['hits'][i]['_source']['p'])
+        # sources = papers_source_str(list(papers))
+        sources = gen_source_url(res['hits'])
         for i in xrange(rlen):
             sentence = res['hits'][i]
             sr['sentence'].append({
