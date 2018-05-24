@@ -440,16 +440,15 @@ def sentence_query(t, ref, i, dt, dbs, cids):
         sr.update({'time': round(time2 - time1, 2), 'total': res['total']})
         rlen = min(50, len(res['hits']) if 'hits' in res else 0)
 
-        # papers = set()
-        # for i in xrange(rlen):
-        #     papers.add(res['hits'][i]['_source']['p'])
-        # sources = papers_source_str(list(papers))
-        sources = gen_source_url(res['hits'])
+        papers = set()
+        for i in xrange(rlen):
+            papers.add(res['hits'][i]['_source']['p'].replace('_', '/'))
+        sources = papers_source_str(list(papers))
         for i in xrange(rlen):
             sentence = res['hits'][i]
             sr['sentence'].append({
                 'content': cleaned_sentence(sentence['fields']['sentence'][0]),
-                'source': sources.get(sentence['_source']['p'], {}),  # paper_source_str(sentence['_source']['p'])
+                'source': sources.get(sentence['_source']['p'].replace('_', '/'), {}),  # paper_source_str(sentence['_source']['p'])
                 'heart_number': 129})
         sr = res_refine(sr)
     except Exception as e:

@@ -169,7 +169,7 @@ class EsAdaptor():
                 }
             })
         action = {
-            "_source": ["p", "c", "a", "tl", "y", "ee"],
+            "_source": ["p", "c"],
             "size": sp,
             "terminate_after": 1000,
             "query": {
