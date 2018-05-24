@@ -24,7 +24,7 @@ $(function () {
       var colNum = ($(".colList").width() > 380) ? 3 : 2;
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
-      var exampleNum = Number($("#ExampleNumber").text());
+      var exampleNum = $("#ExampleNumber").data('example-number');
       if (exampleNum === 0) {
         $('#Loadbox').hide();
       }
@@ -156,7 +156,7 @@ $(function () {
   });
 
   $('#ManualLoad').click(function (e) {
-    var total = $("#ExampleNumber").html();
+    var exampleNum = $("#ExampleNumber").data('example-number');
     loading = 1;
     $("#ManualLoad").hide();
     $(".result-table-cell").hide();
@@ -165,12 +165,12 @@ $(function () {
       $("#Loading2").hide();
       $("#Loadbox").show();
       var i;
-      for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
+      for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= exampleNum; i++) {
         $("#Example" + i).show();
       }
       loadCount++;
       loading = 0;
-      if (i > total || loadCount >= 5) {
+      if (i > exampleNum || loadCount >= 5) {
         loaded = 1;
         $("#Loadbox").hide();
         $("#ExampleEnd").show();
