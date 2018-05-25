@@ -152,12 +152,9 @@ class EsAdaptor():
             })
         for dd in d:
             lst = []
-            if 'dt' in dd:
-                lst.append({'term': {'d.dt': dd['dt']}})
-            if 'i1' in dd:
-                lst.append({'term': {'d.l1': t[dd['i1']]}})
-            if 'i2' in dd:
-                lst.append({'term': {'d.l2': t[dd['i2']]}})
+            lst.append({'term': {'d.dt': dd['dt']}})
+            lst.append({'term': {'d.l1': t[dd['i1']]}})
+            lst.append({'term': {'d.l2': t[dd['i2']]}})
             mst.append({
                 "nested": {
                     "path": "d",
@@ -301,7 +298,7 @@ class EsAdaptor():
         return ret
 
     @staticmethod
-    def group(t, d, dbs, cids, sp=39):
+    def group(t, d, dbs, cids, sp=10):
         if not d or len(d) > 1:
             return {}
 

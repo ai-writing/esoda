@@ -34,27 +34,25 @@ DEFAULT_ES_CIDS = ['conf_aaai', 'conf_acl', 'conf_asplos', 'conf_cav', 'conf_ccs
 DEFAULT_DOMAIN_NAME = u'计算机'
 logger = logging.getLogger(__name__)
 
-def get_cids(user, r=None):
+def get_cids(user):
     dbs, cids = [], []
-    if user.is_authenticated:
+    if user.is_authenticated and hasattr(user, 'userprofile'):  # TODO: create userprofile if none
         corpus_id = user.userprofile.getid()  # user.userprofile.getid() get a list
         dbs, cids = corpus_id2cids(corpus_id)
-        # TODO: name = get_name(dbs, cids)
+        # TODO: name = get_display_name(dbs, cids)
         name = u''
         count = 0
         for i in TREE_FIRST:
             if corpus_id[i] == 1:
-                name = name + FIELD_NAME[count] + u', '
+                name = name + FIELD_NAME[count] + u','
             count += 1
-        name = name[0:-2]
+        name = name[:-1]
     else:
         name = DEFAULT_DOMAIN_NAME
-    if r:
-        r['domain'] = name
 
     dbs = dbs or DEFAULT_ES_DBS
     cids = cids or DEFAULT_ES_CIDS
-    return dbs, cids
+    return dbs, cids, name
 
 
 def get_feedback():
@@ -115,7 +113,7 @@ def esoda_view(request):
     }
 
     r['tlen'] = len(qt)
-    dbs, cids = get_cids(request.user, r=r)
+    dbs, cids, domain_name = get_cids(request.user)
     cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
     r['collocationList'] = {'cL': cL, 'index': cL_index}
 
@@ -140,53 +138,15 @@ def esoda_view(request):
         'poss': ' '.join(poss),
         # 'suggestion': suggestion,
         # 'dictionary': trans,
-        'cids': cids,
+        'dbs': dbs,
+        # 'cids': cids,
         'expand': json.dumps(expand)
     }
 
     request.session.save()
-    logger.info('%s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, info)
+    logger.info('%s %s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, info, domain_name)
+    info['domain_name'] = domain_name
     return render(request, 'esoda/result.html', info)
-
-
-@timeit
-def get_synonyms_dict(t, ref, i, dt, poss, dbs, cids):
-    syn_dict = {}
-    t_new = t[:]
-    ref_new = ref[:]
-    MAX_COUNT = 15  # TODO: deeply fix synonyms too many es queries bug
-    req_head = {'index': dbs}
-    
-    if '*' in t:
-        syn_dict['*'] = []
-        t_new.remove('*')
-        ref_new.remove('*')
-    try:
-        for j in xrange(len(t_new)):
-            syn_list = []
-            action = []
-            pos = 'NONE' if len(t) == 1 else poss[j]
-            for syn in synonyms(t_new[j], pos=pos, max_count=MAX_COUNT/len(t)):
-                lemma = ' '.join(t_new).replace(t_new[j], syn)
-                reff = ' '.join(ref_new).replace(ref_new[j], syn)
-                if dt == '0' or len(t_new) == 1:
-                    # cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
-                    req_body = EsAdaptor.get_action(lemma.split(' '), [], cids)
-                else:
-                    d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
-                    req_body = EsAdaptor.get_action([], d, cids)
-                    # cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
-                # if cnt:
-                action.extend([req_head, req_body])
-                syn_list.append({'ref': reff, 'lemma': lemma, 'content': syn, 'type': 1, 'count': 0}) # type 1 for synonyms_word
-            res = EsAdaptor.msearch(action)
-            if len(syn_list) == len(res):
-                for i in xrange(len(syn_list)):
-                    syn_list[i]['count'] = res[i]['hits'].get('total')
-            syn_dict[t_new[j]] = syn_list
-    except Exception as e:
-        logger.exception('Failed in get_synonyms_dict: "%s"', ' '.join(t))
-    return syn_dict
 
 
 def syn_usageList_view(request):
@@ -199,17 +159,15 @@ def syn_usageList_view(request):
     expand = json.loads(request.GET.get('expand', '[]'))
     if not ref:
         ref = t
-    i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
-    dbs, cids = get_cids(request.user)
+    dbs, cids, domain_name = get_cids(request.user)
     poss = request.GET.get('pos', '').split()
     dt = '0' if len(t) == 1 else dt   # TODO: deeply fix this bug
-    usage_dict = get_usage_dict(t, ref, i, dt, dbs, cids)
-    syn_dict = get_synonyms_dict(t, ref, i, dt, poss, dbs, cids)
-
+    usage_dict = get_usage_dict(t, ref, dt, dbs, cids)
+    syn_dict = get_synonyms_dict(t, ref, dt, poss, dbs, cids)
     ttcnt = 0
     if dt != '0' and '*' not in t:
-        d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
+        d = [{'dt': dt, 'l1': t[0], 'l2': t[1]}]
         ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
     else:
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
@@ -224,7 +182,7 @@ def syn_usageList_view(request):
         't_list': t_list,
         'count': ttcnt,
         't_dt': (' '.join(t), dt),
-        'ref': ' '.join(ref)
+        'ref': ' '.join(ref),
     }
 
     syn_usage_dict = {}
@@ -250,7 +208,17 @@ def syn_usageList_view(request):
 
     info['syn_usage_dict'] = refine_dep(syn_usage_dict, t, poss)
     info['hint'] = hint
-    logger.info('%s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, info)
+
+    display_info = {
+        't_list': info['t_list'],
+        'count': info['count'],
+        't_dt': info['t_dt'],
+        'ref': info['ref'],
+        'hint': info['hint'],
+        'dbs': dbs,
+    }
+
+    logger.info('%s %s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, display_info, domain_name)
     return render(request, 'esoda/collocation_result.html', info)
 
 
@@ -262,7 +230,7 @@ def sentence_view(request):
     i = int(request.GET.get('i', '0'))
     dt = request.GET.get('dt', '0')
     dep_count = request.GET.get('dep_count', '0')
-    dbs, cids = get_cids(request.user)
+    dbs, cids, domain_name = get_cids(request.user)
     if len(t) == 1:
         dt = '0'
     sr = sentence_query(t, ref, i, dt, dbs, cids)
@@ -274,22 +242,19 @@ def sentence_view(request):
         'example_number': len(sr['sentence']),
         'search_time': sr['time'],
         'exampleList': sr['sentence'],
-        'similar_sen': abs(min(int(dep_count), 50) - len(sr['sentence']))
+        'similar_sen': abs(min(int(dep_count), 50) - len(sr['sentence'])),
         # TODO: sr['total'] unused
     }
+
+    display_info = {
+        'example_number': info['example_number'],
+        'search_time': info['search_time'],
+        'similar_sen': info['similar_sen'],
+        'dbs': dbs,
+    }
+
+    logger.info('%s %s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, display_info, domain_name)
     return render(request, 'esoda/sentence_result.html', info)
-
-
-# def usagelist_view(request):
-#     t = request.GET.get('t', '').split()
-#     ref = request.GET.get('ref', '').split()
-#     if not ref:
-#         ref = t
-#     i = int(request.GET.get('i', '0'))
-#     dt = request.GET.get('dt', '0')
-#     dbs, cids = get_cids(request.user)
-#     r = {'usageList': get_usage_list(t, ref, i, dt, dbs, cids)}
-#     return render(request, 'esoda/collocation_result.html', r)
 
 
 def dict_suggest_view(request):
@@ -301,67 +266,6 @@ def dict_suggest_view(request):
     elif not has_cn(q):
         r = youdao_suggest(q)
     return JsonResponse(r)
-
-
-@timeit
-def get_usage_dict(t, ref, i, dt, dbs, cids):
-    # TODO: add try...catch...
-    usageDict = {}
-    nt = list(t)
-    for tt in t:
-        usageDict[tt] = []
-    if dt == '0':
-        return usageDict
-    del nt[i]
-    del nt[i]
-    nnt = list(nt)
-    nnt.insert(i, '%s %s')
-    pat = ' '.join(nnt)
-
-    # if '*' not in t:
-    #     d = [{'dt': dt, 'l1': t[i], 'l2': t[i + 1]}]
-    #     cnt = EsAdaptor.count(nt, d, dbs, cids)
-    #     usageList.append({
-    #         'ref': ' '.join(ref),
-    #         'lemma': pat % (t[i], t[i + 1]),
-    #         'content': pat % (displayed_lemma(ref[i], t[i]), displayed_lemma(ref[i + 1], t[i + 1])),
-    #         'count': cnt['hits']['total']
-    #     })
-    con = ''
-    for k in (('*', t[i + 1]), (t[i], '*')):
-        if k == ('*', '*'):
-            continue
-        try:
-            d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
-            lst = EsAdaptor.group(nt, d, dbs, cids)
-            ret = []
-            for j in lst['aggregations']['d']['d']['d']['buckets']:
-                l1 = notstar(d[0]['l1'], j['key'])
-                l2 = notstar(d[0]['l2'], j['key'])
-                t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[i], k[0])]
-                t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[i + 1], k[1])]
-                if (l1, l2) != (t[i], t[i + 1]):
-                    nref = list(ref)
-                    if l1 != t[i]:
-                        con = l1
-                        nref[i] = l1
-                    else:
-                        con = l2
-                        nref[i + 1] = l2
-                    ret.append({
-                        'ref': ' '.join(nref),
-                        'lemma': pat % (l1, l2), # for query
-                        'content': con, # for display
-                        'count': j['doc_count'],
-                        'type': 2 # for usageword
-                    })
-            if k[0] == '*':
-                usageDict[t[i]] = ret
-            else:
-                usageDict[t[i+1]] = ret
-        except Exception:
-            logger.exception('Failed in get_usage_list: "%s"', ' '.join(t))
-    return usageDict
 
 
 @timeit
@@ -418,6 +322,92 @@ def collocation_list(t, ref, poss, dep, dbs, cids):
         get_collocations(clist, t, ref, i, dbs, cids)
     newlist, flag = get_defaulteColl(head, poss, dep, clist)
     return newlist, flag
+
+
+@timeit
+def get_usage_dict(t, ref, dt, dbs, cids):
+    # TODO: add try...catch...
+    i = 0 # 之前多个单词的query可以查询任意两个词之前的关系，i用来表示选中的单词的下标，现在多个单词不查找关系，所以i暂时不用，默认为0
+    usageDict = {}
+    for tt in t:
+        usageDict[tt] = []
+    if dt == '0' or len(t) > 2:
+        return usageDict
+    con = ''
+    for k in (('*', t[i + 1]), (t[i], '*')):
+        if k == ('*', '*'):
+            continue
+        try:
+            d = [{'dt': dt, 'l1': k[0], 'l2': k[1]}]
+            lst = EsAdaptor.group([], d, dbs, cids)
+            ret = []
+            for j in lst['aggregations']['d']['d']['d']['buckets']:
+                l1 = notstar(d[0]['l1'], j['key'])
+                l2 = notstar(d[0]['l2'], j['key'])
+                t1 = [l1 if d[0]['l1'] == '*' else displayed_lemma(ref[i], k[0])]
+                t2 = [l2 if d[0]['l2'] == '*' else displayed_lemma(ref[i + 1], k[1])]
+                if (l1, l2) != (t[i], t[i + 1]):
+                    nref = list(ref)
+                    if l1 != t[i]:
+                        con = l1
+                        nref[i] = l1
+                    else:
+                        con = l2
+                        nref[i + 1] = l2
+                    ret.append({
+                        'ref': ' '.join(nref),
+                        'lemma': '%s %s' % (l1, l2), # for query
+                        'content': con, # for display
+                        'count': j['doc_count'],
+                        'type': 2 # for usageword
+                    })
+            if k[0] == '*':
+                usageDict[t[i]] = ret
+            else:
+                usageDict[t[i + 1]] = ret
+        except Exception:
+            logger.exception('Failed in get_usage_list: "%s"', ' '.join(t))
+    return usageDict
+
+
+@timeit
+def get_synonyms_dict(t, ref, dt, poss, dbs, cids):
+    syn_dict = {}
+    t_new = t[:]
+    ref_new = ref[:]
+    MAX_COUNT = 15  # TODO: deeply fix synonyms too many es queries bug
+    req_head = {'index': dbs}
+
+    if '*' in t:
+        syn_dict['*'] = []
+        t_new.remove('*')
+        ref_new.remove('*')
+    try:
+        for j in xrange(len(t_new)):
+            syn_list = []
+            action = []
+            pos = 'NONE' if len(t) == 1 else poss[j]
+            for syn in synonyms(t_new[j], pos=pos, max_count=MAX_COUNT/len(t)):
+                lemma = ' '.join(t_new).replace(t_new[j], syn)
+                reff = ' '.join(ref_new).replace(ref_new[j], syn)
+                if dt == '0' or len(t_new) == 1:
+                    # cnt = EsAdaptor.count(lemma.split(' '), [], dbs, cids)['hits']['total']
+                    req_body = EsAdaptor.get_action(lemma.split(' '), [], cids)
+                else:
+                    d = [{'dt': dt, 'l1': lemma.split(' ')[0], 'l2': lemma.split(' ')[1]}]
+                    req_body = EsAdaptor.get_action([], d, cids)
+                    # cnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+                # if cnt:
+                action.extend([req_head, req_body])
+                syn_list.append({'ref': reff, 'lemma': lemma, 'content': syn, 'type': 1, 'count': 0}) # type 1 for synonyms_word
+            res = EsAdaptor.msearch(action)
+            if len(syn_list) == len(res):
+                for i in xrange(len(syn_list)):
+                    syn_list[i]['count'] = res[i]['hits'].get('total')
+            syn_dict[t_new[j]] = syn_list
+    except Exception as e:
+        logger.exception('Failed in get_synonyms_dict: "%s"', ' '.join(t))
+    return syn_dict
 
 
 @timeit

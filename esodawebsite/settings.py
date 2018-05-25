@@ -145,6 +145,9 @@ LOGGING = {
         },
     },
     'handlers': {
+        'null': {
+            'class': 'logging.NullHandler',
+        },
         'console': {
             'level': 'INFO',
             'filters': ['require_debug_true'],
@@ -165,7 +168,14 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             # 'class': 'django.utils.log.AdminEmailHandler',
+            # 'include_html': True,
             'class': 'common.utils.AdminSlackHandler',
+        },
+    },
+    'loggers': {
+        'django.security.DisallowedHost': {
+            'handlers': ['null'],
+            'propagate': False,
         },
     },
     'root': {

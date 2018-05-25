@@ -43,20 +43,6 @@
               {% include "esoda/dictionary_result.html" %}
             {% endif %}
 
-          {% comment %}
-            <div class="result-warning">
-              {% if not user.is_authenticated %}
-                默认搜索领域为"<span>计算机全部领域</span>"，您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>
-                进行个性化搜索
-              {% else %}
-                {% if r.domain %}
-                  当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a href="{% url 'authentication:domain' %}">其他个人领域</a>中搜索
-                {% else %}
-                  您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加个人领域</a>进行个性化搜索
-                {% endif %}
-              {% endif %}
-            </div>
-          {% endcomment %}
             <div class="CollapseColloc row {% if r.tlen > 2 or not r.collocationList %}hidden{% endif %}" role="tabpanel" aria-labelledby="HeadingColloc">
               <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
                     role="tablist">

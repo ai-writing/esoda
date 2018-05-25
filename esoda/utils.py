@@ -219,9 +219,10 @@ def sort_syn_usageDict(syn_list, usage_list):
             # usa['weight'] = math.log(usa['count'])
             new_usagelist.append(usa)
     new_synList = syn_list[:14] if not usage_list else syn_list
-    weighted_list = sorted(new_synList + new_usagelist, key=lambda x:x['count'], reverse = True)
+    weighted_list = sorted(new_synList + new_usagelist, key=lambda x:x['count'], reverse=True)
     if len(weighted_list) > 1 and weighted_list[0]['count'] >= 100:
         weighted_list = [x for x in weighted_list if x['count'] >= 10]
+    weighted_list = [x for x in weighted_list if x['count'] > 0]
     return weighted_list
 
 
