@@ -216,10 +216,16 @@ $(function () {
     },
     focus: function (event, ui) {
       if (event.keyCode === $.ui.keyCode.UP || event.keyCode === $.ui.keyCode.DOWN) {
-        var terms = split(this.value);
-        terms.pop();
-        terms.push(extractPrefix(ui.item.value));
-        this.value = terms.join(" ");
+        var currentItem = extractPrefix(ui.item.value);
+        if (split(currentItem).length === 1) {
+          var terms = split(this.value);
+          terms.pop();
+          terms.push(currentItem);
+          this.value = terms.join(" ");
+        }
+        else {
+          this.value = currentItem;
+        }
       }
       return false;
     },

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block header %}
+  {% include "esoda/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+  <div class="about-us-page">
+    <div class="about-us-background">
+      <div class="container">
+        <div class="row">
+          <div class="brief-intro">
+            <h4>关于我们</h4>
+            <p>
+              一段整体介绍团队的话，一段整体介绍团队的话，一段整体介绍团队的话，一段整体介绍团队的话，一段整体介绍团队的话，
+              一段整体介绍团队的话，一段整体介绍团队的话，一段整体介绍团队的话，一段整体介绍团队的话，一段整体介绍团队的话，
+              一段整体介绍团队的话，一段整体介绍团队的话，一段整体介绍团队的话
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-us-body">
+      <div class="container">
+        <div class="col-sm-7 col-xs-12">
+          <h4>团队介绍</h4>
+          <div class="row">
+            <div class="col-sm-4 col-xs-4">
+              <div class="row">
+                <img class="developer-img" src="{% static 'img/img2.png' %}">
+                <div class="developer-name">史元春</div>
+                <div class="developer-title">指导老师</div>
+              </div>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+              <div class="row">
+                <img class="developer-img" src="{% static 'img/img2.png' %}">
+                <div class="developer-name">喻纯</div>
+                <div class="developer-title">指导老师</div>
+              </div>
+            </div>
+            <div class="col-sm-4 col-xs-4">
+              <div class="row">
+                <img class="developer-img" src="{% static 'img/img2.png' %}">
+                <div class="developer-name">朱叶霜</div>
+                <div class="developer-title">项目负责人</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="second-row">
+        <div class="container">
+          <div class="col-sm-5 col-xs-12">
+            <h5>| 后台</h5>
+            <div class="row">
+              <div class="col-sm-6 col-xs-4">
+                <div class="row">
+                  <img class="developer-img" src="{% static 'img/img2.png' %}">
+                  <div class="developer-name">孟琦</div>
+                  <div class="developer-title">后台算法开发</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xs-4">
+                <div class="row">
+                  <img class="developer-img" src="{% static 'img/img2.png' %}">
+                  <div class="developer-name">陈学硕</div>
+                  <div class="developer-title">后台开发</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-7 col-xs-12">
+            <h5>| 前端</h5>
+            <div class="row">
+              <div class="col-sm-4 col-xs-4">
+                <div class="row">
+                  <img class="developer-img" src="{% static 'img/img2.png' %}">
+                  <div class="developer-name">周晓菲</div>
+                  <div class="developer-title">前端开发</div>
+                </div>
+              </div>
+              <div class="col-sm-4 col-xs-4">
+                <div class="row">
+                  <img class="developer-img" src="{% static 'img/img2.png' %}">
+                  <div class="developer-name">高旻萱</div>
+                  <div class="developer-title">前端开发</div>
+                </div>
+              </div>
+              <div class="col-sm-4 col-xs-4">
+                <div class="row">
+                  <img class="developer-img" src="{% static 'img/img2.png' %}">
+                  <div class="developer-name">范佳悦</div>
+                  <div class="developer-title">前端开发</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="col-sm-5 col-xs-8">
+          <h5>| 设计</h5>
+          <div class="col-sm-6 col-xs-6">
+            <div class="row">
+              <img class="developer-img" src="{% static 'img/img2.png' %}">
+              <div class="developer-name">刘云行</div>
+              <div class="developer-title">设计</div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xs-6">
+            <div class="row">
+              <img class="developer-img" src="{% static 'img/img2.png' %}">
+              <div class="developer-name">任杰</div>
+              <div class="developer-title">设计</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-7 col-xs-4">
+          <h5>| 需求</h5>
+          <div class="row">
+            <img class="developer-img" src="{% static 'img/img2.png' %}">
+            <div class="developer-name">韦笑颖</div>
+            <div class="developer-title">需求分析</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

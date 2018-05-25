@@ -317,6 +317,10 @@ a {
     .btn-navbar-search {
         margin-left: -3px !important;
     }
+
+    .about-us-body {
+        height: 900px !important;
+    }
 }
 
 #SearchBox {
@@ -2392,4 +2396,66 @@ button.close:focus {
 
 .toast-success {
     background-color: #42A5F5;
+}
+
+.about-us-background {
+    background-image: url("../img/about_us.jpg");
+    background-position: right 65%;
+    height: 100vh;
+    background-size: 100%;
+}
+
+.about-us-body {
+    background-color: #FFFFFF;
+    margin-top: -400px;
+    height: 750px;
+}
+
+.about-us-body .second-row{
+    background-color: #FAFAFA;
+    height: 250px;
+    margin-top: 30px;
+}
+
+.brief-intro {
+    color: #FFFFFF;
+    padding-top: 80px;
+    margin-left: 30px;
+}
+
+.about-us-body h4 {
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.about-us-body h5 {
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.brief-intro p {
+    width: 350px;
+    font-size: 12px;
+}
+
+.developer-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-left: 20px;
+    margin-top: 30px;
+}
+
+.developer-name {
+    width: 100px;
+    text-align: center;
+    padding-top: 20px;
+    font-size: 16px;
+}
+
+.developer-title {
+    width: 100px;
+    text-align: center;
+    padding-top: 3px;
+    font-size: 10px;
 }
