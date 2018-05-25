@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-from esoda.EsAdaptor import EsAdaptor
+# from esoda.EsAdaptor import EsAdaptor
 from common.mongodb import MONGODB
 import json
 
@@ -37,7 +37,7 @@ SECOND_LEVEL_FIELD = [[u'BNC'],
 count = 0
 count1 = 0
 count2 = 0
-TREE_FIRST=[]
+TREE_FIRST = []
 id2no = {}
 for r in MONGODB.common.journal_id_temp.find():
     id2no[r['_id']] = r['No']
@@ -57,7 +57,7 @@ for i in range(len(CORPUS)):
         j['l'], j['c'] = j['n'], 0 # j['l'] for journal/conf full name, j['c'] for total sentences number in a journal/conf
         if j['d'] == 'dblp' and MONGODB.dblp.venues.find_one({'_id': j['i']}):
             j['l'] = MONGODB.dblp.venues.find_one({'_id': j['i']}).get('fullName')
-        j['c'] = EsAdaptor.count([], [], [j['d']], [j['i'].replace('/', '_')])['hits']['total']
+        # j['c'] = EsAdaptor.count([], [], [j['d']], [j['i'].replace('/', '_')])['hits']['total']
         j['s'] = id2no.get(j['i']) # s for search number
 
 def corpus_id2cids(corpus_id):
