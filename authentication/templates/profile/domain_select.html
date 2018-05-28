@@ -112,27 +112,7 @@
         </div>
       </div>
     </form>
-    <div class="modal fade" id="FeedbackModal">
-      <div class="modal-dialog modal-sm modal-login-sm">
-        <div class="modal-content">
-          <div class="modal-header modal-login-header">
-            <img src="{% static 'img/logo.png' %}" class="modal-logo">
-            <h4>请输入您需要的领域</h4>
-          </div>
-          <div class="modal-body modal-login-body">
-            <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
-              {% csrf_token %}
-              <div>
-                <textarea form="FeedbackForm" name="message" class="form-control"></textarea>
-              </div>
-              <input type="hidden" name="from" value="#Domain"/>
-              <input type="hidden" name="next" value="{{ next }}"/>
-              <input class="btn btn-primary" type="submit" value="提交"/>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% include "esoda/feedback.html" with title="请输入您需要的领域" submit_btn="提交" from="#Domain" %}
   </div>
 </div>
 {% endblock %}
@@ -234,24 +214,6 @@
         {% endifequal %}
       {% endfor %}
     {% endif %}
-
-    $('#FeedbackForm').submit(function (e) {
-      e.preventDefault();
-      var textarea = $(this).find('[name="message"]');
-      var msg = textarea.val().trim();
-      if (msg) {
-        $.post($(this).attr('action'), $(this).serialize(), function (r) {
-          toastr.remove();
-          toastr.success('提交成功');
-          textarea.val('');
-          $('#FeedbackModal').modal('hide');
-        });
-      } else {
-        toastr.remove();
-        toastr.warning('请输入提交内容');
-        textarea.focus();
-      }
-    });
 
     $('#firstleveltext0').click();
   });
