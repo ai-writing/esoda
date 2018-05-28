@@ -115,7 +115,14 @@ def esoda_view(request):
 
     r['tlen'] = len(qt)
     dbs, cids, domain_name = get_cids(request.user)
-    cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
+    attrs = [qt, poss, dep, dbs, cids]
+    key = get_key(attrs)
+    mem_res = json_deserializer(cache.get(key))
+    if mem_res is None:
+        cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
+        cache.set(key, json_serializer([cL, cL_index]))
+    else:
+        cL, cL_index = mem_res
     r['collocationList'] = {'cL': cL, 'index': cL_index}
 
     # suggestion = {
@@ -164,60 +171,74 @@ def syn_usageList_view(request):
     dbs, cids, domain_name = get_cids(request.user)
     poss = request.GET.get('pos', '').split()
     dt = '0' if len(t) == 1 else dt   # TODO: deeply fix this bug
-    usage_dict = get_usage_dict(t, ref, dt, dbs, cids)
-    syn_dict = get_synonyms_dict(t, ref, dt, poss, dbs, cids)
-    ttcnt = 0
-    if dt != '0' and '*' not in t:
-        d = [{'dt': dt, 'l1': t[0], 'l2': t[1]}]
-        ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+    attrs = [t, dt, poss, dbs, cids]
+    key = get_key(attrs)
+    mem_res = json_deserializer(cache.get(key))
+    if mem_res is None:
+        syn_dict = get_synonyms_dict(t, ref, dt, poss, dbs, cids)
+        attrs = [t, dt, dbs, cids]
+        key2 = get_key(attrs)
+        mem_res2 = json_deserializer(cache.get(key2))
+        if mem_res2 is None:
+            usage_dict = get_usage_dict(t, ref, dt, dbs, cids)
+            ttcnt = 0
+            if dt != '0' and '*' not in t:
+                d = [{'dt': dt, 'l1': t[0], 'l2': t[1]}]
+                ttcnt = EsAdaptor.count([], d, dbs, cids)['hits']['total']
+            else:
+                ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
+            cache.set(key2, json_serializer([usage_dict, ttcnt]))
+        else:
+            usage_dict, ttcnt = mem_res2
+
+        t_list, star = star2collocation(t, dt)
+        t_list0 = []
+        if expand:
+            for i in expand:
+                t_list0.append(t_list[i])
+            t_list = t_list0
+        info = {
+            't_list': t_list,
+            'count': ttcnt,
+            't_dt': (' '.join(t), dt),
+            'ref': ' '.join(ref),
+        }
+
+        syn_usage_dict = {}
+        count = 0
+        for tt in t:
+            syn_usage_dict[tt] = sort_syn_usageDict(syn_dict.get(tt, []), usage_dict.get(tt, []))
+            if tt != '*':
+                count += 1
+
+        if '*' in t:
+            syn_usage_dict[star] = syn_usage_dict['*']
+            if usage_dict.get('*'):
+                info['ref'] = usage_dict['*'][0]['ref']
+                info['count'] = usage_dict['*'][0]['count']
+
+        hint = 0
+        for k in t_list:
+            for key in syn_usage_dict.keys():
+                if k == key:
+                    if syn_usage_dict[key]:
+                        if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
+                            hint += 1
+
+        info['syn_usage_dict'] = refine_dep(syn_usage_dict, t, poss)
+        info['hint'] = hint
+
+        display_info = {
+            't_list': info['t_list'],
+            'count': info['count'],
+            't_dt': info['t_dt'],
+            'ref': info['ref'],
+            'hint': info['hint'],
+            'dbs': dbs,
+        }
+        cache.set(key, json_serializer(display_info))
     else:
-        ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
-
-    t_list, star = star2collocation(t, dt)
-    t_list0 = []
-    if expand:
-        for i in expand:
-            t_list0.append(t_list[i])
-        t_list = t_list0
-    info = {
-        't_list': t_list,
-        'count': ttcnt,
-        't_dt': (' '.join(t), dt),
-        'ref': ' '.join(ref),
-    }
-
-    syn_usage_dict = {}
-    count = 0
-    for tt in t:
-        syn_usage_dict[tt] = sort_syn_usageDict(syn_dict.get(tt, []), usage_dict.get(tt, []))
-        if tt != '*':
-            count += 1
-
-    if '*' in t:
-        syn_usage_dict[star] = syn_usage_dict['*']
-        if usage_dict.get('*'):
-            info['ref'] = usage_dict['*'][0]['ref']
-            info['count'] = usage_dict['*'][0]['count']
-
-    hint = 0
-    for k in t_list:
-        for key in syn_usage_dict.keys():
-            if k == key:
-                if syn_usage_dict[key]:
-                    if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
-                        hint += 1
-
-    info['syn_usage_dict'] = refine_dep(syn_usage_dict, t, poss)
-    info['hint'] = hint
-
-    display_info = {
-        't_list': info['t_list'],
-        'count': info['count'],
-        't_dt': info['t_dt'],
-        'ref': info['ref'],
-        'hint': info['hint'],
-        'dbs': dbs,
-    }
+        display_info = mem_res
 
     logger.info('%s %s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, display_info, domain_name)
     return render(request, 'esoda/collocation_result.html', info)
@@ -234,7 +255,14 @@ def sentence_view(request):
     dbs, cids, domain_name = get_cids(request.user)
     if len(t) == 1:
         dt = '0'
-    sr = sentence_query(t, ref, i, dt, dbs, cids)
+    attrs = [t, ref, dt, dbs, cids]
+    key = get_key(attrs)
+    mem_res = json_deserializer(cache.get(key))
+    if mem_res is None:
+        sr = sentence_query(t, ref, i, dt, dbs, cids)
+        cache.set(key, json_serializer(sr))
+    else:
+        sr = mem_res
     # for i in xrange(0, len(sr['sentence']), 10):
     #     temp = sr['sentence'][i:i+10]
     #     random.shuffle(temp)
@@ -425,14 +453,7 @@ def sentence_query(t, ref, i, dt, dbs, cids):
 
     try:
         time1 = time.time()
-        attrs = [t, dt, dbs, cids]
-        key = get_key(attrs)
-        mem_res = json_deserializer(cache.get(key))
-        if mem_res is None:
-            res = EsAdaptor.search(t, d, ref, dbs, cids, 50)    # TODO: set 50 as parameters, the same in rlen
-            cache.set(key, json_serializer(res))
-        else:
-            res = mem_res
+        res = EsAdaptor.search(t, d, ref, dbs, cids, 50)    # TODO: set 50 as parameters, the same in rlen
         time2 = time.time()
 
         sr.update({'time': round(time2 - time1, 2), 'total': res['total']})

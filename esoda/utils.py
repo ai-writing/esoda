@@ -259,7 +259,7 @@ def get_key(attrs):
 
 def json_serializer(value):
     if type(value) == str:
-     return value
+        return value
     return json.dumps(value)
 
 
