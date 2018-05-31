@@ -5,7 +5,6 @@ import string
 import logging
 import difflib
 import math
-from authentication.models import id2no
 
 logger = logging.getLogger(__name__)
 
@@ -18,14 +17,12 @@ TRANS_TABLE = dict((ord(c), u' ') for c in PUNC)
 pt2pt = {'VB': 'v', 'VBD': 'v', 'VBG': 'v', 'VBN': 'v', 'VBP': 'v', 'VBZ': 'v',
     'IN': 'prep', 'TO': 'prep', 'RB': 'adv', 'RBR': 'adv', 'RBS': 'adv', 'RP': 'adv',
     'JJ': 'adj', 'JJR': 'adj', 'JJS': 'adj', 'NN': 'n', 'NNP': 'n', 'NNPS': 'n', 'NNS': 'n' }
-EXCEPT = {u'her': u'she', u'him': u'he', u'his': u'he', u'its': u'its', u'me': u'I', u'others': u'other', u'our': u'we', u'their': u'they', 
-    u'them': u'they', u'us': u'we', u'your': u'you', u'yourselves': u'yourselve', u'data': 'datum'}
-
+EXCEPT = {u'her', u'him', u'his', u'me', u'others', u'our', u'their', u'them', u'us', u'your', u'yourselves', u'data'}
 
 def strQ2B(ustring):
     rstring = ""
     for uchar in ustring:
-        inside_code=ord(uchar)
+        inside_code = ord(uchar)
         if inside_code == 12288:
             inside_code = 32
         elif (inside_code >= 65281 and inside_code <= 65374):
@@ -109,10 +106,7 @@ def get_defaulteColl(head, poss, dep, clist):
 
 def displayed_lemma(ref, lemma):
     # if lemma in EXCEPT, change the display of lemma
-    if ref in EXCEPT.keys():
-        return ref
-    else:
-       return lemma
+    return ref if ref in EXCEPT else lemma
 
 
 def refine_query(q0):

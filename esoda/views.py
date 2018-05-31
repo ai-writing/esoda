@@ -187,27 +187,32 @@ def syn_usageList_view(request):
 
     syn_usage_dict = {}
     count = 0
-    for tt in t:
-        syn_usage_dict[tt] = sort_syn_usageDict(syn_dict.get(tt, []), usage_dict.get(tt, []))
-        if tt != '*':
+    displayed_t = []
+    for i in xrange(len(t)):
+        displayed_t.append(displayed_lemma(ref[i], t[i]))
+        syn_usage_dict[displayed_lemma(ref[i], t[i])] = sort_syn_usageDict(syn_dict.get(t[i], []), usage_dict.get(t[i], []))
+        if t[i] != '*':
             count += 1
 
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
+        del syn_usage_dict['*']
         if usage_dict.get('*'):
             info['ref'] = usage_dict['*'][0]['ref']
             info['count'] = usage_dict['*'][0]['count']
 
     hint = 0
-    for k in t_list:
-        for key in syn_usage_dict.keys():
-            if k == key:
-                if syn_usage_dict[key]:
-                    if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
-                        hint += 1
-
+    # for k in t_list:
+    #     for key in syn_usage_dict.keys():
+    #         if k == key:
+    #             if syn_usage_dict[key]:
+    #                 if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
+    #                     hint += 1
+    for key in syn_usage_dict.keys():
+        hint = len(syn_usage_dict) if '*' not in syn_usage_dict.keys() else len(syn_usage_dict) - 1
     info['syn_usage_dict'] = refine_dep(syn_usage_dict, t, poss)
     info['hint'] = hint
+    info['displayed_t'] = ' '.join(displayed_t)
 
     display_info = {
         't_list': info['t_list'],

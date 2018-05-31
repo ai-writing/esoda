@@ -341,6 +341,7 @@ class EsAdaptor():
 
         action = {
             "size": 0,
+            "terminate_after": 10000,
             "query": {
                 "bool": {
                     "must": mst

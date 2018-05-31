@@ -38,12 +38,12 @@ count = 0
 count1 = 0
 count2 = 0
 TREE_FIRST = []
-id2no = {}
-id2full_name = {}
+corpusid2no = {}
+corpusid2full_name = {}
 for r in MONGODB.common.journal_id_temp.find():
-    id2no[r['_id']] = r['No']
+    corpusid2no[r['_id']] = r['No']
 for r in MONGODB.dblp.venues.find():
-    id2full_name[r['_id']] = r['fullName']
+    corpusid2full_name[r['_id']] = r['fullName']
 for i in range(len(CORPUS)):
     if count == 0:
         count = len(SECOND_LEVEL_FIELD[count1])
@@ -59,9 +59,9 @@ for i in range(len(CORPUS)):
         count2 += 1
         j['l'], j['c'] = j['n'], 0 # j['l'] for journal/conf full name, j['c'] for total sentences number in a journal/conf
         if j['d'] == 'dblp':
-            j['l'] = id2full_name.get(j['i'])
+            j['l'] = corpusid2full_name.get(j['i'])
         # j['c'] = EsAdaptor.count([], [], [j['d']], [j['i'].replace('/', '_')])['hits']['total']
-        j['s'] = id2no.get(j['i']) # s for search number
+        j['s'] = corpusid2no.get(j['i']) # s for search number
 
 def corpus_id2cids(corpus_id):
     dbs, cids = set(), set()
