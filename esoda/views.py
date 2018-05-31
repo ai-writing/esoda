@@ -429,7 +429,10 @@ def sentence_query(t, ref, i, dt, dbs, cids):
 
     try:
         time1 = time.time()
-        res = EsAdaptor.search(t, d, ref, dbs, cids, 50)    # TODO: set 50 as parameters, the same in rlen
+        if len(t) > 3:
+            res = EsAdaptor.multi_search(t, d, ref, dbs, cids, 50)
+        else:
+            res = EsAdaptor.search(t, d, ref, dbs, cids, 50)    # TODO: set 50 as parameters, the same in rlen
         time2 = time.time()
 
         sr.update({'time': round(time2 - time1, 2), 'total': res['total']})
