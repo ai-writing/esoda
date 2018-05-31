@@ -1,5 +1,6 @@
 <div id="ExampleList" class="panel-group">
   {% if example_number %}
+    <span id="ExampleNumber" data-example-number="{{ example_number }}"></span>
   {% comment %}
     <div class="example-hint">
       找到<span id="ExampleNumber">{{ example_number }}</span>句例句，为您提供前{% if example_number > 50 %}50{% else %}

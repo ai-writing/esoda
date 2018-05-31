@@ -43,20 +43,6 @@
               {% include "esoda/dictionary_result.html" %}
             {% endif %}
 
-          {% comment %}
-            <div class="result-warning">
-              {% if not user.is_authenticated %}
-                默认搜索领域为"<span>计算机全部领域</span>"，您尚未设置个人领域，<a href="#" data-toggle="modal" data-target="#ModalLogin">登录</a>
-                进行个性化搜索
-              {% else %}
-                {% if r.domain %}
-                  当前个人领域为“<span>{{ r.domain|upper }}</span>”，在<a href="{% url 'authentication:domain' %}">其他个人领域</a>中搜索
-                {% else %}
-                  您尚未设置个人领域{{ r.domain|upper }}，<a href="{% url 'authentication:domain' %}">添加个人领域</a>进行个性化搜索
-                {% endif %}
-              {% endif %}
-            </div>
-          {% endcomment %}
             <div class="CollapseColloc row {% if r.tlen > 2 or not r.collocationList %}hidden{% endif %}" role="tabpanel" aria-labelledby="HeadingColloc">
               <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
                     role="tablist">
@@ -64,7 +50,7 @@
                   <li class="second-row" role="presentation">
                     <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
                          {% if forloop.counter == r.collocationList.index %} id="first"{% endif %}
-                           data-toggle="tab" data="{{ collocation.t_dt.0 }}" type="{{ collocation.type }}" expand="{{ expand }}">
+                           data-toggle="tab" type="{{ collocation.type }}" expand="{{ expand }}">
                         {% if collocation.t_dt.1 == '0' %}全部例句
                           <p>{% for word in collocation.t_dt.0 %}{{ word|cut:"*" }} {% endfor %}</p>
                         {% elif collocation.t_dt.1 == '1' %}主谓例句
@@ -138,26 +124,8 @@
               </div>
             </div>
 
-            <div class="modal fade" id="FeedbackModal">
-              <div class="modal-dialog modal-sm modal-login-sm" id="feedback-modal">
-                <div class="modal-content">
-                  <div class="modal-header modal-login-header">
-                    <img src="{% static 'img/logo.png' %}" class="modal-logo">
-                    <h4>请提供您的意见与反馈</h4>
-                  </div>
-                  <div class="modal-body modal-login-body">
-                    <form id="FeedbackForm" class="form-horizonal" method="post" action="{% url 'common:comment' %}">
-                      {% csrf_token %}
-                      <div>
-                        <textarea form="FeedbackForm" name="message" class="form-control"></textarea>
-                      </div>
-                      <input type="hidden" name="next" value="{{ next }}"/>
-                      <input class="btn btn-primary" type="submit" value="提交反馈"/>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {% include "esoda/feedback.html" with title="请提供您的意见与反馈" %}
+
           </div> <!-- panel-group -->
         </div>
       </div>

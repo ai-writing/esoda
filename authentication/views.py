@@ -111,6 +111,8 @@ def get_dept_tree(corpus_id):
                 node1 = TreeNode()
                 node1.id = c_id
                 node1.text = i['n']
+                node1.title = i['l']
+                node1.count = i['c']
                 c_id += 1
                 if 'conf' == i['i'][0:4]:
                     node1.type = 'conf'
@@ -131,7 +133,9 @@ def tree(corpus_id):
 class TreeNode():
     def __init__(self):
         self.id = 0
-        self.text = "Node 1"
+        self.text = 'Node 1'
+        self.title = ''
+        self.count = 0
         self.state = {
             'checked': False,
         }
@@ -143,6 +147,8 @@ class TreeNode():
         temp = {
             'id': self.id,
             'text': self.text,
+            'title': self.title,
+            'count': self.count,
             'state': {'checked': checked, 'expand': expand},
             'level': self.level,
             'type': self.type

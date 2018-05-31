@@ -234,6 +234,11 @@ $(function () {
       if (event.keyCode !== $.ui.keyCode.TAB) {
         $("#SearchForm").submit();
       }
+      if (event.keyCode === $.ui.keyCode.TAB) {
+        var result = $( "#SearchBox" ).val();
+        var newResult = result + " ";
+        $( "#SearchBox" ).val(newResult);
+      }
 
       return false;
     }
@@ -323,4 +328,26 @@ $(function () {
   $(".section-blue").on('click', function (e){
     $('.jumbotron').css("padding-top", "150px");
   });
+  $(".navbar").on('click', function (e){
+    $('.jumbotron').css("padding-top", "150px");
+  });
+
+  $('#FeedbackForm').submit(function (e) {
+    e.preventDefault();
+    var textarea = $(this).find('[name="message"]');
+    var msg = textarea.val().trim();
+    if (msg) {
+      $.post($(this).attr('action'), $(this).serialize(), function (r) {
+        toastr.remove();
+        toastr.success('提交成功');
+        textarea.val('');
+        $('#FeedbackModal').modal('hide');
+      });
+    } else {
+      toastr.remove();
+      toastr.warning('请输入提交内容');
+      textarea.focus();
+    }
+  });
+
 });

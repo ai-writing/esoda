@@ -17,14 +17,12 @@ TRANS_TABLE = dict((ord(c), u' ') for c in PUNC)
 pt2pt = {'VB': 'v', 'VBD': 'v', 'VBG': 'v', 'VBN': 'v', 'VBP': 'v', 'VBZ': 'v',
     'IN': 'prep', 'TO': 'prep', 'RB': 'adv', 'RBR': 'adv', 'RBS': 'adv', 'RP': 'adv',
     'JJ': 'adj', 'JJR': 'adj', 'JJS': 'adj', 'NN': 'n', 'NNP': 'n', 'NNPS': 'n', 'NNS': 'n' }
-EXCEPT = {u'her': u'she', u'him': u'he', u'his': u'he', u'its': u'its', u'me': u'I', u'others': u'other', u'our': u'we', u'their': u'they', 
-    u'them': u'they', u'us': u'we', u'your': u'you', u'yourselves': u'yourselve', u'data': 'datum'}
-
+EXCEPT = {u'her', u'him', u'his', u'me', u'others', u'our', u'their', u'them', u'us', u'your', u'yourselves', u'data'}
 
 def strQ2B(ustring):
     rstring = ""
     for uchar in ustring:
-        inside_code=ord(uchar)
+        inside_code = ord(uchar)
         if inside_code == 12288:
             inside_code = 32
         elif (inside_code >= 65281 and inside_code <= 65374):
@@ -58,7 +56,7 @@ def res_refine(res):
     if res['sentence']:
         r.append(res['sentence'][0])
         for i in res['sentence']:
-            if len(i['content'].split()) < 60 and difflib.SequenceMatcher(None, r[-1]['content'], i['content']).ratio() < 0.7:
+            if len(i['content'].split()) < 60 and difflib.SequenceMatcher(None, r[-1]['content'], i['content']).ratio() < 0.7 and i['content'][-1] == '.': # Remove unfinished sentences
                 r.append(i)
     res['sentence'] = r
     return res
@@ -108,10 +106,7 @@ def get_defaulteColl(head, poss, dep, clist):
 
 def displayed_lemma(ref, lemma):
     # if lemma in EXCEPT, change the display of lemma
-    if ref in EXCEPT.keys():
-        return ref
-    else:
-       return lemma
+    return ref if ref in EXCEPT else lemma
 
 
 def refine_query(q0):
@@ -184,7 +179,6 @@ def generate_source(year, title, authList, conference):
     source += ' ' + title
     return source
 
-
 def gen_source_url(p):
     year = int(p.get('year'))
     title = p.get('title', '')
@@ -219,9 +213,10 @@ def sort_syn_usageDict(syn_list, usage_list):
             # usa['weight'] = math.log(usa['count'])
             new_usagelist.append(usa)
     new_synList = syn_list[:14] if not usage_list else syn_list
-    weighted_list = sorted(new_synList + new_usagelist, key=lambda x:x['count'], reverse = True)
+    weighted_list = sorted(new_synList + new_usagelist, key=lambda x:x['count'], reverse=True)
     if len(weighted_list) > 1 and weighted_list[0]['count'] >= 100:
         weighted_list = [x for x in weighted_list if x['count'] >= 10]
+    weighted_list = [x for x in weighted_list if x['count'] > 0]
     return weighted_list
 
 

@@ -10,27 +10,8 @@
 {% endblock %}
 
 {% block content %}
+  {% include "esoda/feedback.html" with title="请提供您的意见与反馈" %}
   <!-- Main jumbotron for a primary marketing message or call to action -->
-  <div class="modal fade" id="FeedbackModal">
-    <div class="modal-dialog modal-sm modal-login-sm" id="feedback-modal">
-      <div class="modal-content">
-        <div class="modal-header modal-login-header">
-          <img src="{% static 'img/logo.png' %}" class="modal-logo">
-          <h4>请提供您的意见与反馈</h4>
-        </div>
-        <div class="modal-body modal-login-body">
-          <form id="FeedbackForm" class="form-horizonal" method="post" action="">
-            {% csrf_token %}
-            <div>
-              <textarea form="FeedbackForm" name="message" class="form-control"></textarea>
-            </div>
-            <input type="hidden" name="next" value="{{ next }}"/>
-            <input class="btn btn-primary" type="submit" value="提交反馈"/>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="jumbotron section-blue">
     <div class="container">
       <div class="row">
@@ -243,6 +224,7 @@
           </div>
           <nav aria-label="...">
             <ul class="pager">
+              <li class="btn btn-primary pull-left" data-toggle="modal" data-target="#FeedbackModal">我要反馈</li>
               <li><span class="glyphicon glyphicon-chevron-left"></span></li>
               <li><span class="glyphicon glyphicon-chevron-right"></span></li>
             </ul>

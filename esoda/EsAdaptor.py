@@ -126,7 +126,7 @@ class EsAdaptor():
     @staticmethod
     def msearch(action):
         if action:
-            resp = EsAdaptor.es.msearch(body = action)
+            resp = EsAdaptor.es.msearch(body=action)
             return resp['responses']
         else:
             return []
@@ -152,12 +152,9 @@ class EsAdaptor():
             })
         for dd in d:
             lst = []
-            if 'dt' in dd:
-                lst.append({'term': {'d.dt': dd['dt']}})
-            if 'i1' in dd:
-                lst.append({'term': {'d.l1': t[dd['i1']]}})
-            if 'i2' in dd:
-                lst.append({'term': {'d.l2': t[dd['i2']]}})
+            lst.append({'term': {'d.dt': dd['dt']}})
+            lst.append({'term': {'d.l1': t[dd['i1']]}})
+            lst.append({'term': {'d.l2': t[dd['i2']]}})
             mst.append({
                 "nested": {
                     "path": "d",
@@ -171,7 +168,7 @@ class EsAdaptor():
         action = {
             "_source": ["p", "c"],
             "size": sp,
-            "terminate_after": 10000,
+            "terminate_after": 1000,
             "query": {
                 "function_score": {
                     "query": {
@@ -206,6 +203,56 @@ class EsAdaptor():
         }
         res = EsAdaptor.cidsearch(index=dbs, body=action, filter_path=[
             'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
+        return res['hits']
+
+    @staticmethod
+    def multi_search(t, d, ref, dbs, cids, sp=10):
+        mst = EsAdaptor.check_type(cids)
+        sud = []
+        for tt in t:
+            sud.append({
+                "nested": {
+                    "path": "t",
+                    "query": {
+                        "term": {'t.l': tt}
+                    }
+                }
+            })
+        for dd in d:
+            lst = []
+            lst.append({'term': {'d.dt': dd['dt']}})
+            lst.append({'term': {'d.l1': t[dd['i1']]}})
+            lst.append({'term': {'d.l2': t[dd['i2']]}})
+            mst.append({
+                "nested": {
+                    "path": "d",
+                    "query": {
+                        "bool": {
+                            "must": lst
+                        }
+                    }
+                }
+            })
+        action = {
+            "_source": ["p", "c", "t.t"],
+            "size": sp,
+            "terminate_after": 1000,
+            "query": {
+                "bool": {
+                    "must": mst,
+                    "should": sud
+                }
+            }
+        }
+        res = EsAdaptor.cidsearch(index=dbs, body=action, filter_path=[
+            'hits.total', 'hits.hits._id', 'hits.hits._source', 'hits.hits.fields'])
+        sentences = []
+        for tt in res['hits']['hits']:
+            tmp = []
+            for w in tt.get('_source').get('t'):
+                tmp.append("<strong>" + w['t'] + "</strong>" if w['t'] in ref else w['t'])
+
+            tt['fields'] = {"sentence": [' '.join(tmp)]}
         return res['hits']
 
     @staticmethod
@@ -301,7 +348,7 @@ class EsAdaptor():
         return ret
 
     @staticmethod
-    def group(t, d, dbs, cids, sp=39):
+    def group(t, d, dbs, cids, sp=10):
         if not d or len(d) > 1:
             return {}
 
@@ -344,6 +391,7 @@ class EsAdaptor():
 
         action = {
             "size": 0,
+            "terminate_after": 10000,
             "query": {
                 "bool": {
                     "must": mst

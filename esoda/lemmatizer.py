@@ -7,7 +7,7 @@ from django.conf import settings
 
 LEMMATIZER_URL = settings.STANFORD_CORENLP_SERVER + '?properties={"outputFormat":"conll"}'
 ESL_DEP_TYPES = ['NSUBJ', 'DOBJ', 'IOBJ', 'NSUBJPASS', 'AMOD', 'NN', 'ADVMOD', 'PARTMOD', 'PREP', 'POBJ', 'PRT',
-    'COMPOUND','COMPOUND:PRT','CASE']
+    'COMPOUND', 'COMPOUND:PRT', 'CASE', 'MWE']
 VERB_TYPES = ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
 PREP_TYPES = ['IN', 'TO']
 ADV_TYPES = ['RB', 'RBR', 'RBS', 'RP']
@@ -22,58 +22,48 @@ def convert_dep(dt, t, td):
     return {'dt': str(dt), 'l1': t1['l'], 'i1': str(t1['i']), 'l2': t2['l'], 'i2': str(t2['i'])}
 
 # format of d:
-# (type, None, None, token1, token2)
+# (type, token1, token2)
 # format of token:
-# (~word, lemma, pos)
+# (None, lemma, pos)
 def _is_esl_dep(d):
     if d[0] not in ESL_DEP_TYPES:
         return False
     t1 = d[1]
     t2 = d[2]
-    if (t1[2] in VERB_TYPES and t1[1] == 'be') or (t2[2] in VERB_TYPES and t2[1] == 'be'):
+    if not (t1[1].isalpha() and t2[1].isalpha()): # Delete the illegal word
         return False
-    if d[0] == 'NSUBJ' and not (t1[2] in VERB_TYPES + ADJ_TYPES and t2[2] in NOUN_TYPES):
-        return False
-    if (d[0] == 'DOBJ' or d[0] == 'IOBJ' or d[0] == 'NSUBJPASS') and not (t1[2] in VERB_TYPES and t2[2] in NOUN_TYPES):
-        return False
-    if d[0] == 'ADVMOD' and not (t1[2] in VERB_TYPES + ADJ_TYPES + ADV_TYPES and t2[2] in ADV_TYPES):
-        return False
-    if d[0] == 'PARTMOD' and not (t1[2] in NOUN_TYPES and t2[2] in VERB_TYPES):
-        return False
-    if d[0] == 'PREP' and not (t2[2] in PREP_TYPES):
-        return False
-    if d[0] == 'POBJ' and not (t1[2] in PREP_TYPES):
-        return False
-    if d[0] == 'PRT' and not (t1[2] in VERB_TYPES and t2[2] in PREP_TYPES + ADV_TYPES):
-        return False
-    if d[0] == 'COMPOUND' and not (t1[2] in NOUN_TYPES and t2[2] in NOUN_TYPES):
-        return False
-    if d[0] == 'COMPOUND:PRT' and not (t2[2] in ADV_TYPES + PREP_TYPES and t1[2] in VERB_TYPES):
-        return False
-    if d[0] == 'CASE' and not (t2[2] in PREP_TYPES and t1[2] in NOUN_TYPES):
-        return False
-    return True
+    if d[0] == 'ADVMOD' and (t1[2] in VERB_TYPES + ADJ_TYPES + ADV_TYPES and t2[2] in ADV_TYPES): #'mod'
+        return True
+    if d[0] == 'AMOD' and (t1[2] in NOUN_TYPES and t2[2] in ADJ_TYPES): #'mod'
+        return True
+    if d[0] == 'COMPOUND' and (t1[2] in NOUN_TYPES and t2[2] in NOUN_TYPES): #'mod'
+        return True
+    if d[0] == 'NSUBJ' and (t1[2] in VERB_TYPES and t1[1] != 'be' and t2[2] in NOUN_TYPES): #'sv'
+        return True
+    if (d[0] == 'DOBJ' or d[0] == 'IOBJ' or d[0] == 'NSUBJPASS') and (t1[2] in VERB_TYPES and t2[2] in NOUN_TYPES): #'vo'
+        return True
+    if d[0] == 'COMPOUND:PRT' and (t2[2] in ADV_TYPES + PREP_TYPES and t1[2] in VERB_TYPES): # prep
+        return True
+    if d[0] == 'CASE' and (t2[2] in ADV_TYPES + PREP_TYPES and t1[2] in NOUN_TYPES): # prep
+        return True
+    if d[0] == 'MWE' and (t2[2] in ADV_TYPES + PREP_TYPES and  t1[2] in ADV_TYPES + PREP_TYPES): # prep
+        return True
+    return False
 
 def _convert_dep(d):
     t1 = d[3]
     t2 = d[4]
-    if d[0] == 'NSUBJ' and t1[2] in VERB_TYPES:
+    if d[0] == 'NSUBJ':
         return (1, d[2], d[1])  #'sv'
     if d[0] == 'DOBJ' or d[0] == 'IOBJ' or d[0] == 'NSUBJPASS':
         return (2, d[1], d[2])  #'vo'
-    if d[0] == 'AMOD' or d[0] == 'NN' or d[0] == 'ADVMOD':
+    if d[0] == 'AMOD' or d[0] == 'ADVMOD' or d[0] == 'COMPOUND': 
         return (3, d[2], d[1])  #'mod'
-    if d[0] == 'PARTMOD' or d[0] == 'NSUBJ':
-        return (3, d[1], d[2])  #'mod'
-    if d[0] == 'PREP' or d[0] == 'PRT'or d[0] == 'COMPOUND:PRT':
+    if d[0] == 'COMPOUND:PRT' or d[0] == 'MWE':
         return (4, d[1], d[2])  #'prep'
-    if d[0] == 'POBJ':
-        return (4, d[1], d[2])  #'prep'
-    if d[0] == 'COMPOUND':
-        return (3, d[2], d[1])  #'mod'
     if d[0] == 'CASE':
         return (4, d[2], d[1])  #'prep'
-    return Non
+    return None
 
 def process_conll_file(text):
     # conll file format:

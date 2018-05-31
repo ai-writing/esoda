@@ -70,7 +70,7 @@
                    onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
             <!-- <span>test</span> -->
             <div class="result-warning hidden-xs">
-              <span class="oneline">搜索领域: {{ r.domain|upper }}</span>
+              <span class="oneline">搜索领域: {{ domain_name|upper }}</span>
               <a class="domain-link" href="{% url 'authentication:domain' %}">修改</a>
             </div>
           </div>

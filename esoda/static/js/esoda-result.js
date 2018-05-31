@@ -24,7 +24,7 @@ $(function () {
       var colNum = ($(".colList").width() > 380) ? 3 : 2;
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
-      var exampleNum = Number($("#ExampleNumber").text());
+      var exampleNum = $("#ExampleNumber").data('example-number');
       if (exampleNum === 0) {
         $('#Loadbox').hide();
       }
@@ -104,7 +104,10 @@ $(function () {
     // });
     // $('#ManualLoad').hide();
     // $("#ExampleEnd").hide();
-    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}, function (data) {
+    if (type0.indexOf('*') < 0){
+      searchAndFillSentences({t: type0.replace('*', ''), ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand});
+    }
+    $.get(COLLOCATION_URL, {t: type0, ref: ref.join(' '), dt: dt, pos: POSS, expand: expand}, function (data) {
       $(id).html(data);
       $(id + ' .panel-collapse-body').mCustomScrollbar({
         theme: 'dark',
@@ -113,10 +116,10 @@ $(function () {
         autoHideScrollbar: true
       });
       if (type0.indexOf('*') > -1) { $(id + ' .single-extend:eq(0) .colloc-usage:eq(0)').click(); }
-      else {
-        if ($(id + ' .colloc-usage:eq(0)').length) { $(id + ' .colloc-usage:eq(0)').click(); }
-        else { searchAndFillSentences({t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}); }
-      }
+      // else {
+      //   if ($(id + ' .colloc-usage:eq(0)').length) { $(id + ' .colloc-usage:eq(0)').click(); }
+      //   else { searchAndFillSentences({t: type0, ref: ref.join(' '), i: i - 1, dt: dt, pos: POSS, expand: expand}); }
+      // }
     });
   });
 
@@ -156,7 +159,7 @@ $(function () {
   });
 
   $('#ManualLoad').click(function (e) {
-    var total = $("#ExampleNumber").html();
+    var exampleNum = $("#ExampleNumber").data('example-number');
     loading = 1;
     $("#ManualLoad").hide();
     $(".result-table-cell").hide();
@@ -165,36 +168,18 @@ $(function () {
       $("#Loading2").hide();
       $("#Loadbox").show();
       var i;
-      for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= total; i++) {
+      for (i = loadCount * 10 + 1; i <= (loadCount + 1) * 10 && i <= exampleNum; i++) {
         $("#Example" + i).show();
       }
       loadCount++;
       loading = 0;
-      if (i > total || loadCount >= 5) {
+      if (i > exampleNum || loadCount >= 5) {
         loaded = 1;
         $("#Loadbox").hide();
         $("#ExampleEnd").show();
         return;
       }
     }, 1000);
-  });
-
-  $('#FeedbackForm').submit(function (e) {
-    e.preventDefault();
-    var textarea = $(this).find('[name="message"]');
-    var msg = textarea.val().trim();
-    if (msg) {
-      $.post($(this).attr('action'), $(this).serialize(), function (r) {
-        toastr.remove();
-        toastr.success('反馈成功');
-        textarea.val('');
-        $('#FeedbackModal').modal('hide');
-      });
-    } else {
-      toastr.remove();
-      toastr.warning('请输入反馈内容');
-      textarea.focus();
-    }
   });
 
   $(".back-to-top").click(function () {
