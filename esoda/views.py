@@ -172,7 +172,13 @@ def syn_usageList_view(request):
     else:
         ttcnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
 
-    t_list, star = star2collocation(t, dt)
+    syn_usage_dict = {}
+    displayed_t = []
+    for i in xrange(len(t)):
+        displayed_t.append(displayed_lemma(ref[i], t[i]))
+        syn_usage_dict[displayed_lemma(ref[i], t[i])] = sort_syn_usageDict(syn_dict.get(t[i], []), usage_dict.get(t[i], []))
+
+    t_list, star = star2collocation(displayed_t, dt)
     t_list0 = []
     if expand:
         for i in expand:
@@ -185,15 +191,6 @@ def syn_usageList_view(request):
         'ref': ' '.join(ref),
     }
 
-    syn_usage_dict = {}
-    count = 0
-    displayed_t = []
-    for i in xrange(len(t)):
-        displayed_t.append(displayed_lemma(ref[i], t[i]))
-        syn_usage_dict[displayed_lemma(ref[i], t[i])] = sort_syn_usageDict(syn_dict.get(t[i], []), usage_dict.get(t[i], []))
-        if t[i] != '*':
-            count += 1
-
     if '*' in t:
         syn_usage_dict[star] = syn_usage_dict['*']
         del syn_usage_dict['*']
@@ -202,12 +199,6 @@ def syn_usageList_view(request):
             info['count'] = usage_dict['*'][0]['count']
 
     hint = 0
-    # for k in t_list:
-    #     for key in syn_usage_dict.keys():
-    #         if k == key:
-    #             if syn_usage_dict[key]:
-    #                 if count != 1 or dt == '0' or k.encode('utf-8') in ['动词', '宾语', '介词', '修饰词', '被修饰词', '主语']:
-    #                     hint += 1
     for key in syn_usage_dict.keys():
         hint = len(syn_usage_dict) if '*' not in syn_usage_dict.keys() else len(syn_usage_dict) - 1
     info['syn_usage_dict'] = refine_dep(syn_usage_dict, t, poss)
@@ -277,7 +268,7 @@ def dict_suggest_view(request):
 def get_collocations(clist, qt, ref, i, dbs, cids):
     # TODO: make clist as a return result
     try:
-        t, d = list(qt), (qt[i], qt[i + 1])
+        t, r_ref, d = list(qt), ref[:], (qt[i], qt[i + 1])
         cnt = 0
         del t[i]
         del t[i]
@@ -288,6 +279,8 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
         for j, p in enumerate(resList):
             if j == 4:
                 qt[i], qt[i + 1] = qt[i + 1], qt[i]
+                r_ref[i], r_ref[i + 1] = r_ref[i + 1], r_ref[i]
+            displayed_tt = [displayed_lemma(r_ref[k], qt[k]) for k in xrange(len(qt))]
             if not p:
                 continue
             if '*' in qt:
@@ -300,7 +293,7 @@ def get_collocations(clist, qt, ref, i, dbs, cids):
             clist.append({
                 'type': pat % (qt[i], ALL_DEPS[j % 4], qt[i + 1]),
                 'label': 'Colloc%d_%d' % (len(clist), j % 4 + 1),
-                't_dt' : (list(qt), str(j % 4 + 1)),
+                't_dt' : (displayed_tt, str(j % 4 + 1)),
                 'count' : cnt,
                 'flag': (flag, str(j % 4 + 1))
                 # 'usageList': [],
@@ -314,7 +307,8 @@ def collocation_list(t, ref, poss, dep, dbs, cids):
     # return collocation_list, default_collocation index
     # TODO: add try..catch...
     cnt = EsAdaptor.count(t, [], dbs, cids)['hits']['total']
-    head = [{'count': cnt, 't_dt': (t, '0'), 'type': ' '.join(t), 'label':  'Colloc0_0', 'title': u'全部结果'}] # all results
+    displayed_tt = [displayed_lemma(ref[i], t[i]) for i in xrange(len(t))]
+    head = [{'count': cnt, 't_dt': (displayed_tt, '0'), 'type': ' '.join(t), 'label':  'Colloc0_0'}] # all results
     clist = []
     if len(t) >= 3:
         return head, 1

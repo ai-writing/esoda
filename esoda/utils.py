@@ -56,7 +56,7 @@ def res_refine(res):
     if res['sentence']:
         r.append(res['sentence'][0])
         for i in res['sentence']:
-            if len(i['content'].split()) < 60 and difflib.SequenceMatcher(None, r[-1]['content'], i['content']).ratio() < 0.7:
+            if len(i['content'].split()) < 60 and difflib.SequenceMatcher(None, r[-1]['content'], i['content']).ratio() < 0.7 and i['content'][-1] == '.': # Remove unfinished sentences
                 r.append(i)
     res['sentence'] = r
     return res
