@@ -168,6 +168,9 @@
         last_result=data.result;
         last_expand=data.expand;
         last_big=data.big;
+        if(last_result.length === 0){
+          $('#FeedbackModal').modal();
+        }
       });
     }
 
