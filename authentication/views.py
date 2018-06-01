@@ -60,7 +60,8 @@ def search_domain_tree_view(request):
                             expand.append(i["id"])
                     if not k["id"] in big:
                         big.append(k["id"])
-    return JsonResponse({"expand": expand, "result": result, "big": big}, safe=False)
+    message = _(u'找到%d个相关结果') % len(result) if result else _(u'未找到相关期刊会议')
+    return JsonResponse({'expand': expand, 'result': result, 'big': big, 'message': message}, safe=False)
 
 
 def personal_view(request):

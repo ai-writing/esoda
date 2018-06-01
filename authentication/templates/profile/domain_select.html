@@ -112,7 +112,7 @@
         </div>
       </div>
     </form>
-    {% include "esoda/feedback.html" with title="请输入您需要的领域" submit_btn="提交" from="#Domain" %}
+    {% include "esoda/feedback.html" with title="您可在下面填写需要的领域名称，帮助完善易搜搭" submit_btn="提交" from="#Domain" %}
   </div>
 </div>
 {% endblock %}
@@ -142,6 +142,10 @@
     var flag_click=false;
     var search = function(e) {
       var pattern = $('#input-search').val();
+      if (!pattern.trim()) {
+        $('#input-search').focus();
+        return;
+      }
       $.getJSON("{% url 'authentication:search_domain_tree' %}", {'target':pattern }, function(data){
         for(var i=0;i<last_expand.length;i++){
           $("#secondleveltext"+last_expand[i]).css('font-weight', "400");
@@ -168,11 +172,16 @@
         last_result=data.result;
         last_expand=data.expand;
         last_big=data.big;
-        if(last_result.length === 0){
+        toastr.remove();
+        if (last_result.length) {
+          toastr.success(data.message);
+        }
+        else {
+          toastr.warning(data.message);
           $('#FeedbackModal').modal();
         }
       });
-    }
+    };
 
     $('#btn-search').on('click', search);
     $('#input-search').bind('keypress',function(event){
