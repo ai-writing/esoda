@@ -2405,9 +2405,10 @@ button.close:focus {
 
 .about-us-background {
     background-image: url("../img/about_us.jpg");
-    background-position: right 65%;
     height: 100vh;
-    background-size: 100%;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
 }
 
 .about-us-body {
