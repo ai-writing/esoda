@@ -63,8 +63,8 @@ def suggest_new(q):
     suggest_num = 10
     collection = MONGODB.common.suggest
     q_conv = re.escape(q)
-    q_str = '^' + str(q_conv) + '.*'
-    word = collection.find_one({'_id': q_str})
+    q_str = '^' + str(q_conv) + '.+'
+    word = collection.find_one({'_id': q_conv})
     if word:
         words.append(word)
         suggest_num -= 1
