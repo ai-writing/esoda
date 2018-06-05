@@ -126,7 +126,7 @@ def refine_query(q0):
     q = re.sub(r'\?+', '?', q)   # 去掉多个问号
     q = re.sub(r'^\?', '', q)    # 去掉问号开头
     r = q.translate(TRANS_TABLE).strip()
-    r = re.sub(' +', ' ', r)
+    r = re.sub('\s+', ' ', r)
     wList = r.split()
     for i in range(len(wList)):
         if wList[i].endswith('?'):
@@ -268,3 +268,10 @@ def json_deserializer(value):
         return json.loads(value)
     except:
         return value
+
+def parse_suggest_coll(q):
+    q = re.sub(r'\*', '', q)
+    q = re.sub(r'\(.*\)', '', q)
+    q = re.sub(r'\s+', ' ', q)
+    q0 = q.strip()
+    return q0

@@ -66,7 +66,7 @@
                   </button>
                 </span>
             <input type="text" id="SearchBox" class="navbar-search-box form-control result-search"
-                   placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q0 }}"
+                   placeholder="搜搭从这里开始" autocomplete="off" name="q" value="{{ q00 }}"
                    onfocus="this.placeholder = ''" onblur="this.placeholder = '搜搭从这里开始'">
             <!-- <span>test</span> -->
             <div class="result-warning hidden-xs">
@@ -203,6 +203,8 @@
 <script src="{% static 'js/jquery-ui-modified.js' %}"></script>
 <script src="{% static 'js/esoda-main.js' %}?v={% get_settings 'JS_ESODA_MAIN_VERSION' %}"></script>
 <script type="text/javascript">
+  var SUGGEST_URL = {% url 'dict_suggest' %};
+  var SUGGEST_COLL_URL = {% url 'suggest_coll_view' %};
   $(document).ready(function () {
     toastr.options = {
       "closeButton": true,

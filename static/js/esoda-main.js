@@ -167,77 +167,123 @@ $(function () {
     return term.replace("<strong>", "").replace("</strong>", "");
   }
 
+  function judgeSpace(term) {
+    var space = false;
+    var words = split(term.trim());
+    if (term.endsWith(" ") && term.trim().length !== 0 && words.length >= 1 && words.length <= 2) {
+      space = true;
+    }
+    return {space: space, words: words};
+  }
+
   var cache = {};
+  var cache_coll = {};
   $("#SearchBox").catcomplete({
     minLength: 0,
     delay: 150,
     source: function (request, response) {
 
+      var res = judgeSpace(request.term);
+      var space = res["space"];
+      var query = res["words"].join(" ");
       var term = extractLast(request.term);
-      term = term.replace(/[-\/\\^$*+?!&@#%.()|[\]{}，。？！~…]/g, '');
 
-      if (term.length < 1) {
-        response(defaultList);
-        return;
-      }
+      if (space === true) {
+        if (query in cache_coll) {
+          response(cache_coll[query]);
+          return;
+        }
 
-      if (term in cache) {
-        response(cache[term]);
-        return;
-      }
+        $.getJSON(SUGGEST_COLL_URL, {q: query}, function (data, status, xhr) {
+          var show = [];
 
-      
-      $.getJSON("/suggest/", {term: term}, function (data, status, xhr) {
-        var show = [];
-        
-        var matcher = new RegExp("^" + term, "i");
-        // As experimented, the items in *data* are references through getData method,
-        // so that there's a new array needed for showing.
-        data.suggest.forEach(function (item) {
-          show.push(
-            {
-              label: item.label.replace(matcher, "<strong>" + item.label.match(matcher) + "</strong>"),
-              desc: item.desc,
-              category: item.category
-            });
+          data.suggest.forEach(function (item) {
+            show.push(
+              {
+                label: item.label,
+                desc: item.desc,
+                category: item.category
+              });
+          });
+          cache_coll[query] = show;
+          response(show);
         });
-        cache[term] = show;
-        response(show);
-      });
+      }
+      else {
+        term = term.replace(/[-\/\\^$*+?!&@#%.()|[\]{}，。？！~…]/g, '');
+        if (term.length < 1) {
+          response(defaultList);
+          return;
+        }
+
+        if (term in cache) {
+          response(cache[term]);
+          return;
+        }
+
+        $.getJSON(SUGGEST_URL, {term: term}, function (data, status, xhr) {
+          var show = [];
+
+          var matcher = new RegExp("^" + term, "i");
+          // As experimented, the items in *data* are references through getData method,
+          // so that there's a new array needed for showing.
+          data.suggest.forEach(function (item) {
+            show.push(
+              {
+                label: item.label.replace(matcher, "<strong>" + item.label.match(matcher) + "</strong>"),
+                desc: item.desc,
+                category: item.category
+              });
+          });
+          cache[term] = show;
+          response(show);
+        });
+      }
     },
     search: function () {
       if (this.value.length === 0) {
         return true;
       }
-      var term = extractLast(this.value);
-      if (term.length < 1) {
-        return false;
-      }
+      // var term = extractLast(this.value);
+      // if (term.length < 1) {
+      //   return false;
+      // }
     },
     focus: function (event, ui) {
       if (event.keyCode === $.ui.keyCode.UP || event.keyCode === $.ui.keyCode.DOWN) {
-        var terms = split(this.value);
-        terms.pop();
-        terms.push(extractPrefix(ui.item.value));
-        this.value = terms.join(" ");
+        if (ui.item.category === "Collocations") {
+          this.value = ui.item.value;
+        }
+        else {
+          var terms = split(this.value);
+          terms.pop();
+          terms.push(extractPrefix(ui.item.value));
+          this.value = terms.join(" ");
+        }
       }
       return false;
     },
     select: function (event, ui) {
-      var terms = split(this.value);
-      terms.pop();
-      terms.push(extractPrefix(ui.item.value));
+      if (ui.item.category === "Collocations") {
+          this.value = ui.item.value;
+      }
+      else {
+        var terms = split(this.value);
+        terms.pop();
+        terms.push(extractPrefix(ui.item.value));
 
-      // this.value = terms.join(" ");
-      if (event.keyCode !== 13) this.value = terms.join(" ");  // if Enter not press
+        // this.value = terms.join(" ");
+        if (event.keyCode !== 13) this.value = terms.join(" ");  // if Enter not press
+
+        if (event.keyCode === $.ui.keyCode.TAB) {
+          var result = $( "#SearchBox" ).val();
+          var newResult = result + " ";
+          $( "#SearchBox" ).val(newResult);
+        }
+      }
 
       if (event.keyCode !== $.ui.keyCode.TAB) {
         $("#SearchForm").submit();
-      }
-      if (event.keyCode === $.ui.keyCode.TAB) {
-        var result = $( "#SearchBox" ).val();
-        var newResult = result + " ";
-        $( "#SearchBox" ).val(newResult);
       }
 
       return false;

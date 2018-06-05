@@ -30,7 +30,17 @@ PERP_TOKENS = set(['vs', 're', 'contra', 'concerning', 'neath', 'skyward', 'anot
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
 # DEFAULT_ES_DBS = ['bnc', 'wikipedia'] # TODO: move into setting.py and .env
 DEFAULT_ES_DBS = ['dblp'] # TODO: move into setting.py and .env
-DEFAULT_ES_CIDS = ['conf_aaai', 'conf_acl', 'conf_asplos', 'conf_cav', 'conf_ccs', 'conf_chi', 'conf_cnhpca', 'conf_crypto', 'conf_cscw', 'conf_cvpr', 'conf_eurocrypt', 'conf_fast', 'conf_focs', 'conf_huc', 'conf_iccv', 'conf_icde', 'conf_icml', 'conf_icse', 'conf_ijcai', 'conf_infocom', 'conf_isca', 'conf_kbse', 'conf_kdd', 'conf_lics', 'conf_mm', 'conf_mobicom', 'conf_nips', 'conf_oopsla', 'conf_osdi', 'conf_pldi', 'conf_popl', 'conf_ppopp', 'conf_rtss', 'conf_sc', 'conf_sigcomm', 'conf_siggraph', 'conf_sigir', 'conf_sigmod', 'conf_sigsoft', 'conf_sosp', 'conf_sp', 'conf_stoc', 'conf_usenix', 'conf_uss', 'conf_visualization', 'conf_vldb', 'conf_www', 'journals_ai', 'journals_iandc', 'journals_ijcv', 'journals_ijmms', 'journals_jacm', 'journals_jmlr', 'journals_joc', 'journals_jsac', 'journals_pami', 'journals_pieee', 'journals_siamcomp', 'journals_tc', 'journals_tcad', 'journals_tdsc', 'journals_tifs', 'journals_tip', 'journals_tit', 'journals_tkde', 'journals_tmc', 'journals_tochi', 'journals_tocs', 'journals_tods', 'journals_tog', 'journals_tois', 'journals_ton', 'journals_toplas', 'journals_tos', 'journals_tosem', 'journals_tpds', 'journals_tse', 'journals_tvcg', 'journals_vldb', 'journals_micro', 'conf_vr',]
+# DEFAULT_ES_CIDS = ['conf_aaai', 'conf_acl', 'conf_asplos', 'conf_cav', 'conf_ccs', 'conf_chi', 'conf_cnhpca', 'conf_crypto', 'conf_cscw', 'conf_cvpr', 'conf_eurocrypt', 'conf_fast', 'conf_focs', 'conf_huc', 'conf_iccv', 'conf_icde', 'conf_icml', 'conf_icse', 'conf_ijcai', 'conf_infocom', 'conf_isca', 'conf_kbse', 'conf_kdd', 'conf_lics', 'conf_mm', 'conf_mobicom', 'conf_nips', 'conf_oopsla', 'conf_osdi', 'conf_pldi', 'conf_popl', 'conf_ppopp', 'conf_rtss', 'conf_sc', 'conf_sigcomm', 'conf_siggraph', 'conf_sigir', 'conf_sigmod', 'conf_sigsoft', 'conf_sosp', 'conf_sp', 'conf_stoc', 'conf_usenix', 'conf_uss', 'conf_visualization', 'conf_vldb', 'conf_www', 'journals_ai', 'journals_iandc', 'journals_ijcv', 'journals_ijmms', 'journals_jacm', 'journals_jmlr', 'journals_joc', 'journals_jsac', 'journals_pami', 'journals_pieee', 'journals_siamcomp', 'journals_tc', 'journals_tcad', 'journals_tdsc', 'journals_tifs', 'journals_tip', 'journals_tit', 'journals_tkde', 'journals_tmc', 'journals_tochi', 'journals_tocs', 'journals_tods', 'journals_tog', 'journals_tois', 'journals_ton', 'journals_toplas', 'journals_tos', 'journals_tosem', 'journals_tpds', 'journals_tse', 'journals_tvcg', 'journals_vldb', 'journals_micro', 'conf_vr',]
+DEFAULT_ES_CIDS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
+66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104,
+105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136,
+137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168,
+169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200,
+201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232,
+233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264,
+265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296,
+297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308]
 # DEFAULT_DOMAIN_NAME = u'通用英语'
 DEFAULT_DOMAIN_NAME = u'计算机'
 logger = logging.getLogger(__name__)
@@ -66,7 +76,8 @@ def get_feedback():
 
 @timeit
 def esoda_view(request):
-    q0 = request.GET.get('q', '').strip()
+    q00 = request.GET.get('q', '').strip()
+    q0= parse_suggest_coll(q00)
 
     # No query - render index.html
     if not q0:
@@ -123,6 +134,12 @@ def esoda_view(request):
         cache.set(key, json_serializer([cL, cL_index]))
     else:
         cL, cL_index = mem_res
+    for i, item in enumerate(cL):
+        if item['type'] == q00:
+            cL.insert(1, cL[i])
+            del cL[i+1]
+            cL_index = 2
+            break
     r['collocationList'] = {'cL': cL, 'index': cL_index}
 
     # suggestion = {
@@ -142,6 +159,7 @@ def esoda_view(request):
         'r': r,
         'q': ' '.join(qt),
         'q0': q0,
+        'q00': q00,
         'ref': ' '.join(ref),
         'poss': ' '.join(poss),
         # 'suggestion': suggestion,
@@ -284,6 +302,22 @@ def sentence_view(request):
 
     logger.info('%s %s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, display_info, domain_name)
     return render(request, 'esoda/sentence_result.html', info)
+
+
+def suggest_coll_view(request):
+    q = request.GET.get('q', '')
+    qt, ref, poss, dep = lemmatize(q, timeout=5)
+    cL, cL_index = collocation_list(qt, ref, poss, dep, DEFAULT_ES_DBS, DEFAULT_ES_CIDS)
+    r = {}
+    suggest_coll = []
+    for i in cL[1:]:
+        res = {}
+        res['category'] = 'Collocations'
+        res['label'] = i['type']
+        res['desc'] = ''
+        suggest_coll.append(res)
+    r['suggest'] = suggest_coll
+    return JsonResponse(r)
 
 
 def dict_suggest_view(request):

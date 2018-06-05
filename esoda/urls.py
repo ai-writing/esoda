@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.esoda_view, name='esoda'),
     url(r'^suggest/$', views.dict_suggest_view, name='dict_suggest'),
+    url(r'^suggest_coll/$', views.suggest_coll_view, name='suggest_coll_view'),
     url(r'^sentences/$', views.sentence_view, name='sentences'),
     url(r'^collocation/$', views.syn_usageList_view, name='collocation'),
     url(r'^guide/$', TemplateView.as_view(template_name='esoda/guide.html'), name='guide')
