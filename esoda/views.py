@@ -69,8 +69,8 @@ def get_feedback():
 
 @timeit
 def esoda_view(request):
-    q00 = request.GET.get('q', '').strip()
-    q0= parse_suggest_coll(q00)
+    q0_display = request.GET.get('q', '').strip()
+    q0 = parse_suggest_coll(q0_display)
 
     # No query - render index.html
     if not q0:
@@ -127,8 +127,11 @@ def esoda_view(request):
         cache.set(key, json_serializer([cL, cL_index]))
     else:
         cL, cL_index = mem_res
+    logger.info('cL_indexhere0607:%s %s', repr(cL_index), repr(cL))
     for i, item in enumerate(cL):
-        if item['type'] == q00:
+        if i == 0: # the first element of cL represent all result
+            continue
+        if item['type'] == q0_display:
             cL.insert(1, cL[i])
             del cL[i+1]
             cL_index = 2
@@ -151,8 +154,7 @@ def esoda_view(request):
     info = {
         'r': r,
         'q': ' '.join(qt),
-        'q0': q0,
-        'q00': q00,
+        'q0_display': q0_display,
         'ref': ' '.join(ref),
         'poss': ' '.join(poss),
         # 'suggestion': suggestion,
@@ -296,7 +298,8 @@ def sentence_view(request):
 def suggest_coll_view(request):
     q = request.GET.get('q', '')
     qt, ref, poss, dep = lemmatize(q, timeout=5)
-    cL, cL_index = collocation_list(qt, ref, poss, dep, DEFAULT_ES_DBS, DEFAULT_ES_CIDS)
+    dbs, cids, domain_name = get_cids(request.user)
+    cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
     r = {}
     suggest_coll = []
     for i in cL[1:]:

@@ -196,7 +196,6 @@ $(function () {
 
         $.getJSON(SUGGEST_COLL_URL, {q: query}, function (data, status, xhr) {
           var show = [];
-
           data.suggest.forEach(function (item) {
             show.push(
               {
@@ -223,7 +222,6 @@ $(function () {
 
         $.getJSON(SUGGEST_URL, {term: term}, function (data, status, xhr) {
           var show = [];
-
           var matcher = new RegExp("^" + term, "i");
           // As experimented, the items in *data* are references through getData method,
           // so that there's a new array needed for showing.
