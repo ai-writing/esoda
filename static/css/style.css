@@ -1763,6 +1763,11 @@ button.close:focus {
     float: right;
 }
 
+.colloc-count {
+    font-size: 10px;
+    color: #2D557B;
+}
+
 .nav-tabs-collocation {
     margin: 0 -30px 0 5px;
 }

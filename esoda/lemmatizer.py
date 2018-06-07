@@ -26,7 +26,6 @@ def convert_dep(dt, t, td):
 # format of token:
 # (None, lemma, pos)
 def _is_esl_dep(d):
-    print d
     if d[0] not in ESL_DEP_TYPES:
         return False
     t1 = d[1]
