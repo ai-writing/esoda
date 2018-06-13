@@ -143,7 +143,9 @@ def esoda_view(request):
         # 'dictionary': trans,
         'dbs': dbs,
         # 'cids': cids,
-        'expand': json.dumps(expand)
+        'expand': json.dumps(expand),
+        'cn': has_cn(q0),
+        'trans': ['account for', 'explain reason', 'explain why', 'reason why']   # static test
     }
 
     request.session.save()
@@ -187,11 +189,12 @@ def syn_usageList_view(request):
         for i in expand:
             t_list0.append(t_list[i])
         t_list = t_list0
+
     info = {
         't_list': t_list,
         'count': ttcnt,
         't_dt': (' '.join(t), dt),
-        'ref': ' '.join(ref),
+        'ref': ' '.join(ref)
     }
 
     if '*' in t:
@@ -214,7 +217,7 @@ def syn_usageList_view(request):
         't_dt': info['t_dt'],
         'ref': info['ref'],
         'hint': info['hint'],
-        'dbs': dbs,
+        'dbs': dbs
     }
 
     logger.info('%s %s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, display_info, domain_name)

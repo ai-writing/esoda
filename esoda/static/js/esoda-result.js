@@ -24,6 +24,9 @@ $(function () {
       var colNum = ($(".colList").width() > 380) ? 3 : 2;
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
+      var colNum2 = Math.floor($(".transList").width() / 132);
+      $('.transList li').removeClass('second-row');
+      $('.transList li').not(':lt(' + colNum2 + ')').addClass('second-row');
       var exampleNum = $("#ExampleNumber").data('example-number');
       if (exampleNum === 0) {
         $('#Loadbox').hide();
@@ -44,9 +47,15 @@ $(function () {
     var colNum = ($(".colList").width() > 380) ? 3 : 2;
     $('.colList li').removeClass('second-row');
     $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');
+    var colNum2 = Math.floor($(".transList").width() / 132);
+    $('.transList li').removeClass('second-row');
+    $('.transList li').not(':lt(' + colNum2 + ')').addClass('second-row');
   });
   $('.list-btn2').click(function () {
     $('.result-main .CollapseColloc').toggleClass('expanded');
+  });
+  $('.list-btn3').click(function () {
+    $('.result-main .CollapseTrans').toggleClass('expanded');
   });
 
   // $('.not-limited').click(function (e) {

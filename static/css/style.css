@@ -321,6 +321,11 @@ a {
     .about-us-body {
         height: 900px !important;
     }
+
+    .list-btn3 {
+        padding-left: 18px !important;
+        padding-right: 0;
+    }
 }
 
 #SearchBox {
@@ -1465,7 +1470,7 @@ button.close:focus {
 .result-main .CollapseColloc {
     /*width: 95%;*/
     background-color: #F1F7FD;
-    padding-left: 34px;
+    padding-left: 39px;
     box-shadow: 0 -3px 5px 0 rgba(15,42,66,0.05);
     display: none;
 }
@@ -1474,9 +1479,19 @@ button.close:focus {
     margin-left: 0px;
 }
 
+.CollapseTrans {
+    background-color: #fff;
+}
+
 .list-btn2 {
     padding-left: 25px;
     padding-top: 11px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.list-btn3 {
+    padding-left: 32px;
     font-size: 20px;
     cursor: pointer;
 }
@@ -1493,13 +1508,22 @@ button.close:focus {
 .CollapseColloc #colMore,
 .CollapseColloc.expanded #colLess {
     display: block;
-    /*margin-top: 5px;*/
 }
 .CollapseColloc .colList li.second-row,
 .CollapseColloc #colLess,
 .CollapseColloc.expanded #colMore {
     display: none;
-    /*margin-top: 5px;*/
+}
+
+.CollapseTrans.expanded .transList li.second-row,
+.CollapseTrans #transMore,
+.CollapseTrans.expanded #transLess {
+    display: block;
+}
+.CollapseTrans .transList li.second-row,
+.CollapseTrans #transLess,
+.CollapseTrans.expanded #transMore {
+    display: none;
 }
 
 .btn-navbar-search {
@@ -1621,7 +1645,7 @@ button.close:focus {
 .panel-subheading {
     padding: 6px 20px 6px 15px;
     text-align: justify;
-    margin: 0 0px;
+    margin: 0 0;
     /*background: #F4F7FA;*/
     background-color: #F1F7FD;
     border-bottom: 0.5px solid rgba(0,0,0,0.05);
@@ -1632,6 +1656,12 @@ button.close:focus {
     font-family: Helvetica;
     font-weight: bold;
     color: #22415E;
+}
+
+.key-container {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .syn-filter {
@@ -1773,7 +1803,7 @@ button.close:focus {
 }
 
 .nav-tabs-collocation {
-    margin: 0 -30px 0 5px;
+    margin: 0 -30px 0 0;
 }
 
 /*.nav-tabs-collocation>li>a {
@@ -1795,28 +1825,42 @@ button.close:focus {
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
-.colloc-sub-btn > p {
-    font-size: 10px;
-    -webkit-transform: scale(0.8);
-    line-height: 15px;
-    text-overflow: ellipsis;
-    max-width: 130px;
-    white-space: nowrap;
-    overflow: hidden;
+.nav-tabs-trans > li > a:hover,
+.nav-tabs-trans > li > a:focus {
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.nav-tabs-trans > li.active > a,
+.nav-tabs-trans > li.active > a:focus,
+.nav-tabs-trans > li.active > a:hover {
+    color: #42A5F5;
+    border: 1px solid transparent;
 }
 
 .colloc-sub-btn {
     width: 120px;
-    height: 50px;
-    /*margin-top: 5px;*/
     margin-right: 25px !important;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
+    margin-bottom: 1px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     background-color: transparent !important;
     text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.trans-sub-btn {
+    padding: 0 !important;
+    color: #333;
+    text-overflow: ellipsis;
+    width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 #not-limited-btn {
@@ -2406,9 +2450,9 @@ button.close:focus {
 .about-us-background {
     background-image: url("../img/about_us.jpg");
     height: 100vh;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .about-us-body {
@@ -2464,4 +2508,26 @@ button.close:focus {
     text-align: center;
     padding-top: 3px;
     font-size: 10px;
+}
+
+.translate-row {
+    background-color: #fff;
+    margin: 5px 0;
+    min-height: 60px;
+    padding-left: 24px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05);
+    color: #333;
+    font-size: 16px;
+}
+
+.translate-row h5 {
+    color: #9b9b9b;
+    margin-bottom: 5px;
+}
+
+.translate-row p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -58,32 +58,44 @@
           {% else %}{{ displayed_t|cut:"*" }} {% endif %}
       {% endif %}
     </div>
-    <span class="total-cnt" count = "{{count}}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
+    <span class="total-cnt" count="{{ count }}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}(
+      {{ count }}){% endif %}</span>
   </div>
   <div class="colloc-result">
     {% for k in t_list %}
       {% for key, value in syn_usage_dict.items %}
-          {% if k == key %}
+        {% if k == key %}
           <ul class="list-group {% if t_dt.0|cut:"*"|wordcount <= 1 %}{% if t_dt.1 != '0' %}
               {% if k != '动词' and k != '宾语' and k != '介词' and k != '修饰词'  and k != '被修饰词' and k != '主语' %}hidden
             {% endif %}{% endif %}{% endif %}">
             {% if value %}
               <div class="panel-subheading">
                 <a href="#" class="colloc-usage" ref="{{ ref }}" lemma="{{ t_dt.0 }}">
-                  <span class="panel-key {% for v in value %}{% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type == 1 %}not-empty {% else %}panel-key2 {% endif %}{% endif %}{% endfor %}" count = "{{count}}">{{ key }}</span>
+                  <div class="key-container">
+                    <span class="panel-key
+                            {% for v in value %}{% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type == 1 %}not-empty {% else %}panel-key2 {% endif %}{% endif %}{% endfor %}"
+                          count="{{ count }}">{{ key }}</span>
+                  </div>
                 </a><span class="colloc-count">({{ value|length }}个可替换词)</span>
                 <span class="list-btn"><i class="fa fas fa-angle-up"></i></span>
                 <div style="clear:both"></div>
               </div>
               <div class="panel-collapse-body" style="max-height: calc(((100vh - 190px) / {{ hint }}) - 35px)">
-              {% for v in value %}
-                <li class="list-group-item
-                        {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %} {% if t_dt.0|cut:"*"|wordcount == 1 %}{% if v.type != 1 %}single-extend{% endif %}{% endif %}">
-                  <a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
-                    <span class="usage-count" count = "{{v.count}}">{% if v.count >= 1000 %}({% widthratio v.count 1000 1 %}k)
-                    {% else %}({{ v.count }}){% endif %}</span></a>
+                <li class="list-group-item">
+                  <a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ displayed_t|cut:"*" }}
+                    <span class="usage-count" count="{{ count }}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k)
+                    {% else %}({{ count }}){% endif %}</span></a>
                 </li>
-              {% endfor %}
+                {% for v in value %}
+                  <li class="list-group-item
+                        {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %}
+                          {% if t_dt.0|cut:"*"|wordcount == 1 %}{% if v.type != 1 %}single-extend{% endif %}{% endif %}">
+                    <a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ v.content }}
+                      <span class="usage-count" count="{{ v.count }}">{% if v.count >= 1000 %}(
+                        {% widthratio v.count 1000 1 %}k)
+                      {% else %}({{ v.count }}){% endif %}</span></a>
+                  </li>
+                {% endfor %}
               </div>
             {% endif %}
           </ul>
@@ -112,7 +124,7 @@
     $('.not-syn').toggleClass('hidden');
   });
 
-  if($('.panel-key2').length > $('.not-empty').length) {
+  if ($('.panel-key2').length > $('.not-empty').length) {
     $('.syn-filter').click();
     $('.panel-key').removeClass('not-empty');
     $('.panel-key').removeClass('panel-key2');
