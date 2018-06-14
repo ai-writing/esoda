@@ -95,7 +95,15 @@ def esoda_view(request):
                 logger.exception('Failed to parse youdao_translate result: "%s"', trans['explanationList'])
 
     q, ques, aste = refine_query(q) # ques(aste) is the place of question mark(asterisk)
-    qt, ref, poss, dep = lemmatize(q, timeout=5)
+    attrs = [q]
+    key = get_key(attrs)
+    mem_res = json_deserializer(cache.get(key))
+    if mem_res is None:
+        qt, ref, poss, dep = lemmatize(q, timeout=5)
+        cache.set(key, json_serializer([qt, ref, poss, dep]))
+    else:
+        qt, ref, poss, dep = mem_res
+        dep = str(dep)
     expand = []
     asteList = []
     for i in ques:
@@ -127,7 +135,6 @@ def esoda_view(request):
         cache.set(key, json_serializer([cL, cL_index]))
     else:
         cL, cL_index = mem_res
-    logger.info('cL_indexhere0607:%s %s', repr(cL_index), repr(cL))
     for i, item in enumerate(cL):
         if i == 0: # the first element of cL represent all result
             continue
@@ -297,9 +304,23 @@ def sentence_view(request):
 
 def suggest_coll_view(request):
     q = request.GET.get('q', '')
-    qt, ref, poss, dep = lemmatize(q, timeout=5)
+    attrs = [q]
+    key = get_key(attrs)
+    mem_res = json_deserializer(cache.get(key))
+    if mem_res is None:
+        qt, ref, poss, dep = lemmatize(q, timeout=5)
+        cache.set(key, json_serializer([qt, ref, poss, dep]))
+    else:
+        qt, ref, poss, dep = mem_res
     dbs, cids, domain_name = get_cids(request.user)
-    cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
+    attrs = [qt, poss, dep, dbs, cids]
+    key = get_key(attrs)
+    mem_res = json_deserializer(cache.get(key))
+    if mem_res is None:
+        cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
+        cache.set(key, json_serializer([cL, cL_index]))
+    else:
+        cL, cL_index = mem_res
     r = {}
     suggest_coll = []
     for i in cL[1:]:
