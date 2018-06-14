@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^sentences/$', views.sentence_view, name='sentences'),
     url(r'^collocation/$', views.syn_usageList_view, name='collocation'),
     url(r'^guide/$', TemplateView.as_view(template_name='esoda/guide.html'), name='guide'),
-    url(r'^about_us/$', TemplateView.as_view(template_name='esoda/about_us.html'), name='about_us')
+    url(r'^about_us/$', TemplateView.as_view(template_name='esoda/about_us.html'), name='about_us'),
+    url(r'^trans/$', views.trans_view, name='trans')
 ]

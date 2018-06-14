@@ -1479,13 +1479,17 @@ button.close:focus {
     margin-left: 0px;
 }
 
+.trans-colloc {
+    display: none;
+}
+
 .CollapseTrans {
     background-color: #fff;
 }
 
 .list-btn2 {
     padding-left: 25px;
-    padding-top: 11px;
+    padding-top: 8px;
     font-size: 20px;
     cursor: pointer;
 }

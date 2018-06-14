@@ -145,13 +145,38 @@ def esoda_view(request):
         # 'cids': cids,
         'expand': json.dumps(expand),
         'cn': has_cn(q0),
-        'trans': ['account for', 'explain reason', 'explain why', 'reason why']   # static test
+        'trans': ['account', 'explain', 'why', 'increase']   # static test
     }
 
     request.session.save()
     logger.info('%s %s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key, request.user, request, info, domain_name)
     info['domain_name'] = domain_name
     return render(request, 'esoda/result.html', info)
+
+
+def trans_view(request):
+    q = request.GET.get('q', '').strip()
+    qt, ref, poss, dep = lemmatize(q, timeout=5)
+
+    r = {}
+    r['tlen'] = len(qt)
+    dbs, cids, domain_name = get_cids(request.user)
+    cL, cL_index = collocation_list(qt, ref, poss, dep, dbs, cids)
+    r['collocationList'] = {'cL': cL, 'index': cL_index}
+
+    info = {
+        'r': r,
+        'q': ' '.join(qt),
+        'ref': ' '.join(ref),
+        'poss': ' '.join(poss),
+        'dbs': dbs
+    }
+
+    request.session.save()
+    logger.info('%s %s %s %s %s %s', request.META.get('REMOTE_ADDR', '0.0.0.0'), request.session.session_key,
+                request.user, request, info, domain_name)
+    info['domain_name'] = domain_name
+    return render(request, 'esoda/trans_result.html', info)
 
 
 def syn_usageList_view(request):

@@ -70,7 +70,8 @@
 
             <div class="CollapseColloc row {% if r.tlen > 2 or not r.collocationList %}hidden{% endif %}"
                  role="tabpanel" aria-labelledby="HeadingColloc">
-              <ul class="colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
+              <div class="trans-colloc"></div>
+              <ul class="colloc-container colList nav nav-tabs nav-tabs-collocation col-lg-11 col-md-11 col-sm-11 col-xs-11"
                   role="tablist">
                 {% for collocation in r.collocationList.cL %}
                   <li class="second-row" role="presentation">
@@ -178,5 +179,6 @@
     POSS = '{{ poss }}';
     SENTENCES_URL = "{% url 'sentences' %}";
     COLLOCATION_URL = "{% url 'collocation' %}";
+    TRANS_URL = "{% url 'trans' %}";
   </script>
 {% endblock %}
