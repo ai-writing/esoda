@@ -79,7 +79,9 @@ $(function () {
     if ($(this).attr('aria-expanded') == 'true') {
       return;
     }
+    // $('.SentenceContent').fadeOut("fast");
     $('#ExampleEnd').fadeOut("fast");
+    // $('#SidebarAffix .panel-group').fadeOut("fast");
     $("#Loadbox").fadeOut("fast");
     $("#SentenceLoading").show();
     var id = $(this).attr('href');
