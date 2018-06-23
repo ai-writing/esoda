@@ -54,7 +54,7 @@
                   <ul class="transList nav nav-tabs nav-tabs-trans" role="tablist">
                     {% for word in trans %}
                       <li class=" {% if forloop.counter == 1 %}active{% endif %} second-row" role="presentation">
-                        <a href="#{{ word }}" class="trans-sub-btn" role="tab" data-toggle="tab">
+                        <a href="#{{ word }}" class="trans-sub-btn" role="tab" data-toggle="tab" title="{{ word }}">
                           {{ word }}
                         </a>
                       </li>
