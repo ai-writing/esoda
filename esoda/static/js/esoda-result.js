@@ -3,7 +3,7 @@
  */
 
 var loadCount = 1, loading = 0, loaded = 0;    // TODO: eliminate global vairables
-var QUERY_PARAMS, REF, POSS, SENTENCES_URL, COLLOCATION_URL, TRANS_URL;
+var QUERY_PARAMS, SENTENCES_URL, COLLOCATION_URL, TRANS_URL;
 // var keyword = window.location.search;
 
 $(function () {
@@ -93,6 +93,8 @@ $(function () {
     for (i = 0; i < type.split(' ').length; i++) {
       if (type.split(' ')[i] != type0.split(' ')[i]) break;
     }
+    var REF = $(this).attr('ref');
+    var POSS = $(this).attr('poss');
     for (var j = 0, k = 0; j < type0.split(' ').length; j++) {
       if (type0.split(' ')[j] == '*') ref[j] = '*';
       else {
@@ -137,7 +139,7 @@ $(function () {
     $.get(TRANS_URL, {q: q}, function (data) {
       $('.trans-colloc').html(data);
       $(".trans-colloc").fadeIn("fast");
-      $(".colloc-container").fadeOut("fast");
+      $(".colloc-container").hide();
       var colNum = ($(".colList").width() > 380) ? 3 : 2;
       $('.colList li').removeClass('second-row');
       $('.colList li').not(':lt(' + colNum + ')').addClass('second-row');

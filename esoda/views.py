@@ -84,13 +84,17 @@ def esoda_view(request):
 
     # With query - render result.html
     q = q0
-    trans = []
+    transList = []
     if has_cn(q0):
         trans = youdao_translate(q0, timeout=5)
         if trans.get('explanationList'):
             try:
                 q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip()
-                trans = trans['explanationList']
+                for i in trans['explanationList']:
+                    if ']' in i:
+                        transList.append(i[i.find(']') + 2:])
+                    else:
+                        transList.append(i)
             except Exception as e:
                 logger.exception('Failed to parse youdao_translate result: "%s"', trans['explanationList'])
 
@@ -147,7 +151,7 @@ def esoda_view(request):
         # 'cids': cids,
         'expand': json.dumps(expand),
         'cn': has_cn(q0),
-        'trans': trans
+        'trans': transList
     }
 
     request.session.save()

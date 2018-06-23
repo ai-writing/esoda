@@ -77,7 +77,7 @@
                   <li class="second-row" role="presentation">
                     <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
                             {% if forloop.counter == r.collocationList.index %} id="first"{% endif %}
-                       data-toggle="tab" type="{{ collocation.type }}" expand="{{ expand }}">
+                       data-toggle="tab" type="{{ collocation.type }}" expand="{{ expand }}" ref="{{ ref }}" poss="{{ poss }}">
                         {% if collocation.t_dt.0|wordcount == 2 and collocation.t_dt.0|first != '*' and collocation.t_dt.0|last != '*' or collocation.t_dt.0|wordcount > 2 %}
                             {% if collocation.t_dt.1 == '0' %}全部例句
                             {% elif collocation.t_dt.1 == '1' %}主谓例句
@@ -175,8 +175,6 @@
   <script src="{% static 'js/esoda-result.js' %}?v={% get_settings 'JS_ESODA_RESULT_VERSION' %}"></script>
   <script>
     QUERY_PARAMS = '{{ request.GET.urlencode }}';
-    REF = '{{ ref }}';
-    POSS = '{{ poss }}';
     SENTENCES_URL = "{% url 'sentences' %}";
     COLLOCATION_URL = "{% url 'collocation' %}";
     TRANS_URL = "{% url 'trans' %}";

@@ -5,7 +5,7 @@
     <li class="second-row" role="presentation">
       <a href="#{{ collocation.label }}" class="colloc-sub-btn" role="tab"
               {% if forloop.counter == r.collocationList.index %} id="first"{% endif %}
-         data-toggle="tab" type="{{ collocation.type }}" expand="[]">
+         data-toggle="tab" type="{{ collocation.type }}" expand="[]" ref="{{ ref }}" poss="{{ poss }}">
         {% if collocation.t_dt.0|wordcount == 2 and collocation.t_dt.0|first != '*' and collocation.t_dt.0|last != '*' or collocation.t_dt.0|wordcount > 2 %}
           {% if collocation.t_dt.1 == '0' %}全部例句
           {% elif collocation.t_dt.1 == '1' %}主谓例句
@@ -47,5 +47,3 @@
     </li>
   {% endfor %}
 </ul>
-
-

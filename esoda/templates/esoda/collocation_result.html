@@ -58,8 +58,7 @@
           {% else %}{{ displayed_t|cut:"*" }} {% endif %}
       {% endif %}
     </div>
-    <span class="total-cnt" count="{{ count }}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}(
-      {{ count }}){% endif %}</span>
+    <span class="total-cnt" count="{{ count }}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k){% else %}({{ count }}){% endif %}</span>
   </div>
   <div class="colloc-result">
     {% for k in t_list %}
@@ -81,11 +80,6 @@
                 <div style="clear:both"></div>
               </div>
               <div class="panel-collapse-body" style="max-height: calc(((100vh - 190px) / {{ hint }}) - 35px)">
-                <li class="list-group-item">
-                  <a href="#" class="colloc-usage" ref="{{ v.ref }}" lemma="{{ v.lemma }}">{{ displayed_t|cut:"*" }}
-                    <span class="usage-count" count="{{ count }}">{% if count >= 1000 %}({% widthratio count 1000 1 %}k)
-                    {% else %}({{ count }}){% endif %}</span></a>
-                </li>
                 {% for v in value %}
                   <li class="list-group-item
                         {% if t_dt.0|cut:"*"|wordcount == 2 %}{% if v.type != 1 %}not-syn hidden{% endif %}{% endif %}
