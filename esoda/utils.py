@@ -114,11 +114,12 @@ def refine_query(q0):
     ques = []
     aste = []
     q = strQ2B(q0)  # 全角转半角
+    q = q.translate(TRANS_TABLE).strip()
     # q = q.replace(u'？', '?')   # 替换中文问号
     q = re.sub(r'\s+\?', '?', q) # 去掉问号前空格
     q = re.sub(r'\?+', '?', q)   # 去掉多个问号
     q = re.sub(r'^\?', '', q)    # 去掉问号开头
-    r = q.translate(TRANS_TABLE).strip()
+    r = q.strip()
     r = re.sub(' +', ' ', r)
     wList = r.split()
     for i in range(len(wList)):
