@@ -21,7 +21,7 @@ from .thesaurus import synonyms
 from .lemmatizer import lemmatize
 from .EsAdaptor import EsAdaptor
 from common.models import Comment
-from authentication.models import TREE_FIRST, corpus_id2cids, FIELD_NAME
+from authentication.models import TREE_FIRST, corpus_id2cids, FIELD_NAME, corpusid2no
 
 
 ALL_DEPS = [u'(主谓)', u'(动宾)', u'(修饰)', u'(介词)']
@@ -29,7 +29,10 @@ PERP_TOKENS = set(['vs', 're', 'contra', 'concerning', 'neath', 'skyward', 'anot
 # ALL_DBS = ['dblp', 'doaj', 'bnc', 'arxiv']
 # DEFAULT_ES_DBS = ['bnc', 'wikipedia'] # TODO: move into setting.py and .env
 DEFAULT_ES_DBS = ['dblp'] # TODO: move into setting.py and .env
-DEFAULT_ES_CIDS = ['conf_aaai', 'conf_acl', 'conf_asplos', 'conf_cav', 'conf_ccs', 'conf_chi', 'conf_cnhpca', 'conf_crypto', 'conf_cscw', 'conf_cvpr', 'conf_eurocrypt', 'conf_fast', 'conf_focs', 'conf_huc', 'conf_iccv', 'conf_icde', 'conf_icml', 'conf_icse', 'conf_ijcai', 'conf_infocom', 'conf_isca', 'conf_kbse', 'conf_kdd', 'conf_lics', 'conf_mm', 'conf_mobicom', 'conf_nips', 'conf_oopsla', 'conf_osdi', 'conf_pldi', 'conf_popl', 'conf_ppopp', 'conf_rtss', 'conf_sc', 'conf_sigcomm', 'conf_siggraph', 'conf_sigir', 'conf_sigmod', 'conf_sigsoft', 'conf_sosp', 'conf_sp', 'conf_stoc', 'conf_usenix', 'conf_uss', 'conf_visualization', 'conf_vldb', 'conf_www', 'journals_ai', 'journals_iandc', 'journals_ijcv', 'journals_ijmms', 'journals_jacm', 'journals_jmlr', 'journals_joc', 'journals_jsac', 'journals_pami', 'journals_pieee', 'journals_siamcomp', 'journals_tc', 'journals_tcad', 'journals_tdsc', 'journals_tifs', 'journals_tip', 'journals_tit', 'journals_tkde', 'journals_tmc', 'journals_tochi', 'journals_tocs', 'journals_tods', 'journals_tog', 'journals_tois', 'journals_ton', 'journals_toplas', 'journals_tos', 'journals_tosem', 'journals_tpds', 'journals_tse', 'journals_tvcg', 'journals_vldb', 'journals_micro', 'conf_vr',]
+DEFAULT_ES_CIDS = ['conf/aaai', 'conf/acl', 'conf/asplos', 'conf/cav', 'conf/ccs', 'conf/chi', 'conf/cnhpca', 'conf/crypto', 'conf/cscw', 'conf/cvpr', 'conf/eurocrypt', 'conf/fast', 'conf/focs', 'conf/huc', 'conf/iccv', 'conf/icde', 'conf/icml', 'conf/icse', 'conf/ijcai', 'conf/infocom', 'conf/isca', 'conf/kbse', 'conf/kdd', 'conf/lics', 'conf/mm', 'conf/mobicom', 'conf/nips', 'conf/oopsla', 'conf/osdi', 'conf/pldi', 'conf/popl', 'conf/ppopp', 'conf/rtss', 'conf/sc', 'conf/sigcomm', 'conf/siggraph', 'conf/sigir', 'conf/sigmod', 'conf/sigsoft', 'conf/sosp', 'conf/sp', 'conf/stoc', 'conf/usenix', 'conf/uss', 'conf/visualization', 'conf/vldb', 'conf/www', 'journals/ai', 'journals/iandc', 'journals/ijcv', 'journals/ijmms', 'journals/jacm', 'journals/jmlr', 'journals/joc', 'journals/jsac', 'journals/pami', 'journals/pieee', 'journals/siamcomp', 'journals/tc', 'journals/tcad', 'journals/tdsc', 'journals/tifs', 'journals/tip', 'journals/tit', 'journals/tkde', 'journals/tmc', 'journals/tochi', 'journals/tocs', 'journals/tods', 'journals/tog', 'journals/tois', 'journals/ton', 'journals/toplas', 'journals/tos', 'journals/tosem', 'journals/tpds', 'journals/tse', 'journals/tvcg', 'journals/vldb', 'journals/micro', 'conf/vr',]
+DEFAULT_ES_CIDS = [corpusid2no[k] for k in DEFAULT_ES_CIDS]
+if settings.DEBUG:
+    assert DEFAULT_ES_CIDS == [1, 2, 6, 11, 12, 15, 19, 29, 30, 32, 49, 52, 54, 61, 68, 70, 75, 80, 84, 86, 89, 96, 97, 100, 105, 106, 112, 115, 116, 122, 125, 126, 133, 135, 143, 144, 145, 147, 148, 151, 152, 155, 160, 161, 164, 165, 169, 172, 199, 202, 204, 211, 221, 222, 225, 233, 235, 239, 253, 254, 259, 265, 266, 268, 271, 272, 276, 278, 280, 281, 282, 286, 287, 288, 289, 291, 295, 297, 302, 305, 307,]
 # DEFAULT_DOMAIN_NAME = u'通用英语'
 DEFAULT_DOMAIN_NAME = u'计算机'
 logger = logging.getLogger(__name__)

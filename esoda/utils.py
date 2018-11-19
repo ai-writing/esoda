@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 DEPS_VIEW = {u'(主谓) *': u' + 动词', u'* (主谓)': u'主语 + ', u'(动宾) *': u' + 宾语', u'* (动宾)': u'动词 + ',
     u'(修饰) *': u' + 被修饰词', u'* (修饰)': u'修饰 + ', u'(介词) *': u' + 介词', u'* (介词)': u'介词 + '}
 EN_PUNC = """!"#$%&'()+,-./:;<=>@[\]^_`{|}~""" # string.punctuation去掉问号和星号
-CH_PUNC = u'《》（）&%￥#@！{}【】，。'
+CH_PUNC = u'《》（）&%￥#@！{}【】，。‘’'
 PUNC = EN_PUNC + CH_PUNC
-TRANS_TABLE = dict((ord(c), u' ') for c in PUNC)
+TRANS_TABLE = dict((ord(c), u"'") if (c == u"'" or c == u'’' or c == u'‘') else (ord(c), u' ') for c in PUNC)
 pt2pt = {'VB': 'v', 'VBD': 'v', 'VBG': 'v', 'VBN': 'v', 'VBP': 'v', 'VBZ': 'v',
     'IN': 'prep', 'TO': 'prep', 'RB': 'adv', 'RBR': 'adv', 'RBS': 'adv', 'RP': 'adv',
     'JJ': 'adj', 'JJR': 'adj', 'JJS': 'adj', 'NN': 'n', 'NNP': 'n', 'NNPS': 'n', 'NNS': 'n' }
@@ -114,11 +114,12 @@ def refine_query(q0):
     ques = []
     aste = []
     q = strQ2B(q0)  # 全角转半角
+    q = q.translate(TRANS_TABLE).strip()
     # q = q.replace(u'？', '?')   # 替换中文问号
     q = re.sub(r'\s+\?', '?', q) # 去掉问号前空格
     q = re.sub(r'\?+', '?', q)   # 去掉多个问号
     q = re.sub(r'^\?', '', q)    # 去掉问号开头
-    r = q.translate(TRANS_TABLE).strip()
+    r = q.strip()
     r = re.sub(' +', ' ', r)
     wList = r.split()
     for i in range(len(wList)):
