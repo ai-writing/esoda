@@ -94,7 +94,7 @@ def esoda_view(request):
                 logger.exception('Failed to parse youdao_translate result: "%s"', trans['explanationList'])
 
     if q == "": # no result from youdao
-        pass
+        q = "***"
     q, ques, aste = refine_query(q) # ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q, timeout=5)
     expand = []
