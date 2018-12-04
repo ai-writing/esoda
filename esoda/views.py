@@ -88,10 +88,13 @@ def esoda_view(request):
         trans = youdao_translate(q0, timeout=5)
         if trans.get('explanationList'):
             try:
-                q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip()
+                # q = trans['explanationList'][0][trans['explanationList'][0].find(']')+1:].strip()
+                q = trans["explanationList"]
             except Exception as e:
                 logger.exception('Failed to parse youdao_translate result: "%s"', trans['explanationList'])
 
+    if q == "": # no result from youdao
+        q = "***"
     q, ques, aste = refine_query(q) # ques(aste) is the place of question mark(asterisk)
     qt, ref, poss, dep = lemmatize(q, timeout=5)
     expand = []
