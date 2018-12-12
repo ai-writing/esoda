@@ -160,8 +160,17 @@ def youdao_translate_new(q, timeout=10):
     except Exception:
         logger.exception('Failed in Youdao translate "%s"', q)
         return {}
+    basic_explains = r.get('basic', {}).get('explains', [])
+    if basic_explains == []:
+        explanation_str = r.get('translation', [])[0]
+    else:
+        explanation_str = basic_explains[0][basic_explains[0].find(']') + 1:].strip()
+        if has_cn(explanation_str):
+            explanation_str = r.get('translation', [])[0]
+
     translated = {
-        'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
+        # 'explanationList': r.get('basic', {}).get('explains', []) + r.get('translation', []),
+        'explanationList': explanation_str,
         'cached': response.from_cache if hasattr(response, 'from_cache') else False
     }
     logger.info('youdao_translate: "%s" -> %s', r.get('query', q), repr(translated))
